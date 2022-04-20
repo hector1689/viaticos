@@ -1,0 +1,82 @@
+<?php
+
+namespace Modules\Usuarios\Entities;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Centros_Trabajo extends Model{
+  protected $table = "cat_centros_trabajo";
+  protected $primaryKey = "id";
+  protected $fillable = [
+    "clavecct" ,
+    "nombrect" ,
+    "domicilio" ,
+    "entrecalle" ,
+    "ycalle" ,
+    "municipio" ,
+    "mun_sep" ,
+    "localidad" ,
+    "loc_sep" ,
+    "colonia" ,
+    "nombrecol" ,
+    "catpob" ,
+    "codpost" ,
+    "telefono" ,
+    "telexten" ,
+    "fax" ,
+    "faxexten" ,
+    "correoele" ,
+    "paginaweb" ,
+    "turno" ,
+    "zonaescola" ,
+    "cct_zona" ,
+    "supeducfis" ,
+    "cct_edufis" ,
+    "sector" ,
+    "cct_sector" ,
+    "serreg" ,
+    "cct_serreg" ,
+    "ageb" ,
+    "longitud" ,
+    "latitud" ,
+    "altitud" ,
+    "clavecart" ,
+    "depadmva" ,
+    "depnormtva" ,
+    "servicio" ,
+    "sostenimie" ,
+    "director" ,
+    "cveasigna" ,
+    "servlic" ,
+    "delpol" ,
+    "catastro" ,
+    "almacen" ,
+    "cct_almace" ,
+    "tipomod" ,
+    "esccal" ,
+    "edusat" ,
+    "inmueble" ,
+    "inm_resp" ,
+    "claveinsti" ,
+    "incorporac" ,
+    "numincorpo" ,
+    "fechaincor" ,
+    "fechafunda" ,
+    "fechaalta" ,
+    "fechaclaus" ,
+    "fechareape" ,
+    "fechacambi" ,
+    "fechaactua" ,
+    "fechasol" ,
+    "motivo" ,
+    "motbaja" ,
+    "folio" ,
+    "status" ,
+    "Id_Tipo_Nivel" ,
+    "Id_Nivel" ,
+    "Id_SubNivel" ,
+    "activo"
+  ];
+
+
+}

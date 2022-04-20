@@ -1,0 +1,39 @@
+{
+    "name": "Usuarios",
+    "alias": "usuarios",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Usuarios\\Providers\\UsuariosServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "clave": "00",
+    "titulo": "Configuraciónes",
+    "icono": "fas fa-user-astronaut",
+    "contenido": {
+        "Usuarios": {
+            "enlace": "/usuarios",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Roles": {
+            "enlace": "/usuarios/roles",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Permisos": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        }
+    }
+}
