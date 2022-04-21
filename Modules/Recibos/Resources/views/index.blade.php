@@ -16,7 +16,7 @@
                     <ul class="navi navi-hover py-5">
 
                       <li class="navi-item">
-                          <a href="/bienes/create" class="navi-link">
+                          <a href="/recibos/create" class="navi-link">
                               <span class="navi-icon"><i class="fas fa-plus"></i></span>
                               <span class="navi-text">Nuevo Recibo</span>
                           </a>
@@ -57,7 +57,7 @@
         <div class='btn-group dropleft'>
           <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
           <div class='dropdown-menu '  >
-            <a class='dropdown-item' href="/bienes/show">
+            <a class='dropdown-item' href="/recibos/show">
             Ver Detalle
             </a>
             <a class='dropdown-item' onclick="finiquitarP()">
@@ -99,23 +99,23 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Baja de Bien Controlable</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Cancelar</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col-md-12">
-                    <span>MODULO SECRETARIAL</span><br>
-                    <p>N° DE INVENTARIO 54002-11-0047-07760</p>
-                </div>
                 <div class="col-md-6">
-                    <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha de Baja: </label>
-                    <input type="email" class="form-control" id="email"  placeholder="Fecha de Baja" required>
+                    <label for="inputPassword4" style="font-size:12px;" class="form-label">Estatus: </label>
+                    <input type="text" name="" class="form-control">
                     <div class="invalid-feedback">
-                      Por Favor Ingrese Fecha de Baja
+                      Por Favor Ingrese Correo Eléctronico
                     </div>
+                </div>
+                <div class="col-md-12">
+                  <label for="inputPassword4" style="font-size:12px;" class="form-label">Motivo: </label>
+                  <textarea name="name" rows="8" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
@@ -136,7 +136,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nombre del Resguardante</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Finiquitar</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -144,21 +144,16 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-6">
-                    <label for="inputPassword4" style="font-size:12px;" class="form-label">Resguardante: </label>
-                    <select class="form-control" name="">
-                      <option value="">Javier Hernandez Sanchez</option>
-                    </select>
+                    <label for="inputPassword4" style="font-size:12px;" class="form-label">Estatus: </label>
+                    <input type="text" name="" class="form-control">
                     <div class="invalid-feedback">
                       Por Favor Ingrese Correo Eléctronico
                     </div>
                 </div>
                 <div class="col-md-12">
-                  <p>Javier Hernandez Sanchez</p>
-                  <p>SECRETARIA DE ADMINISTRACION</p>
-                  <p>SUBSECRETARIA DE INNOVACIÓN Y TECNOLÓGIAS DE LA INFORMACIÓN</p>
-                  <p>DIRECCIÓN DE MOVILIDAD, SISTEMA E INFORMACIÓN</p>
-                  <p>DIRECCIÓN DE INFORMÁTICA</p>
-                  <p>DEPARTAMENTO DE ANÁLISIS Y DISEÑO</p>
+                  <label for="inputPassword4" style="font-size:12px;" class="form-label">Motivo: </label>
+
+                  <textarea name="name" rows="8" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
@@ -179,7 +174,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nombre del Resguardante</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Finiquitar Provicional</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -187,21 +182,16 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-6">
-                    <label for="inputPassword4" style="font-size:12px;" class="form-label">Resguardante: </label>
-                    <select class="form-control" name="">
-                      <option value="">Javier Hernandez Sanchez</option>
-                    </select>
+                    <label for="inputPassword4" style="font-size:12px;" class="form-label">Estatus: </label>
+                    <input type="text" name="" class="form-control">
                     <div class="invalid-feedback">
                       Por Favor Ingrese Correo Eléctronico
                     </div>
                 </div>
                 <div class="col-md-12">
-                  <p>Javier Hernandez Sanchez</p>
-                  <p>SECRETARIA DE ADMINISTRACION</p>
-                  <p>SUBSECRETARIA DE INNOVACIÓN Y TECNOLÓGIAS DE LA INFORMACIÓN</p>
-                  <p>DIRECCIÓN DE MOVILIDAD, SISTEMA E INFORMACIÓN</p>
-                  <p>DIRECCIÓN DE INFORMÁTICA</p>
-                  <p>DEPARTAMENTO DE ANÁLISIS Y DISEÑO</p>
+                  <label for="inputPassword4" style="font-size:12px;" class="form-label">Motivo: </label>
+                  
+                  <textarea name="name" rows="8" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
@@ -216,14 +206,18 @@
 <!--MODAL REUBICAR BIEN -->
 
 <script type="text/javascript">
-$('#reubicar').modal('hide');
+$('#finiquitar').modal('hide');
+$('#finiquitarP').modal('hide');
 $('#baja').modal('hide');
 
 function baja(){
   $('#baja').modal('show');
 }
-function reubicar(){
-  $('#reubicar').modal('show');
+function finiquitar(){
+  $('#finiquitar').modal('show');
+}
+function finiquitarP(){
+  $('#finiquitarP').modal('show');
 }
 //     var tabla;
 //     $(function() {

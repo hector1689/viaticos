@@ -12,5 +12,6 @@
 */
 
 Route::prefix('recibos')->group(function() {
-    Route::get('/', 'RecibosController@index');
+  Route::get('/', 'RecibosController@index');
+  Route::get('/create', 'RecibosController@create');
 });
