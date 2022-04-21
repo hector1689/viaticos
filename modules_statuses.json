@@ -1,3 +1,8 @@
 {
-    "Usuarios": true
+    "Usuarios": true,
+    "Catalogos": true,
+    "Bienes": true,
+    "COntrol": true,
+    "Control": true,
+    "Recibos": true
 }

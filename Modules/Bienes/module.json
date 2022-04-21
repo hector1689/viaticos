@@ -1,0 +1,14 @@
+{
+    "name": "Bienes",
+    "alias": "bienes",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Bienes\\Providers\\BienesServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "titulo": "Bienes Controlabes y Activos"
+}

@@ -1,0 +1,14 @@
+{
+    "name": "Recibos",
+    "alias": "recibos",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Recibos\\Providers\\RecibosServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "titulo": "Recibo de Viáticos"
+}

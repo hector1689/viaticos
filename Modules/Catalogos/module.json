@@ -1,0 +1,101 @@
+{
+    "name": "Catalogos",
+    "alias": "catalogos",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Catalogos\\Providers\\CatalogosServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "titulo": "Catalogos",
+    "icono": "fas fa-user-astronaut",
+    "contenido": {
+        "Dependencias": {
+            "enlace": "/usuarios",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Alimentación": {
+            "enlace": "/usuarios/roles",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Hospedaje": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Taxi": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Kilometraje": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Localidades": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Gasolina": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Peaje": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Rendimiento": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Autos": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Empleados": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Programas": {
+            "enlace": "/usuarios/permisos",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        }
+    }
+}
