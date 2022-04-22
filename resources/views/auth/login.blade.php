@@ -1,7 +1,4 @@
-
-
 @extends('layouts.login')
-
 @section('content')
 <div class="d-flex flex-column flex-root">
   <!--begin::Login-->

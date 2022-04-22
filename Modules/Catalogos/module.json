@@ -14,84 +14,63 @@
     "icono": "fas fa-user-astronaut",
     "contenido": {
         "Dependencias": {
-            "enlace": "/usuarios",
+            "enlace": "/catalogos/dependencias",
             "icono": "fas fa-table",
             "permises": [
 
             ]
         },
         "Alimentación": {
-            "enlace": "/usuarios/roles",
+            "enlace": "/catalogos/alimentacion",
             "icono": "fas fa-table",
             "permises": [
 
             ]
         },
         "Hospedaje": {
-            "enlace": "/usuarios/permisos",
+            "enlace": "/catalogos/hospedaje",
             "icono": "fas fa-table",
             "permises": [
 
             ]
         },
         "Taxi": {
-            "enlace": "/usuarios/permisos",
+            "enlace": "/catalogos/taxi",
             "icono": "fas fa-table",
             "permises": [
 
             ]
         },
         "Kilometraje": {
-            "enlace": "/usuarios/permisos",
+            "enlace": "/catalogos/kilometraje",
             "icono": "fas fa-table",
             "permises": [
 
             ]
         },
         "Localidades": {
-            "enlace": "/usuarios/permisos",
+            "enlace": "/catalogos/localidades",
             "icono": "fas fa-table",
             "permises": [
 
             ]
         },
         "Gasolina": {
-            "enlace": "/usuarios/permisos",
+            "enlace": "/catalogos/gasolina",
             "icono": "fas fa-table",
             "permises": [
 
             ]
         },
         "Peaje": {
-            "enlace": "/usuarios/permisos",
+            "enlace": "/catalogos/peaje",
             "icono": "fas fa-table",
             "permises": [
 
             ]
         },
         "Rendimiento": {
-            "enlace": "/usuarios/permisos",
-            "icono": "fas fa-table",
-            "permises": [
-
-            ]
-        },
-        "Autos": {
-            "enlace": "/usuarios/permisos",
-            "icono": "fas fa-table",
-            "permises": [
-
-            ]
-        },
-        "Empleados": {
-            "enlace": "/usuarios/permisos",
-            "icono": "fas fa-table",
-            "permises": [
-
-            ]
-        },
-        "Programas": {
-            "enlace": "/usuarios/permisos",
+            "enlace": "/catalogos/rendimiento",
             "icono": "fas fa-table",
             "permises": [
 

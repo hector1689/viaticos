@@ -66,24 +66,43 @@
             <a class='dropdown-item' onclick="finiquitar()">
             Finiquitar
             </a>
-            <a class='dropdown-item' >
+            <!-- <a class='dropdown-item' >
             Pagado
-            </a>
+            </a> -->
             <a class='dropdown-item' onclick="baja()">
             Cancelar
             </a>
-            <a class='dropdown-item'>
+            <a class='dropdown-item' href="/recibos/recibo">
             Recibo Complementario
             </a>
             <a class='dropdown-item' >
             Comprobaciones
             </a>
-            <a class='dropdown-item' >
+            <!-- <a class='dropdown-item' >
             Programa de recorridos
             </a>
             <a class='dropdown-item' >
             Acompañante
+            </a> -->
+            <!-- <a class='dropdown-item' >
+            Imprimir Recibo
+            </a> -->
+            <div role="separator" class="dropdown-divider"></div>
+            <a class='dropdown-item' >
+            Oficio de Comisión
             </a>
+            <a class='dropdown-item' >
+            Especificación de Comisión
+            </a>
+            <!-- <a class='dropdown-item' >
+            Turnar
+            </a>
+            <a class='dropdown-item' >
+            Turnar y Firmar
+            </a>
+            <a class='dropdown-item' >
+            Pagar
+            </a> -->
           </div>
          </div>
        </td>
@@ -190,7 +209,7 @@
                 </div>
                 <div class="col-md-12">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Motivo: </label>
-                  
+
                   <textarea name="name" rows="8" cols="80" class="form-control"></textarea>
                 </div>
               </div>

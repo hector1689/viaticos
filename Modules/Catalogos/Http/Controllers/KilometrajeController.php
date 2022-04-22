@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Recibos\Http\Controllers;
+namespace Modules\Catalogos\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -10,8 +10,9 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
 use \DB;
-class RecibosController extends Controller
+class KilometrajeController extends Controller
 {
+
   public function __construct()
   {
     $this->middleware('auth');
@@ -26,7 +27,7 @@ class RecibosController extends Controller
      */
     public function index()
     {
-        return view('recibos::index');
+        return view('catalogos::kilometraje.index');
     }
 
     /**
@@ -35,7 +36,7 @@ class RecibosController extends Controller
      */
     public function create()
     {
-        return view('recibos::create');
+        return view('catalogos::kilometraje.create');
     }
 
     /**
@@ -55,12 +56,7 @@ class RecibosController extends Controller
      */
     public function show()
     {
-        return view('recibos::show');
-    }
-
-    public function recibo()
-    {
-        return view('recibos::recibo');
+        return view('catalogos::kilometraje.show');
     }
 
     /**
@@ -70,7 +66,7 @@ class RecibosController extends Controller
      */
     public function edit($id)
     {
-        return view('recibos::edit');
+        return view('catalogos::edit');
     }
 
     /**

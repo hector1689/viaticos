@@ -379,7 +379,7 @@ License: You must have a valid license purchased only from themeforest(the above
           		<!--begin::Copyright-->
           		<div class="text-dark order-2 order-md-1">
           			<span class="text-muted font-weight-bold mr-2"><?php echo date('Y'); ?>&copy;</span>
-          			<a href="https://www.tamaulipas.gob.mx/educacion/" target="_blank" class="text-dark-75 text-hover-primary">Secretaria de Educación</a>
+          			<a  target="_blank" class="text-dark-75 text-hover-primary">Gobierno del Estado de Tamaulipas</a>
           		</div>
           		<!--end::Copyright-->
 

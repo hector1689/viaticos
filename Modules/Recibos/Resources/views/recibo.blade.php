@@ -4,7 +4,7 @@
 <div class="card card-custom example example-compact">
 <div class="card-header">
 <h3 class="card-title">
-   <!-- @isset($usuarios)editar @else nuevo @endisset --> NUEVO VIATICO
+   <!-- @isset($usuarios)editar @else nuevo @endisset --> Recibo Complementario
 </h3>
 <div class="card-toolbar">
 <div class="example-tools justify-content-center">
@@ -165,7 +165,7 @@
           <div class="col-md-12">
 
             <label class="checkbox">
-                <input type="checkbox" name="Checkboxes1" >
+                <input type="checkbox" name="Checkboxes1" checked>
                 <span></span>
                 Recibo Complementario
             </label>

@@ -5,9 +5,22 @@ namespace Modules\Catalogos\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Yajra\Datatables\Datatables;
+use \DB;
 class CatalogosController extends Controller
 {
+
+  public function __construct()
+  {
+    $this->middleware('auth');
+    $this->middleware(function ($request, $next) {
+        $this->user = Auth::user();
+        return $next($request);
+    });
+  }
     /**
      * Display a listing of the resource.
      * @return Renderable
