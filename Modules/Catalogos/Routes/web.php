@@ -68,5 +68,11 @@ Route::prefix('catalogos')->group(function() {
         Route::get('/show', 'GasolinaController@show');
     });
 
+    Route::prefix('folios')->group(function() {
+        Route::get('/', 'FolioController@index');
+        Route::get('/create', 'FolioController@create');
+        Route::get('/show', 'FolioController@show');
+    });
+
 
 });

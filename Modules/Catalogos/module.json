@@ -75,6 +75,13 @@
             "permises": [
 
             ]
+        },
+        "Folio": {
+            "enlace": "/catalogos/folios",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
         }
     }
 }

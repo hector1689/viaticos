@@ -88,7 +88,7 @@
             Imprimir Recibo
             </a> -->
             <div role="separator" class="dropdown-divider"></div>
-            <a class='dropdown-item' >
+            <a class='dropdown-item' href="/recibos/oficio">
             Oficio de Comisión
             </a>
             <a class='dropdown-item' >
