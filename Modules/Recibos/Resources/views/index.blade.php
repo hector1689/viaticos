@@ -84,14 +84,15 @@
             <a class='dropdown-item' >
             Acompañante
             </a> -->
-            <!-- <a class='dropdown-item' >
-            Imprimir Recibo
-            </a> -->
             <div role="separator" class="dropdown-divider"></div>
+            <a class='dropdown-item'href="/recibos/imprimir" >
+            Imprimir Recibo
+            </a>
+
             <a class='dropdown-item' href="/recibos/oficio">
             Oficio de Comisión
             </a>
-            <a class='dropdown-item' >
+            <a class='dropdown-item' href="/recibos/especificacioncomision">
             Especificación de Comisión
             </a>
             <!-- <a class='dropdown-item' >

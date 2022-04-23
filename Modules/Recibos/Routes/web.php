@@ -17,4 +17,7 @@ Route::prefix('recibos')->group(function() {
   Route::get('/show', 'RecibosController@show');
   Route::get('/recibo', 'RecibosController@recibo');
   Route::get('/oficio', 'RecibosController@oficio');
+  Route::get('/especificacion', 'RecibosController@especificacion');
+  Route::get('/especificacioncomision', 'RecibosController@especificacioncomision');
+  Route::get('/imprimir', 'RecibosController@imprimir');
 });

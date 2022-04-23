@@ -68,6 +68,21 @@ class RecibosController extends Controller
 
     }
 
+    public function especificacion(){
+      return view('recibos::especificacion');
+
+    }
+
+    public function imprimir(){
+      return view('recibos::imprimir');
+
+    }
+    public function especificacioncomision(){
+      return view('recibos::especificarcomision');
+
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      * @param int $id

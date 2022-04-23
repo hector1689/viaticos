@@ -33,21 +33,10 @@
         </div>
       </form>
       <div class="mt-10">
-        <!-- <span class="opacity-70 mr-4">
-          Don't have an account yet?
-        </span>
-        <a href="javascript:;" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Sign Up!</a> -->
+
       </div>
     </div>
-    <!--end::Login Sign in form-->
 
-    <!--begin::Login Sign up form-->
-
-    <!--end::Login Sign up form-->
-
-    <!--begin::Login forgot password form-->
-
-    <!--end::Login forgot password form-->
   </div>
 </div>
 </div>
