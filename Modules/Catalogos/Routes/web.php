@@ -74,5 +74,11 @@ Route::prefix('catalogos')->group(function() {
         Route::get('/show', 'FolioController@show');
     });
 
+    Route::prefix('comisionados')->group(function() {
+        Route::get('/', 'ComisionadosController@index');
+        Route::get('/create', 'ComisionadosController@create');
+        Route::get('/show', 'ComisionadosController@show');
+    });
+
 
 });

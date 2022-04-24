@@ -13,8 +13,8 @@
     "titulo": "Catalogos",
     "icono": "fas fa-user-astronaut",
     "contenido": {
-        "Dependencias": {
-            "enlace": "/catalogos/dependencias",
+        "Comisionados": {
+            "enlace": "/catalogos/comisionados",
             "icono": "fas fa-table",
             "permises": [
 
