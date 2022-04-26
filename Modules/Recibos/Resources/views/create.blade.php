@@ -1438,7 +1438,7 @@
 </div>
 <div class="card-footer">
 
-  <a href="/bienes" class="btn btn-default">Regresar</a>
+  <a href="/recibos" class="btn btn-default">Regresar</a>
 
   <a class="btn btn-primary " onclick="guardar()">Guardar</a>
 </div>

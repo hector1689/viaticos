@@ -82,6 +82,11 @@ class RecibosController extends Controller
 
     }
 
+    public function comprobantes(){
+      return view('recibos::comprobacion');
+
+    }
+
 
     /**
      * Show the form for editing the specified resource.

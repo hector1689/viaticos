@@ -75,7 +75,7 @@
             <a class='dropdown-item' href="/recibos/recibo">
             Recibo Complementario
             </a>
-            <a class='dropdown-item' >
+            <a class='dropdown-item' href="/recibos/comprobantes">
             Comprobaciones
             </a>
             <!-- <a class='dropdown-item' >

@@ -456,15 +456,12 @@ ul, #myUL {
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Puesto: </label>
                               <input type="text" class="form-control" value="">
                             </div>
-                            <div class="col-md-4">
-                              <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° de Empleado: </label>
-                              <input type="text" class="form-control" value="">
-                            </div>
-                            <div class="col-md-4">
+
+                            <div class="col-md-6">
                               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Correo Electronico: </label>
                               <input type="text" class="form-control" value="">
                             </div>
