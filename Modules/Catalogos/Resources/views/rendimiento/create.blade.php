@@ -4,7 +4,7 @@
 <div class="card card-custom example example-compact">
 <div class="card-header">
 <h3 class="card-title">
-   Nuevo Peaje
+   Nuevo Rendimiento
 </h3>
 <div class="card-toolbar">
 <div class="example-tools justify-content-center">
