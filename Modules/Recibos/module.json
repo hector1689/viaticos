@@ -11,5 +11,6 @@
     "aliases": {},
     "files": [],
     "requires": [],
-    "titulo": "Recibo de Viáticos"
+    "titulo": "Recibo de Viáticos",
+    "icono": "fas fa-file-invoice-dollar text-primary mr-5"
 }

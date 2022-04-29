@@ -43,18 +43,19 @@ div#collapseusuarios .col-lg-6 {
           </div>
           <div class="col-lg-6">
 
-
             <div class="form-group">
-                <label>Inline radios</label>
-                @foreach(obtenerModulosActivos() as $values)
+                <label>Modulos</label>
+
                 <div class="radio-inline">
+                  @foreach(obtenerModulosActivos() as $values)
                     <label class="radio">
-                        <input type="radio" name="radios2" value="{{ $values->get('alias') }}">
+                        <input type="radio" name="page" value="{{ $values->get('alias') }}" @isset($permisos)   @if($permisos->modulo == $values->get('alias')) checked  @endif  @endisset>
                         <span></span>
                         {{$values->get('titulo')}}
                     </label>
+                      @endforeach
                 </div>
-                  @endforeach
+
             </div>
 
           </div>
@@ -115,6 +116,24 @@ function agregarPermisos(){
 
   var name = $('#name').val();
 var modulo = $('#modulo').val();
+
+var selected = [];
+var objFiguras = {};
+    $(":radio[name=page]").each(function(){
+        if (this.checked) {
+
+          console.log($(this).val());
+          // objFiguras = {
+          //     permisos: $(this).val(),
+          //   }
+
+            /////////////////////////////////////////////////////
+            selected.push($(this).val());
+          //  console.log(objFiguras,selected);
+        }
+    });
+
+console.log(name,selected)
 @isset($permisos)
 var id = {{$permisos->id}};
 @else
@@ -142,7 +161,7 @@ Array.prototype.slice.call(form)
                data:{
                  id: id,
                  name: name,
-                 modulo:modulo,
+                 modulo:selected,
 
                },
                 success:function(data){

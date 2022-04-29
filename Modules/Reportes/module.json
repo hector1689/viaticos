@@ -10,5 +10,7 @@
     ],
     "aliases": {},
     "files": [],
+    "titulo": "Reportes",
+    "icono": "fas fa-file-contract  text-primary mr-5",
     "requires": []
 }

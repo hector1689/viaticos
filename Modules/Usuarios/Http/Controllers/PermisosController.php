@@ -37,14 +37,13 @@ class PermisosController extends Controller
   }
 
   public function store(Request $request){
-    //dd($request->all());
+
     try {
-      // $nombre_permiso = $request->name.' '.$request->modulo;
 
       $permisos = new Permisos();
       $permisos->name = $request->name;
       $permisos->guard_name = 'web';
-      $permisos->modulo = $request->modulo;
+      $permisos->modulo = $request->modulo[0];
       $permisos->save();
 
       return response()->json(['success'=>'Se Agrego Satisfactoriamente']);
@@ -60,10 +59,11 @@ class PermisosController extends Controller
 
   public function update(Request $request){
     try {
+
       $permisos = Permisos::find($request->id);
       $permisos->name = $request->name;
       $permisos->guard_name = 'web';
-      $permisos->modulo = $request->modulo;
+      $permisos->modulo = $request->modulo[0];
       $permisos->save();
       return response()->json(['success'=>'Ha sido editado con éxito']);
     } catch (\Exception $e) {

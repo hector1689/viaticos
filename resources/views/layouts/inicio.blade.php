@@ -148,7 +148,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <span class="menu-text">Dashboard</span></a>
             </li>
             <li class="menu-section ">
-              <h4 class="menu-text">Custom</h4>
+              <h4 class="menu-text">Menú</h4>
               <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
             </li>
             @foreach (obtenerModulosActivos() as $key => $value)

@@ -39,7 +39,7 @@ $(function() {
   tabla = $('#kt_datatable').DataTable({
     processing: true,
     serverSide: true,
-    order: [[0, 'desc']],
+    order: [[0, 'asc']],
     ajax: {
       url: "/usuarios/roles/tablaroles",
     },

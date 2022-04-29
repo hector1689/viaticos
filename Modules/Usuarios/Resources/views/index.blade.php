@@ -53,7 +53,7 @@
     tabla = $('#kt_datatable').DataTable({
       processing: true,
       serverSide: true,
-      order: [[0, 'desc']],
+      order: [[3, 'asc']],
       ajax: {
         url: "/usuarios/tablausuarios",
       },

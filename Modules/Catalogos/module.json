@@ -11,7 +11,7 @@
     "files": [],
     "requires": [],
     "titulo": "Catalogos",
-    "icono": "fas fa-user-astronaut",
+    "icono": "fas fa-bars  text-primary mr-5",
     "contenido": {
         "Comisionados": {
             "enlace": "/catalogos/comisionados",

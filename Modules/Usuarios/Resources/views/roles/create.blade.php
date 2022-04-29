@@ -43,11 +43,12 @@ div#collapseusuarios .col-lg-6 {
           </div>
 
         </div>
+        <div role="separator" class="dropdown-divider"></div>
 
         <div class="form-group row" style="margin-top: 10px;">
           @foreach(obtenerModulosActivos() as $values)
           <div class="col-lg-4">
-            <label>{{$values->get('titulo')}}</label>
+            <label><strong>{{$values->get('titulo')}}</strong></label>
             <div class="form-group">
               @foreach($permisos as $permiso)
                 @if($values->get('alias') == $permiso->modulo)
