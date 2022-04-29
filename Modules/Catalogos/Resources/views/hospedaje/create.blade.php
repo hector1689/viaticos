@@ -4,7 +4,7 @@
 <div class="card card-custom example example-compact">
 <div class="card-header">
 <h3 class="card-title">
-   @isset($usuarios)editar @else Nuevo @endisset Hospedaje
+   @isset($hospedaje)Editar @else Nuevo @endisset Hospedaje
 </h3>
 <div class="card-toolbar">
 <div class="example-tools justify-content-center">
@@ -19,7 +19,7 @@
         <div class="row">
           <div class="col-md-6">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Inicial: </label>
-              <input type="text" class="form-control" id="rango_inicia" value="@isset($hospedaje) {{ $hospedaje->rango_inicia }} @endisset" placeholder="Inicial" required>
+              <input type="text" class="form-control" id="rango_inicia" value="@isset($hospedaje) {{ $hospedaje->rango_inicial }} @endisset" placeholder="Inicial" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Inicial
               </div>
@@ -37,6 +37,11 @@
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Zona: </label>
               <select class="form-control" id="zona">
+                @isset($hospedaje)
+                <option value="{{ $hospedaje->id }}">{{ $hospedaje->obtenerZona->nombre }}</option>
+                @else
+                <option value="">Selecciona</option>
+                @endisset
                 @foreach($zonas as $zona)
                 <option value="{{ $zona->id }}">{{ $zona->nombre }}</option>
                 @endforeach
@@ -47,7 +52,7 @@
           </div>
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Importe: </label>
-              <input type="text" class="form-control" id="importe" placeholder="Importe" required>
+              <input type="text" class="form-control" id="importe" placeholder="Importe" value="@isset($hospedaje) {{ $hospedaje->importe }} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
@@ -61,7 +66,7 @@
               @isset($hospedaje)
               <?php
 
-              list($dia,$mes,$anio) = explode('-',$hospedaje->vigencia_inicia);
+              list($dia,$mes,$anio) = explode('-',$hospedaje->vigencia_inicial);
               $fecha = $anio.'/'.$mes.'/'.$dia;
 
 
@@ -173,7 +178,7 @@ function guardar(){
                     success:function(data){
                       if (data.success == 'Registro agregado satisfactoriamente') {
                         Swal.fire("", data.success, "success").then(function(){
-                          location.href ="/catalogos/alimentacion";
+                          location.href ="/catalogos/hospedaje";
                         });
 
                         Swal.fire({
@@ -187,14 +192,14 @@ function guardar(){
                                    $('#nombre').val('');
 
                               }else{
-                                location.href ="/catalogos/alimentacion"; //esta es la ruta del modulo
+                                location.href ="/catalogos/hospedaje"; //esta es la ruta del modulo
                               }
                           })
 
                       }else if(data.success == 'Ha sido editado con éxito'){
 
                         Swal.fire("", data.success, "success").then(function(){
-                          location.href ="/catalogos/alimentacion";
+                          location.href ="/catalogos/hospedaje";
                         });
 
                         Swal.fire({
@@ -208,7 +213,7 @@ function guardar(){
                               if (result.value == true) {
 
                               }else{
-                                location.href ="/catalogos/alimentacion";
+                                location.href ="/catalogos/hospedaje";
                               }
                           })
                       }

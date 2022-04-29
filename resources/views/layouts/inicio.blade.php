@@ -152,60 +152,43 @@ License: You must have a valid license purchased only from themeforest(the above
               <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
             </li>
             @foreach (obtenerModulosActivos() as $key => $value)
-            @php
-            $alias = $value->get('alias');
-            @endphp
-
-
-
-            @foreach(obtenerModulo() as $values)
-
-               @php
-               $aliast = $values->modulo;
-               @endphp
-
-
-              <!--//////////////////// reportes //////////////////////////////////////// -->
-              @if($alias == $aliast)
-              <li @if($value->get("contenido")) class="menu-item  menu-item-submenu" aria-haspopup="true"  data-menu-toggle="hover" @else class="menu-item " aria-haspopup="true"  @endif>
-                <a   @if($value->get("contenido"))  class="menu-link menu-toggle" @else class="menu-link "  @endif  href="@if($value->get('contenido')) javascript:; @else /{{ $alias }} @endif"  >
-                    <i class="{{ $value->get('icono') }}"></i>
-                    <span class="menu-text">{{ $value->get('titulo') ? $value->get('titulo') : $value->get('name') }}</span>
-                      @if ( $value->get('contenido') )
-                      <!-- <span class="ml-auto sidebar-menu-toggle-icon"></span> -->
+              @php
+              $alias = $value->get('alias');
+              @endphp
+              @foreach(obtenerModulo() as $values)
+                 @php
+                 $aliast = $values->modulo;
+                 @endphp
+                <!--//////////////////// reportes //////////////////////////////////////// -->
+                @if($alias == $aliast)
+                <li @if($value->get("contenido")) class="menu-item  menu-item-submenu" aria-haspopup="true"  data-menu-toggle="hover" @else class="menu-item " aria-haspopup="true"  @endif>
+                  <a   @if($value->get("contenido"))  class="menu-link menu-toggle" @else class="menu-link "  @endif  href="@if($value->get('contenido')) javascript:; @else /{{ $alias }} @endif"  >
+                      <i class="{{ $value->get('icono') }}"></i>
+                      <span class="menu-text">{{ $value->get('titulo') ? $value->get('titulo') : $value->get('name') }}</span>
+                        @if ( $value->get('contenido') )
+                        <!-- <span class="ml-auto sidebar-menu-toggle-icon"></span> -->
+                        <i class="menu-arrow"></i>
+                        @endif
+                  </a>
+                  @if ( $value->get('contenido') )
+                    @php $array_usuarios = $value->get('contenido'); @endphp
+                    <div class="menu-submenu ">
                       <i class="menu-arrow"></i>
-                      @endif
+                      <ul class="menu-subnav">
+                        @foreach ($array_usuarios as $key => $value)
 
-                </a>
-                @if ( $value->get('contenido') )
-                  @php $array_usuarios = $value->get('contenido'); @endphp
-
-                  <div class="menu-submenu ">
-                    <i class="menu-arrow"></i>
-                    <ul class="menu-subnav">
-                      @foreach ($array_usuarios as $key => $value)
-
-                        <li class="menu-item " aria-haspopup="true" >
-                          <a  href="{{ $value['enlace'] }}" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">{{ $key }}</span></a>
-                        </li>
-                      @endforeach
+                          <li class="menu-item " aria-haspopup="true" >
+                            <a  href="{{ $value['enlace'] }}" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">{{ $key }}</span></a>
+                          </li>
+                        @endforeach
                       </ul>
-                      </div>
-                </li>
+                    </div>
+                  </li>
+                  @endif
                 @endif
-              @endif
-              <!--///////////////// FIN reportes ////////////////////////////-->
-
-
-
+                <!--///////////////// FIN reportes ////////////////////////////-->
+              @endforeach
             @endforeach
-
-
-
-
-
-            @endforeach
-
           </ul>
           <!--end::Menu Nav-->
         </div>

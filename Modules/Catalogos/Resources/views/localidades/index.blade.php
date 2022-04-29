@@ -41,30 +41,72 @@
     </tr>
     </thead>
    <tbody>
-     <tr>
-       <td>1</td>
-       <td>Tampico</td>
-       <td>Tampico</td>
-       <td>Tamaulipas</td>
-       <td>México</td>
-       <td>
-        <div class='btn-group dropleft'>
-          <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
-          <div class='dropdown-menu '  >
-            <a class='dropdown-item' href="/catalogos/localidades/show">
-            Editar
-            </a>
-            <a class='dropdown-item'>
-            Eliminar
-            </a>
-          </div>
-         </div>
-       </td>
-     </tr>
+
    </tbody>
 </table>
 </div>
 </div>
+<script type="text/javascript">
+var tabla;
+$(function() {
+tabla = $('#kt_datatable').DataTable({
+  processing: true,
+  serverSide: true,
+  order: [[0, 'desc']],
+  ajax: {
+    url: "/catalogos/localidades/tabla",
+  },
+  columns: [
+    { data: 'id', name : 'id'},
+    { data: 'localidad', name : 'localidad'},
+    { data: 'cve_municipio', name : 'cve_municipio'},
+    { data: 'cve_estado', name : 'cve_estado'},
+    { data: 'cve_pais', name : 'cve_pais'},
+    { data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }
+  ],
+  createdRow: function ( row, data, index ) {
+    $(row).find('.ui.dropdown.acciones').dropdown();
+  },
+  language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
+});
+});
+function eliminar(id){
+//console.log(id);
+Swal.fire({
+      title: "¿Esta seguro de eliminar el registro?",
+      text: "No se podrá recuperar la información",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+  }).then(function(result) {
+      if (result.value) {
 
+        $.ajax({
+
+           type:"Delete",
+
+           url:"/catalogos/localidades/borrar",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+              id:id,
+           },
+
+            success:function(data){
+              Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
+
+            }
+
+
+        });
+
+
+      }
+  })
+}
+
+</script>
 
 @endsection

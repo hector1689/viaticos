@@ -28,6 +28,11 @@ Route::prefix('catalogos')->group(function() {
     Route::prefix('hospedaje')->group(function() {
         Route::get('/', 'HospedajeController@index');
         Route::get('/create', 'HospedajeController@create');
+        Route::post('/create', 'HospedajeController@store');
+        Route::get('/tabla', 'HospedajeController@tabla');
+        Route::delete('/borrar', 'HospedajeController@destroy');
+        Route::get('/{id}/edit', 'HospedajeController@edit');
+        Route::post('/update', 'HospedajeController@update');
         Route::get('/show', 'HospedajeController@show');
 
     });
@@ -42,7 +47,15 @@ Route::prefix('catalogos')->group(function() {
     Route::prefix('localidades')->group(function() {
         Route::get('/', 'LocalidadesController@index');
         Route::get('/create', 'LocalidadesController@create');
-        Route::get('/show', 'LocalidadesController@show');
+        // Route::get('/show', 'LocalidadesController@show');
+        Route::get('/tabla', 'LocalidadesController@tabla');
+        Route::post('/create', 'LocalidadesController@store');
+        Route::delete('/borrar', 'LocalidadesController@destroy');
+        Route::get('/{id}/edit', 'LocalidadesController@edit');
+        Route::post('/update', 'LocalidadesController@update');
+        Route::post('/Estado', 'LocalidadesController@Estado');
+        Route::post('/Municipio', 'LocalidadesController@Municipio');
+
 
     });
 
@@ -63,6 +76,11 @@ Route::prefix('catalogos')->group(function() {
     Route::prefix('taxi')->group(function() {
         Route::get('/', 'TaxiController@index');
         Route::get('/create', 'TaxiController@create');
+        Route::get('/tabla', 'TaxiController@tabla');
+        Route::post('/create', 'TaxiController@store');
+        Route::delete('/borrar', 'TaxiController@destroy');
+        Route::get('/{id}/edit', 'TaxiController@edit');
+        Route::post('/update', 'TaxiController@update');
         Route::get('/show', 'TaxiController@show');
 
     });

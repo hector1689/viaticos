@@ -50,7 +50,25 @@ class HospedajeController extends Controller
     public function store(Request $request)
     {
         try {
-          dd($request->all());
+
+          list($dia,$mes,$anio)=explode('/',$request->inicia);
+            $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+          list($dia2,$mes2,$anio2)=explode('/',$request->final);
+            $fecha2 = $anio2.'-'.$mes2.'-'.$dia2;
+
+          $hospedaje = new Hospedaje();
+          $hospedaje->rango_inicial = $request->rango_inicia;
+          $hospedaje->rango_final = $request->rango_final;
+          $hospedaje->cve_zona = $request->zona;
+          $hospedaje->importe = $request->importe;
+          $hospedaje->vigencia_inicial = $fecha1;
+          $hospedaje->vigencia_final = $fecha2;
+          $hospedaje->cve_usuario =  Auth::user()->id;
+          $hospedaje->save();
+
+          return response()->json(['success'=>'Registro agregado satisfactoriamente']);
+
         } catch (\Exception $e) {
           dd($e->getMessage());
         }
@@ -74,7 +92,9 @@ class HospedajeController extends Controller
      */
     public function edit($id)
     {
-        return view('catalogos::edit');
+        $data['zonas'] = Zona::all();
+        $data['hospedaje'] = Hospedaje::find($id);
+        return view('catalogos::hospedaje.create')->with($data);
     }
 
     /**
@@ -83,9 +103,31 @@ class HospedajeController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      try {
+        list($dia,$mes,$anio)=explode('/',$request->inicia);
+          $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+        list($dia2,$mes2,$anio2)=explode('/',$request->final);
+          $fecha2 = $anio2.'-'.$mes2.'-'.$dia2;
+
+        $hospedaje = Hospedaje::find($request->id);
+        $hospedaje->rango_inicial = $request->rango_inicia;
+        $hospedaje->rango_final = $request->rango_final;
+        $hospedaje->cve_zona = $request->zona;
+        $hospedaje->importe = $request->importe;
+        $hospedaje->vigencia_inicial = $fecha1;
+        $hospedaje->vigencia_final = $fecha2;
+        $hospedaje->cve_usuario =  Auth::user()->id;
+        $hospedaje->save();
+
+        return response()->json(['success'=>'Ha sido editado con éxito']);
+
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
+
     }
 
     /**
@@ -93,9 +135,16 @@ class HospedajeController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+      try {
+        $hospedaje = Hospedaje::find($request->id);
+        $hospedaje->activo = 0;
+        $hospedaje->save();
+        return response()->json(['success'=>'Registro Eliminado exitosamente']);
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
     }
 
     public function tabla(){
@@ -104,7 +153,10 @@ class HospedajeController extends Controller
     //dd('entro');
     $registros = Hospedaje::where('activo', 1); //Conocenos es la entidad
     $datatable = DataTables::of($registros)
+    ->editColumn('cve_zona', function ($registros) {
 
+      return $registros->obtenerZona->nombre;
+      })
     ->make(true);
     //Cueri
     $data = $datatable->getData();

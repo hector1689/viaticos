@@ -32,37 +32,84 @@
 <table class="table table-bordered table-checkable" id="kt_datatable">
   <thead>
     <tr>
-      <th>Zona</th>
-      <th>clasificación</th>
+
+      <th>Descripción</th>
       <th>Tarifa por Evento</th>
       <th>Dia Adicional</th>
+      <th>Vigencia Inicia</th>
+      <th>Vigencia Termina</th>
       <th>ACCIONES</th>
     </tr>
     </thead>
    <tbody>
-     <tr>
-       <td>M</td>
-       <td>Aeropuerto-Comisión-Aeropuerto</td>
-       <td>250</td>
-       <td>200</td>
-       <td>
-        <div class='btn-group dropleft'>
-          <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
-          <div class='dropdown-menu '  >
-            <a class='dropdown-item' href="/catalogos/taxi/show">
-            Editar
-            </a>
-            <a class='dropdown-item'>
-            Eliminar
-            </a>
-          </div>
-         </div>
-       </td>
-     </tr>
    </tbody>
 </table>
 </div>
 </div>
+
+<script type="text/javascript">
+var tabla;
+$(function() {
+tabla = $('#kt_datatable').DataTable({
+  processing: true,
+  serverSide: true,
+  order: [[0, 'desc']],
+  ajax: {
+    url: "/catalogos/taxi/tabla",
+  },
+  columns: [
+    { data: 'descripcion', name : 'descripcion'},
+    { data: 'tarifa_evento', name : 'tarifa_evento'},
+    { data: 'tarifa_adicional', name : 'tarifa_adicional'},
+    { data: 'vigencia_inicial', name : 'vigencia_inicial'},
+    { data: 'vigencia_final', name : 'vigencia_final'},
+    { data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }
+  ],
+  createdRow: function ( row, data, index ) {
+    $(row).find('.ui.dropdown.acciones').dropdown();
+  },
+  language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
+});
+});
+function eliminar(id){
+//console.log(id);
+Swal.fire({
+      title: "¿Esta seguro de eliminar el registro?",
+      text: "No se podrá recuperar la información",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+  }).then(function(result) {
+      if (result.value) {
+
+        $.ajax({
+
+           type:"Delete",
+
+           url:"/catalogos/taxi/borrar",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+              id:id,
+           },
+
+            success:function(data){
+              Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
+
+            }
+
+
+        });
+
+
+      }
+  })
+}
+
+</script>
+
 
 
 @endsection

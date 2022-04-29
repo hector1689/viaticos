@@ -8,15 +8,19 @@ class Hospedaje extends Model{
   protected $table = "cat_hospedajes";
   protected $fillable = [
     "id",
-    "rango_inicia",
+    "rango_inicial",
     "rango_final",
-    "zona",
+    "cve_zona",
     "importe",
-    "vigencia_inicia",
+    "vigencia_inicial",
     "vigencia_final",
     "activo",
     "cve_usuario",
   ];
+
+  public function obtenerZona(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Zona', 'id', 'cve_zona');
+  }
 
 
 }

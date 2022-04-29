@@ -35,44 +35,83 @@
       <th>Rango Inicial</th>
       <th>Rango Final</th>
       <th>Zona</th>
-      <th>Desayuno</th>
-      <th>Comida</th>
-      <th>Cena</th>
-      <th>Total</th>
+      <th>Importe</th>
       <th>Inicio Vigencia</th>
       <th>Termina Vigencia</th>
       <th>ACCIONES</th>
     </tr>
     </thead>
    <tbody>
-     <tr>
-       <td>1</td>
-       <td>59</td>
-       <td>C</td>
-       <td>70</td>
-       <td>90</td>
-       <td>90</td>
-       <td>250</td>
-       <td>14-02-2020</td>
-       <td>14-02-2020</td>
-       <td>
-        <div class='btn-group dropleft'>
-          <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
-          <div class='dropdown-menu '  >
-            <a class='dropdown-item' href="/catalogos/hospedaje/show">
-            Editar
-            </a>
-            <a class='dropdown-item'>
-            Eliminar
-            </a>
-          </div>
-         </div>
-       </td>
-     </tr>
+
    </tbody>
 </table>
 </div>
 </div>
+
+<script type="text/javascript">
+var tabla;
+$(function() {
+tabla = $('#kt_datatable').DataTable({
+  processing: true,
+  serverSide: true,
+  order: [[0, 'desc']],
+  ajax: {
+    url: "/catalogos/hospedaje/tabla",
+  },
+  columns: [
+    { data: 'rango_inicial', name : 'rango_inicial'},
+    { data: 'rango_final', name : 'rango_final'},
+    { data: 'cve_zona', name : 'cve_zona'},
+    { data: 'importe', name : 'importe'},
+    { data: 'vigencia_inicial', name : 'vigencia_inicial'},
+    { data: 'vigencia_final', name : 'vigencia_final'},
+    { data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }
+  ],
+  createdRow: function ( row, data, index ) {
+    $(row).find('.ui.dropdown.acciones').dropdown();
+  },
+  language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
+});
+});
+function eliminar(id){
+//console.log(id);
+Swal.fire({
+      title: "¿Esta seguro de eliminar el registro?",
+      text: "No se podrá recuperar la información",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+  }).then(function(result) {
+      if (result.value) {
+
+        $.ajax({
+
+           type:"Delete",
+
+           url:"/catalogos/hospedaje/borrar",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+              id:id,
+           },
+
+            success:function(data){
+              Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
+
+            }
+
+
+        });
+
+
+      }
+  })
+}
+
+</script>
+
 
 
 @endsection
