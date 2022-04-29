@@ -3,6 +3,7 @@
     "alias": "usuarios",
     "description": "",
     "keywords": [],
+    "active": 1,
     "order": 0,
     "providers": [
         "Modules\\Usuarios\\Providers\\UsuariosServiceProvider"
@@ -12,7 +13,7 @@
     "requires": [],
     "clave": "00",
     "titulo": "Configuraciónes",
-    "icono": "fas fa-user-astronaut",
+    "icono": "fas fa-cog  text-primary mr-5",
     "contenido": {
         "Usuarios": {
             "enlace": "/usuarios",

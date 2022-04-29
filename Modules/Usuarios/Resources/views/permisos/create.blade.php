@@ -42,11 +42,21 @@ div#collapseusuarios .col-lg-6 {
               </div>
           </div>
           <div class="col-lg-6">
-            <label>Nombre del Modulo:</label>
-              <input type="text" name="modulo" id="modulo" class="form-control" placeholder="Escribe el nombre del modulo" value="@isset($permisos) {{ $permisos->modulo }} @endisset" required/>
-              <div class="invalid-feedback">
-                Por Favor Ingrese Nombre del modulo
-              </div>
+
+
+            <div class="form-group">
+                <label>Inline radios</label>
+                @foreach(obtenerModulosActivos() as $values)
+                <div class="radio-inline">
+                    <label class="radio">
+                        <input type="radio" name="radios2" value="{{ $values->get('alias') }}">
+                        <span></span>
+                        {{$values->get('titulo')}}
+                    </label>
+                </div>
+                  @endforeach
+            </div>
+
           </div>
 
         </div>

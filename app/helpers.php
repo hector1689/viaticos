@@ -1,4 +1,12 @@
 <?php
+
+use \Modules\Usuarios\Entities\Roles;
+use \Modules\Usuarios\Entities\Permisos;
+use \Modules\Usuarios\Entities\ModeloHasRoles;
+use \Modules\Usuarios\Entities\ModeloRoles;
+use \Modules\Usuarios\Entities\RolesPermisos;
+
+
 if (! function_exists('obtenerModuloActual')) {
   function obtenerModuloActual() {
     $namespace = Route::current()->action['namespace'];
@@ -26,6 +34,39 @@ if (! function_exists('obtenerModulosActivos')) {
     ksort($tmp);
 
     return $tmp;
+  }
+}
+
+
+if (! function_exists('obtenerModulo')) {
+  function obtenerModulo() {
+
+    $usuario = Auth::user()->id;
+
+    $usario_model = ModeloHasRoles::where('model_id',$usuario)->first();
+
+
+    $query =("
+    SELECT permissions.modulo FROM role_has_permissions
+      INNER JOIN permissions ON permissions.id = role_has_permissions.permission_id
+      WHERE role_has_permissions.role_id = $usario_model->role_id  GROUP BY permissions.modulo
+    ");
+
+    $modulos = DB::select($query);
+
+
+    // $modulos = RolesPermisos::join('permissions','permissions.id','role_has_permissions.permission_id')->where([
+    //   ['role_has_permissions.role_id',$usario_model->model_id]
+    // ])->first();
+    // $tmp = [];
+    // foreach ($modulos as $key => $value) {
+    //
+    //   dd($value->modulo);
+    //
+    // }
+  //dd($modulos);
+
+    return $modulos;
   }
 }
 

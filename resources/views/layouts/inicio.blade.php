@@ -156,132 +156,54 @@ License: You must have a valid license purchased only from themeforest(the above
             $alias = $value->get('alias');
             @endphp
 
-            @hasanyrole('SUPER|Administrador|Dependencia|Usuario')
-            <!--///////////////////// ADMINISTRADOR //////////////////-->
 
-            <!--//////////////////// recibos //////////////////////////////////////// -->
-            @if($alias == 'recibos')
-            <li @if($value->get("contenido")) class="menu-item  menu-item-submenu" aria-haspopup="true"  data-menu-toggle="hover" @else class="menu-item " aria-haspopup="true"  @endif>
-              <a   @if($value->get("contenido"))  class="menu-link menu-toggle" @else class="menu-link "  @endif  href="@if($value->get('contenido')) javascript:; @else /{{ $alias }} @endif"  >
-                <span class="svg-icon menu-icon">
-                  <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Files\Selected-file.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <polygon points="0 0 24 0 24 24 0 24"/>
-                          <path d="M4.85714286,1 L11.7364114,1 C12.0910962,1 12.4343066,1.12568431 12.7051108,1.35473959 L17.4686994,5.3839416 C17.8056532,5.66894833 18,6.08787823 18,6.52920201 L18,19.0833333 C18,20.8738751 17.9795521,21 16.1428571,21 L4.85714286,21 C3.02044787,21 3,20.8738751 3,19.0833333 L3,2.91666667 C3,1.12612489 3.02044787,1 4.85714286,1 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-                          <path d="M6.85714286,3 L14.7364114,3 C15.0910962,3 15.4343066,3.12568431 15.7051108,3.35473959 L20.4686994,7.3839416 C20.8056532,7.66894833 21,8.08787823 21,8.52920201 L21,21.0833333 C21,22.8738751 20.9795521,23 19.1428571,23 L6.85714286,23 C5.02044787,23 5,22.8738751 5,21.0833333 L5,4.91666667 C5,3.12612489 5.02044787,3 6.85714286,3 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero"/>
-                      </g>
-                  </svg><!--end::Svg Icon--></span>
-                  </span>
-                  <span class="menu-text">{{ $value->get('titulo') ? $value->get('titulo') : $value->get('name') }}</span>
-                    @if ( $value->get('contenido') )
-                    <!-- <span class="ml-auto sidebar-menu-toggle-icon"></span> -->
-                    <i class="menu-arrow"></i>
-                    @endif
 
-              </a>
+            @foreach(obtenerModulo() as $values)
+
+               @php
+               $aliast = $values->modulo;
+               @endphp
+
+
+              <!--//////////////////// reportes //////////////////////////////////////// -->
+              @if($alias == $aliast)
+              <li @if($value->get("contenido")) class="menu-item  menu-item-submenu" aria-haspopup="true"  data-menu-toggle="hover" @else class="menu-item " aria-haspopup="true"  @endif>
+                <a   @if($value->get("contenido"))  class="menu-link menu-toggle" @else class="menu-link "  @endif  href="@if($value->get('contenido')) javascript:; @else /{{ $alias }} @endif"  >
+                    <i class="{{ $value->get('icono') }}"></i>
+                    <span class="menu-text">{{ $value->get('titulo') ? $value->get('titulo') : $value->get('name') }}</span>
+                      @if ( $value->get('contenido') )
+                      <!-- <span class="ml-auto sidebar-menu-toggle-icon"></span> -->
+                      <i class="menu-arrow"></i>
+                      @endif
+
+                </a>
                 @if ( $value->get('contenido') )
-                @php $array_usuarios = $value->get('contenido'); @endphp
+                  @php $array_usuarios = $value->get('contenido'); @endphp
 
-                <div class="menu-submenu ">
-                  <i class="menu-arrow"></i>
-                  <ul class="menu-subnav">
-                    @foreach ($array_usuarios as $key => $value)
-
-                      <li class="menu-item " aria-haspopup="true" >
-                        <a  href="{{ $value['enlace'] }}" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">{{ $key }}</span></a>
-                      </li>
-                    @endforeach
-                    </ul>
-                    </div>
-              </li>
-              @endif
-            @endif
-            <!--///////////////// FIN recibos ////////////////////////////-->
-
-            <!--//////////////////// Catalogos //////////////////////////////////////// -->
-            @if($alias == 'catalogos')
-            <li @if($value->get("contenido")) class="menu-item  menu-item-submenu" aria-haspopup="true"  data-menu-toggle="hover" @else class="menu-item " aria-haspopup="true"  @endif>
-              <a   @if($value->get("contenido"))  class="menu-link menu-toggle" @else class="menu-link "  @endif  href="@if($value->get('contenido')) javascript:; @else /{{ $alias }} @endif"  >
-                <span class="svg-icon menu-icon">
-                  <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Files\Group-folders.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24"/>
-                          <path d="M4.5,21 L21.5,21 C22.3284271,21 23,20.3284271 23,19.5 L23,8.5 C23,7.67157288 22.3284271,7 21.5,7 L11,7 L8.43933983,4.43933983 C8.15803526,4.15803526 7.77650439,4 7.37867966,4 L4.5,4 C3.67157288,4 3,4.67157288 3,5.5 L3,19.5 C3,20.3284271 3.67157288,21 4.5,21 Z" fill="#000000" opacity="0.3"/>
-                          <path d="M2.5,19 L19.5,19 C20.3284271,19 21,18.3284271 21,17.5 L21,6.5 C21,5.67157288 20.3284271,5 19.5,5 L9,5 L6.43933983,2.43933983 C6.15803526,2.15803526 5.77650439,2 5.37867966,2 L2.5,2 C1.67157288,2 1,2.67157288 1,3.5 L1,17.5 C1,18.3284271 1.67157288,19 2.5,19 Z" fill="#000000"/>
-                      </g>
-                  </svg><!--end::Svg Icon--></span>
-                  </span>
-                  <span class="menu-text">{{ $value->get('titulo') ? $value->get('titulo') : $value->get('name') }}</span>
-                    @if ( $value->get('contenido') )
-                    <!-- <span class="ml-auto sidebar-menu-toggle-icon"></span> -->
+                  <div class="menu-submenu ">
                     <i class="menu-arrow"></i>
-                    @endif
+                    <ul class="menu-subnav">
+                      @foreach ($array_usuarios as $key => $value)
 
-              </a>
-                @if ( $value->get('contenido') )
-                @php $array_usuarios = $value->get('contenido'); @endphp
-
-                <div class="menu-submenu ">
-                  <i class="menu-arrow"></i>
-                  <ul class="menu-subnav">
-                    @foreach ($array_usuarios as $key => $value)
-
-                      <li class="menu-item " aria-haspopup="true" >
-                        <a  href="{{ $value['enlace'] }}" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">{{ $key }}</span></a>
-                      </li>
-                    @endforeach
-                    </ul>
-                    </div>
-              </li>
+                        <li class="menu-item " aria-haspopup="true" >
+                          <a  href="{{ $value['enlace'] }}" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">{{ $key }}</span></a>
+                        </li>
+                      @endforeach
+                      </ul>
+                      </div>
+                </li>
+                @endif
               @endif
-            @endif
-            <!--///////////////// FIN Catalogos ////////////////////////////-->
+              <!--///////////////// FIN reportes ////////////////////////////-->
+
+
+
+            @endforeach
 
 
 
 
-            <!--//////////////////// USUARIOS //////////////////////////////////////// -->
-            @if($alias == 'usuarios')
-            <li @if($value->get("contenido")) class="menu-item  menu-item-submenu" aria-haspopup="true"  data-menu-toggle="hover" @else class="menu-item " aria-haspopup="true"  @endif>
-              <a   @if($value->get("contenido"))  class="menu-link menu-toggle" @else class="menu-link "  @endif  href="@if($value->get('contenido')) javascript:; @else /{{ $alias }} @endif"  >
-                <span class="svg-icon menu-icon">
-                  <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\General\Settings-2.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <rect x="0" y="0" width="24" height="24"/>
-                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"/>
-                        </g>
-                    </svg><!--end::Svg Icon--></span>
-                  </span>
-                  <span class="menu-text">{{ $value->get('titulo') ? $value->get('titulo') : $value->get('name') }}</span>
-                    @if ( $value->get('contenido') )
-                    <!-- <span class="ml-auto sidebar-menu-toggle-icon"></span> -->
-                    <i class="menu-arrow"></i>
-                    @endif
 
-              </a>
-                @if ( $value->get('contenido') )
-                @php $array_usuarios = $value->get('contenido'); @endphp
-
-                <div class="menu-submenu ">
-                  <i class="menu-arrow"></i>
-                  <ul class="menu-subnav">
-                    @foreach ($array_usuarios as $key => $value)
-
-                      <li class="menu-item " aria-haspopup="true" >
-                        <a  href="{{ $value['enlace'] }}" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">{{ $key }}</span></a>
-                      </li>
-                    @endforeach
-                    </ul>
-                    </div>
-              </li>
-              @endif
-            @endif
-            <!--///////////////// FIN USUARIOS ////////////////////////////-->
-
-            <!--///////////////// FIN ADMINISTRADOR ////////////////////////////-->
-            @else
-
-            @endhasanyrole
             @endforeach
 
           </ul>

@@ -9,6 +9,8 @@ use Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
+use \Modules\Catalogos\Entities\Hospedaje;
+use \Modules\Catalogos\Entities\Zona;
 use \DB;
 class HospedajeController extends Controller
 {
@@ -36,7 +38,8 @@ class HospedajeController extends Controller
      */
     public function create()
     {
-        return view('catalogos::hospedaje.create');
+        $data['zonas'] = Zona::all();
+        return view('catalogos::hospedaje.create')->with($data);
     }
 
     /**
@@ -46,7 +49,12 @@ class HospedajeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+          dd($request->all());
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+
     }
 
     /**
@@ -89,4 +97,41 @@ class HospedajeController extends Controller
     {
         //
     }
+
+    public function tabla(){
+    setlocale(LC_TIME, 'es_ES');
+    \DB::statement("SET lc_time_names = 'es_ES'");
+    //dd('entro');
+    $registros = Hospedaje::where('activo', 1); //Conocenos es la entidad
+    $datatable = DataTables::of($registros)
+
+    ->make(true);
+    //Cueri
+    $data = $datatable->getData();
+    foreach ($data->data as $key => $value) {
+
+      $acciones = [
+         "Editar" => [
+           "icon" => "edit blue",
+           "href" => "/catalogos/hospedaje/$value->id/edit"
+         ],
+        // "Ver" => [
+        //   "icon" => "fas fa-circle",
+        //   "href" => "/guardianes/conocenos/$value->id/show"
+        // ],
+
+        "Eliminar" => [
+          "icon" => "edit blue",
+          "onclick" => "eliminar($value->id)"
+        ],
+      ];
+
+
+
+      $value->acciones = generarDropdown($acciones);
+
+    }
+    $datatable->setData($data);
+    return $datatable;
+  }
 }

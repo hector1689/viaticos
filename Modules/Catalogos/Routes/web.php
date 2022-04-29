@@ -16,7 +16,12 @@ Route::prefix('catalogos')->group(function() {
 
     Route::prefix('alimentacion')->group(function() {
       Route::get('/', 'AlimentacionController@index');
+      Route::get('/tabla', 'AlimentacionController@tabla');
       Route::get('/create', 'AlimentacionController@create');
+      Route::post('/create', 'AlimentacionController@store');
+      Route::delete('/borrar', 'AlimentacionController@destroy');
+      Route::get('/{id}/edit', 'AlimentacionController@edit');
+      Route::post('/update', 'AlimentacionController@update');
       Route::get('/show', 'AlimentacionController@show');
     });
 

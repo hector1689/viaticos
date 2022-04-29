@@ -68,12 +68,32 @@ class RolesController extends Controller
 
   $data['permises'] = RolesPermisos::where('role_id',$id)->get();
   $data['permisos'] = Permisos::where('activo',1)->get();
-//  dd($data['permises']);
+// dd($data['permises']);
   return view('usuarios::roles.create')->with($data);
 }
 
 public function update(Request $request){
   try {
+    //dd($request->all());
+
+    $rol =  Roles::find($request->id);
+    $rol->name = $request->nombre;
+    $rol->guard_name = 'web';
+    $rol->save();
+    //dd($rol->id);
+
+
+    RolesPermisos::where('role_id',$rol->id)->delete();
+
+    foreach ($request->permisos as $key => $value) {
+      //dd($value);
+      $rolpermisos = new RolesPermisos();
+      $rolpermisos->permission_id = $value['permisos'];
+      $rolpermisos->role_id = $rol->id;
+      $rolpermisos->save();
+    }
+
+     return response()->json(['success'=>'Ha sido editado con éxito']);
 
   } catch (\Exception $e) {
     dd($e->getMessage());

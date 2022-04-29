@@ -45,31 +45,24 @@ div#collapseusuarios .col-lg-6 {
         </div>
 
         <div class="form-group row" style="margin-top: 10px;">
-          <div class="col-lg-12">
-            <label>Permisos</label>
+          @foreach(obtenerModulosActivos() as $values)
+          <div class="col-lg-4">
+            <label>{{$values->get('titulo')}}</label>
             <div class="form-group">
-              <div class="checkbox-list">
-                  @isset($permises)
-                  @foreach($permises as $permise)
-                  <label class="checkbox">
-                        <input type="checkbox" value="{{ $permise->permission_id }}" name="page" checked>
+              @foreach($permisos as $permiso)
+                @if($values->get('alias') == $permiso->modulo)
+                <div class="checkbox-list">
+                    <label class="checkbox">
+                        <input type="checkbox" value="{{ $permiso->id }}" @isset($permises)  @foreach($permises as $permise) @if($permise->permission_id == $permiso->id) checked @endif @endforeach  @endisset  name="page">
                         <span></span>
-                        {{ $permise->obtPermiso->name }} - {{ $permise->obtPermiso->modulo }}
+                        {{ $permiso->name }}
                     </label>
-                  @endforeach
-                  @endisset
-
-
-                  @foreach($permisos as $permiso)
-                  <label class="checkbox">
-                      <input type="checkbox" value="{{ $permiso->id }}" name="page">
-                      <span></span>
-                      {{ $permiso->name }} - {{ $permiso->modulo }}
-                  </label>
-                  @endforeach
-              </div>
+                </div>
+                @endif
+              @endforeach
             </div>
           </div>
+          @endforeach
         </div>
 
       </div>
