@@ -108,7 +108,7 @@ class LocalidadesController extends Controller
         $localidad->cve_usuario = Auth::user()->id;
         $localidad->save();
 
-        return response()->json(['success'=>'Registro agregado satisfactoriamente']);
+        return response()->json(['success'=>'Ha sido editado con éxito']);
 
       } catch (\Exception $e) {
         dd($e->getMessage());
@@ -120,10 +120,17 @@ class LocalidadesController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
-    {
-        //
-    }
+     public function destroy(Request $request)
+     {
+       try {
+           $alimentos = Localidad::find($request->id);
+           $alimentos->activo = 0;
+           $alimentos->save();
+           return response()->json(['success'=>'Eliminado exitosamente']);
+         } catch (\Exception $e) {
+           dd($e->getMessage());
+         }
+     }
 
     public function tabla(){
     setlocale(LC_TIME, 'es_ES');
@@ -184,6 +191,21 @@ class LocalidadesController extends Controller
       $variable = Municipio::where('id_estado',$request->estado)->get();
       return $variable;
     }
+
+    public function Estadoedit(Request $request){
+      $variable = Estado::where('id',$request->estado)->first();
+      return $variable;
+    }
+
+
+    public function Municipioedit(Request $request){
+      $variable = Municipio::where('id',$request->municipio)->first();
+      return $variable;
+    }
+
+
+
+
 
 
 

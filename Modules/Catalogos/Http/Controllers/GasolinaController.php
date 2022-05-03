@@ -8,6 +8,10 @@ use Illuminate\Routing\Controller;
 use Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use \Modules\Catalogos\Entities\TipoGasolina;
+use \Modules\Catalogos\Entities\Gasolina;
+
+
 use Yajra\Datatables\Datatables;
 use \DB;
 class GasolinaController extends Controller
@@ -36,7 +40,8 @@ class GasolinaController extends Controller
      */
     public function create()
     {
-        return view('catalogos::gasolina.create');
+        $data['tipos_gasolina'] = TipoGasolina::all();
+        return view('catalogos::gasolina.create')->with($data);
     }
 
     /**
@@ -46,7 +51,26 @@ class GasolinaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      try {
+
+        list($dia,$mes,$anio)=explode('/',$request->vigencia);
+        $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+        $gasolina = new Gasolina();
+        $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
+        $gasolina->anio = $request->anio;
+        $gasolina->mes = $request->mes;
+        $gasolina->precio_litro = $request->precio_litro;
+        $gasolina->vigencia = $fecha1;
+        $gasolina->cve_usuario = Auth::user()->id;
+        $gasolina->save();
+
+        return response()->json(['success'=>'Registro agregado satisfactoriamente']);
+
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
+
     }
 
     /**
@@ -66,7 +90,9 @@ class GasolinaController extends Controller
      */
     public function edit($id)
     {
-        return view('catalogos::edit');
+      $data['tipos_gasolina'] = TipoGasolina::all();
+      $data['gasolina'] = Gasolina::find($id);
+      return view('catalogos::gasolina.create')->with($data);
     }
 
     /**
@@ -75,9 +101,26 @@ class GasolinaController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        try {
+          list($dia,$mes,$anio)=explode('/',$request->vigencia);
+          $fecha1 = $anio.'-'.$mes.'-'.$dia;
+  
+          $gasolina = Gasolina::find($request->id);
+          $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
+          $gasolina->anio = $request->anio;
+          $gasolina->mes = $request->mes;
+          $gasolina->precio_litro = $request->precio_litro;
+          $gasolina->vigencia = $fecha1;
+          $gasolina->cve_usuario = Auth::user()->id;
+          $gasolina->save();
+
+          return response()->json(['success'=>'Ha sido editado con éxito']);
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+
     }
 
     /**
@@ -85,8 +128,56 @@ class GasolinaController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
-    {
-        //
+     public function destroy(Request $request)
+     {
+       try {
+           $gasolina = Gasolina::find($request->id);
+           $gasolina->activo = 0;
+           $gasolina->save();
+           return response()->json(['success'=>'Eliminado exitosamente']);
+         } catch (\Exception $e) {
+           dd($e->getMessage());
+         }
+     }
+
+    public function tabla(){
+    setlocale(LC_TIME, 'es_ES');
+    \DB::statement("SET lc_time_names = 'es_ES'");
+    //dd('entro');
+    $registros = Gasolina::where('activo', 1); //Conocenos es la entidad
+    $datatable = DataTables::of($registros)
+    ->editColumn('cve_tipo_gasolina', function ($registros) {
+
+      return $registros->obteneGasolina->nombre;
+    })
+
+    ->make(true);
+    //Cueri
+    $data = $datatable->getData();
+    foreach ($data->data as $key => $value) {
+
+      $acciones = [
+         "Editar" => [
+           "icon" => "edit blue",
+           "href" => "/catalogos/gasolina/$value->id/edit"
+         ],
+        // "Ver" => [
+        //   "icon" => "fas fa-circle",
+        //   "href" => "/guardianes/conocenos/$value->id/show"
+        // ],
+
+        "Eliminar" => [
+          "icon" => "edit blue",
+          "onclick" => "eliminar($value->id)"
+        ],
+      ];
+
+
+
+      $value->acciones = generarDropdown($acciones);
+
     }
+    $datatable->setData($data);
+    return $datatable;
+  }
 }

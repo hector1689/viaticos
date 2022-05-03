@@ -4,7 +4,7 @@
 <div class="card card-custom example example-compact">
 <div class="card-header">
 <h3 class="card-title">
-   Nuevo Kilometraje
+   @isset($kilometraje) Editar  @else Nuevo @endisset Kilometraje
 </h3>
 <div class="card-toolbar">
 <div class="example-tools justify-content-center">
@@ -19,8 +19,15 @@
         <div class="row">
           <div class="col-md-4">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Localidad Origen: </label>
-              <select class="form-control" name="">
-                <option value="">Victoria-Victoria-Tamaulipas-México</option>
+              <select class="form-control" name="origen">
+                @isset($kilometraje)
+                <option value="{{ $kilometraje->cve_localidad_origen }}">{{ $kilometraje->obteneLocalidad->localidad }} - {{ $kilometraje->obteneLocalidad->obteneMunicipio->nombre }} - {{ $kilometraje->obteneLocalidad->obteneEstado->nombre }} - {{ $kilometraje->obteneLocalidad->obtenePais->nombre }}</option>
+                @else
+                <option value="">seleccionar</option>
+                @endisset
+                @foreach($localidades as $loc1)
+                <option value="{{ $loc1->id }}">{{ $loc1->localidad }}-{{ $loc1->obteneMunicipio->nombre }}-{{ $loc1->obteneEstado->nombre }}-{{ $loc1->obtenePais->nombre }}</option>
+                @endforeach
               </select>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
@@ -28,8 +35,15 @@
           </div>
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Localidad Destino: </label>
-              <select class="form-control" name="">
-                <option value="">Tampico-Tampico-Tamaulipas-México</option>
+              <select class="form-control" name="destino">
+                @isset($kilometraje)
+                <option value="{{ $kilometraje->cve_localidad_destino }}">{{ $kilometraje->obteneLocalidad2->localidad }} - {{ $kilometraje->obteneLocalidad2->obteneMunicipio->nombre }} - {{ $kilometraje->obteneLocalidad2->obteneEstado->nombre }} - {{ $kilometraje->obteneLocalidad2->obtenePais->nombre }}</option>
+                @else
+                <option value="">seleccionar</option>
+                @endisset
+                @foreach($localidades as $loc1)
+                <option value="{{ $loc1->id }}">{{ $loc1->localidad }}-{{ $loc1->obteneMunicipio->nombre }}-{{ $loc1->obteneEstado->nombre }}-{{ $loc1->obtenePais->nombre }}</option>
+                @endforeach
               </select>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
@@ -38,7 +52,7 @@
 
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Distancia en Kilometros: </label>
-              <input type="text" class="form-control" id="apellido_paterno" placeholder="Distancia en Kilometros" required>
+              <input type="text" class="form-control" id="distancia" placeholder="Distancia en Kilometros" value="@isset($kilometraje){{ $kilometraje->distancia_kilometros }}@endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
@@ -57,4 +71,100 @@
 </form>
 </div>
 
+<script type="text/javascript">
+function guardar(){
+
+  var origen = $('select[name=origen]').val();
+  var destino = $('select[name=destino]').val();
+  var distancia = $('#distancia').val();
+
+    var formData = new FormData();
+     //formData.append('photo', $avatarInput[0].files[0]);
+
+    @isset($kilometraje)
+    formData.append('id',{{ $kilometraje->id }});
+    @endisset
+    formData.append('origen', origen);
+    formData.append('destino', destino);
+    formData.append('distancia', distancia);
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var form = document.querySelectorAll('.needs-validation')
+    //console.log(form)
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(form)
+      .forEach(function (form) {
+        form.addEventListener('click', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }else{
+            ///////////////////////////////////////////////////////7
+            $.ajax({
+
+                   type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+                   url:"{{ ( isset($kilometraje) ) ? '/catalogos/kilometraje/update' : '/catalogos/kilometraje/create' }}", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+                   },
+                   data: formData,
+                   processData: false,
+                   contentType: false,
+                   cache:false,
+                    success:function(data){
+                      if (data.success == 'Registro agregado satisfactoriamente') {
+                        Swal.fire("", data.success, "success").then(function(){
+                          location.href ="/catalogos/kilometraje";
+                        });
+
+                        Swal.fire({
+                              title: "",
+                              text: data.success,
+                              icon: "success",
+                              timer: 1500,
+                              showConfirmButton: false,
+                          }).then(function(result) {
+                              if (result.value == true) {
+                                   $('#nombre').val('');
+
+                              }else{
+                                location.href ="/catalogos/kilometraje"; //esta es la ruta del modulo
+                              }
+                          })
+
+                      }else if(data.success == 'Ha sido editado con éxito'){
+
+                        Swal.fire("", data.success, "success").then(function(){
+                          location.href ="/catalogos/kilometraje";
+                        });
+
+                        Swal.fire({
+                              title: "",
+                              text: data.success,
+                              icon: "success",
+                              timer: 1500,
+                              showConfirmButton: false,
+                          }).then(function(result) {
+
+                              if (result.value == true) {
+
+                              }else{
+                                location.href ="/catalogos/kilometraje";
+                              }
+                          })
+                      }
+
+
+                    }
+              });
+
+            /////////////////////////////////////////////////////////
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      });
+}
+</script>
 @endsection

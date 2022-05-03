@@ -39,28 +39,69 @@
     </tr>
     </thead>
    <tbody>
-     <tr>
-       <td>Victoria-Victoria-Tamaulipas-México</td>
-       <td>Tampico-Tampico-Tamaulipas-México</td>
-       <td>250</td>
-       <td>
-        <div class='btn-group dropleft'>
-          <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
-          <div class='dropdown-menu '  >
-            <a class='dropdown-item' href="/catalogos/kilometraje/show">
-            Editar
-            </a>
-            <a class='dropdown-item'>
-            Eliminar
-            </a>
-          </div>
-         </div>
-       </td>
-     </tr>
    </tbody>
 </table>
 </div>
 </div>
+<script type="text/javascript">
+var tabla;
+$(function() {
+tabla = $('#kt_datatable').DataTable({
+  processing: true,
+  serverSide: true,
+  order: [[0, 'desc']],
+  ajax: {
+    url: "/catalogos/kilometraje/tabla",
+  },
+  columns: [
+    { data: 'cve_localidad_origen', name : 'cve_localidad_origen'},
+    { data: 'cve_localidad_destino', name : 'cve_localidad_destino'},
+    { data: 'distancia_kilometros', name : 'distancia_kilometros'},
+    { data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }
+  ],
+  createdRow: function ( row, data, index ) {
+    $(row).find('.ui.dropdown.acciones').dropdown();
+  },
+  language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
+});
+});
+function eliminar(id){
+//console.log(id);
+Swal.fire({
+      title: "¿Esta seguro de eliminar el registro?",
+      text: "No se podrá recuperar la información",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+  }).then(function(result) {
+      if (result.value) {
 
+        $.ajax({
+
+           type:"Delete",
+
+           url:"/catalogos/kilometraje/borrar",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+              id:id,
+           },
+
+            success:function(data){
+              Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
+
+            }
+
+
+        });
+
+
+      }
+  })
+}
+
+</script>
 
 @endsection

@@ -85,13 +85,17 @@ public function update(Request $request){
 
     RolesPermisos::where('role_id',$rol->id)->delete();
 
-    foreach ($request->permisos as $key => $value) {
-      //dd($value);
-      $rolpermisos = new RolesPermisos();
-      $rolpermisos->permission_id = $value['permisos'];
-      $rolpermisos->role_id = $rol->id;
-      $rolpermisos->save();
+    if (isset($request->permisos)) {
+      foreach ($request->permisos as $key => $value) {
+        //dd($value);
+        $rolpermisos = new RolesPermisos();
+        $rolpermisos->permission_id = $value['permisos'];
+        $rolpermisos->role_id = $rol->id;
+        $rolpermisos->save();
+      }
     }
+
+
 
      return response()->json(['success'=>'Ha sido editado con éxito']);
 

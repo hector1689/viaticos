@@ -20,7 +20,12 @@
           <div class="col-md-3">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Pais: </label>
               <select class="form-control " id="pais" data-nivel="1" name="pais" required>
+                @isset($localidad)
+                <option value="{{ $localidad->cve_pais }}">{{ $localidad->obtenePais->nombre }}</option>
+                @else
                 <option value="">seleccionar</option>
+                @endisset
+
                 @foreach($paises as $pais)
                 <option value="{{ $pais->id }}">{{ $pais->nombre }}</option>
                 @endforeach
@@ -32,7 +37,10 @@
           <div class="col-md-3">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Estado: </label>
               <select class="form-control" id="estado"  data-nivel="2" name="estado" required>
+                @isset($localidad)
+                @else
                 <option value="">seleccionar</option>
+                @endisset
               </select>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
@@ -42,7 +50,10 @@
           <div class="col-md-3">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Municipio: </label>
               <select class="form-control" id="municipio" data-nivel="3" name="municipio" required>
+                @isset($localidad)
+                @else
                 <option value="">seleccionar</option>
+                @endisset
               </select>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
@@ -51,7 +62,7 @@
 
           <div class="col-md-3">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Localidad: </label>
-              <input type="text" class="form-control" id="localidad" value="">
+              <input type="text" class="form-control" id="localidad" value="@isset($localidad) {{ $localidad->localidad }} @endisset">
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
@@ -151,6 +162,69 @@ $("#estado").change(function(){
   });
 
 });
+
+
+@isset($localidad)
+var estado = {{ $localidad->cve_estado }};
+nivel = 1;
+  $.ajax({
+
+     type:"POST",
+
+     url:"/catalogos/localidades/Estadoedit",
+     headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     },
+     data:{
+       estado:estado,
+     },
+
+      success:function(data){
+        //console.log(data)
+        if (data) {
+          $('#estado').append('<option value="'+data.id+'">'+data.nombre+'</option>');
+          // for(i = nivel + 1; i <= 3; i++){
+          //   $('#municipio').empty();
+          //
+          // }data.forEach((x) => {
+          //   $('#municipio').append('<option value="'+x.e_Id+'">'+x.c_Municipios+'</option>');
+          //
+          // });
+        }
+      }
+});
+
+var municipio = {{ $localidad->cve_municipio }};
+
+nivel = 2;
+  $.ajax({
+
+     type:"POST",
+
+     url:"/catalogos/localidades/Municipioedit",
+     headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     },
+     data:{
+       municipio:municipio,
+     },
+
+      success:function(data){
+        if (data) {
+          $('#municipio').append('<option value="'+data.id+'">'+data.nombre+'</option>');
+          // for(i = nivel + 1; i <= 3; i++){
+          //   $('#colonia').empty();
+          //
+          // }data.forEach((x) => {
+          //
+          //   /*$('#codigoPostal').val(x.e_Codigo);*/
+          //
+          // });
+        }
+      }
+});
+
+@endisset
 
 function guardar(){
 

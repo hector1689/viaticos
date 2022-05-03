@@ -231,7 +231,7 @@ License: You must have a valid license purchased only from themeforest(the above
                       <ul class="navi navi-hover py-4">
                           <!--begin::Item-->
                           <li class="navi-item">
-
+                                                      <a onclick="actualizar()" class="navi-link"  class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5"><span class="navi-text"><i class="fas fa-sync"></i> Actualizar</span></a>
                               <a href="{{ route('logout') }}" class="navi-link" onclick="event.preventDefault();
                               document.getElementById('logout-form').submit();" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5"><span class="navi-text"><i class="fas fa-power-off"></i> Cerrar Sesión</span></a>
                               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -465,6 +465,31 @@ License: You must have a valid license purchased only from themeforest(the above
     },
     "font-family": "Poppins"
 };
+
+function actualizar(){
+  $.ajax({
+
+   type:"POST",
+     url:"/actualizar",
+   headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+   },
+   data:{
+    curp : 1,
+   },
+   // data: formData,
+   // processData: false,
+   // contentType: false,
+    success:function(data){
+      //console.log(data);
+
+      if (data == 1) {
+        location.reload();
+      }
+
+    }
+  });
+}
         </script>
 
 

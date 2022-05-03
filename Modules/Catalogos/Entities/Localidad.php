@@ -17,4 +17,16 @@ class Localidad extends Model{
   ];
 
 
+
+  public function obtenePais(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Pais', 'id', 'cve_pais');
+  }
+
+  public function obteneEstado(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Estado', 'id', 'cve_estado');
+  }
+
+  public function obteneMunicipio(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Municipio', 'id', 'cve_municipio');
+  }
 }

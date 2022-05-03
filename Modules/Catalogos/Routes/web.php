@@ -40,6 +40,11 @@ Route::prefix('catalogos')->group(function() {
     Route::prefix('kilometraje')->group(function() {
         Route::get('/', 'KilometrajeController@index');
         Route::get('/create', 'KilometrajeController@create');
+        Route::post('/create', 'KilometrajeController@store');
+        Route::get('/tabla', 'KilometrajeController@tabla');
+        Route::delete('/borrar', 'KilometrajeController@destroy');
+        Route::get('/{id}/edit', 'KilometrajeController@edit');
+        Route::post('/update', 'KilometrajeController@update');
         Route::get('/show', 'KilometrajeController@show');
 
     });
@@ -56,12 +61,21 @@ Route::prefix('catalogos')->group(function() {
         Route::post('/Estado', 'LocalidadesController@Estado');
         Route::post('/Municipio', 'LocalidadesController@Municipio');
 
+        Route::post('/Estadoedit', 'LocalidadesController@Estadoedit');
+        Route::post('/Municipioedit', 'LocalidadesController@Municipioedit');
+
+
 
     });
 
     Route::prefix('peaje')->group(function() {
         Route::get('/', 'PeajeController@index');
         Route::get('/create', 'PeajeController@create');
+        Route::post('/create', 'PeajeController@store');
+        Route::get('/tabla', 'PeajeController@tabla');
+        Route::delete('/borrar', 'PeajeController@destroy');
+        Route::get('/{id}/edit', 'PeajeController@edit');
+        Route::post('/update', 'PeajeController@update');
         Route::get('/show', 'PeajeController@show');
 
     });
@@ -69,6 +83,11 @@ Route::prefix('catalogos')->group(function() {
     Route::prefix('rendimiento')->group(function() {
         Route::get('/', 'RendimientoController@index');
         Route::get('/create', 'RendimientoController@create');
+        Route::post('/create', 'RendimientoController@store');
+        Route::get('/tabla', 'RendimientoController@tabla');
+        Route::delete('/borrar', 'RendimientoController@destroy');
+        Route::get('/{id}/edit', 'RendimientoController@edit');
+        Route::post('/update', 'RendimientoController@update');
         Route::get('/show', 'RendimientoController@show');
 
     });
@@ -88,6 +107,11 @@ Route::prefix('catalogos')->group(function() {
     Route::prefix('gasolina')->group(function() {
         Route::get('/', 'GasolinaController@index');
         Route::get('/create', 'GasolinaController@create');
+        Route::post('/create', 'GasolinaController@store');
+        Route::get('/tabla', 'GasolinaController@tabla');
+        Route::delete('/borrar', 'GasolinaController@destroy');
+        Route::get('/{id}/edit', 'GasolinaController@edit');
+        Route::post('/update', 'GasolinaController@update');
         Route::get('/show', 'GasolinaController@show');
     });
 
