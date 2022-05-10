@@ -9,13 +9,9 @@ use Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
-
 use Modules\Catalagos\Entities\Tipo_Responsable;
 use Modules\Catalagos\Entities\Tipo_Autorizacion;
-
-
-
-
+use \Modules\Catalogos\Entities\Departamento_Firmantes;
 use \Modules\Catalogos\Entities\CargoFirmante;
 use \Modules\Catalogos\Entities\Areas;
 use \Modules\Catalogos\Entities\Personal_Siti;
@@ -502,6 +498,44 @@ public function tablaPersonal(Request $request){
  return $datatable;
 }
 
+
+public function tablaPersonalFirmantes(Request $request){
+ setlocale(LC_TIME, 'es_MX.UTF-8');
+ // \DB::statement("SET lc_time_names = 'es_ES'");
+ $registros = Departamento_Firmantes::where([
+   ['activo',1],
+   ['cve_area_departamentos',$request->id]
+   ])->get();
+
+ // dd($firmas);
+ $datatable = DataTables::of($registros)
+
+ ->editColumn('cve_cargo', function ($registros) {
+    return $registros->obtCargo->nombre;
+   })
+ ->editColumn('nombre', function ($registros) {
+
+    return $registros->nombre.' '.$registros->apellido_paterno.' '.$registros->apellido_materno;
+   })
+ ->make(true);
+
+ //Cueri
+ $data = $datatable->getData();
+ foreach ($data->data as $key => $value) {
+   $acciones = [
+
+     "Eliminar" => [
+       "icon" => "trash red",
+       "onclick" => "eliminarfirmante('$value->id')"
+     ]
+   ];
+
+   $value->acciones = ( count($acciones) == 0 ) ? "" : generarDropdown($acciones);
+ }
+ $datatable->setData($data);
+ return $datatable;
+}
+
 public function destroy(Request $request){
  try {
    $estatus = Personal_Departamento::find($request->id);
@@ -515,6 +549,19 @@ public function destroy(Request $request){
  }
 
 
+}
+
+public function destroyFirmante(Request $request){
+  try {
+    $estatus = Departamento_Firmantes::find($request->id);
+    $estatus->activo = 0;
+    $estatus->save();
+
+    return response()->json(['success'=>'Firmante eliminado del departamento con éxito']);
+
+  } catch (\Exception $e) {
+    dd($e->getMessage());
+  }
 }
 
 public function ExistePersonal(Request $request){
@@ -534,6 +581,25 @@ public function ExistePersonal(Request $request){
     dd($e->getMessage());
 
   }
+}
+
+public function ExistePersonalFirmante(Request $request){
+  try {
+
+
+    $existe_personal = Departamento_Firmantes::where([
+      ['activo',1],
+      ['nombre',$request->nombre_empleados_firmante],
+      ['apellido_paterno',$request->apellido_p_empleados_firmante],
+      ['apellido_materno',$request->apellido_m_empleados_firmante],
+    ])->first();
+
+    return $existe_personal;
+
+  } catch (\Exception $e) {
+   dd($e->getMessage());
+
+ }
 }
 
 
@@ -559,6 +625,28 @@ public function AltaPersonal(Request $request){
    dd($e->getMessage());
  }
 
+}
+
+public function AltaPersonalFirmante(Request $request){
+  try {
+
+    $personal = new Departamento_Firmantes();
+    $personal->cve_area_departamentos = $request->id_areas_firmante;
+    $personal->numero_empleado = $request->numero_empleados_firmante;
+    $personal->puesto = $request->puesto_empleados_firmante;
+    $personal->nombre = $request->nombre_empleados_firmante;
+    $personal->apellido_paterno = $request->apellido_p_empleados_firmante;
+    $personal->apellido_materno = $request->apellido_m_empleados_firmante;
+    $personal->cve_cargo = $request->cargo;
+    $personal->correo = $request->correo_empleados_firmante;
+    $personal->cve_usuario = Auth::user()->id;
+    $personal->save();
+
+
+    return response()->json(['success'=>'Registro Agregado con éxito']);
+  } catch (\Exception $e) {
+    dd($e->getMessage());
+  }
 }
 
  ///////////////////////////////////////////////////////////////////////

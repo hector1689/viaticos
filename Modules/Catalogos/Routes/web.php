@@ -141,11 +141,16 @@ Route::prefix('catalogos')->group(function() {
 
         Route::post('/NivelEstructura', 'ComisionadosController@NivelEstructura');
         Route::get('/tablaPersonal',         'ComisionadosController@tablaPersonal');
+        Route::get('/tablaPersonalFirmantes',         'ComisionadosController@tablaPersonalFirmantes');
 
         Route::post('/ExistePersonal',         'ComisionadosController@ExistePersonal');
+        Route::post('/ExistePersonalFirmante',         'ComisionadosController@ExistePersonalFirmante');
         Route::post('/AltaPersonal',         'ComisionadosController@AltaPersonal');
+        Route::post('/AltaPersonalFirmante',         'ComisionadosController@AltaPersonalFirmante');
+
 
         Route::delete ('/destroy', 	        'ComisionadosController@destroy');
+        Route::delete ('/destroyFirmante', 	        'ComisionadosController@destroyFirmante');
 
         Route::post('/BuscarAreaExistente', 'ComisionadosController@BuscarAreaExistente');
 

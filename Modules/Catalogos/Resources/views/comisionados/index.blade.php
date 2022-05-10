@@ -157,12 +157,12 @@
 
                 <div class="row">
                   <div class="col-md-4">
-                    <label>Nombre </label>
+                    <label>Nombre <span class="requerido">requerido </span></label>
                     <input type="text" name="nombre_empleado" id="nombre-empleado"  class="form-control" required>
                   </div>
 
                   <div class="col-md-4">
-                    <label>Apellido Paterno </label>
+                    <label>Apellido Paterno <span class="requerido">requerido </span></label>
                     <input type="text" name="apellido_p_empleado" id="apellido-p-empleado" class="form-control" required>
 
                   </div>
@@ -177,28 +177,28 @@
 
                 <div class="row">
                   <div class="col-md-6">
-                    <label>Puesto</label>
+                    <label>Puesto <span class="requerido">requerido </span></label>
                     <input type="text" name="puesto_empleado" id="puesto-empleado" class="form-control"  required>
                       <input type="hidden" id="id_empleado_es" name='id_empleado'>
                   </div>
 
                   <div class="col-md-6">
-                    <label>Teléfono</label>
-                    <input type="text" name="telefono_empleado" id="telefono-empleado" class="form-control"  required>
+                    <label>Teléfono <span class="requerido">requerido </span></label>
+                    <input type="text" name="telefono_empleado" id="telefono-empleado" class="form-control" onkeypress='return validaNumericos(event)'  required>
 
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-md-6">
-                    <label>Extensión</label>
-                    <input type="text" name="extension" id="extension-empleado" class="form-control"  required>
+                    <label>Extensión <span class="requerido">requerido </span></label>
+                    <input type="text" name="extension" id="extension-empleado" class="form-control" onkeypress='return validaNumericos(event)'  required>
 
                   </div>
 
                   <div class="col-md-6">
-                    <label>Correo Eléctronico</label>
-                    <input type="text" name="correo" id="correo-empleado" class="form-control"  required>
+                    <label>Correo Eléctronico <span class="requerido">requerido </span></label>
+                    <input type="email" name="correo" id="correo-empleado" class="form-control"  required>
                   </div>
 
                 </div>
@@ -239,13 +239,13 @@
 
           <div class="row">
             <div class="col-md-4">
-              <label>Nombre </label>
+              <label>Nombre <span class="requerido">requerido </span></label>
               <input type="text" class="form-control" name="nombre-empleados" placeholder="Nombre de Empleado" id="nombre-empleados"  >
 
             </div>
 
             <div class="col-md-4">
-              <label>Apellido Paterno </label>
+              <label>Apellido Paterno <span class="requerido">requerido </span></label>
               <input type="text" class="form-control" name="apellido_p_empleados" placeholder="Apellido Paterno" id="apellido-p-empleados" >
 
             </div>
@@ -260,17 +260,17 @@
 
             <div class="row">
               <div class="col-md-4">
-                <label>Número de Empleado </label>
-                <input type="text" class="form-control" name="numero-empleados"  placeholder="Número de Empleado" id="numero-empleados"  >
+                <label>Número de Empleado  <span class="requerido">requerido </span></label>
+                <input type="text" class="form-control" name="numero-empleados"  placeholder="Número de Empleado" id="numero-empleados"  onkeypress='return validaNumericos(event)'>
               </div>
               <div class="col-md-4">
-                <label>Puesto</label>
+                <label>Puesto <span class="requerido">requerido </span></label>
                 <input type="text"  class="form-control"name="puesto_empleados" placeholder="Puesto" id="puesto-empleados"  >
               </div>
 
               <div class="col-md-4">
-                <label>Nivel</label>
-                <input type="text"  class="form-control"name="nivel_empleados" placeholder="Nivel del Empleado" id="nivel_empleados"  >
+                <label>Nivel <span class="requerido">requerido </span></label>
+                <input type="text"  class="form-control"name="nivel_empleados" placeholder="Nivel del Empleado" id="nivel_empleados"  onkeypress='return validaNumericos(event)'>
               </div>
             </div>
 
@@ -322,7 +322,7 @@
 
           <div class="row">
             <div class="col-md-6">
-              <label>Cargo para Firmar </label>
+              <label>Cargo para Firmar <span class="requerido">requerido </span></label>
               <select class="form-control" name="cargo" id="cargo">
                 <option value="">Seleccionar</option>
                 @foreach($cargo as $car)
@@ -334,38 +334,38 @@
             <div role="separator" class="dropdown-divider"></div>
           <div class="row">
             <div class="col-md-4">
-              <label>Nombre </label>
-              <input type="text" class="form-control" name="nombre-empleados" placeholder="Nombre de Empleado" id="nombre-empleados"  >
+              <label>Nombre <span class="requerido">requerido </span></label>
+              <input type="text" class="form-control" name="nombre-empleados_firmante" placeholder="Nombre de Empleado" id="nombre-empleados_firmante"  >
 
             </div>
 
             <div class="col-md-4">
-              <label>Apellido Paterno </label>
-              <input type="text" class="form-control" name="apellido_p_empleados" placeholder="Apellido Paterno" id="apellido-p-empleados" >
+              <label>Apellido Paterno <span class="requerido">requerido </span></label>
+              <input type="text" class="form-control" name="apellido_p_empleados_firmante" placeholder="Apellido Paterno" id="apellido-p-empleados_firmante" >
 
             </div>
 
 
             <div class="col-md-4">
               <label>Apellido Materno </label>
-              <input type="text" class="form-control" name="apellido_m_empleados" placeholder="Apellido Materno" id="apellido-m-empleados" >
+              <input type="text" class="form-control" name="apellido_m_empleados_firmante" placeholder="Apellido Materno" id="apellido-m-empleados_firmante" >
 
             </div>
           </div>
 
             <div class="row">
               <div class="col-md-4">
-                <label>Número de Empleado </label>
-                <input type="text" class="form-control" name="numero-empleados"  placeholder="Número de Empleado" id="numero-empleados"  >
+                <label>Número de Empleado  <span class="requerido">requerido </span></label>
+                <input type="text" class="form-control" name="numero-empleados_firmante"  placeholder="Número de Empleado" id="numero-empleados_firmante"  onkeypress='return validaNumericos(event)'>
               </div>
               <div class="col-md-4">
-                <label>Puesto</label>
-                <input type="text"  class="form-control"name="puesto_empleados" placeholder="Puesto" id="puesto-empleados"  >
+                <label>Puesto <span class="requerido">requerido </span></label>
+                <input type="text"  class="form-control"name="puesto_empleados_firmante" placeholder="Puesto" id="puesto-empleados_firmante"  >
               </div>
 
               <div class="col-md-4">
-                <label>Nivel</label>
-                <input type="text"  class="form-control"name="nivel_empleados" placeholder="Nivel del Empleado" id="nivel_empleados"  >
+                <label>Correo Eléctronico <span class="requerido">requerido </span></label>
+                <input type="email"  class="form-control"name="correo_empleados_firmante" placeholder="Correo Eléctronico" id="correo_empleados_firmante"  >
               </div>
             </div>
 
@@ -373,11 +373,11 @@
 
 
 
-            <input type="hidden" id="id_empleado_es" name='id_empleado'>
+            <input type="hidden" id="id_empleado_es_firmante" name='id_empleado_firmante'>
 
             <br />
             <div class="field der" >
-                <a class="btn btn-primary" onclick="agregarPersonal()">
+                <a class="btn btn-primary" onclick="agregarPersonalFirnamte()">
                     <i class="ui save white icon"></i>
                     Agregar
                 </a>
@@ -386,17 +386,18 @@
             <div role="separator" class="dropdown-divider"></div>
             <div class="row">
               <div class="col-md-12">
-                <table id="tablaModuloIndex" class="table table-bordered table-checkable">
+                <table id="tablaModuloIndexFrimante" class="table table-bordered table-checkable">
 
                   <thead>
                     <tr>
+                      <th>Cargo</th>
                       <th>N° Empleado</th>
                       <th>Nombre</th>
                       <th>Puesto</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
-                  <tbody id="cuerpo"></tbody>
+                  <tbody id="cuerpos"></tbody>
                 </table>
               </div>
             </div>
@@ -423,6 +424,41 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js" integrity="sha512-TGClBy3S4qrWJtzel4qMtXsmM0Y9cap6QwRm3zo1MpVjvIURa90YYz5weeh6nvDGKZf/x3hrl1zzHW/uygftKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script>
+
+
+
+
+  $("#correo-empleado").change(function(){
+
+  if ($("#correo-empleado").val() == '') {
+  	Swal.fire("Lo Sentimos", "Favor de Llenar el Campo", "error");
+  }else{
+  	if($("#correo-empleado").val().indexOf('@', 0) == -1 || $("#correo-empleado").val().indexOf('.', 0) == -1) {
+
+  	Swal.fire("Upss!", "El correo electrónico introducido no es correcto!", "error");
+    $("#correo-empleado").val('')
+  	}
+  }
+  });
+
+
+  $("#correo_empleados_firmante").change(function(){
+
+  if ($("#correo_empleados_firmante").val() == '') {
+    Swal.fire("Lo Sentimos", "Favor de Llenar el Campo", "error");
+  }else{
+    if($("#correo_empleados_firmante").val().indexOf('@', 0) == -1 || $("#correo_empleados_firmante").val().indexOf('.', 0) == -1) {
+
+    Swal.fire("Upss!", "El correo electrónico introducido no es correcto!", "error");
+    $("#correo_empleados_firmante").val('')
+    }
+  }
+  });
+
+
+
+
+
     //console.log(rol);
     let realiza_accion = 0;
     let id_area = 0;
@@ -431,30 +467,7 @@
     //let aNiveles = new Array ('Seleccionar nivel', 'Secretaría', 'Subsecretaría', 'Dirección General', 'Dirección', 'Subdirección', 'Departamento');
     let aNiveles = new Array ('Seleccionar nivel', 'Secretaría', 'Dirección General', 'Departamento');
 
-    ////////////////////////////////////////////////////////////////////////////
-    // $('#areas_ts').on('change', function() {
-    //   var area = $('.ui.dropdown.nombre_areas').dropdown('get text');
-    //     $.ajax({
-    //       url: '/catalogos/comisionados/BuscarAreaExistente',
-    //       type: 'POST',
-    //       headers: {'X-CSRF-TOKEN':$("meta[name='csrf-token']").attr('content')},
-    //       data: {
-    //         nombre_area: area
-    //       },
-    //       success: (response) => {
-    //         if (response == '') {
-    //
-    //         }else{
-    //           notificacion('warning', {
-    //               titulo: 'Lo Sentimos',
-    //               mensaje: 'Departamento ya existe.',
-    //               icon: 'info'
-    //           });
-    //           $('.ui.dropdown.nombre_areas').dropdown('restore defaults');
-    //         }
-    //       }
-    //   });
-    // });
+
     ///////////////////////////////////////////////////////////////////////////
     function validaNumericos(event) {
         if(event.charCode >= 48 && event.charCode <= 57){
@@ -489,121 +502,6 @@
 
       // area
 
-
-
-
-
-      // $('#areaForm').form({
-      //     on: 'submit',
-      //     inline: true,
-      //     revalidate: false,
-      //     fields: {
-      //         nombre: {
-      //             identifier: 'nombre',
-      //             rules: [
-      //                 { type: 'empty', prompt: 'Por favor, Seleccionar el area correspondiente.' }
-      //             ]
-      //         },
-      //         nivel: {
-      //             identifier: 'nivel',
-      //             rules: [
-      //                 { type: 'empty', prompt: 'Por favor, Seleccionar el nivel correspondiente' }
-      //             ]
-      //         },
-      //         id_tipo: {
-      //             identifier: 'id_tipo',
-      //             rules: [
-      //                 { type: 'empty', prompt: 'Por favor, Seleccionar el tipo de nivel correspondiente.' }
-      //             ]
-      //         },
-      //         upp_corral: {
-      //             identifier: 'upp_corral',
-      //             rules: [
-      //                 { type: 'empty', prompt: 'Por favor, Ingresar el nombre del empleado.' }
-      //             ]
-      //         },
-      //
-      //
-      //
-      //
-      //
-      //
-      //     },
-      //
-      //     onSuccess: function(event, fields) {
-      //         event.preventDefault();
-      //
-      //         if ($('#nivel').val() == 0) {
-      //             let opc = ($('#nivel').val() == 0) ? 0 : 1;
-      //             regresa(opc);
-      //             return false;
-      //         }
-      //         else {
-      //             $('#areaForm').addClass('loading');
-      //
-      //             var form            = document.getElementById("areaForm");
-      //             var formData        = new FormData (form);
-      //
-      //             formData.append('id_padre', id_padre);
-      //             ////////////////////////////////////
-      //             // var nombre_empleado = $('#nombre-empleado').val();
-      //             // var apellido_p_empleado = $('#apellido-p-empleado').val();
-      //             // var apellido_m_empleado = $('#apellido-m-empleado').val();
-      //             var puesto_empleado = $('#puesto-empleado').val();
-      //
-      //             var nombre_empleado = $('#nombre-empleado').val();
-      //             var apellido_p_empleado = $('#apellido-p-empleado').val();
-      //             var apellido_m_empleado = $('#apellido-m-empleado').val();
-      //             var cve_usuario_empleado = $('#cve_usuario_empleado').val();
-      //
-      //             var id_empleado = $('#id_empleado_es').val();
-      //
-      //
-      //
-      //             formData.append('nombre_empleado', nombre_empleado);
-      //             formData.append('apellido_p_empleado', apellido_p_empleado);
-      //             formData.append('apellido_m_empleado', apellido_m_empleado);
-      //             formData.append('cve_usuario_empleado', cve_usuario_empleado);
-      //             formData.append('puesto_empleado', puesto_empleado);
-      //             formData.append('id_empleado', id_empleado);
-      //
-      //
-      //
-      //             liga    = '/catalogos/comisionados/';
-      //             metodo  = 'POST';
-      //             liga   += (realiza_accion == 0) ? 'create_area' : 'update_area/' +id_area;
-      //
-      //             $.ajax({
-      //                 url: liga,
-      //                 type: metodo,
-      //                 headers: {'X-CSRF-TOKEN':$("meta[name='csrf-token']").attr('content')},
-      //                 data: formData,
-      //                 contentType: false,
-      //                 cache: false,
-      //                 processData: false
-      //             })
-      //             .always(function(r) {
-      //
-      //                 $('#areaForm').removeClass('loading');
-      //                 notificacion(r.style, {
-      //                     titulo: r.titulo,
-      //                     mensaje: r.mensaje,
-      //                     icon: r.icon
-      //                 });
-      //                 setTimeout(function () {
-      //                     $('#columna_crear_area').hide();
-      //                     $('#crud').hide();
-      //
-      //                     limpiar ();
-      //                     busca_areas (0);
-      //                     tree_open(1);
-      //                 }, 1000);
-      //                 // recarga lista
-      //
-      //             });     // ajax
-      //         }       // validacion
-      //     }       // onSuccess
-      // });     // form
 
       $('#cve_cat_tipo').dropdown({
         onChange: function(_index, _value, c){
@@ -758,129 +656,7 @@
         return false;
     }
 
-    // function _busca_areas (id) {
-    //
-    //     var datos_rama       = [];
-    //
-    //     //mloader(1);
-    //
-    //     $('#divTree').jstree('destroy');
-    //     $('#raiz').html('<div id="divTree" class="arbol"> </div>');
-    //
-    //     $.ajax({
-    //         url: '/catalogos/comisionados/buscaAreas/0/1',
-    //         type: 'GET',
-    //         headers: {'X-CSRF-TOKEN':$("meta[name='csrf-token']").attr('content')}
-    //     })
-    //     .always(function(r) {
-    //         let areas = r[0];
-    //         let tamano = Object.keys(areas).length;
-    //
-    //
-    //         if (tamano > 0) {
-    //
-    //             $.each( areas, function(key, value) {
-    //
-    //                 var padre   = value.id_padre.toString();
-    //
-    //                 padre       = (padre == '0' || tamano == 1) ? '#' : padre;
-    //                 // cancela el elemento raiz
-    //                 tamano = 0;
-    //
-    //                 let t = '<div class="ui grid">';
-    //                     t += '<div class="row ajusta" style=" padding: 0 0 0 26px !important; margin-top: -1rem !important;">';
-    //                         t += '<div class="thirteen wide column">';
-    //                             t += '<span style="#ffffff" >' +value.nombre +'</span>';
-    //                         t += '</div>';
-    //                         t += '<div class="three wide column" style="text-align: right !important;">';
-    //
-    //
-    //                                 t += '<span class="pr-10" onclick="elimina_area(' +value.id +')" title ="Elimina área">';
-    //                                     t += '<i class="fas fa-minus text-success mr-5"> </i>';
-    //                                 t += '</span>';
-    //
-    //                             t += '<span class="pr-10" onclick="editaArea(' +value.id +', ' +value.nivel+')" title ="Editar área">';
-    //                                 t += '<i class="far fa-edit text-success mr-5"> </i>';
-    //                             t += '</span>';
-    //
-    //
-    //
-    //                                 t += '<span onclick="agrega_area(' +value.id +', ' +value.nivel +')" title ="Agrega área">';
-    //                                     t += '<i class="far fa-plus text-success mr-5"> </i>';
-    //                                 t += '</span>';
-    //
-    //                                 t += '<span onclick="agrega_responsable(' +value.id +', ' +value.nivel +')" title ="Agrega Responsable">';
-    //                                     t += '<i class="far fa-user text-success mr-5"> </i>';
-    //                                 t += '</span>';
-    //
-    //
-    //                         t += '</div>';
-    //                     t += '</div>';
-    //                     t += '</div>';
-    //
-    //                 t += '</div>';
-    //
-    //
-    //
-    //
-    //
-    //                 datos_rama.push({
-    //                     'id': value.id.toString(),
-    //                     'parent': padre,
-    //                     'text': t,
-    //                     'nombre': value.nombre,
-    //                     'corto': value.corto,
-    //                     'nivel': value.nivel,
-    //                     'id_tipo': value.id_tipo,
-    //                     'id_padre': value.id_padre
-    //                 });
-    //
-    //             });
-    //
-    //             $('#divTree').jstree({
-    //                 "core" : {
-    //                     'data' : datos_rama,
-    //                     "multiple" : false,
-    //                     "animation" : 0
-    //                 },
-    //                 'data' : function (node) {
-    //                     return { 'id' : node.id };
-    //                 },
-    //                 "plugins" : [
-    //                     "contextmenu", "dnd", "search", "wholerow", "state"
-    //                 ]
-    //             });
-    //
-    //             var to = false;
-    //             $('#busca_area').keyup(function () {
-    //                 if(to) { clearTimeout(to); }
-    //                 to  = setTimeout(function () {
-    //                         var v = $('#busca_area').val();
-    //                         $('#divTree').jstree(true).search(v);
-    //                     }, 250);
-    //             });
-    //
-    //
-    //             // area seleccionada
-    //             $("#divTree").click(function (e) {
-    //                 if (id_area == -1) {
-    //                     $('#columna_crear_area').hide();
-    //                     id_padre = 0;
-    //                 }
-    //
-    //                 limpiar();
-    //
-    //                 var node = $("#divTree").jstree("get_selected");
-    //
-    //                 $('#divTree').jstree("toggle_node", node);
-    //             });
-    //         }
-    //
-    //         // mloader(0);
-    //     });
-    //
-    //     return false;
-    // }
+
 
     function agrega_area (id, nivel) {
         nivel_sugerido = nivel + 1;
@@ -1233,7 +1009,7 @@
             for (var i = 0; i < data.length; i++) {
 
                //console.log(data[i].id)
-              $('#id_area_alta_firmante').html('<input type="hidden" name="id_areas" value="'+data[i].id+'">');
+              $('#id_area_alta_firmante').html('<input type="hidden" name="id_areas_firmante" value="'+data[i].id+'">');
               $('#nombre_area_alta_firmante').html('<p style="font-size:12pt;font-weight: bold;">'+data[i].nombre+'</p>');
               $('#nombre_jefe_alta_firmante').html('<p style="font-size:12pt;font-weight: bold;">'+data[i].nombre_empleado+' '+data[i].apellido_p_empleado+' '+data[i].apellido_m_empleado+' <br> '+data[i].puesto_empleado+'</p>');
 
@@ -1245,7 +1021,7 @@
 
               ///////////////////// tabla del personal dependiendo el departamento //////////////
               // $(function() {
-                tabla = $('#tablaModuloIndex').DataTable({
+                tabla = $('#tablaModuloIndexFrimante').DataTable({
                   // processing: true,
                   // serverSide: true,
                   processing: true,
@@ -1255,13 +1031,13 @@
                   ajax:{
                     'type': 'GET',
                     'headers': {'X-CSRF-TOKEN':$("meta[name='csrf-token']").attr('content')},
-                    'url' : '/catalogos/comisionados/tablaPersonal',
+                    'url' : '/catalogos/comisionados/tablaPersonalFirmantes',
                     'data':{  id: data[i].id,}
                   },
                   //ajax: "/catalogos/comisionados/tablaPersonal",
                   //type: 'GET',
                   columns: [
-                  //   { data: 'accion_estatus', name: 'accion_estatus' },
+                    { data: 'cve_cargo', name: 'cve_cargo' },
                     { data: 'numero_empleado', name: 'numero_empleado' },
                     { data: 'nombre', name: 'nombre' },
                     { data: 'puesto', name: 'puesto' },
@@ -1296,7 +1072,7 @@
 
 
 
-      if (numero_empleados == '' && puesto_empleados == '' && nombre_empleados == '' && apellido_p_empleados == '' && nivel_empleados == '') {
+      if (numero_empleados == '' || puesto_empleados == '' || nombre_empleados == '' || apellido_p_empleados == '' || nivel_empleados == '') {
 
          Swal.fire("Los campos estan vacios", 'Debe llenar Campos Obligatorios', "warning");
       }else{
@@ -1373,6 +1149,108 @@
 
     }
 
+
+
+    function agregarPersonalFirnamte(){
+      var id_areas_firmante = $('input[name=id_areas_firmante]').val();
+      var numero_empleados_firmante = $('input[name=numero-empleados_firmante]').val();
+      var puesto_empleados_firmante = $('input[name=puesto_empleados_firmante]').val();
+      var nombre_empleados_firmante = $('input[name=nombre-empleados_firmante]').val();
+      var apellido_p_empleados_firmante = $('input[name=apellido_p_empleados_firmante]').val();
+      var apellido_m_empleados_firmante = $('input[name=apellido_m_empleados_firmante]').val();
+      var correo_empleados_firmante = $('input[name=correo_empleados_firmante]').val();
+      var cargo = $('select[name=cargo]').val();
+
+      if (numero_empleados_firmante == '' || puesto_empleados_firmante == '' || nombre_empleados_firmante == '' || apellido_p_empleados_firmante == '' || correo_empleados_firmante == '' || cargo == '') {
+
+         Swal.fire("Los campos estan vacios", 'Debe llenar Campos Obligatorios', "warning");
+      }else{
+        $.ajax({
+
+           type:"POST",
+
+           url:"/catalogos/comisionados/ExistePersonalFirmante",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+             nombre_empleados_firmante:nombre_empleados_firmante,
+             apellido_p_empleados_firmante:apellido_p_empleados_firmante,
+             apellido_m_empleados_firmante:apellido_m_empleados_firmante,
+           },
+        }).always(function(r) {
+
+
+            if (r == '') {
+              $.ajax({
+
+                 type:"POST",
+
+                 url:"/catalogos/comisionados/AltaPersonalFirmante",
+                 headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 },
+                 data:{
+                   id_areas_firmante:id_areas_firmante,
+                   numero_empleados_firmante:numero_empleados_firmante,
+                   puesto_empleados_firmante:puesto_empleados_firmante,
+                   nombre_empleados_firmante:nombre_empleados_firmante,
+                   apellido_p_empleados_firmante:apellido_p_empleados_firmante,
+                   apellido_m_empleados_firmante:apellido_m_empleados_firmante,
+                   correo_empleados_firmante:correo_empleados_firmante,
+                   cargo:cargo,
+
+                 },
+              }).always(function(r) {
+
+                  Swal.fire("Felicidades", r.success, "success").then(function(){ tabla.ajax.reload(); });
+
+                  $('input[name=numero-empleados_firmante]').val('');
+                  $('input[name=puesto_empleados_firmante]').val('');
+                  $('input[name=nombre-empleados_firmante]').val('');
+                  $('input[name=apellido_p_empleados_firmante]').val('');
+                  $('input[name=apellido_m_empleados_firmante]').val('');
+                  $('input[name=correo_empleados_firmante]').val('');
+                  $('select[name=cargo]').prop('selectedIndex',0)
+
+
+
+
+              });
+            }else{
+
+               Swal.fire("Lo Sentimos", 'Esta Persona Ya existe en otro departamento', "warning");
+
+               $('input[name=numero-empleados_firmante]').val('');
+               $('input[name=puesto_empleados_firmante]').val('');
+               $('input[name=nombre-empleados_firmante]').val('');
+               $('input[name=apellido_p_empleados_firmante]').val('');
+               $('input[name=apellido_m_empleados_firmante]').val('');
+               $('input[name=correo_empleados_firmante]').val('');
+               $('select[name=cargo]').prop('selectedIndex',0)
+
+            }
+
+        });
+      }
+
+
+  //       console.log(id_areas_firmante,
+  // numero_empleados_firmante,
+  // puesto_empleados_firmante,
+  // nombre_empleados_firmante,
+  // apellido_p_empleados_firmante,
+  // apellido_m_empleados_firmante,
+  // correo_empleados_firmante,cargo)
+
+
+
+
+
+
+    }
+
+
     function eliminar(id) {
 
 
@@ -1411,6 +1289,42 @@
         })
 
 
+    }
+
+    function eliminarfirmante(id){
+      Swal.fire({
+            title: "¿Esta seguro de eliminar el registro?",
+            text: "No se podrá recuperar la información",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar"
+        }).then(function(result) {
+            if (result.value) {
+
+              $.ajax({
+
+                 type:"Delete",
+
+                 url:"/catalogos/comisionados/destroyFirmante",
+                 headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 },
+                 data:{
+                    id:id,
+                 },
+
+                  success:function(data){
+                    Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
+
+                  }
+
+
+              });
+
+
+            }
+        })
     }
 
     function enviarResponsable(){
