@@ -123,6 +123,33 @@ Route::prefix('catalogos')->group(function() {
 
     Route::prefix('comisionados')->group(function() {
         Route::get('/', 'ComisionadosController@index');
+        Route::get('/create',         'ComisionadosController@create');
+        Route::post('/store',	          'ComisionadosController@store');
+        Route::get('/{id}/edit', 		  'ComisionadosController@edit');
+      //  Route::post ('/borrar', 	  'ComisionadosController@destroy');
+        Route::put ('/{id}/reactivar', 	  'ComisionadosController@reactivar');
+        Route::put('/{id}', 'ComisionadosController@update');
+        Route::get('/tablaEstatus',         'ComisionadosController@tablaEstatus');
+        Route::get('buscarPersonas/{query}', 'ComisionadosController@buscarPersonas');
+        Route::get('/datos_area/{id}', 'ComisionadosController@datos_area');
+        Route::get('/buscaAreas/{id}/{filtra_roles}/{tipo}', 'ComisionadosController@buscaAreas');
+        //Route::get('/', 'ComisionadosController@index');
+        Route::post('/create_area', 'ComisionadosController@create_area');
+        Route::post('/update_area/{id}', 'ComisionadosController@update_area');
+        Route::delete('/borrar', 'ComisionadosController@delete_area');
+        Route::post('/TraerPersonal', 'ComisionadosController@TraerPersonal');
+
+        Route::post('/NivelEstructura', 'ComisionadosController@NivelEstructura');
+        Route::get('/tablaPersonal',         'ComisionadosController@tablaPersonal');
+
+        Route::post('/ExistePersonal',         'ComisionadosController@ExistePersonal');
+        Route::post('/AltaPersonal',         'ComisionadosController@AltaPersonal');
+
+        Route::delete ('/destroy', 	        'ComisionadosController@destroy');
+
+        Route::post('/BuscarAreaExistente', 'ComisionadosController@BuscarAreaExistente');
+
+
         Route::get('/create', 'ComisionadosController@create');
         Route::get('/show', 'ComisionadosController@show');
     });

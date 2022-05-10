@@ -47,6 +47,7 @@ License: You must have a valid license purchased only from themeforest(the above
       <!--end::Layout Themes-->
       <link href="/admin/assets/css/themes/layout/brand/light.css?v=7.0.6" rel="stylesheet" type="text/css">
       <link href="/admin/assets/css/themes/layout/aside/light.css?v=7.0.6" rel="stylesheet" type="text/css">
+      
 
       <link rel="https://api.w.org/" href="https://www.tamaulipas.gob.mx/educacion/wp-json/" /><link rel="icon" href="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/cropped-cropped-logotam-1-32x32.png" sizes="32x32" />
       <link rel="icon" href="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/cropped-cropped-logotam-1-192x192.png" sizes="192x192" />
