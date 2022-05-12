@@ -6,10 +6,13 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Auth;
+use \Modules\Catalogos\Entities\Folios;
+use \Modules\Catalogos\Entities\TablaFolios;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
 use \DB;
+use \App\Models\User;
 class FolioController extends Controller
 {
 
@@ -27,7 +30,21 @@ class FolioController extends Controller
      */
     public function index()
     {
-        return view('catalogos::folios.index');
+
+        $data['folios'] = Folios::where('activo',1)->first();
+        $data['usuarios'] = User::where([['activo',1]])->get();
+
+
+        $existe = TablaFolios::where('cve_folio',$data['folios']->id)->first();
+
+        if (isset($existe)) {
+          $data['tabla_folios'] = TablaFolios::where('cve_folio',$data['folios']->id)->get();
+        }else{
+          $data['tabla_folios'] = 0;
+        }
+
+
+        return view('catalogos::folios.index')->with($data);
     }
 
     /**
@@ -46,7 +63,33 @@ class FolioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      try {
+        $folios = new Folios();
+        $folios->dependencia = $request->dependencia;
+        $folios->direccion_area = $request->direccion_area;
+        $folios->director_administrativo = $request->director_administrativo;
+        $folios->comisario = $request->comisario;
+        $folios->superior_inmediato = $request->superior_inmediato;
+        $folios->cve_usuario_inmediato = $request->usuarios;
+        $folios->cve_usuario = Auth::user()->id;
+        $folios->save();
+
+        if(isset($request->array_table)){
+          foreach ($request->array_table as $key => $value) {
+            $folios = new TablaFolios();
+            $folios->cve_folio = $folios->id;
+            $folios->tipo_folio = $value['tipo'];
+            $folios->foliador = $value['folio'];
+            $folios->save();
+          }
+        }
+
+        return response()->json(['success'=>'Registro agregado satisfactoriamente']);
+
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
+
     }
 
     /**
@@ -75,9 +118,35 @@ class FolioController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      //dd($request->all());
+      try {
+        $folios = Folios::find($request->id);
+        $folios->dependencia = $request->dependencia;
+        $folios->direccion_area = $request->direccion_area;
+        $folios->director_administrativo = $request->director_administrativo;
+        $folios->comisario = $request->comisario;
+        $folios->superior_inmediato = $request->superior_inmediato;
+        $folios->cve_usuario_inmediato = $request->usuarios;
+        $folios->cve_usuario = Auth::user()->id;
+        $folios->save();
+
+        if(isset($request->array_table)){
+          foreach ($request->array_table as $key => $value) {
+            $folios = new TablaFolios();
+            $folios->cve_folio = $folios->id;
+            $folios->tipo_folio = $value['tipo'];
+            $folios->foliador = $value['folio'];
+            $folios->save();
+          }
+        }
+
+        return response()->json(['success'=>'Ha sido editado con éxito']);
+
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
     }
 
     /**

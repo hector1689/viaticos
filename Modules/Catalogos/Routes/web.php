@@ -118,6 +118,11 @@ Route::prefix('catalogos')->group(function() {
     Route::prefix('folios')->group(function() {
         Route::get('/', 'FolioController@index');
         Route::get('/create', 'FolioController@create');
+        Route::post('/create', 'FolioController@store');
+        Route::get('/tabla', 'FolioController@tabla');
+        Route::delete('/borrar', 'FolioController@destroy');
+        Route::get('/{id}/edit', 'FolioController@edit');
+        Route::post('/update', 'FolioController@update');
         Route::get('/show', 'FolioController@show');
     });
 
