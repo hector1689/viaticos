@@ -428,6 +428,10 @@ $('#usuarios').select2({
 
         }
 
+        function borrar(id){
+
+        }
+
         function guardar(){
 
           var dependencia = $('#dependencia').val();
