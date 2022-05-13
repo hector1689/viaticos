@@ -31,20 +31,12 @@ class FolioController extends Controller
     public function index()
     {
 
-        $data['folios'] = Folios::where('activo',1)->first();
-        $data['usuarios'] = User::where([['activo',1]])->get();
 
 
-        $existe = TablaFolios::where('cve_folio',$data['folios']->id)->first();
-
-        if (isset($existe)) {
-          $data['tabla_folios'] = TablaFolios::where('cve_folio',$data['folios']->id)->get();
-        }else{
-          $data['tabla_folios'] = 0;
-        }
+        //dd($data['tabla_folios']);
 
 
-        return view('catalogos::folios.index')->with($data);
+        return view('catalogos::folios.index');
     }
 
     /**
@@ -53,7 +45,11 @@ class FolioController extends Controller
      */
     public function create()
     {
-        return view('catalogos::create');
+
+
+      $data['usuarios'] = User::where([['activo',1]])->get();
+
+        return view('catalogos::folios.create')->with($data);
     }
 
     /**
@@ -76,11 +72,12 @@ class FolioController extends Controller
 
         if(isset($request->array_table)){
           foreach ($request->array_table as $key => $value) {
-            $folios = new TablaFolios();
-            $folios->cve_folio = $folios->id;
-            $folios->tipo_folio = $value['tipo'];
-            $folios->foliador = $value['folio'];
-            $folios->save();
+            $foliost = new TablaFolios();
+            $foliost->cve_folio = $folios->id;
+            $foliost->tipo_folio = $value['tipo'];
+            $foliost->foliador = $value['folio'];
+            $foliost->cve_usuario = Auth::user()->id;
+            $foliost->save();
           }
         }
 
@@ -109,7 +106,13 @@ class FolioController extends Controller
      */
     public function edit($id)
     {
-        return view('catalogos::edit');
+      $data['folios'] = Folios::find($id);
+      $data['usuarios'] = User::where([['activo',1]])->get();
+
+
+      $data['tabla_folios'] = TablaFolios::where('cve_folio',$id)->get();
+
+        return view('catalogos::folios.create')->with($data);
     }
 
     /**
@@ -134,11 +137,12 @@ class FolioController extends Controller
 
         if(isset($request->array_table)){
           foreach ($request->array_table as $key => $value) {
-            $folios = new TablaFolios();
-            $folios->cve_folio = $folios->id;
-            $folios->tipo_folio = $value['tipo'];
-            $folios->foliador = $value['folio'];
-            $folios->save();
+            $foliost = new TablaFolios();
+            $foliost->cve_folio = $folios->id;
+            $foliost->tipo_folio = $value['tipo'];
+            $foliost->foliador = $value['folio'];
+            $foliost->cve_usuario = Auth::user()->id;
+            $foliost->save();
           }
         }
 
@@ -158,4 +162,45 @@ class FolioController extends Controller
     {
         //
     }
+
+    public function tabla(){
+    setlocale(LC_TIME, 'es_ES');
+    \DB::statement("SET lc_time_names = 'es_ES'");
+    //dd('entro');
+    $registros = Folios::where('activo', 1); //Conocenos es la entidad
+    $datatable = DataTables::of($registros)
+    // ->editColumn('cve_tipo_gasolina', function ($registros) {
+    //
+    //   return $registros->obteneGasolina->nombre;
+    // })
+
+    ->make(true);
+    //Cueri
+    $data = $datatable->getData();
+    foreach ($data->data as $key => $value) {
+
+      $acciones = [
+         "Editar" => [
+           "icon" => "edit blue",
+           "href" => "/catalogos/folios/$value->id/edit"
+         ],
+        // "Ver" => [
+        //   "icon" => "fas fa-circle",
+        //   "href" => "/guardianes/conocenos/$value->id/show"
+        // ],
+
+        "Eliminar" => [
+          "icon" => "edit blue",
+          "onclick" => "eliminar($value->id)"
+        ],
+      ];
+
+
+
+      $value->acciones = generarDropdown($acciones);
+
+    }
+    $datatable->setData($data);
+    return $datatable;
+  }
 }
