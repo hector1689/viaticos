@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Auth;
 use \Modules\Catalogos\Entities\Folios;
+use \Modules\Catalogos\Entities\Areas;
+use \Modules\Catalogos\Entities\Personal_Siti;
 use \Modules\Catalogos\Entities\TablaFolios;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -31,11 +33,6 @@ class FolioController extends Controller
     public function index()
     {
 
-
-
-        //dd($data['tabla_folios']);
-
-
         return view('catalogos::folios.index');
     }
 
@@ -48,7 +45,7 @@ class FolioController extends Controller
 
 
       $data['usuarios'] = User::where([['activo',1]])->get();
-
+      $data['areas'] = Areas::where([['activo',1],['id_tipo',1]])->get();
         return view('catalogos::folios.create')->with($data);
     }
 
@@ -108,7 +105,7 @@ class FolioController extends Controller
     {
       $data['folios'] = Folios::find($id);
       $data['usuarios'] = User::where([['activo',1]])->get();
-
+      $data['areas'] = Areas::where([['activo',1],['id_tipo',1]])->get();
 
       $data['tabla_folios'] = TablaFolios::where('cve_folio',$id)->get();
 
@@ -202,5 +199,13 @@ class FolioController extends Controller
     }
     $datatable->setData($data);
     return $datatable;
+  }
+
+  public function TraerEncargado(Request $request){
+    $personal = Personal_Siti::where([
+      ['activo',1],
+      ['cve_cat_deptos_siti',$request->dependencia],
+    ])->first();
+    return $personal;
   }
 }

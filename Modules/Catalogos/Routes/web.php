@@ -124,6 +124,9 @@ Route::prefix('catalogos')->group(function() {
         Route::get('/{id}/edit', 'FolioController@edit');
         Route::post('/update', 'FolioController@update');
         Route::get('/show', 'FolioController@show');
+        Route::post('/TraerEncargado', 'FolioController@TraerEncargado');
+
+
     });
 
     Route::prefix('comisionados')->group(function() {

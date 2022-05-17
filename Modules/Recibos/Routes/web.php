@@ -21,4 +21,8 @@ Route::prefix('recibos')->group(function() {
   Route::get('/especificacioncomision', 'RecibosController@especificacioncomision');
   Route::get('/imprimir', 'RecibosController@imprimir');
   Route::get('/comprobantes', 'RecibosController@comprobantes');
+  Route::post('/TraerEmpleado', 'RecibosController@TraerEmpleado');
+  Route::post('/TraerNombreDependencia', 'RecibosController@TraerNombreDependencia');
+
+
 });

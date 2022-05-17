@@ -4,11 +4,22 @@ var KTBootstrapDatetimepicker = function () {
     // Private functions
     var baseDemos = function () {
         // Demo 1
-        $('#kt_datetimepicker_1').datetimepicker();
+        // $('#kt_datetimepicker_1').datetimepicker();
+        //
+        // // Demo 2
+        // $('#kt_datetimepicker_2').datetimepicker({
+        //     // locale: 'de'
+        // });
+
+        $('#kt_datetimepicker_1').datetimepicker({
+          language: 'es',
+          format: 'DD/MM/YYYY HH:mm'
+        });
 
         // Demo 2
         $('#kt_datetimepicker_2').datetimepicker({
-            locale: 'de'
+          language: 'es',
+          format: 'DD/MM/YYYY HH:mm'
         });
 
         // Demo 3

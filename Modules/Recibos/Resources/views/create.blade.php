@@ -51,35 +51,35 @@
         <div class="row">
           <div class="col-md-2">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° de Empleado: </label>
-              <input type="text" class="form-control" id="nombre"  placeholder="N° de Empleado" required>
+              <input type="text" class="form-control" id="n_empleado" onchange="Empleado()" placeholder="N° de Empleado" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Nombre: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="Nombre" required>
+              <input type="text" class="form-control" id="nombre_empleado"  placeholder="Nombre" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">RFC: </label>
-              <input type="text" class="form-control" id="apellido_materno"  placeholder="RFC" required>
+              <input type="text" class="form-control" id="rfc"  placeholder="RFC" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Nivel: </label>
-              <input type="text" class="form-control" id="apellido_materno"  placeholder="Nivel" required>
+              <input type="text" class="form-control" id="nivel"  placeholder="Nivel" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Clave Departamental: </label>
-              <input type="text" class="form-control" id="apellido_materno"  placeholder="Clave Departamental" required>
+              <input type="text" class="form-control" id="clave_departamental"  placeholder="Clave Departamental" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
@@ -88,52 +88,68 @@
         </div>
 
         <div class="row">
-          <div class="col-md-2">
+          <div class="col-md-3">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Dependencia: </label>
-              <input type="text" class="form-control" id="nombre"  placeholder="Dependencia" required>
+              <input type="text" class="form-control" id="dependencia"  placeholder="Dependencia" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-3">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Dirección: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="Dirección" required>
+              <input type="text" class="form-control" id="direccion"  placeholder="Dirección" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
-          <div class="col-md-4">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha y Hora de Salida: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="Fecha y Hora de Salida" required>
-              <div class="invalid-feedback">
-                Por Favor Ingrese Apellido Paterno
-              </div>
+          <div class="col-md-3">
+          <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha y Hora de Salida: </label>
+					<div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
+						<input type="text" class="form-control datetimepicker-input"  data-target="#kt_datetimepicker_1" placeholder="Fecha y Hora de Salida">
+						<div class="input-group-append" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker">
+							<span class="input-group-text">
+								<i class="ki ki-calendar"></i>
+							</span>
+						</div>
+					</div>
+          <div class="invalid-feedback">
+            Por Favor Ingrese Apellido Paterno
           </div>
-          <div class="col-md-4">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha y Hora de Recibido: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="Fecha y Hora de Recibido" required>
-              <div class="invalid-feedback">
-                Por Favor Ingrese Apellido Materno
-              </div>
+				</div>
+        <div class="col-md-3">
+          <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha y Hora de Recibido: </label>
+          <div class="input-group date" id="kt_datetimepicker_2" data-target-input="nearest">
+            <input type="text" class="form-control datetimepicker-input"  data-target="#kt_datetimepicker_2" placeholder="Fecha y Hora de Recibido">
+            <div class="input-group-append" data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
+              <span class="input-group-text">
+                <i class="ki ki-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <div class="invalid-feedback">
+            Por Favor Ingrese Apellido Paterno
           </div>
         </div>
 
+        </div>
+
+
         <div class="row">
-          <div class="col-md-2">
+          <div class="col-md-4">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Departamentos: </label>
-              <input type="text" class="form-control" id="nombre"  placeholder="Departamentos" required>
+              <input type="text" class="form-control" id="departamento"  placeholder="Departamentos" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Lugar de Adscripción: </label>
               <input type="text" class="form-control" id="apellido_paterno"  placeholder="Lugar de Adscripción" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias: </label>
               <input type="text" class="form-control" id="apellido_paterno"  placeholder="N° de dias" required>
 
@@ -141,7 +157,7 @@
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias inhabiles: </label>
               <input type="text" class="form-control" id="apellido_paterno"  placeholder="N° de dias inhabiles" required>
 
@@ -1444,7 +1460,8 @@
 </div>
 </form>
 </div>
-
+<script src="/admin/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js?v=7.0.6"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.es.min.js" charset="UTF-8"></script>
 <script type="text/javascript">
 $('#tabla1').show();
 $('#tabla2').hide();
@@ -1506,6 +1523,94 @@ $('#tabla6').hide();
     $('#tabla4').hide();
     $('#tabla5').hide();
     $('#tabla6').show();
+  }
+
+  $(function () {
+    $('#kt_datetimepicker_1').datetimepicker({
+      language: 'es',
+      format: 'dd/mm/yyyy',
+    });
+
+    // Demo 2
+    $('#kt_datetimepicker_2').datetimepicker({
+      language: 'es',
+      format: 'dd/mm/yyyy',
+    });
+});
+
+
+  function Empleado(){
+    var n_empleado = $('#n_empleado').val();
+
+    $.ajax({
+
+           type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+           url:"/recibos/TraerEmpleado", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+           },
+           data:{
+               n_empleado:n_empleado,
+             },
+            success:function(data){
+              //console.log(data)
+
+              if (data == '') {
+                Swal.fire("Lo Sentimos", 'No Existe N° de Empleado', "warning").then(function(){
+                  $('#n_empleado').val('');
+                  $('#dependencia').val('');
+                  $('#direccion').val('');
+                  $('#departamento').val('');
+                  $('#nivel').val('');
+                });
+              }else{
+                var nombre  = data.nombre+' '+data.apellido_paterno+' '+data.apellido_materno;
+                var nivel = data.nivel;
+
+                $('#nombre_empleado').val(nombre);
+                $('#nivel').val(nivel);
+
+                $.ajax({
+                       type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+                       url:"/recibos/TraerNombreDependencia", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+                       headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+                       },
+                       data:{
+                           id:data.cve_area_departamentos,
+                         },
+                        success:function(datas){
+                          //console.log(datas)
+                          $('#dependencia').val('');
+                          $('#direccion').val('');
+                          $('#departamento').val('');
+                          for (var i = 0; i < datas.length; i++) {
+                            //console.log(datas[i].nombre,datas[i].id_tipo)
+
+                            if (datas[i].id_tipo == 1 || datas[i].id_tipo == 2) {
+                              $('#dependencia').val(datas[i].nombre);
+                            }
+
+                            if(datas[i].id_tipo == 3 || datas[i].id_tipo == 4){
+                              $('#direccion').val(datas[i].nombre);
+                            }
+
+                            if (datas[i].id_tipo == 5) {
+                              $('#departamento').val(datas[i].nombre);
+                            }
+
+                          }
+                        }
+                  });
+
+
+              }
+
+            }
+      });
+
+    //nombre_empleado
   }
 </script>
 @endsection

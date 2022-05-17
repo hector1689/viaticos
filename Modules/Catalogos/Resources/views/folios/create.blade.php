@@ -21,7 +21,13 @@
             <div class="row">
               <div class="col-md-4">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Dependencia: </label>
-                  <input type="text" class="form-control" id="dependencia" placeholder="Dependencia"  value="@isset($folios) {{ $folios->dependencia }} @endisset"required>
+                  <!-- <input type="text" class="form-control" id="dependencia" placeholder="Dependencia"  value="@isset($folios) {{ $folios->dependencia }} @endisset"required> -->
+                  <select class="form-control" id="dependencia" onchange="encargado()" required>
+                    <option value="">Seleccionar</option>
+                    @foreach($areas as $area)
+                    <option value="{{ $area->id }}">{{ $area->nombre }}</option>
+                    @endforeach
+                  </select>
                   <div class="invalid-feedback">
                     Por Favor Ingrese Dependencia
                   </div>
@@ -34,7 +40,7 @@
                   </div>
               </div>
               <div class="col-md-4">
-                  <label for="inputPassword4" style="font-size:12px;" class="form-label">DIrector Administrativo: </label>
+                  <label for="inputPassword4" style="font-size:12px;" class="form-label">Director Administrativo: </label>
                   <input type="text" class="form-control" id="director_administrativo" placeholder="DIrector Administrativo" value="@isset($folios) {{ $folios->director_administrativo }} @endisset" required>
                   <div class="invalid-feedback">
                     Por Favor Ingrese Director Administrativo
@@ -237,8 +243,29 @@ var array_table = [];
 var objPosicion = {};
 var arrayNivel = [];
 var objTabla = {};
-$('#usuarios').select2({
-            width: '100%',
+
+
+        function encargado(){
+            var dependencia = $('#dependencia').val();
+            $.ajax({
+
+                   type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+                   url:"/catalogos/folios/TraerEncargado", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+                   },
+                   data:{
+                       dependencia:dependencia,
+                     },
+                    success:function(data){
+                      console.log(data)
+                    }
+              });
+
+        }
+        $('#usuarios').select2({
+          width: '100%',
         });
 
         function siglas1(){
