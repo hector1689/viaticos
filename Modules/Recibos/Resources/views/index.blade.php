@@ -44,7 +44,7 @@
     </tr>
     </thead>
    <tbody>
-     <tr>
+     <!-- <tr>
        <td>GO/2019/ITABEC/000</td>
        <td>CEAT</td>
        <td>JUAN PEREZ RAMIREZ</td>
@@ -66,9 +66,7 @@
             <a class='dropdown-item' onclick="finiquitar()">
             Finiquitar
             </a>
-            <!-- <a class='dropdown-item' >
-            Pagado
-            </a> -->
+
             <a class='dropdown-item' onclick="baja()">
             Cancelar
             </a>
@@ -78,12 +76,7 @@
             <a class='dropdown-item' href="/recibos/comprobantes">
             Comprobaciones
             </a>
-            <!-- <a class='dropdown-item' >
-            Programa de recorridos
-            </a>
-            <a class='dropdown-item' >
-            Acompañante
-            </a> -->
+
             <div role="separator" class="dropdown-divider"></div>
             <a class='dropdown-item'href="/recibos/imprimir" >
             Imprimir Recibo
@@ -95,23 +88,17 @@
             <a class='dropdown-item' href="/recibos/especificacioncomision">
             Especificación de Comisión
             </a>
-            <!-- <a class='dropdown-item' >
-            Turnar
-            </a>
-            <a class='dropdown-item' >
-            Turnar y Firmar
-            </a>
-            <a class='dropdown-item' >
-            Pagar
-            </a> -->
+
           </div>
          </div>
        </td>
-     </tr>
+     </tr> -->
    </tbody>
 </table>
 </div>
 </div>
+
+
 
 <!--MODAL BAJA-->
 
@@ -239,70 +226,68 @@ function finiquitar(){
 function finiquitarP(){
   $('#finiquitarP').modal('show');
 }
-//     var tabla;
-//     $(function() {
-//     tabla = $('#kt_datatable').DataTable({
-//       processing: true,
-//       serverSide: true,
-//       order: [[0, 'desc']],
-//       ajax: {
-//         url: "/usuarios/tablausuarios",
-//       },
-//       columns: [
-//         { data: 'nombre', name : 'nombre'},
-//         { data: 'apellido_paterno', name : 'apellido_paterno'},
-//         { data: 'apellido_materno', name : 'apellido_materno'},
-//         { data: 'tipo_usuario', name : 'tipo_usuario'},
-//
-//         { data: 'name', name: 'name' },
-//
-//         { data: 'email', name: 'email' },
-//         { data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }
-//       ],
-//       createdRow: function ( row, data, index ) {
-//         $(row).find('.ui.dropdown.acciones').dropdown();
-//       },
-//       language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
-//     });
-//     });
-//
-//     function eliminar(id){
-// //console.log(id);
-//     var id_user = id;
-//     Swal.fire({
-//           title: "¿Estas seguro?",
-//           text: "No podrás revertir esto!",
-//           icon: "warning",
-//           showCancelButton: true,
-//           confirmButtonText: "Si, bórralo!"
-//       }).then(function(result) {
-//           if (result.value) {
-//
-//             $.ajax({
-//
-//                type:"Delete",
-//
-//                url:"/usuarios/borrar",
-//                headers: {
-//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//                },
-//                data:{
-//               id_user:id_user,
-//                },
-//
-//                 success:function(data){
-//                   Swal.fire("Excelente!", data.success, "success").then(function(){ tabla.ajax.reload(); });
-//
-//                 }
-//
-//
-//             });
-//
-//
-//           }
-//       })
-//     }
+var tabla;
+$(function() {
+tabla = $('#kt_datatable').DataTable({
+  processing: true,
+  serverSide: true,
+  order: [[0, 'desc']],
+  ajax: {
+    url: "/recibos/tabla",
+  },
+  columns: [
+    { data: 'folio', name : 'folio'},
+    { data: 'dependencia', name : 'dependencia'},
+    { data: 'nombre', name : 'nombre'},
+    { data: 'num_empleado', name : 'num_empleado'},
+    { data: 'fecha_hora_salida', name : 'fecha_hora_salida'},
+    { data: 'fecha_hora_recibio', name : 'fecha_hora_recibio'},
+    { data: 'num_dias', name : 'num_dias'},
+    { data: 'cve_estatus', name : 'cve_estatus'},
+    { data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }
+  ],
+  createdRow: function ( row, data, index ) {
+    $(row).find('.ui.dropdown.acciones').dropdown();
+  },
+  language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
+});
+});
+function eliminar(id){
+//console.log(id);
+Swal.fire({
+      title: "¿Esta seguro de eliminar el registro?",
+      text: "No se podrá recuperar la información",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+  }).then(function(result) {
+      if (result.value) {
 
+        $.ajax({
+
+           type:"Delete",
+
+           url:"/catalogos/alimentacion/borrar",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+              id:id,
+           },
+
+            success:function(data){
+              Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
+
+            }
+
+
+        });
+
+
+      }
+  })
+}
 
 </script>
 @endsection

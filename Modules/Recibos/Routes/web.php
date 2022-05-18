@@ -23,6 +23,15 @@ Route::prefix('recibos')->group(function() {
   Route::get('/comprobantes', 'RecibosController@comprobantes');
   Route::post('/TraerEmpleado', 'RecibosController@TraerEmpleado');
   Route::post('/TraerNombreDependencia', 'RecibosController@TraerNombreDependencia');
+  Route::post('/create', 'RecibosController@store');
+  Route::post('/update', 'RecibosController@update');
+  Route::post('/TraerFirmaJefes', 'RecibosController@TraerFirmaJefes');
+  Route::post('/TraerJefe', 'RecibosController@TraerJefe');
+  Route::post('/TraerJefeDirector', 'RecibosController@TraerJefeDirector');
+
+  Route::get('/tabla', 'RecibosController@tabla');
+  Route::get('/{id}/edit', 'RecibosController@edit');
+
 
 
 });

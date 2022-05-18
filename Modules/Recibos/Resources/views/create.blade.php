@@ -4,7 +4,7 @@
 <div class="card card-custom example example-compact">
 <div class="card-header">
 <h3 class="card-title">
-   <!-- @isset($usuarios)editar @else nuevo @endisset --> NUEVO VIATICO
+   @isset($recibos)EDITAR @else NUEVO @endisset  VIATICO
 </h3>
 <div class="card-toolbar">
 <div class="example-tools justify-content-center">
@@ -15,18 +15,18 @@
 <form class=" needs-validation" novalidate>
 <div class="card-body">
 
-
+        @isset($recibos)
         <div class="row">
           <div class="col-md-4">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Folio: </label>
-              <input type="text" class="form-control" id="nombre"  placeholder="Folio" required>
+              <input type="text" class="form-control" id="nombre"  placeholder="Folio"  value="@isset($recibos) {{$recibos->folio}} @endisset" disabled >
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
           </div>
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Oficio de Comisión: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="Oficio de Comisión" required>
+              <input type="text" class="form-control" id="apellido_paterno"  placeholder="Oficio de Comisión" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
@@ -34,52 +34,50 @@
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Estatus: </label>
               <select class="form-control" name="">
-                <option value="">Capturado</option>
-                <option value="">En Proceso</option>
-                <option value="">Pagado</option>
-                <option value="">Finiquito</option>
-                <option value="">Finiquito Provicional</option>
-                <option value="">Pendiente de Comprobar</option>
-                <option value="">Cancelado</option>
+                <option value="{{ $recibos->cve_estatus }}">{{ $recibos->obtenerEstatus->nombre }}</option>
+                <option value="">Seleccionar</option>
+                @foreach($estatus as $estatu)
+                <option value="{{ $estatu->id }}">{{ $estatu->nombre }}</option>
+                @endforeach
               </select>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
           </div>
         </div>
-
+        @endisset
         <div class="row">
           <div class="col-md-2">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° de Empleado: </label>
-              <input type="text" class="form-control" id="n_empleado" onchange="Empleado()" placeholder="N° de Empleado" required>
+              <input type="text" class="form-control" id="n_empleado" onchange="Empleado()" value="@isset($recibos) {{$recibos->num_empleado}} @endisset" placeholder="N° de Empleado" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
           </div>
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Nombre: </label>
-              <input type="text" class="form-control" id="nombre_empleado"  placeholder="Nombre" disabled required>
+              <input type="text" class="form-control" id="nombre_empleado"  placeholder="Nombre"  value="@isset($recibos) {{$recibos->nombre}} @endisset" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">RFC: </label>
-              <input type="text" class="form-control" id="rfc"  placeholder="RFC" required>
+              <input type="text" class="form-control" id="rfc"  placeholder="RFC" value="@isset($recibos) {{$recibos->rfc}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Nivel: </label>
-              <input type="text" class="form-control" id="nivel"  placeholder="Nivel" disabled required>
+              <input type="text" class="form-control" id="nivel"  placeholder="Nivel" value="@isset($recibos) {{$recibos->nivel}} @endisset" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Clave Departamental: </label>
-              <input type="text" class="form-control" id="clave_departamental"  placeholder="Clave Departamental" required>
+              <input type="text" class="form-control" id="clave_departamental"  placeholder="Clave Departamental" value="@isset($recibos) {{$recibos->clave_departamental}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
@@ -90,22 +88,32 @@
         <div class="row">
           <div class="col-md-3">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Dependencia: </label>
-              <input type="text" class="form-control" id="dependencia"  placeholder="Dependencia" disabled required>
+              <input type="text" class="form-control" id="dependencia"  placeholder="Dependencia" disabled value="@isset($recibos) {{$recibos->dependencia}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
           </div>
           <div class="col-md-3">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Dirección: </label>
-              <input type="text" class="form-control" id="direccion"  placeholder="Dirección" disabled required>
+              <input type="text" class="form-control" id="direccion"  placeholder="Dirección" disabled value="@isset($recibos) {{$recibos->direccion}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
           <div class="col-md-3">
           <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha y Hora de Salida: </label>
+          @isset($recibos)
+          <?php
+          list($fecha,$hora) = explode(' ',$recibos->fecha_hora_salida);
+
+          list($dia,$mes,$anio) = explode('-',$fecha);
+          $fecha = $anio.'/'.$mes.'/'.$dia;
+          $fecha1 = $fecha.' '.$hora;
+
+           ?>
+           @endisset
 					<div class="input-group date" id="kt_datetimepicker_1" data-target-input="nearest">
-						<input type="text" class="form-control datetimepicker-input"  data-target="#kt_datetimepicker_1" placeholder="Fecha y Hora de Salida">
+						<input type="text" class="form-control datetimepicker-input" name="fecha_inicial" data-target="#kt_datetimepicker_1" value="@isset($recibos) {{$fecha1}} @endisset" placeholder="Fecha y Hora de Salida">
 						<div class="input-group-append" data-target="#kt_datetimepicker_1" data-toggle="datetimepicker">
 							<span class="input-group-text">
 								<i class="ki ki-calendar"></i>
@@ -118,8 +126,18 @@
 				</div>
         <div class="col-md-3">
           <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha y Hora de Recibido: </label>
+          @isset($recibos)
+          <?php
+          list($fecha,$hora) = explode(' ',$recibos->fecha_hora_recibio);
+
+          list($dia,$mes,$anio) = explode('-',$fecha);
+          $fecha = $anio.'/'.$mes.'/'.$dia;
+          $fecha2 = $fecha.' '.$hora;
+
+           ?>
+           @endisset
           <div class="input-group date" id="kt_datetimepicker_2" data-target-input="nearest">
-            <input type="text" class="form-control datetimepicker-input"  data-target="#kt_datetimepicker_2" placeholder="Fecha y Hora de Recibido">
+            <input type="text" class="form-control datetimepicker-input"  name="fecha_final" data-target="#kt_datetimepicker_2"  value="@isset($recibos) {{$fecha2}} @endisset" placeholder="Fecha y Hora de Recibido">
             <div class="input-group-append" data-target="#kt_datetimepicker_2" data-toggle="datetimepicker">
               <span class="input-group-text">
                 <i class="ki ki-calendar"></i>
@@ -137,21 +155,21 @@
         <div class="row">
           <div class="col-md-4">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Departamentos: </label>
-              <input type="text" class="form-control" id="departamento"  placeholder="Departamentos" disabled required>
+              <input type="text" class="form-control" id="departamento"  placeholder="Departamentos" value="@isset($recibos) {{$recibos->departamentos }} @endisset" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
           </div>
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Lugar de Adscripción: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="Lugar de Adscripción" required>
+              <input type="text" class="form-control" id="lugar_adscripcion"  placeholder="Lugar de Adscripción" value="@isset($recibos) {{$recibos->lugar_adscripcion}} @endisset"  required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="N° de dias" required>
+              <input type="text" class="form-control" id="n_dias"  placeholder="N° de dias" value="@isset($recibos) {{$recibos->num_dias}} @endisset" required>
 
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
@@ -159,7 +177,7 @@
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias inhabiles: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="N° de dias inhabiles" required>
+              <input type="text" class="form-control" id="n_dias_ina"  placeholder="N° de dias inhabiles" value="@isset($recibos) {{$recibos->num_dias_inhabiles}} @endisset" required>
 
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
@@ -170,7 +188,7 @@
         <div class="row">
           <div class="col-md-12">
             <label for="inputPassword4" style="font-size:12px;" class="form-label">Descripcion de la Comisión: </label>
-            <input type="text" class="form-control" id="apellido_paterno"  placeholder="Descripcion de la Comisión" required>
+            <input type="text" class="form-control" id="descripcion"  placeholder="Descripcion de la Comisión" value="@isset($recibos) {{$recibos->descripcion_comision}} @endisset" required>
           </div>
        </div>
 
@@ -1399,23 +1417,17 @@
                 <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
                   <div class="row">
                     <div class="col-md-6">
-                      <select class="form-control" name="">
-                        <option value=""></option>
-                      </select>
+                       <input type="text" id="director_area_firma" name="director_area_firma" class="form-control" disabled>
                         <p style="text-align:center;">DIRECTOR DEL ÁREA <br> NOMBRE Y FIRMA </p>
                     </div>
                     <div class="col-md-6">
-                      <select class="form-control" name="">
-                        <option value=""></option>
-                      </select>
+                      <input type="text" id="organo_control_firma" name="organo_control_firma" class="form-control" disabled>
                         <p style="text-align:center;">ORGANO DE CONTROL<br> NOMBRE Y FIRMA </p>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <select class="form-control" name="">
-                        <option value=""></option>
-                      </select>
+                      <input type="text" id="director_administrativo_firma" name="director_administrativo_firma" class="form-control" disabled>
                         <p style="text-align:center;">DIRECTOR ADMINISTRATIVO <br> NOMBRE Y FIRMA </p>
                     </div>
                     <div class="col-md-6">
@@ -1426,9 +1438,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <select class="form-control" name="">
-                        <option value=""></option>
-                      </select>
+                    <input type="text" id="jefe_firma" name="jefe_firma" class="form-control" disabled>
                         <p style="text-align:center;">SUPERIOR INMEDIATO <br> NOMBRE Y FIRMA </p>
                     </div>
                   </div>
@@ -1544,11 +1554,11 @@ $('#tabla6').hide();
 
     $.ajax({
 
-           type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+           type:"POST",
 
-           url:"/recibos/TraerEmpleado", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+           url:"/recibos/TraerEmpleado",
            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
            },
            data:{
                n_empleado:n_empleado,
@@ -1572,10 +1582,10 @@ $('#tabla6').hide();
                 $('#nivel').val(nivel);
 
                 $.ajax({
-                       type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
-                       url:"/recibos/TraerNombreDependencia", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+                       type:"POST",
+                       url:"/recibos/TraerNombreDependencia",
                        headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                        },
                        data:{
                            id:data.cve_area_departamentos,
@@ -1586,7 +1596,7 @@ $('#tabla6').hide();
                           $('#direccion').val('');
                           $('#departamento').val('');
                           for (var i = 0; i < datas.length; i++) {
-                            //console.log(datas[i].nombre,datas[i].id_tipo)
+                          console.log(datas[i].id)
 
                             if (datas[i].id_tipo == 1 || datas[i].id_tipo == 2) {
                               $('#dependencia').val(datas[i].nombre);
@@ -1600,10 +1610,79 @@ $('#tabla6').hide();
                               $('#departamento').val(datas[i].nombre);
                             }
 
+                            if (datas[i].id_tipo == 4) {
+                              $.ajax({
+                                     type:"POST",
+                                     url:"/recibos/TraerJefeDirector",
+                                     headers: {
+                                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                     },
+                                     data:{
+                                         id:datas[i].id,
+                                       },
+                                      success:function(datajD){
+                                        //console.log(datajD);
+                                        //console.log(dataj.nombre_empleado+' '+dataj.apellido_p_empleado+' '+dataj.apellido_m_empleado)
+                                        var nombrejefe = datajD.nombre_empleado+' '+datajD.apellido_p_empleado+' '+datajD.apellido_m_empleado
+                                        $('#director_area_firma').val(nombrejefe);
+                                      }
+                                });
+                            }
+
+
+
+
+
+
                           }
                         }
                   });
 
+
+                  $.ajax({
+                         type:"POST",
+                         url:"/recibos/TraerFirmaJefes",
+                         headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                         },
+                         data:{
+                             id:data.cve_area_departamentos,
+                           },
+                          success:function(datass){
+                            for (var i = 0; i < datass.length; i++) {
+                              //console.log(datass[i].cve_cargo,datass[i].nombre,datass[i].apellido_paterno,datass[i].apellido_materno)
+
+                              if (datass[i].cve_cargo == 1) {
+                                var nombre_completo = datass[i].nombre+' '+datass[i].apellido_paterno+' '+datass[i].apellido_materno;
+                                $('#director_administrativo_firma').val(nombre_completo);
+                              }
+                              if(datass[i].cve_cargo == 2){
+                                var nombre_completo = datass[i].nombre+' '+datass[i].apellido_paterno+' '+datass[i].apellido_materno;
+                                $('#organo_control_firma').val(nombre_completo);
+                              }
+                            }
+                          }
+                    });
+
+
+                    $.ajax({
+                           type:"POST",
+                           url:"/recibos/TraerJefe",
+                           headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                           },
+                           data:{
+                               id:data.cve_area_departamentos,
+                             },
+                            success:function(dataj){
+                              //console.log(dataj.nombre_empleado+' '+dataj.apellido_p_empleado+' '+dataj.apellido_m_empleado)
+                              var nombrejefe = dataj.nombre_empleado+' '+dataj.apellido_p_empleado+' '+dataj.apellido_m_empleado
+                              $('#jefe_firma').val(nombrejefe);
+                            }
+                      });
+
+
+// director_area_firma
 
               }
 
@@ -1611,6 +1690,126 @@ $('#tabla6').hide();
       });
 
     //nombre_empleado
+  }
+
+  function guardar(){
+
+    var n_empleado = $('#n_empleado').val();
+    var nombre_empleado = $('#nombre_empleado').val();
+    var rfc = $('#rfc').val();
+    var nivel = $('#nivel').val();
+    var clave_departamental = $('#clave_departamental').val();
+    var dependencia = $('#dependencia').val();
+    var direccion = $('#direccion').val();
+    var inicia = $('input[name=fecha_inicial]').val();
+    var final = $('input[name=fecha_final]').val();
+    var departamento = $('#departamento').val();
+    var lugar_adscripcion = $('#lugar_adscripcion').val();
+    var n_dias = $('#n_dias').val();
+    var n_dias_ina = $('#n_dias_ina').val();
+    var descripcion = $('#descripcion').val();
+
+      var formData = new FormData();
+       //formData.append('photo', $avatarInput[0].files[0]);
+
+      @isset($recibos)
+      formData.append('id',{{ $recibos->id }});
+      @endisset
+      formData.append('n_empleado', n_empleado);
+      formData.append('nombre_empleado', nombre_empleado);
+      formData.append('rfc', rfc);
+      formData.append('nivel', nivel);
+      formData.append('clave_departamental', clave_departamental);
+      formData.append('dependencia', dependencia);
+      formData.append('direccion', direccion);
+      formData.append('inicia', inicia);
+      formData.append('final', final);
+      formData.append('departamento', departamento);
+      formData.append('lugar_adscripcion', lugar_adscripcion);
+      formData.append('n_dias', n_dias);
+      formData.append('n_dias_ina', n_dias_ina);
+      formData.append('descripcion', descripcion);
+
+
+      $.ajax({
+
+             type:"POST",
+
+             url:"{{ ( isset($recibos) ) ? '/recibos/update' : '/recibos/create' }}",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data: formData,
+             processData: false,
+             contentType: false,
+             cache:false,
+              success:function(data){
+                if (data.success == 'Registro agregado satisfactoriamente') {
+                  Swal.fire("", data.success, "success").then(function(){
+                    location.href ="/recibos";
+                  });
+
+                  Swal.fire({
+                        title: "",
+                        text: data.success,
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    }).then(function(result) {
+                        if (result.value == true) {
+                             $('#nombre').val('');
+
+                        }else{
+                          location.href ="/recibos"; //esta es la ruta del modulo
+                        }
+                    })
+
+                }else if(data.success == 'Ha sido editado con éxito'){
+
+                  Swal.fire("", data.success, "success").then(function(){
+                    location.href ="/recibos";
+                  });
+
+                  Swal.fire({
+                        title: "",
+                        text: data.success,
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    }).then(function(result) {
+
+                        if (result.value == true) {
+
+                        }else{
+                          location.href ="/recibos";
+                        }
+                    })
+                }
+
+
+              }
+        });
+
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      // var form = document.querySelectorAll('.needs-validation')
+      // Array.prototype.slice.call(form)
+      //   .forEach(function (form) {
+      //     form.addEventListener('click', function (event) {
+      //       if (!form.checkValidity()) {
+      //         event.preventDefault()
+      //         event.stopPropagation()
+      //       }else{
+      //         ///////////////////////////////////////////////////////7
+      //
+      //         /////////////////////////////////////////////////////////
+      //       }
+      //
+      //       form.classList.add('was-validated')
+      //     }, false)
+      //   });
+
+
   }
 </script>
 @endsection
