@@ -259,7 +259,7 @@ var objTabla = {};
                        dependencia:dependencia,
                      },
                     success:function(data){
-                      console.log(data)
+                      //console.log(data)
                     }
               });
 

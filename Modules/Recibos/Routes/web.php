@@ -16,11 +16,11 @@ Route::prefix('recibos')->group(function() {
   Route::get('/create', 'RecibosController@create');
   Route::get('/show', 'RecibosController@show');
   Route::get('/recibo', 'RecibosController@recibo');
-  Route::get('/oficio', 'RecibosController@oficio');
+  Route::get('/{id}/oficio', 'RecibosController@oficio');
   Route::get('/especificacion', 'RecibosController@especificacion');
-  Route::get('/especificacioncomision', 'RecibosController@especificacioncomision');
+  Route::get('/{id}/especificacioncomision', 'RecibosController@especificacioncomision');
   Route::get('/imprimir', 'RecibosController@imprimir');
-  Route::get('/comprobantes', 'RecibosController@comprobantes');
+  Route::get('/{id}/comprobantes', 'RecibosController@comprobantes');
   Route::post('/TraerEmpleado', 'RecibosController@TraerEmpleado');
   Route::post('/TraerNombreDependencia', 'RecibosController@TraerNombreDependencia');
   Route::post('/create', 'RecibosController@store');
@@ -31,6 +31,18 @@ Route::prefix('recibos')->group(function() {
 
   Route::get('/tabla', 'RecibosController@tabla');
   Route::get('/{id}/edit', 'RecibosController@edit');
+  Route::post('/cancelar', 'RecibosController@cancelar');
+  Route::post('/finiquitar', 'RecibosController@finiquitar');
+  Route::post('/finiquitarP', 'RecibosController@finiquitarP');
+  Route::post('/comprobar', 'RecibosController@comprobar');
+  Route::post('/tablaComprobacion', 'RecibosController@tablaComprobacion');
+  Route::get('/descargar/{name}', 'RecibosController@download');
+  Route::delete('/borrarComprobante', 'RecibosController@borrarComprobante');
+  Route::get('/especificaciones/{id}/{especificacion}/{comisionado}/{telefono}/{especificar}/{recorrido}/{municipio}/{direccion}', 'RecibosController@especificaciones');
+
+
+
+
 
 
 

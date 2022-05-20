@@ -1417,28 +1417,28 @@
                 <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
                   <div class="row">
                     <div class="col-md-6">
-                       <input type="text" id="director_area_firma" name="director_area_firma" class="form-control" disabled>
+                       <input type="text" id="director_area_firma" name="director_area_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->director_area }} @endisset" disabled>
                         <p style="text-align:center;">DIRECTOR DEL ÁREA <br> NOMBRE Y FIRMA </p>
                     </div>
                     <div class="col-md-6">
-                      <input type="text" id="organo_control_firma" name="organo_control_firma" class="form-control" disabled>
+                      <input type="text" id="organo_control_firma" name="organo_control_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->organo_control }} @endisset" disabled>
                         <p style="text-align:center;">ORGANO DE CONTROL<br> NOMBRE Y FIRMA </p>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <input type="text" id="director_administrativo_firma" name="director_administrativo_firma" class="form-control" disabled>
+                      <input type="text" id="director_administrativo_firma" name="director_administrativo_firma" value="@isset($firmantes) {{ $firmantes->director_administrativo }} @endisset" class="form-control" disabled>
                         <p style="text-align:center;">DIRECTOR ADMINISTRATIVO <br> NOMBRE Y FIRMA </p>
                     </div>
                     <div class="col-md-6">
 
-                      <input type="text" class="form-control" value="">
+                      <input type="text" class="form-control" id="cheque_firma" value="@isset($firmantes) {{ $firmantes->recibi_cheque }} @endisset">
                       <p style="text-align:center;">RECIBÍ CHEQUE</p>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                    <input type="text" id="jefe_firma" name="jefe_firma" class="form-control" disabled>
+                    <input type="text" id="jefe_firma" name="jefe_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->superior_inmediato }} @endisset" disabled>
                         <p style="text-align:center;">SUPERIOR INMEDIATO <br> NOMBRE Y FIRMA </p>
                     </div>
                   </div>
@@ -1534,6 +1534,12 @@ $('#tabla6').hide();
     $('#tabla5').hide();
     $('#tabla6').show();
   }
+  function validaNumericos(event) {
+      if(event.charCode >= 48 && event.charCode <= 57){
+        return true;
+       }
+       return false;
+  }
 
   $(function () {
     $('#kt_datetimepicker_1').datetimepicker({
@@ -1596,7 +1602,7 @@ $('#tabla6').hide();
                           $('#direccion').val('');
                           $('#departamento').val('');
                           for (var i = 0; i < datas.length; i++) {
-                          console.log(datas[i].id)
+                          //console.log(datas[i].id)
 
                             if (datas[i].id_tipo == 1 || datas[i].id_tipo == 2) {
                               $('#dependencia').val(datas[i].nombre);
@@ -1709,11 +1715,23 @@ $('#tabla6').hide();
     var n_dias_ina = $('#n_dias_ina').val();
     var descripcion = $('#descripcion').val();
 
+    var director_area_firma = $('#director_area_firma').val();
+    var organo_control_firma = $('#organo_control_firma').val();
+    var director_administrativo_firma = $('#director_administrativo_firma').val();
+    var cheque_firma = $('#cheque_firma').val();
+    var jefe_firma = $('#jefe_firma').val();
+
+
+
+
       var formData = new FormData();
        //formData.append('photo', $avatarInput[0].files[0]);
 
       @isset($recibos)
       formData.append('id',{{ $recibos->id }});
+      @endisset
+      @isset($firmantes)
+      formData.append('id_firmante',{{ $firmantes->id }});
       @endisset
       formData.append('n_empleado', n_empleado);
       formData.append('nombre_empleado', nombre_empleado);
@@ -1729,6 +1747,14 @@ $('#tabla6').hide();
       formData.append('n_dias', n_dias);
       formData.append('n_dias_ina', n_dias_ina);
       formData.append('descripcion', descripcion);
+
+      /////////////// FIRMANTES ////////////////////
+      formData.append('director_area_firma', director_area_firma);
+      formData.append('organo_control_firma', organo_control_firma);
+      formData.append('director_administrativo_firma', director_administrativo_firma);
+      formData.append('cheque_firma', cheque_firma);
+      formData.append('jefe_firma', jefe_firma);
+
 
 
       $.ajax({

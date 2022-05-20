@@ -44,55 +44,7 @@
     </tr>
     </thead>
    <tbody>
-     <!-- <tr>
-       <td>GO/2019/ITABEC/000</td>
-       <td>CEAT</td>
-       <td>JUAN PEREZ RAMIREZ</td>
-       <td>15111</td>
-       <td>19/02/2022</td>
-       <td>19/02/2022</td>
-       <td>$2500</td>
-       <td>Capturado</td>
-       <td>
-        <div class='btn-group dropleft'>
-          <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
-          <div class='dropdown-menu '  >
-            <a class='dropdown-item' href="/recibos/show">
-            Ver Detalle
-            </a>
-            <a class='dropdown-item' onclick="finiquitarP()">
-            Finiquitar Provisional
-            </a>
-            <a class='dropdown-item' onclick="finiquitar()">
-            Finiquitar
-            </a>
 
-            <a class='dropdown-item' onclick="baja()">
-            Cancelar
-            </a>
-            <a class='dropdown-item' href="/recibos/recibo">
-            Recibo Complementario
-            </a>
-            <a class='dropdown-item' href="/recibos/comprobantes">
-            Comprobaciones
-            </a>
-
-            <div role="separator" class="dropdown-divider"></div>
-            <a class='dropdown-item'href="/recibos/imprimir" >
-            Imprimir Recibo
-            </a>
-
-            <a class='dropdown-item' href="/recibos/oficio">
-            Oficio de Comisión
-            </a>
-            <a class='dropdown-item' href="/recibos/especificacioncomision">
-            Especificación de Comisión
-            </a>
-
-          </div>
-         </div>
-       </td>
-     </tr> -->
    </tbody>
 </table>
 </div>
@@ -115,20 +67,18 @@
               <div class="row">
                 <div class="col-md-6">
                     <label for="inputPassword4" style="font-size:12px;" class="form-label">Estatus: </label>
-                    <input type="text" name="" class="form-control">
-                    <div class="invalid-feedback">
-                      Por Favor Ingrese Correo Eléctronico
-                    </div>
+                    <input type="text" value="Cancelar" disabled class="form-control">
                 </div>
                 <div class="col-md-12">
+                  <input type="hidden" id="id_baja">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Motivo: </label>
-                  <textarea name="name" rows="8" cols="80" class="form-control"></textarea>
+                  <textarea name="motivo_cancelar" rows="8" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary font-weight-bold">Guardar</button>
+                <button type="button" class="btn btn-primary font-weight-bold" onclick="GuardarCancelar()">Guardar</button>
             </div>
         </div>
     </div>
@@ -152,21 +102,18 @@
               <div class="row">
                 <div class="col-md-6">
                     <label for="inputPassword4" style="font-size:12px;" class="form-label">Estatus: </label>
-                    <input type="text" name="" class="form-control">
-                    <div class="invalid-feedback">
-                      Por Favor Ingrese Correo Eléctronico
-                    </div>
+                    <input type="text" value="Finiquitar" disabled class="form-control">
                 </div>
                 <div class="col-md-12">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Motivo: </label>
-
-                  <textarea name="name" rows="8" cols="80" class="form-control"></textarea>
+                  <input type="hidden" id="id_finiquitar">
+                  <textarea name="motivo_finiquitar" rows="8" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary font-weight-bold">Guardar</button>
+                <button type="button" class="btn btn-primary font-weight-bold" onclick="Guardarfiniquitar()">Guardar</button>
             </div>
         </div>
     </div>
@@ -190,21 +137,18 @@
               <div class="row">
                 <div class="col-md-6">
                     <label for="inputPassword4" style="font-size:12px;" class="form-label">Estatus: </label>
-                    <input type="text" name="" class="form-control">
-                    <div class="invalid-feedback">
-                      Por Favor Ingrese Correo Eléctronico
-                    </div>
+                    <input type="text" value="Finiquitar Provicional" disabled class="form-control">
                 </div>
                 <div class="col-md-12">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Motivo: </label>
-
-                  <textarea name="name" rows="8" cols="80" class="form-control"></textarea>
+                  <input type="hidden" id="id_finiquitarP">
+                  <textarea name="motivo_finiquitar_provicional" rows="8" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary font-weight-bold">Guardar</button>
+                <button type="button" class="btn btn-primary font-weight-bold" onclick="GuardarfiniquitarP()">Guardar</button>
             </div>
         </div>
     </div>
@@ -217,15 +161,132 @@ $('#finiquitar').modal('hide');
 $('#finiquitarP').modal('hide');
 $('#baja').modal('hide');
 
-function baja(){
+function baja(id){
   $('#baja').modal('show');
+  $('#id_baja').val(id);
 }
-function finiquitar(){
+function finiquitar(id){
   $('#finiquitar').modal('show');
+  $('#id_finiquitar').val(id);
 }
-function finiquitarP(){
+function finiquitarP(id){
   $('#finiquitarP').modal('show');
+  $('#id_finiquitarP').val(id);
 }
+
+function GuardarCancelar(){
+  var id = $('#id_baja').val();
+  var motivo = $('textarea[name=motivo_cancelar]').val();
+
+  Swal.fire({
+        title: "¿Esta seguro de cancelar el registro?",
+        text: "No se podrá revertir",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then(function(result) {
+        if (result.value) {
+          $.ajax({
+             type:"POST",
+             url:"/recibos/cancelar",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data:{
+               id:id,
+               motivo:motivo,
+             },
+              success:function(data){
+                Swal.fire("", data.success, "success").then(function(){
+                  tabla.ajax.reload();
+                  $('#id_baja').val('');
+                  $('textarea[name=motivo_cancelar]').val('');
+                  $('#baja').modal('hide');
+                 });
+              }
+          });
+        }
+    })
+  // console.log(id,motivo)
+
+}
+
+function Guardarfiniquitar(){
+  var id = $('#id_finiquitar').val();
+  var motivo = $('textarea[name=motivo_finiquitar]').val();
+
+  Swal.fire({
+        title: "¿Esta seguro de finiquitar el registro?",
+        text: "No se podrá revertir",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then(function(result) {
+        if (result.value) {
+          $.ajax({
+             type:"POST",
+             url:"/recibos/finiquitar",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data:{
+               id:id,
+               motivo:motivo,
+             },
+              success:function(data){
+                Swal.fire("", data.success, "success").then(function(){
+                  tabla.ajax.reload();
+                  $('#id_finiquitar').val('');
+                  $('textarea[name=motivo_finiquitar]').val('');
+                  $('#finiquitar').modal('hide');
+                });
+              }
+          });
+        }
+    })
+  // console.log(id,motivo)
+}
+
+function GuardarfiniquitarP(){
+  var id = $('#id_finiquitarP').val();
+  var motivo = $('textarea[name=motivo_finiquitar_provicional]').val();
+
+  Swal.fire({
+        title: "¿Esta seguro de finiquitar provivionalmente el registro?",
+        text: "No se podrá revertir",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then(function(result) {
+        if (result.value) {
+          $.ajax({
+             type:"POST",
+             url:"/recibos/finiquitarP",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data:{
+               id:id,
+               motivo:motivo,
+             },
+              success:function(data){
+                Swal.fire("", data.success, "success").then(function(){
+                  tabla.ajax.reload();
+                  $('#id_finiquitarP').val('');
+                  $('textarea[name=motivo_finiquitar_provicional]').val('');
+                  $('#finiquitarP').modal('hide');
+                });
+              }
+          });
+        }
+    })
+
+}
+
+
 var tabla;
 $(function() {
 tabla = $('#kt_datatable').DataTable({
@@ -252,42 +313,42 @@ tabla = $('#kt_datatable').DataTable({
   language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
 });
 });
-function eliminar(id){
-//console.log(id);
-Swal.fire({
-      title: "¿Esta seguro de eliminar el registro?",
-      text: "No se podrá recuperar la información",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Aceptar",
-      cancelButtonText: "Cancelar"
-  }).then(function(result) {
-      if (result.value) {
-
-        $.ajax({
-
-           type:"Delete",
-
-           url:"/catalogos/alimentacion/borrar",
-           headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-           },
-           data:{
-              id:id,
-           },
-
-            success:function(data){
-              Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
-
-            }
-
-
-        });
-
-
-      }
-  })
-}
+// function eliminar(id){
+// //console.log(id);
+// Swal.fire({
+//       title: "¿Esta seguro de eliminar el registro?",
+//       text: "No se podrá recuperar la información",
+//       icon: "warning",
+//       showCancelButton: true,
+//       confirmButtonText: "Aceptar",
+//       cancelButtonText: "Cancelar"
+//   }).then(function(result) {
+//       if (result.value) {
+//
+//         $.ajax({
+//
+//            type:"Delete",
+//
+//            url:"/catalogos/alimentacion/borrar",
+//            headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//            },
+//            data:{
+//               id:id,
+//            },
+//
+//             success:function(data){
+//               Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
+//
+//             }
+//
+//
+//         });
+//
+//
+//       }
+//   })
+// }
 
 </script>
 @endsection

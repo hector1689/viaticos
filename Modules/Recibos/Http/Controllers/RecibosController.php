@@ -10,9 +10,18 @@ use \Modules\Catalogos\Entities\Personal_Departamento;
 use \Modules\Catalogos\Entities\Areas;
 use \Modules\Catalogos\Entities\Departamento_Firmantes;
 use \Modules\Catalogos\Entities\Personal_Siti;
-
+use \Modules\Catalogos\Entities\Kilometraje;
+use \Modules\Recibos\Entities\Comprobaciones;
+use Illuminate\Support\Facades\Storage;
 use \Modules\Recibos\Entities\Recibos;
 use \Modules\Recibos\Entities\EstatusRecibo;
+use Barryvdh\DomPDF\Facade as PDF;
+use \Modules\Recibos\Entities\ComisionEspecificar;
+use \Modules\Recibos\Entities\ComisionAcreditados;
+use \Modules\Recibos\Entities\ComisionPersonal;
+use \Modules\Recibos\Entities\ComisionTelefono;
+use \Modules\Recibos\Entities\ReciboFirmantes;
+
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -96,6 +105,18 @@ class RecibosController extends Controller
         $recibo->descripcion_comision = $request->descripcion;
         $recibo->cve_usuario = Auth::user()->id;
         $recibo->save();
+
+
+        $firmantes = new ReciboFirmantes();
+        $firmantes->cve_t_viaticos = $recibo->id;
+        $firmantes->director_area = $request->director_area_firma;
+        $firmantes->organo_control = $request->organo_control_firma;
+        $firmantes->director_administrativo = $request->director_administrativo_firma;
+        $firmantes->recibi_cheque = $request->cheque_firma;
+        $firmantes->superior_inmediato = $request->jefe_firma;
+        $firmantes->cve_usuario = Auth::user()->id;
+        $firmantes->save();
+
         return response()->json(['success'=>'Registro agregado satisfactoriamente']);
 
       } catch (\Exception $e) {
@@ -119,8 +140,25 @@ class RecibosController extends Controller
         return view('recibos::recibo');
     }
 
-    public function oficio(){
-      return view('recibos::oficio');
+    public function oficio($id){
+      $data['id'] = $id;
+      $data['recibos'] = Recibos::find($id);
+      $data['firmantes'] =   ReciboFirmantes::where([
+                            ['activo',1],
+                            ['cve_t_viaticos',$id],
+                          ])->first();
+      // return view('recibos::oficio')->with($data);
+
+      $pdf = PDF::loadView('recibos::oficio', $data);
+      $pdf->setPaper(array(0,0,612.00, 790.00), 'portrait');
+      $pdf->setOptions(['enable_php' => true,'isHtml5ParserEnabled' => true,'isRemoteEnabled' => true]);
+
+      $pdf->output();
+
+      $namePdf = 'Oficio de Comisión.pdf';
+      return $pdf->download($namePdf);
+      return $pdf->stream();
+
 
     }
 
@@ -133,13 +171,144 @@ class RecibosController extends Controller
       return view('recibos::imprimir');
 
     }
-    public function especificacioncomision(){
-      return view('recibos::especificarcomision');
+    public function especificacioncomision($id){
+      $data['id'] = $id;
+      $data['personal_comisionado'] = Personal_Departamento::where('activo',1)->get();
+      $data['localidades'] = Kilometraje::where('activo',1)->get();
+      return view('recibos::especificarcomision')->with($data);
+    }
+
+    public function comprobantes($id){
+      $data['recibos'] = Recibos::find($id);
+      $data['estatus'] = EstatusRecibo::all();
+      return view('recibos::comprobacion')->with($data);
 
     }
 
-    public function comprobantes(){
-      return view('recibos::comprobacion');
+
+    public function especificaciones($id,$especificacion,$comisionado,$telefono,$especificar,$recorrido,$municipio,$direccion){
+
+      $datosacredita = explode(',', $especificacion);
+      $datoscomisionado = explode(',', $comisionado);
+      $datostelefono = explode(',', $telefono);
+
+      $existe_comision = ComisionEspecificar::where([
+        ['activo',1],
+        ['cve_t_viaticos',$id],
+      ])->first();
+
+      if (isset($existe_comision)) {
+
+        $comision = ComisionEspecificar::find($existe_comision->id);
+        $comision->cve_t_viaticos = $id;
+        $comision->especificar_comision = $especificar;
+        $comision->recorrido_interno = $recorrido;
+        $comision->cve_kilometraje = $municipio;
+        $comision->direccion = $direccion;
+        $comision->cve_usuario = Auth::user()->id;
+        $comision->save();
+
+        ComisionAcreditados::where([
+          ['activo',1],
+          ['cve_t_viatico',$id],
+        ])->delete();
+
+        foreach ($datosacredita as $key => $value) {
+          $acreditados = new ComisionAcreditados();
+          $acreditados->cve_t_viatico = $id;
+          $acreditados->acreditado = $value;
+          $acreditados->cve_usuario = Auth::user()->id;
+          $acreditados->save();
+        }
+
+        ComisionPersonal::where([
+          ['activo',1],
+          ['cve_t_viatico',$id],
+        ])->delete();
+
+        foreach ($datoscomisionado as $key => $valuepersonal) {
+          $personal = new ComisionPersonal();
+          $personal->cve_t_viatico = $id;
+          $personal->id_personal = $valuepersonal;
+          $personal->cve_usuario = Auth::user()->id;
+          $personal->save();
+        }
+
+        ComisionTelefono::where([
+          ['activo',1],
+          ['cve_t_viatico',$id],
+        ])->delete();
+
+        foreach ($datostelefono as $key => $valuetelefono) {
+          $telefonos = new ComisionTelefono();
+          $telefonos->cve_t_viatico = $id;
+          $telefonos->telefono = $valuetelefono;
+          $telefonos->cve_usuario = Auth::user()->id;
+          $telefonos->save();
+        }
+
+
+      }else{
+        $comision = new ComisionEspecificar();
+        $comision->cve_t_viaticos = $id;
+        $comision->especificar_comision = $especificar;
+        $comision->recorrido_interno = $recorrido;
+        $comision->cve_kilometraje = $municipio;
+        $comision->direccion = $direccion;
+        $comision->cve_usuario = Auth::user()->id;
+        $comision->save();
+
+
+        foreach ($datosacredita as $key => $value) {
+          $acreditados = new ComisionAcreditados();
+          $acreditados->cve_t_viatico = $id;
+          $acreditados->acreditado = $value;
+          $acreditados->cve_usuario = Auth::user()->id;
+          $acreditados->save();
+        }
+
+        foreach ($datoscomisionado as $key => $valuepersonal) {
+          $personal = new ComisionPersonal();
+          $personal->cve_t_viatico = $id;
+          $personal->id_personal = $valuepersonal;
+          $personal->cve_usuario = Auth::user()->id;
+          $personal->save();
+        }
+
+        foreach ($datostelefono as $key => $valuetelefono) {
+          $telefonos = new ComisionTelefono();
+          $telefonos->cve_t_viatico = $id;
+          $telefonos->telefono = $valuetelefono;
+          $telefonos->cve_usuario = Auth::user()->id;
+          $telefonos->save();
+        }
+      }
+
+
+
+
+      $comision = ComisionEspecificar::find($comision->id);
+      $data['comision'] = ComisionEspecificar::find($comision->id);
+      //dd($data['comision']);
+
+      $data['acreditados'] = ComisionAcreditados::where([['activo',1],['cve_t_viatico',$id]])->get();
+      $data['Personal'] = ComisionPersonal::where([['activo',1],['cve_t_viatico',$id]])->get();
+      $data['telefonos'] = ComisionTelefono::where([['activo',1],['cve_t_viatico',$id]])->get();
+
+
+        $pdf = PDF::loadView('recibos::especificacion', $data);
+        $pdf->setPaper(array(0,0,612.00, 790.00), 'portrait');
+        $pdf->setOptions(['enable_php' => true,'isHtml5ParserEnabled' => true,'isRemoteEnabled' => true]);
+
+        $pdf->output();
+
+        $namePdf = 'Especificación Comisión - '.$comision->id.'.pdf';
+        return $pdf->download($namePdf);
+        return $pdf->stream();
+
+
+
+      //dd($id,$datosacredita,$datoscomisionado,$datostelefono,$especificar,$recorrido,$municipio,$direccion);
 
     }
 
@@ -299,7 +468,10 @@ class RecibosController extends Controller
     {
         $data['recibos'] = Recibos::find($id);
         $data['estatus'] = EstatusRecibo::all();
-
+        $data['firmantes'] =   ReciboFirmantes::where([
+                              ['activo',1],
+                              ['cve_t_viaticos',$id],
+                            ])->first();
         return view('recibos::create')->with($data);
     }
 
@@ -352,6 +524,20 @@ class RecibosController extends Controller
           $recibo->descripcion_comision = $request->descripcion;
           $recibo->cve_usuario = Auth::user()->id;
           $recibo->save();
+
+
+          $firmantes = ReciboFirmantes::find($request->id_firmante);
+          $firmantes->director_area = $request->director_area_firma;
+          $firmantes->organo_control = $request->organo_control_firma;
+          $firmantes->director_administrativo = $request->director_administrativo_firma;
+          $firmantes->recibi_cheque = $request->cheque_firma;
+          $firmantes->superior_inmediato = $request->jefe_firma;
+          $firmantes->cve_usuario = Auth::user()->id;
+          $firmantes->save();
+
+
+
+
           return response()->json(['success'=>'Registro agregado satisfactoriamente']);
 
         } catch (\Exception $e) {
@@ -391,6 +577,112 @@ class RecibosController extends Controller
         ['id',$request->id]
       ])->first();
       return $jefe;
+    }
+
+    public function cancelar(Request $request){
+      try {
+          $recibos = Recibos::find($request->id);
+          $recibos->cve_estatus = 7;
+          $recibos->motivo = $request->motivo;
+          $recibos->save();
+          return response()->json(['success'=>'Cancelado exitosamente']);
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+    }
+
+    public function finiquitar(Request $request){
+      try {
+          $recibos = Recibos::find($request->id);
+          $recibos->cve_estatus = 4;
+          $recibos->motivo = $request->motivo;
+          $recibos->save();
+          return response()->json(['success'=>'Finiquitado exitosamente']);
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+    }
+
+    public function finiquitarP(Request $request){
+      try {
+          $recibos = Recibos::find($request->id);
+          $recibos->cve_estatus = 5;
+          $recibos->motivo = $request->motivo;
+          $recibos->save();
+          return response()->json(['success'=>'Finiquitado Provicionalmente exitosamente']);
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+    }
+
+
+    public function comprobar(Request $request){
+      try {
+        //dd($request->all());
+
+        $archivo  = $request->file('archivos');
+        $nombre_archivo = time().$archivo->getClientOriginalName();
+        $archivo->move(public_path().'/storage/',$nombre_archivo);
+
+        $comprobacion = new Comprobaciones();
+        $comprobacion->cve_t_viatico = $request->id;
+        $comprobacion->archivo = $nombre_archivo;
+        $comprobacion->cve_usuario = Auth::user()->id;
+        $comprobacion->save();
+
+        return response()->json(['success'=>'Archivo Agregado Exitosamente']);
+
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
+
+    }
+
+    public function download($name){
+      //dd($request->all());
+      return response()->download(public_path('/storage/'.$name.''));
+    }
+
+    public function borrarComprobante(Request $request){
+      try {
+        $comprobacion = Comprobaciones::find($request->id);
+        $comprobacion->activo = 0;
+        $comprobacion->save();
+        return response()->json(['success'=>'Eliminado exitosamente']);
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
+    }
+
+    public function tablaComprobacion(Request $request){
+      setlocale(LC_TIME, 'es_ES');
+      \DB::statement("SET lc_time_names = 'es_ES'");
+      //dd('entro');
+      $registros = Comprobaciones::where([['activo', 1],['cve_t_viatico',$request->id]]); //Conocenos es la entidad
+      $datatable = DataTables::of($registros)
+      ->make(true);
+      //Cueri
+      $data = $datatable->getData();
+      foreach ($data->data as $key => $value) {
+
+        $acciones = [
+          "Descargar" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/descargar/$value->archivo"
+          ],
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ],
+        ];
+
+
+
+        $value->acciones = generarDropdown($acciones);
+
+      }
+      $datatable->setData($data);
+      return $datatable;
     }
 
     public function tabla(){
