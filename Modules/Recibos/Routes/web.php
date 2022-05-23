@@ -39,6 +39,8 @@ Route::prefix('recibos')->group(function() {
   Route::get('/descargar/{name}', 'RecibosController@download');
   Route::delete('/borrarComprobante', 'RecibosController@borrarComprobante');
   Route::get('/especificaciones/{id}/{especificacion}/{comisionado}/{telefono}/{especificar}/{recorrido}/{municipio}/{direccion}', 'RecibosController@especificaciones');
+  Route::post('/ConvertirLetras', 'RecibosController@ConvertirLetras');
+
 
 
 

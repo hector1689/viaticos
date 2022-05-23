@@ -21,7 +21,10 @@ use \Modules\Recibos\Entities\ComisionAcreditados;
 use \Modules\Recibos\Entities\ComisionPersonal;
 use \Modules\Recibos\Entities\ComisionTelefono;
 use \Modules\Recibos\Entities\ReciboFirmantes;
+use \Modules\Recibos\Entities\Bitacora;
+use \Modules\Recibos\Entities\DatosPago;
 
+use Luecano\NumeroALetras\NumeroALetras;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -117,6 +120,32 @@ class RecibosController extends Controller
         $firmantes->cve_usuario = Auth::user()->id;
         $firmantes->save();
 
+        list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+        $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+
+        $datospago = new DatosPago();
+        $datospago->cve_t_viatico = $recibo->id;
+        $datospago->secretaria = $request->secretaria_pago;
+        $datospago->num_cheque = $request->cheque;
+        $datospago->fehca_inicia = $fecha_pago;
+        $datospago->cantidad = $request->cantidad;
+        $datospago->cantidad_letra = $request->letras_cantidad;
+        $datospago->favor_cargo_banco = 'banco de mexico';
+        $datospago->cve_usuario = Auth::user()->id;
+        $datospago->save();
+
+
+
+
+        $bitacora = new Bitacora();
+        $bitacora->cve_t_viatico = $recibo->id;
+        $bitacora->fecha = date('Y-m-d H:i:s');
+        $bitacora->tarea = 'Alta Registro';
+        $bitacora->cve_usuario = Auth::user()->id;
+        $bitacora->save();
+
+
+
         return response()->json(['success'=>'Registro agregado satisfactoriamente']);
 
       } catch (\Exception $e) {
@@ -148,6 +177,13 @@ class RecibosController extends Controller
                             ['cve_t_viaticos',$id],
                           ])->first();
       // return view('recibos::oficio')->with($data);
+
+      $bitacora = new Bitacora();
+      $bitacora->cve_t_viatico = $id;
+      $bitacora->fecha = date('Y-m-d H:i:s');
+      $bitacora->tarea = 'Impresión Oficio';
+      $bitacora->cve_usuario = Auth::user()->id;
+      $bitacora->save();
 
       $pdf = PDF::loadView('recibos::oficio', $data);
       $pdf->setPaper(array(0,0,612.00, 790.00), 'portrait');
@@ -248,6 +284,7 @@ class RecibosController extends Controller
         }
 
 
+
       }else{
         $comision = new ComisionEspecificar();
         $comision->cve_t_viaticos = $id;
@@ -285,7 +322,12 @@ class RecibosController extends Controller
       }
 
 
-
+      $bitacora = new Bitacora();
+      $bitacora->cve_t_viatico = $id;
+      $bitacora->fecha = date('Y-m-d H:i:s');
+      $bitacora->tarea = 'Impresión Especificación de Comisición';
+      $bitacora->cve_usuario = Auth::user()->id;
+      $bitacora->save();
 
       $comision = ComisionEspecificar::find($comision->id);
       $data['comision'] = ComisionEspecificar::find($comision->id);
@@ -472,6 +514,16 @@ class RecibosController extends Controller
                               ['activo',1],
                               ['cve_t_viaticos',$id],
                             ])->first();
+
+        $data['bitacora'] =  Bitacora::where([
+                                          ['activo',1],
+                                          ['cve_t_viatico',$id],
+                                        ])->get();
+        $data['pagos'] =   DatosPago::where([
+                              ['activo',1],
+                              ['cve_t_viatico',$id],
+                            ])->first();
+
         return view('recibos::create')->with($data);
     }
 
@@ -535,7 +587,26 @@ class RecibosController extends Controller
           $firmantes->cve_usuario = Auth::user()->id;
           $firmantes->save();
 
+          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
 
+
+          $datospago = DatosPago::find($request->id_pagos);
+          $datospago->secretaria = $request->secretaria_pago;
+          $datospago->num_cheque = $request->cheque;
+          $datospago->fehca_inicia = $fecha_pago;
+          $datospago->cantidad = $request->cantidad;
+          $datospago->cantidad_letra = $request->letras_cantidad;
+          $datospago->favor_cargo_banco = 'banco de mexico';
+          $datospago->cve_usuario = Auth::user()->id;
+          $datospago->save();
+
+          $bitacora = new Bitacora();
+          $bitacora->cve_t_viatico = $recibo->id;
+          $bitacora->fecha = date('Y-m-d H:i:s');
+          $bitacora->tarea = 'Editar Registro';
+          $bitacora->cve_usuario = Auth::user()->id;
+          $bitacora->save();
 
 
           return response()->json(['success'=>'Registro agregado satisfactoriamente']);
@@ -585,6 +656,14 @@ class RecibosController extends Controller
           $recibos->cve_estatus = 7;
           $recibos->motivo = $request->motivo;
           $recibos->save();
+
+          $bitacora = new Bitacora();
+          $bitacora->cve_t_viatico = $request->id;
+          $bitacora->fecha = date('Y-m-d H:i:s');
+          $bitacora->tarea = 'Cancelo Registro';
+          $bitacora->cve_usuario = Auth::user()->id;
+          $bitacora->save();
+
           return response()->json(['success'=>'Cancelado exitosamente']);
         } catch (\Exception $e) {
           dd($e->getMessage());
@@ -597,6 +676,14 @@ class RecibosController extends Controller
           $recibos->cve_estatus = 4;
           $recibos->motivo = $request->motivo;
           $recibos->save();
+
+          $bitacora = new Bitacora();
+          $bitacora->cve_t_viatico = $request->id;
+          $bitacora->fecha = date('Y-m-d H:i:s');
+          $bitacora->tarea = 'Finiquito Registro';
+          $bitacora->cve_usuario = Auth::user()->id;
+          $bitacora->save();
+
           return response()->json(['success'=>'Finiquitado exitosamente']);
         } catch (\Exception $e) {
           dd($e->getMessage());
@@ -609,6 +696,14 @@ class RecibosController extends Controller
           $recibos->cve_estatus = 5;
           $recibos->motivo = $request->motivo;
           $recibos->save();
+
+          $bitacora = new Bitacora();
+          $bitacora->cve_t_viatico = $request->id;
+          $bitacora->fecha = date('Y-m-d H:i:s');
+          $bitacora->tarea = 'Finiquito Provicionalmente Registro';
+          $bitacora->cve_usuario = Auth::user()->id;
+          $bitacora->save();
+
           return response()->json(['success'=>'Finiquitado Provicionalmente exitosamente']);
         } catch (\Exception $e) {
           dd($e->getMessage());
@@ -630,6 +725,13 @@ class RecibosController extends Controller
         $comprobacion->cve_usuario = Auth::user()->id;
         $comprobacion->save();
 
+        $bitacora = new Bitacora();
+        $bitacora->cve_t_viatico = $request->id;
+        $bitacora->fecha = date('Y-m-d H:i:s');
+        $bitacora->tarea = 'Agrego Comprobante';
+        $bitacora->cve_usuario = Auth::user()->id;
+        $bitacora->save();
+
         return response()->json(['success'=>'Archivo Agregado Exitosamente']);
 
       } catch (\Exception $e) {
@@ -648,10 +750,25 @@ class RecibosController extends Controller
         $comprobacion = Comprobaciones::find($request->id);
         $comprobacion->activo = 0;
         $comprobacion->save();
+
+        $bitacora = new Bitacora();
+        $bitacora->cve_t_viatico = $request->id;
+        $bitacora->fecha = date('Y-m-d H:i:s');
+        $bitacora->tarea = 'Elimino Comprobante';
+        $bitacora->cve_usuario = Auth::user()->id;
+        $bitacora->save();
+
         return response()->json(['success'=>'Eliminado exitosamente']);
       } catch (\Exception $e) {
         dd($e->getMessage());
       }
+    }
+
+
+    public function ConvertirLetras(Request $request){
+      $formatter = new NumeroALetras();
+      $formatter->conector = 'Y';
+      return $formatter->toMoney($request->cantidad, 2, 'pesos', 'centavos');
     }
 
     public function tablaComprobacion(Request $request){

@@ -217,9 +217,11 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4" tabindex="-1" aria-disabled="true">Firmas</a>
                 </li>
+                @isset($recibos)
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_5" tabindex="-1" aria-disabled="true">Seguimiento</a>
                 </li>
+                @endisset
             </ul>
             <div class="tab-content mt-5" id="myTabContent">
                 <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
@@ -1382,22 +1384,28 @@
                   <div class="row">
                     <div class="col-md-6">
                       <label for="">RECIBÍ DE LA SECRETARIA DE</label>
-                      <p>Comisión Estatal del Agua</p>
+                      <input type="text" id="secretaria_pago" class="form-control" value="@isset($pagos) {{ $pagos->secretaria }} @endisset" disabled>
                     </div>
                     <div class="col-md-6">
                       <label for="">CHEQUE N°</label>
-                      <input type="text" class="form-control" value="">
+                      <input type="text" class="form-control" id="cheque" placeholder="Escribir n° de cheque" value="@isset($pagos) {{ $pagos->num_cheque }} @endisset">
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-md-6">
                       <label for="">DE FECHA</label>
-                      <input type="text" class="form-control" value="">
+                      @isset($pagos)
+                      <?php
+                      list($dia,$mes,$anio) = explode('-',$pagos->fehca_inicia);
+                      $fecha = $anio.'/'.$mes.'/'.$dia;
+                       ?>
+                       @endisset
+                      <input type="text" class="form-control" id="kt_datepicker" name='fecha_pago' value="@isset($pagos) {{ $fecha }} @endisset" placeholder="Selecciona Fecha">
                     </div>
                     <div class="col-md-6">
                       <label for="">POR LA CANTIDAD DE</label>
-                      <input type="text" class="form-control" value="">
+                      <input type="text" class="form-control" id="cantidad" onchange="cantidadletra()" placeholder="Escribir Cantidad" value="@isset($pagos) {{ $pagos->cantidad }} @endisset">
                     </div>
                   </div>
 
@@ -1405,11 +1413,14 @@
                   <div class="row">
                     <div class="col-md-12">
                       <label for="">LETRA</label>
-                      <p>DOS MIL DOCIENTOS VIENTE</p>
+
+                      <div id="letras"></div>
+                      <input type="hidden" id="letras_cantidad" >
+
                     </div>
                     <div class="col-md-12">
                       <label for="">A MI FAVOR Y CARGO DEL BANCO</label>
-                      <p></p>
+                      <p>@isset($pagos) {{ $pagos->favor_cargo_banco }} @endisset</p>
                     </div>
                   </div>
 
@@ -1443,16 +1454,15 @@
                     </div>
                   </div>
                 </div>
+                @isset($recibos)
                 <div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel" aria-labelledby="kt_tab_pane_5">
                   <div class="col-md-12">
-                    <p>12-02-2022 14:00:00 PM (Alex Mondragon) Registro Bien</p>
-                    <p>12-02-2022 14:00:00 PM (Alex Mondragon) Registro Bien</p>
-                    <p>12-02-2022 14:00:00 PM (Alex Mondragon) Registro Bien</p>
-                    <p>12-02-2022 14:00:00 PM (Alex Mondragon) Registro Bien</p>
-                    <p>12-02-2022 14:00:00 PM (Alex Mondragon) Registro Bien</p>
-                    <p>12-02-2022 14:00:00 PM (Alex Mondragon) Registro Bien</p>
+                    @foreach($bitacora as $bit)
+                    <p>{{$bit->fecha}} ({{$bit->Usuario_obt->nombre}} {{$bit->Usuario_obt->apellido_paterno}} {{$bit->Usuario_obt->apellido_materno}}) {{$bit->tarea}}</p>
+                    @endforeach
                   </div>
                 </div>
+                @endisset
             </div>
 
 
@@ -1552,7 +1562,56 @@ $('#tabla6').hide();
       language: 'es',
       format: 'dd/mm/yyyy',
     });
+
+    $("#kt_datepicker").datepicker({
+      language: 'es',
+      format: 'dd/mm/yyyy',
+  });
 });
+
+$('#cantidad').keypress(function (tecla) {
+    if ((tecla.charCode < 48 || tecla.charCode > 57) && (tecla.charCode != 46) && (tecla.charCode != 8)) {
+        return false;
+    }else {
+             var len   = $('#cantidad').val().length;
+             var index = $('#cantidad').val().indexOf('.');
+             if (index > 0 && tecla.charCode == 46) {
+                 return false;
+             }
+             if (index > 0) {
+                 var CharAfterdot = (len + 1) - index;
+                 if (CharAfterdot > 3) {
+                     return false;
+                 }
+             }
+    }
+    return true;
+
+});
+@isset($pagos)
+var cantidadletras = '{{ $pagos->cantidad_letra }}';
+
+$('#letras').html('<p>'+cantidadletras+'</p>');
+$('#letras_cantidad').val(cantidadletras);
+@endisset
+function cantidadletra(){
+  console.log('entro')
+  var cantidad = $('#cantidad').val();
+  $.ajax({
+         type:"POST",
+         url:"/recibos/ConvertirLetras",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+             cantidad:cantidad,
+           },
+          success:function(data){
+            $('#letras').html('<p>'+data+'</p>');
+            $('#letras_cantidad').val(data);
+          }
+    });
+}
 
 
   function Empleado(){
@@ -1606,6 +1665,8 @@ $('#tabla6').hide();
 
                             if (datas[i].id_tipo == 1 || datas[i].id_tipo == 2) {
                               $('#dependencia').val(datas[i].nombre);
+                              $('#secretaria_pago').val(datas[i].nombre);
+
                             }
 
                             if(datas[i].id_tipo == 3 || datas[i].id_tipo == 4){
@@ -1721,7 +1782,11 @@ $('#tabla6').hide();
     var cheque_firma = $('#cheque_firma').val();
     var jefe_firma = $('#jefe_firma').val();
 
-
+    var secretaria_pago = $('#secretaria_pago').val();
+    var cheque = $('#cheque').val();
+    var fecha_pago = $('input[name=fecha_pago]').val();
+    var cantidad = $('#cantidad').val();
+    var letras_cantidad = $('#letras_cantidad').val();
 
 
       var formData = new FormData();
@@ -1732,6 +1797,9 @@ $('#tabla6').hide();
       @endisset
       @isset($firmantes)
       formData.append('id_firmante',{{ $firmantes->id }});
+      @endisset
+      @isset($pagos)
+      formData.append('id_pagos',{{ $pagos->id }});
       @endisset
       formData.append('n_empleado', n_empleado);
       formData.append('nombre_empleado', nombre_empleado);
@@ -1754,6 +1822,14 @@ $('#tabla6').hide();
       formData.append('director_administrativo_firma', director_administrativo_firma);
       formData.append('cheque_firma', cheque_firma);
       formData.append('jefe_firma', jefe_firma);
+
+      /////////////////// PAGO ////////////////////
+      formData.append('secretaria_pago', secretaria_pago);
+      formData.append('cheque', cheque);
+      formData.append('fecha_pago', fecha_pago);
+      formData.append('cantidad', cantidad);
+      formData.append('letras_cantidad', letras_cantidad);
+
 
 
 
