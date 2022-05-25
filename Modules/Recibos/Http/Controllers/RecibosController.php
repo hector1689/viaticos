@@ -11,6 +11,10 @@ use \Modules\Catalogos\Entities\Areas;
 use \Modules\Catalogos\Entities\Departamento_Firmantes;
 use \Modules\Catalogos\Entities\Personal_Siti;
 use \Modules\Catalogos\Entities\Kilometraje;
+use \Modules\Catalogos\Entities\Gasolina;
+use \Modules\Catalogos\Entities\Peaje;
+use \Modules\Catalogos\Entities\Rendimiento;
+use \Modules\Catalogos\Entities\Programa;
 use \Modules\Recibos\Entities\Comprobaciones;
 use Illuminate\Support\Facades\Storage;
 use \Modules\Recibos\Entities\Recibos;
@@ -55,7 +59,12 @@ class RecibosController extends Controller
      */
     public function create()
     {
-        return view('recibos::create');
+        $data['peajes'] = Peaje::where('activo',1)->get();
+        $data['gasolina'] = Gasolina::where('activo',1)->get();
+        $data['rendimiento'] = Rendimiento::where('activo',1)->get();
+        $data['programa'] = Programa::where('activo',1)->get();
+
+        return view('recibos::create')->with($data);
     }
 
     /**
@@ -523,8 +532,24 @@ class RecibosController extends Controller
                               ['activo',1],
                               ['cve_t_viatico',$id],
                             ])->first();
+        $data['peajes'] = Peaje::where('activo',1)->get();
+        $data['gasolina'] = Gasolina::where('activo',1)->get();
+        $data['rendimiento'] = Rendimiento::where('activo',1)->get();
+        $data['programa'] = Programa::where('activo',1)->get();
 
         return view('recibos::create')->with($data);
+    }
+
+
+    public function TraerGasolina(Request $request){
+      $gasolina =  Gasolina::find($request->id_gasolina);
+      return $gasolina;
+    }
+
+    public function traerCuotaVehiculo(Request $request){
+
+      $rendimiento = Rendimiento::find($request->cuota);
+      return $rendimiento;
     }
 
     /**

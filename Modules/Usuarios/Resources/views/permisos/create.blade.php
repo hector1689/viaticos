@@ -122,7 +122,7 @@ var objFiguras = {};
     $(":radio[name=page]").each(function(){
         if (this.checked) {
 
-          console.log($(this).val());
+          //console.log($(this).val());
           // objFiguras = {
           //     permisos: $(this).val(),
           //   }
@@ -133,7 +133,7 @@ var objFiguras = {};
         }
     });
 
-console.log(name,selected)
+//console.log(name,selected)
 @isset($permisos)
 var id = {{$permisos->id}};
 @else

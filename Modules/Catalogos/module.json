@@ -70,6 +70,13 @@
 
             ]
         },
+        "Programa": {
+            "enlace": "/catalogos/programa",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
         "Rendimiento": {
             "enlace": "/catalogos/rendimiento",
             "icono": "fas fa-table",
@@ -79,6 +86,13 @@
         },
         "Folio": {
             "enlace": "/catalogos/folios",
+            "icono": "fas fa-table",
+            "permises": [
+
+            ]
+        },
+        "Vehiculos": {
+            "enlace": "/catalogos/vehiculos",
             "icono": "fas fa-table",
             "permises": [
 

@@ -268,10 +268,11 @@ function agregarfiguras(objTablaAcredita){
 function eliminaracreditado(id){
   var este = $('#figura_nueva').val();
   console.log(id,este)
+  // var numero = id - 1;
   array_tableAcredita.splice(id,1);
   array_tablaAcredita2.splice(id,1);
   $('#filas'+id).remove();
-  // $('#filas').load(location.href + '#filas');
+  // $('#filas'+numero).load(location.href + '#filas'+numero);
 
   console.log(array_tableAcredita,array_tablaAcredita2);
 }

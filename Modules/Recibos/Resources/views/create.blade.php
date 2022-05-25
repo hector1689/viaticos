@@ -169,7 +169,7 @@
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias: </label>
-              <input type="text" class="form-control" id="n_dias"  placeholder="N° de dias" value="@isset($recibos) {{$recibos->num_dias}} @endisset" required>
+              <input type="text" class="form-control" id="n_dias"  placeholder="N° de dias" value="@isset($recibos) {{$recibos->num_dias}} @endisset" onkeypress='return validaNumericos(event)' required>
 
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
@@ -177,7 +177,7 @@
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias inhabiles: </label>
-              <input type="text" class="form-control" id="n_dias_ina"  placeholder="N° de dias inhabiles" value="@isset($recibos) {{$recibos->num_dias_inhabiles}} @endisset" required>
+              <input type="text" class="form-control" id="n_dias_ina"  placeholder="N° de dias inhabiles" value="@isset($recibos) {{$recibos->num_dias_inhabiles}} @endisset" onkeypress='return validaNumericos(event)' required>
 
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
@@ -476,7 +476,7 @@
                   <div class="row">
                     <div class="col-md-2">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Kilometro recorrido interno: </label>
-                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Anexo" value="50">
+                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Anexo" >
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
@@ -490,7 +490,7 @@
                     </div>
                     <div class="col-md-2">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Total de Km recorridos: </label>
-                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Anexo" value="250">
+                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Anexo" >
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
@@ -547,20 +547,20 @@
                               <div class="tab-pane fade show active" id="home-5" role="tabpanel" aria-labelledby="home-tab-5">
                                   <div class="row">
                                     <div class="col-md-12">
-                                      <label for="">Viaje</label>
-                                      <div class="radio-inline">
+                                      <label for="">Viaje <span style="color:red;">*</span></label>
+                                      <div class="radio-inline" id="radiopage">
                                           <label class="radio">
-                                              <input type="radio" name="radios2">
+                                              <input type="radio" name="vhof" value='1'>
                                               <span></span>
                                               Redondo
                                           </label>
                                           <label class="radio">
-                                              <input type="radio" name="radios2">
+                                              <input type="radio" name="vhof" value='2'>
                                               <span></span>
                                               Solo Ida
                                           </label>
                                           <label class="radio">
-                                              <input type="radio" name="radios2">
+                                              <input type="radio" name="vhof" value='3'>
                                               <span></span>
                                               Solo regreso
                                           </label>
@@ -570,7 +570,7 @@
                                   <div class="row">
                                     <div class="col-md-8">
                                         <label for="inputPassword4"  style="font-size:12px;"class="form-label">Buscar: </label>
-                                        <input type="text" class="form-control" id="nombre"  placeholder="Buscar Vehiculo por N° Oficial" required>
+                                        <input type="text" class="form-control" id="numero_buscar"  placeholder="Buscar Vehiculo por N° Oficial" onchange="buscarNumero()" required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Nombre
                                         </div>
@@ -578,36 +578,36 @@
                                   </div>
                                   <div class="row">
                                     <div class="col-md-2">
-                                        <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° Oficial: </label>
-                                        <input type="text" class="form-control" id="nombre"  placeholder="N° Oficial" required>
+                                        <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° Oficial: <span style="color:red;">*</span></label>
+                                        <input type="text" class="form-control" id="num_oficial"  placeholder="N° Oficial" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Nombre
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Marca: </label>
-                                        <input type="text" class="form-control" id="apellido_paterno"  placeholder="Marca" required>
+                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Marca: <span style="color:red;">*</span></label>
+                                        <input type="text" class="form-control" id="marca"  placeholder="Marca" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Paterno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Modelo: </label>
-                                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Modelo" required>
+                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Modelo: <span style="color:red;">*</span></label>
+                                        <input type="text" class="form-control" id="modelo"  placeholder="Modelo" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Tipo: </label>
-                                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Tipo" required>
+                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Tipo: <span style="color:red;">*</span></label>
+                                        <input type="text" class="form-control" id="tipo"  placeholder="Tipo" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Placas: </label>
-                                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Placas" required>
+                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Placas: <span style="color:red;">*</span></label>
+                                        <input type="text" class="form-control" id="placas"  placeholder="Placas" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
@@ -617,47 +617,34 @@
 
                                   <div class="row">
                                     <div class="col-md-4">
-                                        <label for="inputPassword4"  style="font-size:12px;"class="form-label">Cilindraje: </label>
-                                        <input type="text" class="form-control" id="nombre"  placeholder="Cilindraje" required>
+                                        <label for="inputPassword4"  style="font-size:12px;"class="form-label">Cilindraje: <span style="color:red;">*</span></label>
+                                        <input type="text" class="form-control" id="cilindraje"  placeholder="Cilindraje" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Nombre
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Cuota: </label>
+                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Cuota: <span style="color:red;">*</span></label>
                                         <div class="radio-inline">
+                                          @foreach($rendimiento as $rendi)
                                             <label class="radio">
-                                                <input type="radio" name="radios2">
+                                                <input type="radio" name="page" value="{{ $rendi->id }}" >
                                                 <span></span>
-                                                A
+                                                {{ $rendi->tarifa }}
                                             </label>
-                                            <label class="radio">
-                                                <input type="radio" name="radios2">
-                                                <span></span>
-                                                B
-                                            </label>
-                                            <label class="radio">
-                                                <input type="radio" name="radios2">
-                                                <span></span>
-                                                C
-                                            </label>
-                                            <label class="radio">
-                                                <input type="radio" name="radios2">
-                                                <span></span>
-                                                D
-                                            </label>
-                                            <label class="radio">
-                                                <input type="radio" name="radios2">
-                                                <span></span>
-                                                E
-                                            </label>
+                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Gasolina: </label>
-                                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Gasolina" required>
+                                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Gasolina: <span style="color:red;">*</span></label>
+                                        <select class="form-control" name="gasolina" id="gasolina" onchange="traerGasolina()"  required>
+                                          <option value="0">Seleccionar</option>
+                                          @foreach($gasolina as $gaso)
+                                          <option value="{{ $gaso->id }}">{{ $gaso->obteneGasolina->nombre }}</option>
+                                          @endforeach
+                                        </select>
                                         <div class="invalid-feedback">
-                                          Por Favor Ingrese Apellido Materno
+                                          Por Favor Ingrese Gasolina
                                         </div>
                                     </div>
 
@@ -667,23 +654,20 @@
                                   <div class="row">
                                     <div class="col-md-6">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Mes $ Gasolina: </label>
-                                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Mes precio Gasolina" required>
+                                        <input type="text" class="form-control" id="mes_gasolina"  placeholder="Mes precio Gasolina" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">$ Gasolina vh. Oficial: </label>
-                                        <input type="text" class="form-control" id="apellido_materno"  placeholder="$ Gasolina vh. Oficial" required>
+                                        <input type="text" class="form-control" id="gasolina_vehiculo"  placeholder="$ Gasolina vh. Oficial" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
 
                                   </div>
-
-
-
 
                               </div>
                               <div class="tab-pane fade" id="este-5" role="tabpanel" aria-labelledby="este-tab-5">
@@ -693,17 +677,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="vh2" value='1'>
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="vh2" value='2'>
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="vh2" value='3'>
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -715,28 +699,28 @@
 
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Marca: </label>
-                                      <input type="text" class="form-control" id="apellido_paterno"  placeholder="Marca" required>
+                                      <input type="text" class="form-control" id="marca2"  placeholder="Marca" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Paterno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Modelo: </label>
-                                      <input type="text" class="form-control" id="apellido_materno"  placeholder="Modelo" required>
+                                      <input type="text" class="form-control" id="modelo2"  placeholder="Modelo" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Tipo: </label>
-                                      <input type="text" class="form-control" id="apellido_materno"  placeholder="Tipo" required>
+                                      <input type="text" class="form-control" id="tipo2"  placeholder="Tipo" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Placas: </label>
-                                      <input type="text" class="form-control" id="apellido_materno"  placeholder="Placas" required>
+                                      <input type="text" class="form-control" id="placas2"  placeholder="Placas" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
@@ -747,7 +731,7 @@
                                 <div class="row">
                                   <div class="col-md-4">
                                       <label for="inputPassword4"  style="font-size:12px;"class="form-label">Cilindraje: </label>
-                                      <input type="text" class="form-control" id="nombre"  placeholder="Cilindraje" required>
+                                      <input type="text" class="form-control" id="cilindraje2"  placeholder="Cilindraje" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Nombre
                                       </div>
@@ -755,38 +739,25 @@
                                   <div class="col-md-4">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Cuota: </label>
                                       <div class="radio-inline">
+                                        @foreach($rendimiento as $rendi)
                                           <label class="radio">
-                                              <input type="radio" name="radios2">
+                                              <input type="radio" name="page2" value="{{ $rendi->id }}" >
                                               <span></span>
-                                              A
+                                              {{ $rendi->tarifa }}
                                           </label>
-                                          <label class="radio">
-                                              <input type="radio" name="radios2">
-                                              <span></span>
-                                              B
-                                          </label>
-                                          <label class="radio">
-                                              <input type="radio" name="radios2">
-                                              <span></span>
-                                              C
-                                          </label>
-                                          <label class="radio">
-                                              <input type="radio" name="radios2">
-                                              <span></span>
-                                              D
-                                          </label>
-                                          <label class="radio">
-                                              <input type="radio" name="radios2">
-                                              <span></span>
-                                              E
-                                          </label>
+                                          @endforeach
                                       </div>
                                   </div>
                                   <div class="col-md-4">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Gasolina: </label>
-                                      <input type="text" class="form-control" id="apellido_materno"  placeholder="Gasolina" required>
+                                      <select class="form-control" name="gasolina" id="gasolina2" onchange="traerGasolina2()"  required>
+                                        <option value="">Seleccionar</option>
+                                        @foreach($gasolina as $gaso)
+                                        <option value="{{ $gaso->id }}">{{ $gaso->obteneGasolina->nombre }}</option>
+                                        @endforeach
+                                      </select>
                                       <div class="invalid-feedback">
-                                        Por Favor Ingrese Apellido Materno
+                                        Por Favor Ingrese Gasolina
                                       </div>
                                   </div>
 
@@ -796,14 +767,14 @@
                                 <div class="row">
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Mes $ Gasolina: </label>
-                                      <input type="text" class="form-control" id="apellido_materno"  placeholder="Mes precio Gasolina" required>
+                                      <input type="text" class="form-control" id="mes_gasolina2"  placeholder="Mes precio Gasolina" disabled required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">$ Gasolina vh. Oficial: </label>
-                                      <input type="text" class="form-control" id="apellido_materno"  placeholder="$ Gasolina vh. Oficial" required>
+                                      <input type="text" class="form-control" id="gasolina_vehiculo2"  placeholder="$ Gasolina vh. Oficial" disabled required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
@@ -820,17 +791,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="tipoViajeAutobus" value="1">
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="tipoViajeAutobus" value="2">
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="tipoViajeAutobus" value="3">
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -843,10 +814,7 @@
 
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Costo Total Transporte de Autobus: </label>
-                                      <input type="text" class="form-control" id="apellido_materno"  placeholder="Costo Total Transporte de Autobus" required>
-                                      <div class="invalid-feedback">
-                                        Por Favor Ingrese Apellido Materno
-                                      </div>
+                                      <input type="text" class="form-control" id="costoAutobus"  placeholder="Costo Total Transporte de Autobus"  required>
                                   </div>
 
                                 </div>
@@ -857,7 +825,9 @@
                                   <div class="col-md-10">
                                     <label for="">Peaje</label>
                                     <select class="form-control" name="">
-                                      <option value=""></option>
+                                      @foreach($peajes as $peaje)
+                                      <option value="{{ $peaje->id }}">{{ $peaje->ubicacion_peaje }}</option>
+                                      @endforeach
                                     </select>
                                   </div>
                                   <div class="col-md-2">
@@ -971,19 +941,19 @@
                   </div>
 
 
-                  <div role="separator" class="dropdown-divider"></div>
+                <div role="separator" class="dropdown-divider"></div>
                   <div id="tabla1">
                     <div class="row">
                       <div class="col-md-10"></div>
                       <div class="col-md-2">
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
-                        <button type="button" class="btn btn-primary">Agregar</button>
+                        <button type="button" class="btn btn-primary" onclick="AgregarVehiculoOficial()">Agregar</button>
                       </div>
                       <div class="col-md-12">
-                          <table class="table">
+                          <table class="table" id="tablavehiculo1">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tipo Transporet</th>
+                                    <th scope="col">Tipo Transporte</th>
                                     <th scope="col">Tipo de viaje</th>
                                     <th scope="col">Marca</th>
                                     <th scope="col">Modelo</th>
@@ -997,36 +967,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Auto</td>
-                                    <td>SORPRESA</td>
-                                    <td>FORD</td>
-                                    <td>567YT</td>
-                                    <td>TRED-789</td>
-                                    <td>250</td>
-                                    <td>250</td>
-                                    <td>250</td>
-                                    <td>250</td>
-                                    <td>2500</td>
-                                    <td>
-                                      <span class="label label-inline label-light-danger font-weight-bold">
-                                          <i class="far fa-trash-alt"></i>
-                                      </span>
-                                    </td>
-                                </tr>
-
                             </tbody>
                           </table>
                       </div>
 
                       <div class="col-md-4">
                           <label for="inputPassword4" style="font-size:12px;" class="form-label">Programa: </label>
-                          <select class="form-control" name="">
-                            <option value=""></option>
+                          <select class="form-control" id="programavehiculof">
+                            <option value="">Selecciona</option>
+                            @foreach($programa as $pro)
+                            <option value="{{ $pro->id }}">{{ $pro->nombre }}</option>
+                            @endforeach
                           </select>
-                          <div class="invalid-feedback">
-                            Por Favor Ingrese Apellido Paterno
-                          </div>
                       </div>
                       <div class="col-md-2">
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
@@ -1042,11 +994,12 @@
                       </div>
                       <div class="col-md-2">
                         <label for="">Total Transporte</label>
-                        <input type="text" class="form-control" value="$2550">
+                        <input type="text" class="form-control" id="total_transporte_vehiculof">
                       </div>
 
                     </div>
                   </div>
+
                   <div id="tabla2">
                     <div class="row">
                       <div class="col-md-2">
@@ -1060,13 +1013,13 @@
                       <div class="col-md-8"></div>
                       <div class="col-md-2">
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
-                        <button type="button" class="btn btn-primary">Agregar</button>
+                        <button type="button" class="btn btn-primary"  onclick="AgregarVehiculo()">Agregar</button>
                       </div>
                       <div class="col-md-12">
-                          <table class="table">
+                          <table class="table" id="tablavehiculo2">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tipo Transporet</th>
+                                    <th scope="col">Tipo Transporte</th>
                                     <th scope="col">Tipo de viaje</th>
                                     <th scope="col">Marca</th>
                                     <th scope="col">Modelo</th>
@@ -1080,24 +1033,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Auto</td>
-                                    <td>SORPRESA</td>
-                                    <td>FORD</td>
-                                    <td>567YT</td>
-                                    <td>TRED-789</td>
-                                    <td>250</td>
-                                    <td>250</td>
-                                    <td>250</td>
-                                    <td>250</td>
-                                    <td>2500</td>
-                                    <td>
-                                      <span class="label label-inline label-light-danger font-weight-bold">
-                                          <i class="far fa-trash-alt"></i>
-                                      </span>
-                                    </td>
-                                </tr>
-
                             </tbody>
                           </table>
                       </div>
@@ -1128,13 +1063,13 @@
                       <div class="col-md-10"></div>
                       <div class="col-md-2">
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
-                        <button type="button" class="btn btn-primary">Agregar</button>
+                        <button type="button" class="btn btn-primary" onclick="agregarAutobus()">Agregar</button>
                       </div>
                       <div class="col-md-12">
-                          <table class="table">
+                          <table class="table" id="tablaAutobus">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tipo Transporet</th>
+                                    <th scope="col">Tipo Transporte</th>
                                     <th scope="col">Tipo de viaje</th>
 
                                     <th scope="col">total</th>
@@ -1142,7 +1077,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <!-- <tr>
                                     <td>Auto</td>
                                     <td>Redondo</td>
                                     <td>2500</td>
@@ -1151,7 +1086,7 @@
                                           <i class="far fa-trash-alt"></i>
                                       </span>
                                     </td>
-                                </tr>
+                                </tr> -->
 
                             </tbody>
                           </table>
@@ -1184,7 +1119,7 @@
                           <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tipo Transporet</th>
+                                    <th scope="col">Tipo Transporte</th>
                                     <th scope="col">Tipo de viaje</th>
 
                                     <th scope="col">total</th>
@@ -1234,7 +1169,7 @@
                           <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tipo Transporet</th>
+                                    <th scope="col">Tipo Transporte</th>
                                     <th scope="col">Tipo de viaje</th>
 
                                     <th scope="col">total</th>
@@ -1284,7 +1219,7 @@
                           <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tipo Transporet</th>
+                                    <th scope="col">Tipo Transporte</th>
                                     <th scope="col">Tipo de viaje</th>
 
                                     <th scope="col">total</th>
@@ -1327,7 +1262,7 @@
                         <table class="table">
                           <thead>
                               <tr>
-                                  <th scope="col">Tipo Transporet</th>
+                                  <th scope="col">Tipo Transporte</th>
                                   <th scope="col">Tipo de viaje</th>
                                   <th scope="col">Marca</th>
                                   <th scope="col">Modelo</th>
@@ -1482,7 +1417,22 @@
 </div>
 <script src="/admin/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js?v=7.0.6"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.es.min.js" charset="UTF-8"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
+var selectedCouta1 = [];
+var selectedviajetipo1 = [];
+var arrayVehiculoOficial = [];
+var ObjetoVehiculoOficial = [];
+
+var selectedCouta2 = [];
+var selectedviajetipo2 = [];
+var arrayVehiculo= [];
+var ObjetoVehiculo= [];
+
+var selectedAutobus = [];
+var arrayAutobus = [];
+var ObjetoAutobus = {};
+
 $('#tabla1').show();
 $('#tabla2').hide();
 $('#tabla3').hide();
@@ -1569,12 +1519,439 @@ $('#tabla6').hide();
   });
 });
 
+
+function AgregarVehiculoOficial(){
+  var num_oficial = $('#num_oficial').val();
+  var marca = $('#marca').val();
+  var modelo = $('#modelo').val();
+  var tipo = $('#tipo').val();
+  var placas = $('#placas').val();
+  var cilindraje = $('#cilindraje').val();
+  var gasolina = $('#gasolina').val();
+  var mes_gasolina = $('#mes_gasolina').val();
+  var gasolina_vehiculo = $('#gasolina_vehiculo').val();
+  var couta=$(":radio[name=page]").val();
+  var tipo_viaje=$(":radio[name=vhof]").val();
+  var page = [];
+  var vhof = [];
+      $(":radio[name=page]").each(function(){
+          if (this.checked) {
+              /////////////////////////////////////////////////////
+              page.push($(this).val());
+              selectedCouta1.push($(this).val());
+          }else{
+             page.push(0);
+
+          }
+      });
+
+      $(":radio[name=vhof]").each(function(){
+          if (this.checked) {
+              /////////////////////////////////////////////////////
+              vhof.push($(this).val());
+              selectedviajetipo1.push($(this).val());
+          }else{
+              vhof.push(0);
+          }
+      });
+      //console.log(page,vhof,num_oficial,gasolina)
+
+      if (page == 0 || vhof == 0 || num_oficial == '' || gasolina == 0) {
+        Swal.fire("Lo Sentimos", 'Campos no seleccionados o vacios', "warning");
+        page.length=0;
+        vhof.length=0;
+      }else{
+        $.ajax({
+               type:"POST",
+               url:"/recibos/traerCuotaVehiculo",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+                   cuota:selectedCouta1[0],
+                 },
+                success:function(data){
+                //  console.log(data.kilometros_litros)
+
+                  ObjetoVehiculoOficial = {
+                    tipo_viaje:selectedviajetipo1[0],
+                    num_oficial:num_oficial,
+                    marca:marca,
+                    modelo:modelo,
+                    tipo:tipo,
+                    placas:placas,
+                    cilindraje:cilindraje,
+                    gasolina:gasolina,
+                    mes_gasolina:mes_gasolina,
+                    gasolina_vehiculo:gasolina_vehiculo,
+                    cuota:data.kilometros_litros,
+                  }
+                  agregarVehiculo1(ObjetoVehiculoOficial);
+                  arrayVehiculoOficial.push(ObjetoVehiculoOficial);
+
+                  //console.log(arrayVehiculoOficial)
+                }
+          });
+      }
+
+}
+
+
+var contador_vehiculo1 = 0;
+function agregarVehiculo1(ObjetoVehiculoOficial){
+  var tipo_viaje = '';
+  if (ObjetoVehiculoOficial.tipo_viaje == 1) {
+    tipo_viaje = 'REDONDO';
+  }else if(ObjetoVehiculoOficial.tipo_viaje == 2){
+    tipo_viaje = 'SOLO IDA';
+  }else if(ObjetoVehiculoOficial.tipo_viaje == 3){
+    tipo_viaje = 'SOLO REGRESO';
+  }
+
+  var tr = '<tr id="filas'+contador_vehiculo1+'">'+
+  '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo1+'"/>Vehiculo Oficial</td>'+
+  '<td>'+tipo_viaje+'</td>'+
+
+  '<td>'+ObjetoVehiculoOficial.marca+'</td>'+
+  '<td>'+ObjetoVehiculoOficial.modelo+'</td>'+
+  '<td>'+ObjetoVehiculoOficial.tipo+'</td>'+
+  '<td>'+ObjetoVehiculoOficial.placas+'</td>'+
+  '<td>'+ObjetoVehiculoOficial.cilindraje+'</td>'+
+  '<td>'+ObjetoVehiculoOficial.cuota+'</td>'+
+  '<td>$'+ObjetoVehiculoOficial.gasolina_vehiculo+'</td>'+
+
+  '<td>$100</td>'+
+  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculooficial('+contador_vehiculo1+')"  ><i  class="fas fa-trash"></i></div></td>'
+  '</tr>';
+
+  $("#tablavehiculo1").append(tr);
+  $('#num_oficial').val('');
+  $('#marca').val('');
+  $('#modelo').val('');
+  $('#tipo').val('');
+  $('#placas').val('');
+  $('#cilindraje').val('');
+  $('#gasolina').val('');
+  $('#mes_gasolina').val('');
+  $('#gasolina_vehiculo').val('');
+
+  $(":radio[name=page]").prop("checked",false);
+  selectedCouta1.length=0;
+  $(":radio[name=vhof]").prop("checked",false);
+  selectedviajetipo1.length=0;
+
+
+  contador_vehiculo1 ++;
+}
+
+function eliminarvehiculooficial(id){
+
+  arrayVehiculoOficial.splice(id,1);
+  $('#filas'+id).remove();
+
+}
+
+
+
+function AgregarVehiculo(){
+  var marca = $('#marca2').val();
+  var modelo = $('#modelo2').val();
+  var tipo = $('#tipo2').val();
+  var placas = $('#placas2').val();
+  var cilindraje = $('#cilindraje2').val();
+  var gasolina = $('#gasolina2').val();
+  var mes_gasolina = $('#mes_gasolina2').val();
+  var gasolina_vehiculo = $('#gasolina_vehiculo2').val();
+
+  var page = [];
+  var vhof = [];
+      $(":radio[name=page2]").each(function(){
+          if (this.checked) {
+              /////////////////////////////////////////////////////
+              page.push($(this).val());
+              selectedCouta2.push($(this).val());
+          }else{
+             page.push(0);
+
+          }
+      });
+
+      $(":radio[name=vh2]").each(function(){
+          if (this.checked) {
+              /////////////////////////////////////////////////////
+              vhof.push($(this).val());
+              selectedviajetipo2.push($(this).val());
+          }else{
+              vhof.push(0);
+          }
+      });
+      //console.log(page,vhof,num_oficial,gasolina)
+
+      if (page == 0 || vhof == 0 ||  gasolina == 0) {
+        Swal.fire("Lo Sentimos", 'Campos no seleccionados o vacios', "warning");
+        page.length=0;
+        vhof.length=0;
+      }else{
+        $.ajax({
+               type:"POST",
+               url:"/recibos/traerCuotaVehiculo",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+                   cuota:selectedCouta2[0],
+                 },
+                success:function(data){
+                //  console.log(data.kilometros_litros)
+
+                  ObjetoVehiculo = {
+                    tipo_viaje:selectedviajetipo2[0],
+                    marca:marca,
+                    modelo:modelo,
+                    tipo:tipo,
+                    placas:placas,
+                    cilindraje:cilindraje,
+                    gasolina:gasolina,
+                    mes_gasolina:mes_gasolina,
+                    gasolina_vehiculo:gasolina_vehiculo,
+                    cuota:data.kilometros_litros,
+                  }
+                  agregarVehiculo2(ObjetoVehiculo);
+                  arrayVehiculo.push(ObjetoVehiculo);
+
+                  //console.log(arrayVehiculoOficial)
+                }
+          });
+      }
+
+}
+
+
+var contador_vehiculo2 = 0;
+function agregarVehiculo2(ObjetoVehiculo){
+  var tipo_viaje = '';
+  if (ObjetoVehiculo.tipo_viaje == 1) {
+    tipo_viaje = 'REDONDO';
+  }else if(ObjetoVehiculo.tipo_viaje == 2){
+    tipo_viaje = 'SOLO IDA';
+  }else if(ObjetoVehiculo.tipo_viaje == 3){
+    tipo_viaje = 'SOLO REGRESO';
+  }
+
+  var tr = '<tr id="filasVh'+contador_vehiculo2+'">'+
+  '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo2+'"/>Vehiculo Particular</td>'+
+  '<td>'+tipo_viaje+'</td>'+
+  '<td>'+ObjetoVehiculo.marca+'</td>'+
+  '<td>'+ObjetoVehiculo.modelo+'</td>'+
+  '<td>'+ObjetoVehiculo.tipo+'</td>'+
+  '<td>'+ObjetoVehiculo.placas+'</td>'+
+  '<td>'+ObjetoVehiculo.cilindraje+'</td>'+
+  '<td>'+ObjetoVehiculo.cuota+'</td>'+
+  '<td>$'+ObjetoVehiculo.gasolina_vehiculo+'</td>'+
+
+  '<td>$100</td>'+
+  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculo('+contador_vehiculo2+')"  ><i  class="fas fa-trash"></i></div></td>'
+  '</tr>';
+
+  $("#tablavehiculo2").append(tr);
+  $('#marca2').val('');
+  $('#modelo2').val('');
+  $('#tipo2').val('');
+  $('#placas2').val('');
+  $('#cilindraje2').val('');
+  $('#gasolina2').val('');
+  $('#mes_gasolina2').val('');
+  $('#gasolina_vehiculo2').val('');
+
+  $(":radio[name=page2]").prop("checked",false);
+  selectedCouta2.length=0;
+  $(":radio[name=vh2]").prop("checked",false);
+  selectedviajetipo2.length=0;
+
+
+  contador_vehiculo2 ++;
+}
+
+function eliminarvehiculo(id){
+
+  arrayVehiculoOficial.splice(id,1);
+  $('#filasVh'+id).remove();
+
+}
+
+
+function agregarAutobus(){
+
+  var costoAutobus = $('#costoAutobus').val();
+  var page = [];
+
+      $(":radio[name=tipoViajeAutobus]").each(function(){
+          if (this.checked) {
+              /////////////////////////////////////////////////////
+              page.push($(this).val());
+              selectedAutobus.push($(this).val());
+          }else{
+             page.push(0);
+
+          }
+      });
+
+  if (page == 0 || costoAutobus == '') {
+    Swal.fire("Lo Sentimos", 'Campos no seleccionados o vacios', "warning");
+    page.length=0;
+  }else{
+
+    ObjetoAutobus = {
+      tipo_viaje:selectedAutobus[0],
+      costoAutobus:costoAutobus,
+    }
+    agregarAutobuses(ObjetoAutobus);
+    arrayAutobus.push(ObjetoAutobus);
+
+    //console.log(ObjetoAutobus)
+  }
+
+}
+var contador_autobus = 0;
+function agregarAutobuses(ObjetoAutobus){
+  //console.log(ObjetoAutobus)
+  var tipo_viaje = '';
+  if (ObjetoAutobus.tipo_viaje == 1) {
+    tipo_viaje = 'REDONDO';
+  }else if(ObjetoAutobus.tipo_viaje == 2){
+    tipo_viaje = 'SOLO IDA';
+  }else if(ObjetoAutobus.tipo_viaje == 3){
+    tipo_viaje = 'SOLO REGRESO';
+  }
+
+  var tr = '<tr id="filasAutobus'+contador_autobus+'">'+
+  '<td><input type="hidden" id="figura_nueva" value="'+contador_autobus+'"/>Autobus</td>'+
+  '<td>'+tipo_viaje+'</td>'+
+  '<td>$'+ObjetoAutobus.costoAutobus+'</td>'+
+  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarAutobus('+contador_autobus+')"  ><i  class="fas fa-trash"></i></div></td>'
+  '</tr>';
+
+  $("#tablaAutobus").append(tr);
+  $('#costoAutobus').val('');
+  $(":radio[name=tipoViajeAutobus]").prop("checked",false);
+  selectedAutobus.length=0;
+
+
+
+  contador_autobus ++;
+}
+
+function eliminarAutobus(id){
+
+  arrayAutobus.splice(id,1);
+  $('#filasAutobus'+id).remove();
+
+}
+
+
+function buscarNumero(){
+  var numero = $('#numero_buscar').val();
+  $.ajax({
+         type:"POST",
+         url:"/catalogos/vehiculos/ExisteVehiculo",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+             numero:numero,
+           },
+          success:function(data){
+            //console.log(data)
+
+            if(data == ''){
+
+              Swal.fire("Lo Sentimos", 'No Existe N° Oficial', "warning").then(function(){
+                $('#numero_buscar').val('');
+              });
+
+            }else{
+              $('#numero_buscar').val('');
+              $('#num_oficial').val(data.num_oficial);
+              $('#marca').val(data.marca);
+              $('#modelo').val(data.modelo);
+              $('#tipo').val(data.tipo);
+              $('#placas').val(data.placas);
+              $('#cilindraje').val(data.cilindraje);
+            }
+          }
+    });
+}
+
+function traerGasolina(){
+  var id_gasolina = $('#gasolina').val();
+
+  $.ajax({
+         type:"POST",
+         url:"/recibos/TraerGasolina",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+             id_gasolina:id_gasolina,
+           },
+          success:function(data){
+            //console.log(data)
+            $('#mes_gasolina').val(data.mes);
+            $('#gasolina_vehiculo').val(data.precio_litro);
+          }
+    });
+
+
+
+}
+
+function traerGasolina2(){
+  var id_gasolina = $('#gasolina2').val();
+
+  $.ajax({
+         type:"POST",
+         url:"/recibos/TraerGasolina",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+             id_gasolina:id_gasolina,
+           },
+          success:function(data){
+            //console.log(data)
+            $('#mes_gasolina2').val(data.mes);
+            $('#gasolina_vehiculo2').val(data.precio_litro);
+          }
+    });
+
+}
+
 $('#cantidad').keypress(function (tecla) {
     if ((tecla.charCode < 48 || tecla.charCode > 57) && (tecla.charCode != 46) && (tecla.charCode != 8)) {
         return false;
     }else {
              var len   = $('#cantidad').val().length;
              var index = $('#cantidad').val().indexOf('.');
+             if (index > 0 && tecla.charCode == 46) {
+                 return false;
+             }
+             if (index > 0) {
+                 var CharAfterdot = (len + 1) - index;
+                 if (CharAfterdot > 3) {
+                     return false;
+                 }
+             }
+    }
+    return true;
+
+});
+
+$('#costoAutobus').keypress(function (tecla) {
+    if ((tecla.charCode < 48 || tecla.charCode > 57) && (tecla.charCode != 46) && (tecla.charCode != 8)) {
+        return false;
+    }else {
+             var len   = $('#costoAutobus').val().length;
+             var index = $('#costoAutobus').val().indexOf('.');
              if (index > 0 && tecla.charCode == 46) {
                  return false;
              }
@@ -1595,7 +1972,7 @@ $('#letras').html('<p>'+cantidadletras+'</p>');
 $('#letras_cantidad').val(cantidadletras);
 @endisset
 function cantidadletra(){
-  console.log('entro')
+  //console.log('entro')
   var cantidad = $('#cantidad').val();
   $.ajax({
          type:"POST",

@@ -40,6 +40,12 @@ Route::prefix('recibos')->group(function() {
   Route::delete('/borrarComprobante', 'RecibosController@borrarComprobante');
   Route::get('/especificaciones/{id}/{especificacion}/{comisionado}/{telefono}/{especificar}/{recorrido}/{municipio}/{direccion}', 'RecibosController@especificaciones');
   Route::post('/ConvertirLetras', 'RecibosController@ConvertirLetras');
+  Route::post('/TraerGasolina', 'RecibosController@TraerGasolina');
+  Route::post('/traerCuotaVehiculo', 'RecibosController@traerCuotaVehiculo');
+
+
+
+
 
 
 

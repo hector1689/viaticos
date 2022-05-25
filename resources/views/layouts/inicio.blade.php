@@ -47,7 +47,7 @@ License: You must have a valid license purchased only from themeforest(the above
       <!--end::Layout Themes-->
       <link href="/admin/assets/css/themes/layout/brand/light.css?v=7.0.6" rel="stylesheet" type="text/css">
       <link href="/admin/assets/css/themes/layout/aside/light.css?v=7.0.6" rel="stylesheet" type="text/css">
-      
+
 
       <link rel="https://api.w.org/" href="https://www.tamaulipas.gob.mx/educacion/wp-json/" /><link rel="icon" href="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/cropped-cropped-logotam-1-32x32.png" sizes="32x32" />
       <link rel="icon" href="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/cropped-cropped-logotam-1-192x192.png" sizes="192x192" />
@@ -221,7 +221,7 @@ License: You must have a valid license purchased only from themeforest(the above
                           background-color: #0064a7;
                           border-color: #0064a7;">
             		         <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1"><span style="color:white;">Hola,</span>  </span>
-                          <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3"><span style="color:white;">{{ Auth::user()->name }}</span></span>
+                          <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3"><span style="color:white;">{{ Auth::user()->nombre }} {{ Auth::user()->apellido_paterno }} {{ Auth::user()->apellido_materno }}</span></span>
                           <!-- <span class="symbol symbol-lg-35 symbol-25 symbol-light-primary">
                               <span class="symbol-label font-size-h5 font-weight-bold">S</span>
                           </span> -->

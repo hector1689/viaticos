@@ -129,6 +129,31 @@ Route::prefix('catalogos')->group(function() {
 
     });
 
+    Route::prefix('programa')->group(function() {
+        Route::get('/', 'ProgramaController@index');
+        Route::get('/create', 'ProgramaController@create');
+        Route::post('/create', 'ProgramaController@store');
+        Route::get('/tabla', 'ProgramaController@tabla');
+        Route::delete('/borrar', 'ProgramaController@destroy');
+        Route::get('/{id}/edit', 'ProgramaController@edit');
+        Route::post('/update', 'ProgramaController@update');
+        Route::get('/show', 'ProgramaController@show');
+
+    });
+
+    Route::prefix('vehiculos')->group(function() {
+        Route::get('/', 'VehiculosController@index');
+        Route::get('/create', 'VehiculosController@create');
+        Route::post('/create', 'VehiculosController@store');
+        Route::get('/tabla', 'VehiculosController@tabla');
+        Route::delete('/borrar', 'VehiculosController@destroy');
+        Route::get('/{id}/edit', 'VehiculosController@edit');
+        Route::post('/update', 'VehiculosController@update');
+        Route::get('/show', 'VehiculosController@show');
+        Route::post('/ExisteVehiculo', 'VehiculosController@ExisteVehiculo');
+
+    });
+
     Route::prefix('comisionados')->group(function() {
         Route::get('/', 'ComisionadosController@index');
         Route::get('/create',         'ComisionadosController@create');
