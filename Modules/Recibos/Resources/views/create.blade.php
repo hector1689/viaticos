@@ -1533,6 +1533,16 @@ if (objectLugar.zona == 1) {
   $('#origen_lugar').prop('selectedIndex',0);
   $('#destino_lugar').prop('selectedIndex',0);
 
+  arrayTablaLugares.push({
+    id:contador_lugares,
+    zona:objectLugar.zona,
+    namezona_:zonita,
+    origen_nombre:objectLugar.origen_name,
+    destino_nombre:objectLugar.destino_name,
+    origen:objectLugar.origen,
+    destino:objectLugar.destino,
+  })
+
 
 
   contador_lugares ++;
@@ -1573,9 +1583,7 @@ function diasLugares(id){
     dias:dias
   }
 
-  ObjetoLugares = {
-    gasolina:$(this).val(),
-  }
+
 
   arrayTablaLugares.push({
     id:id,
@@ -1584,9 +1592,7 @@ function diasLugares(id){
 
   arrayDiasLugares.push(objectDiasLugares)
 
-  var este = $.extend( ObjetoLugares, ObjetoLugares );
 
-  arrayLugares.push(este);
 
 
 }
@@ -1623,10 +1629,10 @@ function gasolinaLugar(id){
             arrayGasolinaLugares.push(objectGasolinaLugares)
 
 
-
-            ObjetoLugares = {
-              gasolina:$(this).val(),
-            }
+            //
+            // ObjetoLugares = {
+            //   gasolina:$(this).val(),
+            // }
             // $.extend( ObjetoLugares, ObjetoLugares );
 
 
@@ -1650,10 +1656,10 @@ function hospedajeLugar(id){
 
             arrayHospedajeLugares.push(objectHospedajeLugares)
 
-            ObjetoLugares = {
-              hospedaje:$(this).val(),
-            }
-            arrayLugares.push(ObjetoLugares);
+            // ObjetoLugares = {
+            //   hospedaje:$(this).val(),
+            // }
+            // arrayLugares.push(ObjetoLugares);
 
         }
     });
@@ -1675,10 +1681,10 @@ function desayunoLugar(id){
 
           arrayDesayunoLugares.push(objectDesayunoLugares)
 
-          ObjetoLugares = {
-            desayuno:$(this).val(),
-          }
-          arrayLugares.push(ObjetoLugares);
+          // ObjetoLugares = {
+          //   desayuno:$(this).val(),
+          // }
+          // arrayLugares.push(ObjetoLugares);
 
       }
   });
@@ -1698,10 +1704,10 @@ function comidaLugar(id){
 
           arrayComidaLugares.push(objectComidaLugares)
 
-          ObjetoLugares = {
-            comida:$(this).val(),
-          }
-          arrayLugares.push(ObjetoLugares);
+          // ObjetoLugares = {
+          //   comida:$(this).val(),
+          // }
+          // arrayLugares.push(ObjetoLugares);
 
       }
   });
@@ -1721,22 +1727,24 @@ function cenaLugar(id){
 
           arrayCenaLugares.push(objectCenaLugares)
 
-          ObjetoLugares = {
-            cena:$(this).val(),
-          }
-
-
-          arrayLugares.push(ObjetoLugares);
+          // ObjetoLugares = {
+          //   cena:$(this).val(),
+          // }
+          //
+          //
+          // arrayLugares.push(ObjetoLugares);
 
       }
   });
 }
 
 var tablalugar = [];
-
+let nuevoObjeto = {}
 function calcularViaticoLugar(){
 
-  console.log(arrayLugares)
+
+
+
   var suma_dias = 0;
   arrayDiasLugares.forEach (function(numero){
   suma_dias += parseInt(numero.dias);
@@ -1792,32 +1800,156 @@ function calcularViaticoLugar(){
   $('#total_comidas').html('<p>$'+suma_total_comidas.toFixed(2)+'</p>');
 
 
-  $('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
+  //$('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
+  $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_totales.toFixed(2)+'" id="total_extraer">');
 
 
 
 
-  for (var i = 0; i < arrayTablaLugares.length; i++) {
-   //console.log(arrayTablaLugares[i])
 
-    if (arrayTablaLugares[i].id ==  i) {
-      tablalugar.push({
-        dias:arrayTablaLugares[i].dias,
-      })
-    }
+ //Recorremos el arreglo
+
+ console.log(arrayTablaLugares)
+ arrayTablaLugares.forEach( x => {
+   //Si la ciudad no existe en nuevoObjeto entonces
+   //la creamos e inicializamos el arreglo de profesionales.
+   if( !nuevoObjeto.hasOwnProperty(x.id)){
+     nuevoObjeto[x.id] = {
+       lugar: []
+     }
+   }
+
+   if (typeof x.dias == 'undefined') {
+
+   }else{
+     nuevoObjeto[x.id].lugar.push({
+
+       dias: x.dias,
+     })
+   }
+
+
+  if (typeof x.origen == 'undefined') {
+
+  }else{
+    nuevoObjeto[x.id].lugar.push({
+      origen: x.origen,
+    })
+  }
+
+  if (typeof x.destino == 'undefined') {
+
+  }else{
+    nuevoObjeto[x.id].lugar.push({
+      destino: x.destino,
+    })
   }
 
 
-  for (var i = 0; i < arrayKilometrajeLugares.length; i++) {
-   //console.log(arrayTablaLugares[i])
+  if (typeof x.origen_nombre == 'undefined') {
 
-    if (arrayKilometrajeLugares[i].id ==  i) {
-      tablalugar.push({
-        kilometros:arrayKilometrajeLugares[i].kilometraje,
-      })
-    }
+  }else{
+    nuevoObjeto[x.id].lugar.push({
+      origen: x.origen_nombre,
+    })
   }
 
+  if (typeof x.destino_nombre == 'undefined') {
+
+  }else{
+    nuevoObjeto[x.id].lugar.push({
+      destino: x.destino_nombre,
+    })
+  }
+
+
+  if (typeof x.zona == 'undefined') {
+
+  }else{
+    nuevoObjeto[x.id].lugar.push({
+      zona: x.zona,
+    })
+  }
+
+
+  if (typeof x.namezona_ == 'undefined') {
+
+  }else{
+    nuevoObjeto[x.id].lugar.push({
+      zona_nombre: x.namezona_,
+    })
+  }
+
+
+
+
+   if (typeof x.kilometraje == 'undefined') {
+
+   }else{
+     nuevoObjeto[x.id].lugar.push({
+
+       kilometraje: x.kilometraje,
+     })
+   }
+
+   if(typeof x.gasolina == 'undefined'){
+
+   }else{
+     nuevoObjeto[x.id].lugar.push({
+       gasolina: x.gasolina,
+     })
+   }
+
+
+   if(typeof x.hospedaje == 'undefined'){
+
+   }else{
+     nuevoObjeto[x.id].lugar.push({
+        hospedaje: x.hospedaje,
+     })
+   }
+
+   if(typeof x.desayuno == 'undefined'){
+
+   }else{
+     nuevoObjeto[x.id].lugar.push({
+       desayuno: x.desayuno,
+     })
+   }
+
+
+   if(typeof x.cena == 'undefined'){
+
+   }else{
+     nuevoObjeto[x.id].lugar.push({
+        cena: x.cena,
+     })
+   }
+
+
+   if(typeof x.comida == 'undefined'){
+
+   }else{
+     nuevoObjeto[x.id].lugar.push({
+       comida: x.comida,
+     })
+   }
+
+
+   // nuevoObjeto[x.id].lugar.push({
+   //   // id: x.id,
+   //   kilometraje: x.kilometraje,
+   //   gasolina: x.gasolina,
+   //   hospedaje: x.hospedaje,
+   //   desayuno: x.desayuno,
+   //   cena: x.cena,
+   //   comida: x.comida,
+   // })
+   //Agregamos los datos de profesionales.
+
+ })
+
+ console.log(nuevoObjeto)
 
   // tablalugar.push({
   //   dias:arrayTablaLugares[i].dias,
@@ -1830,7 +1962,6 @@ function calcularViaticoLugar(){
   // })
 
 
-console.log(tablalugar)
 
 
 
@@ -2730,6 +2861,26 @@ function cantidadletra(){
 
   function guardar(){
 
+    @isset($recibos)
+    var id = {{ $recibos->id }});
+
+    @else
+
+    var id = 0;
+    @endisset
+    @isset($firmantes)
+    var id_firmante = {{ $firmantes->id }});
+    @else
+
+    var id_firmante = 0;
+    @endisset
+    @isset($pagos)
+    var id_pagos = {{ $pagos->id }});
+    @else
+
+    var id_pagos = 0;
+    @endisset
+
     var n_empleado = $('#n_empleado').val();
     var nombre_empleado = $('#nombre_empleado').val();
     var rfc = $('#rfc').val();
@@ -2761,60 +2912,59 @@ function cantidadletra(){
     var especificarcomision = $('#especificarcomision').val();
     var totalkm = $('#totalkm').val();
 
+    var total_extraer = $('#total_extraer').val();
+    var programalugar = $('#programalugar').val();
+    var tabla_lugares = arrayTablaLugares;
 
-
-
-
-
-
-      var formData = new FormData();
-       //formData.append('photo', $avatarInput[0].files[0]);
-
-      @isset($recibos)
-      formData.append('id',{{ $recibos->id }});
-      @endisset
-      @isset($firmantes)
-      formData.append('id_firmante',{{ $firmantes->id }});
-      @endisset
-      @isset($pagos)
-      formData.append('id_pagos',{{ $pagos->id }});
-      @endisset
-      formData.append('n_empleado', n_empleado);
-      formData.append('nombre_empleado', nombre_empleado);
-      formData.append('rfc', rfc);
-      formData.append('nivel', nivel);
-      formData.append('clave_departamental', clave_departamental);
-      formData.append('dependencia', dependencia);
-      formData.append('direccion', direccion);
-      formData.append('inicia', inicia);
-      formData.append('final', final);
-      formData.append('departamento', departamento);
-      formData.append('lugar_adscripcion', lugar_adscripcion);
-      formData.append('n_dias', n_dias);
-      formData.append('n_dias_ina', n_dias_ina);
-      formData.append('descripcion', descripcion);
-
-      /////////////// FIRMANTES ////////////////////
-      formData.append('director_area_firma', director_area_firma);
-      formData.append('organo_control_firma', organo_control_firma);
-      formData.append('director_administrativo_firma', director_administrativo_firma);
-      formData.append('cheque_firma', cheque_firma);
-      formData.append('jefe_firma', jefe_firma);
-
-      /////////////////// PAGO ////////////////////
-      formData.append('secretaria_pago', secretaria_pago);
-      formData.append('cheque', cheque);
-      formData.append('fecha_pago', fecha_pago);
-      formData.append('cantidad', cantidad);
-      formData.append('letras_cantidad', letras_cantidad);
-
-      /////////////////// TRANSPORTE ///////////////////
-      formData.append('kilometrorecorrido', kilometrorecorrido);
-      formData.append('especificarcomision', especificarcomision);
-      formData.append('totalkm', totalkm);
-
-
-
+      // var formData = new FormData();
+      //  //formData.append('photo', $avatarInput[0].files[0]);
+      //
+      // @isset($recibos)
+      // formData.append('id',{{ $recibos->id }});
+      // @endisset
+      // @isset($firmantes)
+      // formData.append('id_firmante',{{ $firmantes->id }});
+      // @endisset
+      // @isset($pagos)
+      // formData.append('id_pagos',{{ $pagos->id }});
+      // @endisset
+      // formData.append('n_empleado', n_empleado);
+      // formData.append('nombre_empleado', nombre_empleado);
+      // formData.append('rfc', rfc);
+      // formData.append('nivel', nivel);
+      // formData.append('clave_departamental', clave_departamental);
+      // formData.append('dependencia', dependencia);
+      // formData.append('direccion', direccion);
+      // formData.append('inicia', inicia);
+      // formData.append('final', final);
+      // formData.append('departamento', departamento);
+      // formData.append('lugar_adscripcion', lugar_adscripcion);
+      // formData.append('n_dias', n_dias);
+      // formData.append('n_dias_ina', n_dias_ina);
+      // formData.append('descripcion', descripcion);
+      //
+      // /////////////// FIRMANTES ////////////////////
+      // formData.append('director_area_firma', director_area_firma);
+      // formData.append('organo_control_firma', organo_control_firma);
+      // formData.append('director_administrativo_firma', director_administrativo_firma);
+      // formData.append('cheque_firma', cheque_firma);
+      // formData.append('jefe_firma', jefe_firma);
+      //
+      // /////////////////// PAGO ////////////////////
+      // formData.append('secretaria_pago', secretaria_pago);
+      // formData.append('cheque', cheque);
+      // formData.append('fecha_pago', fecha_pago);
+      // formData.append('cantidad', cantidad);
+      // formData.append('letras_cantidad', letras_cantidad);
+      //
+      // /////////////////// TRANSPORTE ///////////////////
+      // formData.append('kilometrorecorrido', kilometrorecorrido);
+      // formData.append('especificarcomision', especificarcomision);
+      // formData.append('totalkm', totalkm);
+      // formData.append('acciones[0]', tabla_lugares);
+      //
+      //
+      //
 
 
       $.ajax({
@@ -2825,10 +2975,45 @@ function cantidadletra(){
              headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },
-             data: formData,
-             processData: false,
-             contentType: false,
-             cache:false,
+             data:{
+               id:id,
+               id_firmante:id_firmante,
+               id_pagos:id_pagos,
+               n_empleado:n_empleado,
+               nombre_empleado:nombre_empleado,
+               rfc:rfc,
+               nivel:nivel,
+               clave_departamental:clave_departamental,
+               dependencia:dependencia,
+               direccion:direccion,
+               inicia:inicia,
+               final:final,
+               departamento:departamento,
+               lugar_adscripcion:lugar_adscripcion,
+               n_dias:n_dias,
+               n_dias_ina:n_dias_ina,
+               descripcion:descripcion,
+               director_area_firma:director_area_firma,
+               organo_control_firma:organo_control_firma,
+               director_administrativo_firma:director_administrativo_firma,
+               cheque_firma:cheque_firma,
+               jefe_firma:jefe_firma,
+               secretaria_pago:secretaria_pago,
+               cheque:cheque,
+               fecha_pago:fecha_pago,
+               cantidad:cantidad,
+               letras_cantidad:letras_cantidad,
+               kilometrorecorrido:kilometrorecorrido,
+               especificarcomision:especificarcomision,
+               totalkm:totalkm,
+               tablalugares:nuevoObjeto,
+               total_extraer:total_extraer,
+               programalugar:programalugar,
+             },
+             // data: formData,
+             // processData: false,
+             // contentType: false,
+             // cache:false,
               success:function(data){
                 if (data.success == 'Registro agregado satisfactoriamente') {
                   Swal.fire("", data.success, "success").then(function(){

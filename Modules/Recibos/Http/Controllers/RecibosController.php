@@ -36,6 +36,8 @@ use \Modules\Recibos\Entities\TaxiTransporte;
 use \Modules\Recibos\Entities\Transporte;
 use \Modules\Recibos\Entities\Vehiculo;
 use \Modules\Recibos\Entities\VehiculoOficial;
+use \Modules\Recibos\Entities\Lugares;
+
 /////////////////////////////////////////////////////////////////
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -89,7 +91,7 @@ class RecibosController extends Controller
      */
     public function store(Request $request)
     {
-      //dd($request->all());
+    //dd($request->all());
 
     try {
       list($fecha1,$hora1) = explode(" ",$request->inicia);
@@ -176,6 +178,85 @@ class RecibosController extends Controller
         $bitacora->tarea = 'Alta Registro';
         $bitacora->cve_usuario = Auth::user()->id;
         $bitacora->save();
+
+
+        foreach ($request->tablalugares as $key => $value) {
+
+            $lugares = new Lugares();
+            $lugares->remoto = 0;
+            $lugares->cve_t_viatico = $recibo->id;
+            $lugares->cve_localidad_origen = $value['lugar'][0]['origen'];
+            $lugares->cve_localidad_destino = $value['lugar'][1]['destino'];
+            $lugares->dias = $value['lugar'][6]['dias'];
+            $lugares->cve_zona = $value['lugar'][4]['zona'];
+            $lugares->kilometros = $value['lugar'][7]['kilometraje'];
+            $lugares->cve_programa = $request->programalugar;
+            $lugares->total_recibido = $request->total_extraer;
+            $lugares->cve_usuario =Auth::user()->id;
+            $lugares->save();
+
+
+            if (isset($value['lugar'][8]['gasolina'])) {
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->combustible = $value['lugar'][8]['gasolina'];
+              $existe_lugar->save();
+            }else{
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->combustible = 0;
+              $existe_lugar->save();
+            }
+
+            if (isset($value['lugar'][9]['hospedaje'])) {
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->hospedaje = $value['lugar'][9]['hospedaje'];
+              $existe_lugar->save();
+            }else{
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->hospedaje = 0;
+              $existe_lugar->save();
+            }
+
+            if (isset($value['lugar'][10]['comida'])) {
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->comida = $value['lugar'][10]['comida'];
+              $existe_lugar->save();
+            }else{
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->comida = 0;
+              $existe_lugar->save();
+            }
+
+
+            if (isset($value['lugar'][11]['desayuno'])) {
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->desayuno = $value['lugar'][11]['desayuno'];
+              $existe_lugar->save();
+            }else{
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->desayuno = 0;
+              $existe_lugar->save();
+            }
+
+            if (isset($value['lugar'][12]['cena'])) {
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->cena = $value['lugar'][12]['cena'];
+              $existe_lugar->save();
+            }else{
+              $existe_lugar = Lugares::find($lugares->id);
+              $existe_lugar->cena = 0;
+              $existe_lugar->save();
+            }
+
+
+
+
+
+            // $lugares->hospedaje = $value['lugar'][9]['hospedaje'];
+            // $lugares->desayuno = $value['lugar'][11]['desayuno'];
+            // $lugares->comida = $value['lugar'][10]['comida'];
+            //$lugares->cena = $value['lugar'][12]['cena'];
+        }
+
 
 
 
