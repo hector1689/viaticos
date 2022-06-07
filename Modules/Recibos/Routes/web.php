@@ -42,6 +42,11 @@ Route::prefix('recibos')->group(function() {
   Route::post('/ConvertirLetras', 'RecibosController@ConvertirLetras');
   Route::post('/TraerGasolina', 'RecibosController@TraerGasolina');
   Route::post('/traerCuotaVehiculo', 'RecibosController@traerCuotaVehiculo');
+  Route::post('/TraerPeaje', 'RecibosController@TraerPeaje');
+  Route::post('/TraerRecorrido', 'RecibosController@TraerRecorrido');
+  Route::post('/AlimentacionTime', 'RecibosController@AlimentacionTime');
+
+
 
 
 

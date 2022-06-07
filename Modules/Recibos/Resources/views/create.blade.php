@@ -236,33 +236,35 @@
                             </label>
                         </div>
                     </div>
+
+
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Origen: </label>
-                        <select class="form-control" name="">
-                          <option value=""></option>
+                        <select class="form-control" id="origen_lugar">
+                          <option value="0">seleccionar</option>
+                          @foreach($lacalidad1 as $loc1)
+                          <option value="{{ $loc1->id }}">{{ $loc1->localidad }}-{{ $loc1->obteneMunicipio->nombre }}-{{ $loc1->obteneEstado->nombre }}-{{ $loc1->obtenePais->nombre }}</option>
+                          @endforeach
                         </select>
-                        <div class="invalid-feedback">
-                          Por Favor Ingrese Apellido Paterno
-                        </div>
                     </div>
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Destino: </label>
-                        <select class="form-control" name="">
-                          <option value=""></option>
+                        <select class="form-control" id="destino_lugar">
+                          <option value="0">seleccionar</option>
+                          @foreach($lacalidad2 as $loc2)
+                          <option value="{{ $loc2->id }}">{{ $loc2->localidad }}-{{ $loc2->obteneMunicipio->nombre }}-{{ $loc2->obteneEstado->nombre }}-{{ $loc2->obtenePais->nombre }}</option>
+                          @endforeach
                         </select>
-                        <div class="invalid-feedback">
-                          Por Favor Ingrese Apellido Paterno
-                        </div>
                     </div>
                     <div class="form-group col-md-3" >
                       <label for="card-holder" style="visibility:hidden;">Fecha</label><br>
-                      <button type="button" class="btn btn-primary" >Agregar</button>
+                      <button type="button" class="btn btn-primary" onclick="agregarLugar()">Agregar</button>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-md-12">
-                        <table class="table">
+                        <table class="table" id="tablaLugares">
                           <thead>
                               <tr>
                                   <th scope="col">Origen</th>
@@ -277,170 +279,18 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr>
-                                  <td>Victoria</td>
-                                  <td>Tampico</td>
-                                  <td><input type="text" class="form-control" value="2"> </td>
-                                  <td>F</td>
-                                  <td><input type="text" class="form-control" value="457"></td>
-                                  <td>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="Checkboxes1" checked>
-                                        <span></span>
-                                    </label>
-                                  </td>
-                                  <td>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="Checkboxes1" checked>
-                                        <span></span>
-                                    </label>
-                                  </td>
-                                  <td>
-                                    <div class="checkbox-inline">
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2">
-                                            <span></span>
 
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2" checked>
-                                            <span></span>
-
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2" checked>
-                                            <span></span>
-
-                                        </label>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class='btn-group dropleft'>
-                                      <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
-                                      <div class='dropdown-menu '  >
-                                        <a class='dropdown-item' href="/recibos/show">
-                                        Ver
-                                        </a>
-                                        <a class='dropdown-item' onclick="finiquitarP()">
-                                        Eliminar
-                                        </a>
-                                      </div>
-                                     </div>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>Victoria</td>
-                                  <td>Tampico</td>
-                                  <td><input type="text" class="form-control" value="2"> </td>
-                                  <td>F</td>
-                                  <td><input type="text" class="form-control" value="457"></td>
-                                  <td>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="Checkboxes1" checked>
-                                        <span></span>
-                                    </label>
-                                  </td>
-                                  <td>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="Checkboxes1" checked>
-                                        <span></span>
-                                    </label>
-                                  </td>
-                                  <td>
-                                    <div class="checkbox-inline">
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2">
-                                            <span></span>
-
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2" checked>
-                                            <span></span>
-
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2" checked>
-                                            <span></span>
-
-                                        </label>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class='btn-group dropleft'>
-                                      <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
-                                      <div class='dropdown-menu '  >
-                                        <a class='dropdown-item' href="/recibos/show">
-                                        Ver
-                                        </a>
-                                        <a class='dropdown-item' onclick="finiquitarP()">
-                                        Eliminar
-                                        </a>
-                                      </div>
-                                     </div>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>Victoria</td>
-                                  <td>Tampico</td>
-                                  <td><input type="text" class="form-control" value="2"> </td>
-                                  <td>F</td>
-                                  <td><input type="text" class="form-control" value="457"></td>
-                                  <td>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="Checkboxes1" checked>
-                                        <span></span>
-                                    </label>
-                                  </td>
-                                  <td>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="Checkboxes1" checked>
-                                        <span></span>
-                                    </label>
-                                  </td>
-                                  <td>
-                                    <div class="checkbox-inline">
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2">
-                                            <span></span>
-
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2" checked>
-                                            <span></span>
-
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="Checkboxes2" checked>
-                                            <span></span>
-
-                                        </label>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div class='btn-group dropleft'>
-                                      <button type='button' class='btn btn-light dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='fas fa-align-justify'></i><span class='caret'></span> </button>
-                                      <div class='dropdown-menu '  >
-                                        <a class='dropdown-item' href="/recibos/show">
-                                        Ver
-                                        </a>
-                                        <a class='dropdown-item' onclick="finiquitarP()">
-                                        Eliminar
-                                        </a>
-                                      </div>
-                                     </div>
-                                  </td>
-                              </tr>
                           </tbody>
-                          <tfoot>
+                          <tfoot id="footLugar">
                             <tr>
                               <td>Total</td>
                               <td></td>
-                              <td>3</td>
+                              <td id="total_dias"></td>
                               <td></td>
-                              <td>$500</td>
-                              <td>$1000</td>
-                              <td>$850</td>
-                              <td>$700</td>
+                              <td id="total_kilometros"></td>
+                              <td id="total_gasolina"></td>
+                              <td id="total_hospedaje"></td>
+                              <td id="total_comidas"></td>
                               <td></td>
                             </tr>
                           </tfoot>
@@ -450,8 +300,11 @@
 
                       <div class="col-md-8">
                           <label for="inputPassword4" style="font-size:12px;" class="form-label">Programa: </label>
-                          <select class="form-control" name="">
-                            <option value=""></option>
+                          <select class="form-control" id="programalugar">
+                            <option value="">Selecciona</option>
+                            @foreach($programa as $pro)
+                            <option value="{{ $pro->id }}">{{ $pro->nombre }}</option>
+                            @endforeach
                           </select>
                           <div class="invalid-feedback">
                             Por Favor Ingrese Apellido Paterno
@@ -459,11 +312,11 @@
                       </div>
                       <div class="col-md-2">
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
-                        <button type="button" class="btn btn-primary">Calcular viático</button>
+                        <button type="button" class="btn btn-primary" onclick="calcularViaticoLugar()">Calcular viático</button>
                       </div>
                       <div class="col-md-2">
                         <label for="">Total Recibido</label>
-                        <input type="text" class="form-control" value="$2550">
+                        <div id="total_recibido_lugar"></div>
                       </div>
 
 
@@ -476,21 +329,21 @@
                   <div class="row">
                     <div class="col-md-2">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Kilometro recorrido interno: </label>
-                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Anexo" >
+                        <input type="text" class="form-control" id="kilometrorecorrido" value="@isset($transporte) {{ $transporte->kilometro_interno }} @endisset"  placeholder="Kilometro recorrido interno" >
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
                     </div>
                     <div class="col-md-8">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Especificar el recorrido: </label>
-                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Especificar el recorrido" required>
+                        <input type="text" class="form-control" id="especificarcomision"  value="@isset($transporte) {{ $transporte->especificar_recorrido }} @endisset" placeholder="Especificar el recorrido" required>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
                     </div>
                     <div class="col-md-2">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Total de Km recorridos: </label>
-                        <input type="text" class="form-control" id="apellido_materno"  placeholder="Anexo" >
+                        <input type="text" class="form-control" id="totalkm"  value="@isset($transporte) {{ $transporte->total_km_recorrido }} @endisset" placeholder="Total de Km recorridos" >
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
@@ -567,6 +420,7 @@
                                       </div>
                                     </div>
                                   </div>
+                                  <input type="hidden" id="tipotransporte1" value="1">
                                   <div class="row">
                                     <div class="col-md-8">
                                         <label for="inputPassword4"  style="font-size:12px;"class="form-label">Buscar: </label>
@@ -694,7 +548,7 @@
                                     </div>
                                   </div>
                                 </div>
-
+                                <input type="hidden" id="tipotransporte2" value="2">
                                 <div class="row">
 
                                   <div class="col-md-3">
@@ -808,7 +662,7 @@
                                     </div>
                                   </div>
                                 </div>
-
+                                <input type="hidden" id="tipotransporte3" value="3">
                                 <div class="row">
 
 
@@ -824,18 +678,20 @@
                                 <div class="row">
                                   <div class="col-md-10">
                                     <label for="">Peaje</label>
-                                    <select class="form-control" name="">
+                                    <select class="form-control" id="Selecpeaje">
+                                      <option value="">Seleccionar</option>
                                       @foreach($peajes as $peaje)
                                       <option value="{{ $peaje->id }}">{{ $peaje->ubicacion_peaje }}</option>
                                       @endforeach
                                     </select>
                                   </div>
+                                  <input type="hidden" id="tipotransporte4" value="4">
                                   <div class="col-md-2">
                                     <label for="" style="visibility:hidden;">dfdfdf</label><br>
-                                    <button type="button" class="btn btn-primary">Agregar</button>
+                                    <button type="button" class="btn btn-primary" onclick="agregarPeaje()">Agregar</button>
                                   </div>
                                   <div class="col-md-12">
-                                      <table class="table">
+                                      <table class="table" id='tablaPeajes'>
                                         <thead>
                                             <tr>
                                                 <th scope="col">Nombre</th>
@@ -844,7 +700,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td>Auto</td>
                                                 <td>2500</td>
                                                 <td>
@@ -852,14 +708,14 @@
                                                       <i class="far fa-trash-alt"></i>
                                                   </span>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
 
                                         </tbody>
-                                        <tfoot>
+                                        <!-- <tfoot>
                                           <td>total peaje</td>
                                           <td>$1000</td>
                                           <td></td>
-                                        </tfoot>
+                                        </tfoot> -->
                                       </table>
                                   </div>
                                 </div>
@@ -869,22 +725,27 @@
                                 <div class="row">
 
                                   <div class="col-md-4">
-
-                                    <select class="form-control" name="">
-                                      <option value="">DIF. y otros estados</option>
-                                      <option value="">Tamaulipas</option>
+                                    <input type="hidden" id="tipotransporte5" value="5">
+                                    <select class="form-control" id="regiones">
+                                      <option value="0">Seleccionar</option>
+                                      <option value="1">DIF. y otros estados</option>
+                                      <option value="2">Tamaulipas</option>
                                     </select>
                                   </div>
                                   <div class="col-md-4">
-                                    <select class="form-control" name="">
-                                      <option value="">Aeropuerto-Comisión-Aeropuerto</option>
-                                      <option value="">Central de Autobuses - Comisión - Central de Autobuses</option>
+                                    <select class="form-control" id="recorrido1">
+                                      <option value="0">Seleccionar</option>
+                                      @foreach($taxi as $tx)
+                                      <option value="{{ $tx->id }}">{{ $tx->descripcion }}</option>
+                                      @endforeach
                                     </select>
                                   </div>
                                   <div class="col-md-4">
-                                    <select class="form-control" name="">
-                                      <option value="">Aeropuerto-Lugar de Comisión-Aeropuerto</option>
-                                      <option value="">Central de Autobuses - Lugar de Comisión - Central de Autobuses</option>
+                                    <select class="form-control" id="recorrido2">
+                                      <option value="0">Seleccionar</option>
+                                      @foreach($taxi as $tx)
+                                      <option value="{{ $tx->id }}">{{ $tx->descripcion }}</option>
+                                      @endforeach
                                     </select>
                                   </div>
 
@@ -892,7 +753,7 @@
                                 <div class="row">
                                   <div class="col-md-4">
                                     <label for="">Dia Adicional</label>
-                                    <input type="text" class="form-control" value="">
+                                    <input type="text" class="form-control" id="dia_adicional">
                                   </div>
                                 </div>
                               </div>
@@ -903,33 +764,30 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="page_avion" value="1">
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="page_avion" value="2">
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="radios2">
+                                            <input type="radio" name="page_avion" value="3">
                                             <span></span>
                                             Solo regreso
                                         </label>
                                     </div>
                                   </div>
                                 </div>
-
+                                <input type="hidden" id="tipotransporte6" value="6">
                                 <div class="row">
 
 
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Costo Boleto del Avion: </label>
-                                      <input type="text" class="form-control" id="apellido_materno"  placeholder="Costo Total Transporte de Autobus" required>
-                                      <div class="invalid-feedback">
-                                        Por Favor Ingrese Apellido Materno
-                                      </div>
+                                      <input type="text" class="form-control" id="costoAvion"  placeholder="Costo Boleto del Avion" required>
                                   </div>
 
                                 </div>
@@ -1109,11 +967,11 @@
                   </div>
 
                   <div id="tabla4">
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-md-10"></div>
                       <div class="col-md-2">
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
-                        <button type="button" class="btn btn-primary">Agregar</button>
+                        <button type="button" class="btn btn-primary" >Agregar</button>
                       </div>
                       <div class="col-md-12">
                           <table class="table">
@@ -1155,7 +1013,7 @@
                         <input type="text" class="form-control" value="$2550">
                       </div>
 
-                    </div>
+                    </div> -->
                   </div>
 
                   <div id="tabla5">
@@ -1163,30 +1021,21 @@
                       <div class="col-md-10"></div>
                       <div class="col-md-2">
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
-                        <button type="button" class="btn btn-primary">Agregar</button>
+                        <button type="button" class="btn btn-primary" onclick="AgregarTaxi()">Agregar</button>
                       </div>
                       <div class="col-md-12">
-                          <table class="table">
+                          <table class="table" id="tablaTaxis">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tipo Transporte</th>
-                                    <th scope="col">Tipo de viaje</th>
-
-                                    <th scope="col">total</th>
-                                    <th scope="col">acciones</th>
+                                    <th scope="col">Region</th>
+                                    <th scope="col">Recorrido A</th>
+                                    <th scope="col">Recorrido B</th>
+                                    <th scope="col">Día Adicional</th>
+                                    <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Auto</td>
-                                    <td>Redondo</td>
-                                    <td>2500</td>
-                                    <td>
-                                      <span class="label label-inline label-light-danger font-weight-bold">
-                                          <i class="far fa-trash-alt"></i>
-                                      </span>
-                                    </td>
-                                </tr>
+
 
                             </tbody>
                           </table>
@@ -1213,10 +1062,10 @@
                       <div class="col-md-10"></div>
                       <div class="col-md-2">
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
-                        <button type="button" class="btn btn-primary">Agregar</button>
+                        <button type="button" class="btn btn-primary" onclick="agregarAvion()">Agregar</button>
                       </div>
                       <div class="col-md-12">
-                          <table class="table">
+                          <table class="table" id="tablaAviones">
                             <thead>
                                 <tr>
                                     <th scope="col">Tipo Transporte</th>
@@ -1227,16 +1076,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Auto</td>
-                                    <td>Redondo</td>
-                                    <td>2500</td>
-                                    <td>
-                                      <span class="label label-inline label-light-danger font-weight-bold">
-                                          <i class="far fa-trash-alt"></i>
-                                      </span>
-                                    </td>
-                                </tr>
 
                             </tbody>
                           </table>
@@ -1414,10 +1253,11 @@
   <a class="btn btn-primary " onclick="guardar()">Guardar</a>
 </div>
 </form>
+
 </div>
 <script src="/admin/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js?v=7.0.6"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.es.min.js" charset="UTF-8"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 <script type="text/javascript">
 var selectedCouta1 = [];
 var selectedviajetipo1 = [];
@@ -1432,6 +1272,33 @@ var ObjetoVehiculo= [];
 var selectedAutobus = [];
 var arrayAutobus = [];
 var ObjetoAutobus = {};
+
+
+var selectedAvion = [];
+var arrayAvion = [];
+var ObjetoAvion = {};
+
+var ObjetoPeaje = {};
+var arrayPeaje = [];
+
+var ObjetoTaxi = {};
+var arrayTaxi = [];
+
+
+var ObjetoRecorrido = {};
+var arrayRecorrido = [];
+
+var arrayNumeros = [];
+
+
+var ObjetoLugares = {};
+var arrayLugares = [];
+
+
+$('#footLugar').hide();
+// $('#total_recibido_lugar').hide();
+
+
 
 $('#tabla1').show();
 $('#tabla2').hide();
@@ -1518,9 +1385,500 @@ $('#tabla6').hide();
       format: 'dd/mm/yyyy',
   });
 });
+var objectLugar = {};
+var arrayLugar = [];
+function agregarLugar(){
+var nivel = $('#nivel').val();
+var origen_lugar = $('#origen_lugar').val();
+var destino_lugar = $('#destino_lugar').val();
+var origen_lugar_name = $('#origen_lugar').find('option:selected').text();
+var destino_lugar_name = $('#destino_lugar').find('option:selected').text();
+
+ $.ajax({
+        type:"POST",
+        url:"/recibos/AlimentacionTime",
+        headers: {
+         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:{
+            nivel:nivel,
+          },
+         success:function(dars){
+
+
+
+           objectLugar = {
+             desayuno:dars.alimentos[0].importe_desayuno,
+             comida:dars.alimentos[0].importe_comida,
+             cena:dars.alimentos[0].importe_cena,
+             zona:dars.alimentos[0].zona,
+             gasolina:dars.gasolina.precio_litro,
+             hospedaje:dars.hospedaje[0].importe,
+             nivel_persona:nivel,
+             origen:origen_lugar,
+             destino:destino_lugar,
+             origen_name:origen_lugar_name,
+             destino_name:destino_lugar_name,
+           }
+
+
+
+           agregarLugares(objectLugar);
+           arrayLugar.push(objectLugar);
+
+           ObjetoLugares = {
+             nivel_persona:nivel,
+             origen:origen_lugar,
+             destino:destino_lugar,
+             origen_name:origen_lugar_name,
+             destino_name:destino_lugar_name,
+           }
+           arrayLugares.push(ObjetoLugares);
+
+           //console.log(arrayLugar)
+
+             // console.log(dars.alimentos[0].importe_desayuno)
+             // console.log(dars.alimentos[0].importe_comida)
+             // console.log(dars.alimentos[0].importe_cena)
+             // console.log(dars.gasolina.precio_litro)
+             // console.log(dars.hospedaje[0].importe)
+             // console.log(nivel)
+             // console.log(origen_lugar)
+             // console.log(destino_lugar)
+             // console.log(origen_lugar_name)
+             // console.log(destino_lugar_name)
+
+
+         }
+
+         // console.log(arrayLugar);
+   });
+
+
+
+   // var min = 1000;
+   // var  max = 3000;
+   // for (var i = min; i<=max; i++){
+   //    //console.log(i);
+   //    arrayNumeros.push(i);
+   //  }
+   //
+   //  console.info(arrayNumeros.includes(nivel));
+   //  console.log(arrayNumeros);
+   //
+   //  var date = new Date();
+   //  var dia = date.getDate();
+   //  var mes = date.getMonth()+1;
+   //  var yyy = date.getFullYear();
+   //  var fechilla = yyy+'/'+mes+'/'+dia;
+   //  //console.log(yyy+'/'+mes+'/'+dia)
+
+
+}
+var contador_lugares = 0;
+function agregarLugares(objectLugar){
+
+var zonita = '';
+if (objectLugar.zona == 1) {
+  zonita = 'Centro de Tamaulipas';
+}else{
+  zonita = 'Frontera y Entidades Federativas del Extranjero';
+}
+
+  var tr = '<tr id="filas'+contador_lugares+'">'+
+  '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
+  '<td>'+objectLugar.destino_name+'</td>'+
+  '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')"></td>'+
+  '<td>'+zonita+'</td>'+
+  '<td><input type="text" class="form-control" id="kilometraje_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')"></td>'+
+  '<td>'+
+    '<div class="form-group">'+
+        '<div class="checkbox-list">'+
+            '<label class="checkbox">'+
+                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onchange="gasolinaLugar('+contador_lugares+')" value="'+objectLugar.gasolina+'">'+
+                '<span></span>'+
+            '</label>'+
+        '</div>'+
+    '</div>'+
+  '</td>'+
+  '<td>'+
+    '<div class="form-group">'+
+        '<div class="checkbox-list">'+
+            '<label class="checkbox">'+
+                '<input type="checkbox" name="hospedaje_'+contador_lugares+'" onchange="hospedajeLugar('+contador_lugares+')" value="'+objectLugar.hospedaje+'">'+
+                '<span></span>'+
+            '</label>'+
+        '</div>'+
+    '</div>'+
+  '</td>'+
+  '<td><div class="checkbox-inline">'+
+         '<label class="checkbox">'+
+             '<input type="checkbox" name="desayuno_'+contador_lugares+'" onchange="desayunoLugar('+contador_lugares+')" value="'+objectLugar.desayuno+'">'+
+             '<span></span>'+
+         '</label>'+
+         '<label class="checkbox">'+
+             '<input type="checkbox" name="comida_'+contador_lugares+'" onchange="comidaLugar('+contador_lugares+')" value="'+objectLugar.comida+'">'+
+             '<span></span>'+
+         '</label>'+
+         '<label class="checkbox">'+
+             '<input type="checkbox" name="cena_'+contador_lugares+'" onchange="cenaLugar('+contador_lugares+')" value="'+objectLugar.cena+'">'+
+             '<span></span>'+
+         '</label>'+
+     '</div>'+
+  '</td>'+
+  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onchange="lugarEstadia('+contador_lugares+')" onclick="eliminarvehiculooficial('+contador_lugares+')"  ><i  class="fas fa-trash"></i></div></td>'
+  '</tr>';
+  $("#tablaLugares").append(tr);
+
+  $('#origen_lugar').prop('selectedIndex',0);
+  $('#destino_lugar').prop('selectedIndex',0);
+
+
+
+  contador_lugares ++;
+}
+
+var objectDiasLugares = {};
+var arrayDiasLugares = [];
+
+var objectKilometrajeLugares = {};
+var arrayKilometrajeLugares = [];
+
+
+var objectGasolinaLugares = {};
+var arrayGasolinaLugares = [];
+
+
+var objectHospedajeLugares = {};
+var arrayHospedajeLugares = [];
+
+
+var objectDesayunoLugares = {};
+var arrayDesayunoLugares = [];
+
+var objectComidaLugares = {};
+var arrayComidaLugares = [];
+
+
+var objectCenaLugares = {};
+var arrayCenaLugares = [];
+
+var objectTablaLugares = {};
+var arrayTablaLugares = [];
+
+function diasLugares(id){
+  var dias = $('#dias_'+id).val();
+  objectDiasLugares = {
+    id:id,
+    dias:dias
+  }
+
+  ObjetoLugares = {
+    gasolina:$(this).val(),
+  }
+
+  arrayTablaLugares.push({
+    id:id,
+    dias:dias
+  })
+
+  arrayDiasLugares.push(objectDiasLugares)
+
+  var este = $.extend( ObjetoLugares, ObjetoLugares );
+
+  arrayLugares.push(este);
+
+
+}
+function KilometrajeLugares(id){
+var kilometraje = $('#kilometraje_'+id).val();
+
+  arrayTablaLugares.push({
+    id:id,
+    kilometraje:kilometraje
+  })
+
+  objectKilometrajeLugares = {
+  id:id,
+  kilometraje:kilometraje
+  }
+  arrayKilometrajeLugares.push(objectKilometrajeLugares)
+
+}
+
+function gasolinaLugar(id){
+    $(":checkbox[name=gasolina_"+id+"]").each(function(){
+        if (this.checked) {
+            /////////////////////////////////////////////////////
+            arrayTablaLugares.push({
+              id:id,
+              gasolina:$(this).val(),
+            })
+
+            objectGasolinaLugares = {
+            id:id,
+            gasolina:$(this).val(),
+            }
+
+            arrayGasolinaLugares.push(objectGasolinaLugares)
+
+
+
+            ObjetoLugares = {
+              gasolina:$(this).val(),
+            }
+            // $.extend( ObjetoLugares, ObjetoLugares );
+
+
+        }
+    });
+
+}
+
+function hospedajeLugar(id){
+    $(":checkbox[name=hospedaje_"+id+"]").each(function(){
+        if (this.checked) {
+            /////////////////////////////////////////////////////
+            arrayTablaLugares.push({
+              id:id,
+              hospedaje:$(this).val(),
+            })
+            objectHospedajeLugares = {
+              id:id,
+            hospedaje:$(this).val(),
+            }
+
+            arrayHospedajeLugares.push(objectHospedajeLugares)
+
+            ObjetoLugares = {
+              hospedaje:$(this).val(),
+            }
+            arrayLugares.push(ObjetoLugares);
+
+        }
+    });
+
+}
+
+function desayunoLugar(id){
+  $(":checkbox[name=desayuno_"+id+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          arrayTablaLugares.push({
+            id:id,
+            desayuno:$(this).val(),
+          })
+          objectDesayunoLugares = {
+            id:id,
+          desayuno:$(this).val(),
+          }
+
+          arrayDesayunoLugares.push(objectDesayunoLugares)
+
+          ObjetoLugares = {
+            desayuno:$(this).val(),
+          }
+          arrayLugares.push(ObjetoLugares);
+
+      }
+  });
+}
+function comidaLugar(id){
+  $(":checkbox[name=comida_"+id+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          arrayTablaLugares.push({
+            id:id,
+            comida:$(this).val(),
+          })
+          objectComidaLugares = {
+            id:id,
+          comida:$(this).val(),
+          }
+
+          arrayComidaLugares.push(objectComidaLugares)
+
+          ObjetoLugares = {
+            comida:$(this).val(),
+          }
+          arrayLugares.push(ObjetoLugares);
+
+      }
+  });
+}
+function cenaLugar(id){
+  $(":checkbox[name=cena_"+id+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          arrayTablaLugares.push({
+            id:id,
+            cena:$(this).val(),
+          })
+          objectCenaLugares = {
+            id:id,
+            cena:$(this).val(),
+          }
+
+          arrayCenaLugares.push(objectCenaLugares)
+
+          ObjetoLugares = {
+            cena:$(this).val(),
+          }
+
+
+          arrayLugares.push(ObjetoLugares);
+
+      }
+  });
+}
+
+var tablalugar = [];
+
+function calcularViaticoLugar(){
+
+  console.log(arrayLugares)
+  var suma_dias = 0;
+  arrayDiasLugares.forEach (function(numero){
+  suma_dias += parseInt(numero.dias);
+  });
+
+
+  var suma_kilometraje = 0;
+  arrayKilometrajeLugares.forEach (function(numero_kilometraje){
+  suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
+  });
+
+
+  var suma_gasolina = 0;
+  arrayGasolinaLugares.forEach (function(numero_gasolina){
+  suma_gasolina += parseFloat(numero_gasolina.gasolina);
+  });
+
+
+  var suma_hospedaje = 0;
+  arrayHospedajeLugares.forEach (function(numero_hospedaje){
+  suma_hospedaje += parseFloat(numero_hospedaje.hospedaje);
+  });
+
+
+  var suma_desayuno = 0;
+  arrayDesayunoLugares.forEach (function(numero_desayuno){
+  suma_desayuno += parseFloat(numero_desayuno.desayuno);
+  });
+
+
+  var suma_comida = 0;
+  arrayComidaLugares.forEach (function(numero_comida){
+  suma_comida += parseFloat(numero_comida.comida);
+  });
+
+
+  var suma_cena = 0;
+  arrayCenaLugares.forEach (function(numero_cena){
+  suma_cena += parseFloat(numero_cena.cena);
+  });
+
+
+  var suma_total_comidas = parseFloat(suma_desayuno) + parseFloat(suma_comida) + parseFloat(suma_cena);
+  var suma_total_totales = parseFloat(suma_gasolina) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas);
+
+  $('#footLugar').show();
+  // $('#total_recibido_lugar').show();
+
+  $('#total_dias').html('<p>'+suma_dias+'</p>');
+  $('#total_kilometros').html('<p>'+suma_kilometraje+'</p>');
+  $('#total_gasolina').html('<p>$'+suma_gasolina.toFixed(2)+'</p>');
+  $('#total_hospedaje').html('<p>$'+suma_hospedaje.toFixed(2)+'</p>');
+  $('#total_comidas').html('<p>$'+suma_total_comidas.toFixed(2)+'</p>');
+
+
+  $('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
+
+
+
+
+  for (var i = 0; i < arrayTablaLugares.length; i++) {
+   //console.log(arrayTablaLugares[i])
+
+    if (arrayTablaLugares[i].id ==  i) {
+      tablalugar.push({
+        dias:arrayTablaLugares[i].dias,
+      })
+    }
+  }
+
+
+  for (var i = 0; i < arrayKilometrajeLugares.length; i++) {
+   //console.log(arrayTablaLugares[i])
+
+    if (arrayKilometrajeLugares[i].id ==  i) {
+      tablalugar.push({
+        kilometros:arrayKilometrajeLugares[i].kilometraje,
+      })
+    }
+  }
+
+
+  // tablalugar.push({
+  //   dias:arrayTablaLugares[i].dias,
+  //   // kilometros:arrayTablaLugares[i]['kilometraje'],
+  //   // gasolina:arrayTablaLugares[i].gasolina,
+  //   // hospedaje:arrayTablaLugares[i].hospedaje,
+  //   // desayuno:arrayTablaLugares[i].desayuno,
+  //   // comida:arrayTablaLugares[i].comida,
+  //   // cena:arrayTablaLugares[i].cena,
+  // })
+
+
+console.log(tablalugar)
+
+
+
+
+
+
+
+
+}
+
+
+
+// function lugarEstadia(id){
+//
+//
+//
+//   console.log(dias)
+//   console.log(kilometraje)
+//
+//   $(":checkbox[name=gasolina]").each(function(){
+//       if (this.checked) {
+//           /////////////////////////////////////////////////////
+//           console.log($(this).val());
+//       }
+//   });
+//
+//   $(":checkbox[name=hospedaje]").each(function(){
+//       if (this.checked) {
+//           /////////////////////////////////////////////////////
+//           console.log($(this).val());
+//       }
+//   });
+//
+//   $(":checkbox[name=comidas]").each(function(){
+//       if (this.checked) {
+//           /////////////////////////////////////////////////////
+//           console.log($(this).val());
+//       }
+//   });
+//
+//
+//
+//
+// }
 
 
 function AgregarVehiculoOficial(){
+  var tipotransporte = $('#tipotransporte1').val();
   var num_oficial = $('#num_oficial').val();
   var marca = $('#marca').val();
   var modelo = $('#modelo').val();
@@ -1574,6 +1932,7 @@ function AgregarVehiculoOficial(){
                 //  console.log(data.kilometros_litros)
 
                   ObjetoVehiculoOficial = {
+                    tipotransporte:tipotransporte,
                     tipo_viaje:selectedviajetipo1[0],
                     num_oficial:num_oficial,
                     marca:marca,
@@ -1654,6 +2013,7 @@ function eliminarvehiculooficial(id){
 
 
 function AgregarVehiculo(){
+  var tipotransporte = $('#tipotransporte2').val();
   var marca = $('#marca2').val();
   var modelo = $('#modelo2').val();
   var tipo = $('#tipo2').val();
@@ -1705,6 +2065,7 @@ function AgregarVehiculo(){
                 //  console.log(data.kilometros_litros)
 
                   ObjetoVehiculo = {
+                    tipotransporte:tipotransporte,
                     tipo_viaje:selectedviajetipo2[0],
                     marca:marca,
                     modelo:modelo,
@@ -1783,6 +2144,7 @@ function eliminarvehiculo(id){
 function agregarAutobus(){
 
   var costoAutobus = $('#costoAutobus').val();
+  var tipotransporte = $('#tipotransporte3').val();
   var page = [];
 
       $(":radio[name=tipoViajeAutobus]").each(function(){
@@ -1802,6 +2164,7 @@ function agregarAutobus(){
   }else{
 
     ObjetoAutobus = {
+      tipotransporte:tipotransporte,
       tipo_viaje:selectedAutobus[0],
       costoAutobus:costoAutobus,
     }
@@ -1847,6 +2210,224 @@ function eliminarAutobus(id){
   $('#filasAutobus'+id).remove();
 
 }
+
+function agregarAvion(){
+  //console.log('entree we')
+
+  var costoAvion = $('#costoAvion').val();
+  var tipotransporte = $('#tipotransporte6').val();
+  var page = [];
+
+      $(":radio[name=page_avion]").each(function(){
+          if (this.checked) {
+              /////////////////////////////////////////////////////
+              page.push($(this).val());
+              selectedAvion.push($(this).val());
+          }else{
+             page.push(0);
+
+          }
+      });
+
+      if (page == 0 || costoAvion == '') {
+        Swal.fire("Lo Sentimos", 'Campos no seleccionados o vacios', "warning");
+        page.length=0;
+      }else{
+
+        ObjetoAvion = {
+          tipotransporte:tipotransporte,
+          tipo_viaje:selectedAvion[0],
+          costoAvion:costoAvion,
+        }
+        agregarAviones(ObjetoAvion);
+        arrayAvion.push(ObjetoAvion);
+
+      }
+
+}
+
+var contador_avion = 0;
+function agregarAviones(ObjetoAvion){
+  //console.log(ObjetoAvion)
+  var tipo_viaje = '';
+  if (ObjetoAvion.tipo_viaje == 1) {
+    tipo_viaje = 'REDONDO';
+  }else if(ObjetoAvion.tipo_viaje == 2){
+    tipo_viaje = 'SOLO IDA';
+  }else if(ObjetoAvion.tipo_viaje == 3){
+    tipo_viaje = 'SOLO REGRESO';
+  }
+
+  var tr = '<tr id="filasAviones'+contador_avion+'">'+
+  '<td><input type="hidden" id="figura_nueva" value="'+contador_avion+'"/>Avion</td>'+
+  '<td>'+tipo_viaje+'</td>'+
+  '<td>$'+ObjetoAvion.costoAvion+'</td>'+
+  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarAvion('+contador_avion+')"  ><i  class="fas fa-trash"></i></div></td>'
+  '</tr>';
+
+  $("#tablaAviones").append(tr);
+  $('#costoAvion').val('');
+  $(":radio[name=page_avion]").prop("checked",false);
+  selectedAvion.length=0;
+
+
+
+  contador_avion ++;
+}
+
+function eliminarAvion(id){
+
+  arrayAvion.splice(id,1);
+  $('#filasAviones'+id).remove();
+
+}
+
+
+function agregarPeaje(){
+  var Selecpeaje = $('#Selecpeaje').val();
+  var tipotransporte = $('#tipotransporte4').val();
+  $.ajax({
+         type:"POST",
+         url:"/recibos/TraerPeaje",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+             id:Selecpeaje,
+           },
+          success:function(data){
+
+            ObjetoPeaje = {
+              tipotransporte:tipotransporte,
+              peaje:data.ubicacion_peaje,
+              costo:data.costo,
+            }
+            agregarPeajes(ObjetoPeaje);
+            arrayPeaje.push(ObjetoPeaje);
+
+          }
+    });
+  //console.log(Selecpeaje)
+}
+
+var contador_peaje = 0;
+function agregarPeajes(ObjetoPeaje){
+
+  var tr = '<tr id="filasPeajes'+contador_peaje+'">'+
+  '<td><input type="hidden" id="figura_nueva" value="'+contador_peaje+'"/>'+ObjetoPeaje.peaje+'</td>'+
+  '<td>$'+ObjetoPeaje.costo+'</td>'+
+  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarPeaje('+contador_peaje+')"  ><i  class="fas fa-trash"></i></div></td>'
+  '</tr>';
+
+  $("#tablaPeajes").append(tr);
+  $('#Selecpeaje').prop("selected", false);
+
+  contador_peaje ++;
+}
+
+function eliminarPeaje(id){
+
+  arrayPeaje.splice(id,1);
+  $('#filasPeajes'+id).remove();
+
+}
+
+function AgregarTaxi(){
+
+var region = $('#regiones').val(); // Capturamos el valor del select
+var region_name = $('#regiones').find('option:selected').text();
+var recorrido1 = $('#recorrido1').val();
+var recorrido2 = $('#recorrido2').val();
+var dia_adicional = $('#dia_adicional').val();
+var tipotransporte = $('#tipotransporte5').val();
+
+var ids = [recorrido1,recorrido2];
+$.ajax({
+       type:"POST",
+       url:"/recibos/TraerRecorrido",
+       headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       },
+       data:{
+           ids:ids,
+         },
+        success:function(data){
+
+          ObjetoRecorrido = {
+            tipotransporte:tipotransporte,
+            region:region,
+            region_name:region_name,
+            dia_adicional:dia_adicional,
+            recorrido1:data[0].id,
+            recorrido2:data[1].id,
+            name_recorrido:data[0].descripcion,
+            name_recorrido2:data[1].descripcion,
+            tarifa_evento:data[0].tarifa_evento,
+            tarifa_evento2:data[1].tarifa_evento,
+            tarifa_adicional:data[0].tarifa_adicional,
+            tarifa_adicional2:data[1].tarifa_adicional,
+          }
+
+          agregarRecorridos(ObjetoRecorrido);
+          arrayRecorrido.push(ObjetoRecorrido);
+          // console.log(
+          // data[0].id,
+          // data[0].tarifa_evento,
+          // data[0].descripcion,
+          // data[0].tarifa_adicional,
+          //
+          // data[1].id,
+          // data[1].tarifa_evento,
+          // data[1].descripcion,
+          // data[1].tarifa_adicional
+          // )
+
+          // for (var i = 0; i < data.length; i++) {
+          //   //data[i].id
+          //   // data[i].tarifa_evento
+          //   // data[i].descripcion
+          //   // data[i].tarifa_adicional
+          // }
+          // ObjetoTaxi = {
+          //   peaje:data.ubicacion_peaje,
+          //   costo:data.costo,
+          // }
+          // agregarPeajes(ObjetoTaxi);
+          // arrayTaxi.push(ObjetoTaxi);
+
+        }
+  });
+
+
+
+
+}
+var contador_taxi = 0;
+function agregarRecorridos(ObjetoRecorrido){
+
+    var tr = '<tr id="filasTaxis'+contador_taxi+'">'+
+    '<td><input type="hidden" id="figura_nueva" value="'+contador_taxi+'"/>'+ObjetoRecorrido.region_name+'</td>'+
+    '<td>'+ObjetoRecorrido.name_recorrido+'</td>'+
+    '<td>'+ObjetoRecorrido.name_recorrido2+'</td>'+
+    '<td>'+ObjetoRecorrido.dia_adicional+'</td>'+
+    '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarTaxi('+contador_taxi+')"  ><i  class="fas fa-trash"></i></div></td>'
+    '</tr>';
+
+    $("#tablaTaxis").append(tr);
+    $('#regiones').prop('selectedIndex',0);
+    $('#recorrido1').prop('selectedIndex',0);
+    $('#recorrido2').prop('selectedIndex',0);
+    $('#dia_adicional').val('');
+
+
+    contador_taxi ++;
+}
+
+function eliminarTaxi(id){
+  arrayRecorrido.splice(id,1);
+  $('#filasTaxis'+id).remove();
+}
+
 
 
 function buscarNumero(){
@@ -1926,6 +2507,9 @@ function traerGasolina2(){
 
 }
 
+
+
+
 $('#cantidad').keypress(function (tecla) {
     if ((tecla.charCode < 48 || tecla.charCode > 57) && (tecla.charCode != 46) && (tecla.charCode != 8)) {
         return false;
@@ -1945,6 +2529,8 @@ $('#cantidad').keypress(function (tecla) {
     return true;
 
 });
+
+
 
 $('#costoAutobus').keypress(function (tecla) {
     if ((tecla.charCode < 48 || tecla.charCode > 57) && (tecla.charCode != 46) && (tecla.charCode != 8)) {
@@ -2022,6 +2608,12 @@ function cantidadletra(){
 
                 $('#nombre_empleado').val(nombre);
                 $('#nivel').val(nivel);
+
+
+
+
+
+
 
                 $.ajax({
                        type:"POST",
@@ -2165,6 +2757,15 @@ function cantidadletra(){
     var cantidad = $('#cantidad').val();
     var letras_cantidad = $('#letras_cantidad').val();
 
+    var kilometrorecorrido = $('#kilometrorecorrido').val();
+    var especificarcomision = $('#especificarcomision').val();
+    var totalkm = $('#totalkm').val();
+
+
+
+
+
+
 
       var formData = new FormData();
        //formData.append('photo', $avatarInput[0].files[0]);
@@ -2206,6 +2807,12 @@ function cantidadletra(){
       formData.append('fecha_pago', fecha_pago);
       formData.append('cantidad', cantidad);
       formData.append('letras_cantidad', letras_cantidad);
+
+      /////////////////// TRANSPORTE ///////////////////
+      formData.append('kilometrorecorrido', kilometrorecorrido);
+      formData.append('especificarcomision', especificarcomision);
+      formData.append('totalkm', totalkm);
+
 
 
 

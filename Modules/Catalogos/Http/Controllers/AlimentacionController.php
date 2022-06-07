@@ -33,6 +33,7 @@ class AlimentacionController extends Controller
         return view('catalogos::alimentacion.index');
     }
 
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable

@@ -5,21 +5,23 @@ namespace Modules\Recibos\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Auth;
 use \Modules\Catalogos\Entities\Personal_Departamento;
 use \Modules\Catalogos\Entities\Areas;
 use \Modules\Catalogos\Entities\Departamento_Firmantes;
 use \Modules\Catalogos\Entities\Personal_Siti;
 use \Modules\Catalogos\Entities\Kilometraje;
 use \Modules\Catalogos\Entities\Gasolina;
+use \Modules\Catalogos\Entities\Localidad;
+use \Modules\Catalogos\Entities\Taxi;
 use \Modules\Catalogos\Entities\Peaje;
 use \Modules\Catalogos\Entities\Rendimiento;
 use \Modules\Catalogos\Entities\Programa;
+use \Modules\Catalogos\Entities\Alimentos;
+use \Modules\Catalogos\Entities\Hospedaje;
 use \Modules\Recibos\Entities\Comprobaciones;
 use Illuminate\Support\Facades\Storage;
 use \Modules\Recibos\Entities\Recibos;
 use \Modules\Recibos\Entities\EstatusRecibo;
-use Barryvdh\DomPDF\Facade as PDF;
 use \Modules\Recibos\Entities\ComisionEspecificar;
 use \Modules\Recibos\Entities\ComisionAcreditados;
 use \Modules\Recibos\Entities\ComisionPersonal;
@@ -27,13 +29,23 @@ use \Modules\Recibos\Entities\ComisionTelefono;
 use \Modules\Recibos\Entities\ReciboFirmantes;
 use \Modules\Recibos\Entities\Bitacora;
 use \Modules\Recibos\Entities\DatosPago;
-
+use \Modules\Recibos\Entities\Avion;
+use \Modules\Recibos\Entities\Autobus;
+use \Modules\Recibos\Entities\PeajeTransporte;
+use \Modules\Recibos\Entities\TaxiTransporte;
+use \Modules\Recibos\Entities\Transporte;
+use \Modules\Recibos\Entities\Vehiculo;
+use \Modules\Recibos\Entities\VehiculoOficial;
+/////////////////////////////////////////////////////////////////
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 use Luecano\NumeroALetras\NumeroALetras;
-
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
 use \DB;
+use Auth;
+
 class RecibosController extends Controller
 {
   public function __construct()
@@ -63,6 +75,9 @@ class RecibosController extends Controller
         $data['gasolina'] = Gasolina::where('activo',1)->get();
         $data['rendimiento'] = Rendimiento::where('activo',1)->get();
         $data['programa'] = Programa::where('activo',1)->get();
+        $data['taxi'] = Taxi::where('activo',1)->get();
+        $data['lacalidad1'] = Localidad::where('activo',1)->get();
+        $data['lacalidad2'] = Localidad::where('activo',1)->get();
 
         return view('recibos::create')->with($data);
     }
@@ -142,6 +157,15 @@ class RecibosController extends Controller
         $datospago->favor_cargo_banco = 'banco de mexico';
         $datospago->cve_usuario = Auth::user()->id;
         $datospago->save();
+
+
+        $transporte = new Transporte();
+        $transporte->kilometro_interno = $request->kilometrorecorrido;
+        $transporte->cve_t_viatico = $recibo->id;
+        $transporte->especificar_recorrido = $request->especificarcomision;
+        $transporte->total_km_recorrido = $request->totalkm;
+        $transporte->cve_usuario = Auth::user()->id;
+        $transporte->save();
 
 
 
@@ -228,6 +252,66 @@ class RecibosController extends Controller
       $data['estatus'] = EstatusRecibo::all();
       return view('recibos::comprobacion')->with($data);
 
+    }
+
+    public function AlimentacionTime(Request $request){
+
+      // list($dias,$mes,$anio) = explode('/',$request->fecha);
+      // $fechaActual = $anio.'-'.$mes.'-'.$dias;
+      //dd($request->fecha);
+
+      $array_todo = [];
+      $dato = $request->nivel;
+      //////////////////////// ALIMENTOS ///////////////////////////////////////
+      $alimentos = Alimentos::orderBy('vigencia_final','Asc')->first();
+      $array = [];
+      $array_alimentos = [];
+      foreach (range($alimentos->rango_inicia, $alimentos->rango_final) as $numero) {
+        array_push($array,$numero);
+      }
+
+      if (array_search($dato,$array)) {
+        $epale = 'existe';
+        $alimentos = Alimentos::find($alimentos->id);
+        array_push($array_alimentos,$alimentos);
+      }else{
+        $epale = 'no existe';
+        $alimentos = 0;
+        array_push($array_alimentos,$alimentos);
+      }
+
+
+      ///////////////////////// HOSPEDAJE /////////////////////////////////////
+      $hospedaje = Hospedaje::orderBy('vigencia_final','Asc')->first();
+      $arrays = [];
+      $array_hospedaje = [];
+
+      foreach (range($hospedaje->rango_inicia, $hospedaje->rango_final) as $numeroh) {
+        array_push($arrays,$numeroh);
+      }
+
+      if (array_search($dato,$arrays)) {
+        $epale = 'existe';
+        $hospedaje = Hospedaje::find($hospedaje->id);
+        array_push($array_hospedaje,$hospedaje);
+      }else{
+        $epale = 'no existe';
+        $hospedaje = 0;
+        array_push($array_hospedaje,$hospedaje);
+      }
+      ///////////////////////// GASOLINA //////////////////////////////////////
+      $gasolina = Gasolina::orderBy('vigencia','Asc')->first();
+
+
+      /////////////////////////////////////////////////////////////////////////
+
+      $array_todo = ['alimentos' => $array_alimentos,'gasolina' => $gasolina,'hospedaje' => $array_hospedaje];
+
+      return $array_todo;
+      // $now = new Carbon();
+      // $days = $now->diffInDays($request->fecha);
+      // //dd($days);
+      // return $days;
     }
 
 
@@ -536,7 +620,10 @@ class RecibosController extends Controller
         $data['gasolina'] = Gasolina::where('activo',1)->get();
         $data['rendimiento'] = Rendimiento::where('activo',1)->get();
         $data['programa'] = Programa::where('activo',1)->get();
-
+        $data['taxi'] = Taxi::where('activo',1)->get();
+        $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
+        $data['lacalidad1'] = Localidad::where('activo',1)->get();
+        $data['lacalidad2'] = Localidad::where('activo',1)->get();
         return view('recibos::create')->with($data);
     }
 
@@ -550,6 +637,17 @@ class RecibosController extends Controller
 
       $rendimiento = Rendimiento::find($request->cuota);
       return $rendimiento;
+    }
+
+    public function TraerPeaje(Request $request){
+      $peaje = Peaje::find($request->id);
+      return $peaje;
+    }
+
+    public function TraerRecorrido(Request $request){
+      //dd($request->ids);
+      $taxi = Taxi::where('activo',1)->whereIN('id',$request->ids)->get();
+      return $taxi;
     }
 
     /**
