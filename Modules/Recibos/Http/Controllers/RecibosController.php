@@ -179,7 +179,7 @@ class RecibosController extends Controller
         $bitacora->cve_usuario = Auth::user()->id;
         $bitacora->save();
 
-
+        //dd($request->tablalugares);
         foreach ($request->tablalugares as $key => $value) {
 
             $lugares = new Lugares();
@@ -196,13 +196,10 @@ class RecibosController extends Controller
             $lugares->save();
 
 
+
             if (isset($value['lugar'][8]['gasolina'])) {
               $existe_lugar = Lugares::find($lugares->id);
               $existe_lugar->combustible = $value['lugar'][8]['gasolina'];
-              $existe_lugar->save();
-            }else{
-              $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->combustible = 0;
               $existe_lugar->save();
             }
 
@@ -210,30 +207,19 @@ class RecibosController extends Controller
               $existe_lugar = Lugares::find($lugares->id);
               $existe_lugar->hospedaje = $value['lugar'][9]['hospedaje'];
               $existe_lugar->save();
-            }else{
-              $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->hospedaje = 0;
-              $existe_lugar->save();
             }
 
-            if (isset($value['lugar'][10]['comida'])) {
+            if (isset($value['lugar'][11]['comida'])) {
               $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->comida = $value['lugar'][10]['comida'];
-              $existe_lugar->save();
-            }else{
-              $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->comida = 0;
+              $existe_lugar->comida = $value['lugar'][11]['comida'];
               $existe_lugar->save();
             }
 
 
-            if (isset($value['lugar'][11]['desayuno'])) {
+            if (isset($value['lugar'][10]['desayuno'])) {
+              //dd('entro');
               $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->desayuno = $value['lugar'][11]['desayuno'];
-              $existe_lugar->save();
-            }else{
-              $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->desayuno = 0;
+              $existe_lugar->desayuno = $value['lugar'][10]['desayuno'];
               $existe_lugar->save();
             }
 
@@ -241,20 +227,13 @@ class RecibosController extends Controller
               $existe_lugar = Lugares::find($lugares->id);
               $existe_lugar->cena = $value['lugar'][12]['cena'];
               $existe_lugar->save();
-            }else{
-              $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->cena = 0;
-              $existe_lugar->save();
             }
 
 
 
 
 
-            // $lugares->hospedaje = $value['lugar'][9]['hospedaje'];
-            // $lugares->desayuno = $value['lugar'][11]['desayuno'];
-            // $lugares->comida = $value['lugar'][10]['comida'];
-            //$lugares->cena = $value['lugar'][12]['cena'];
+
         }
 
 
@@ -290,8 +269,17 @@ class RecibosController extends Controller
                             ['activo',1],
                             ['cve_t_viaticos',$id],
                           ])->first();
+      $data['lugares'] = Lugares::where([
+                            ['activo',1],
+                            ['cve_t_viatico',$id],
+                          ])->get();
       // return view('recibos::oficio')->with($data);
 
+      $fechaEmision = Carbon::parse($data['recibos']->fecha_hora_salida);
+      $fechaExpiracion = Carbon::parse($data['recibos']->fecha_hora_recibio);
+
+      $diasDiferencia = $fechaExpiracion->diffInDays($fechaEmision);
+      //dd($diasDiferencia);
       $bitacora = new Bitacora();
       $bitacora->cve_t_viatico = $id;
       $bitacora->fecha = date('Y-m-d H:i:s');
@@ -705,6 +693,10 @@ class RecibosController extends Controller
         $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
         $data['lacalidad1'] = Localidad::where('activo',1)->get();
         $data['lacalidad2'] = Localidad::where('activo',1)->get();
+        $data['lugares'] = Lugares::where([
+                              ['activo',1],
+                              ['cve_t_viatico',$id],
+                            ])->get();
         return view('recibos::create')->with($data);
     }
 
@@ -1016,6 +1008,17 @@ class RecibosController extends Controller
 
       return $registros->obtenerEstatus->nombre;
     })
+    ->editColumn('num_dias', function ($registros) {
+
+      $lugarest = Lugares::where([
+        ['activo',1],
+        ['cve_t_viatico',$registros->id],
+        ])->first();
+
+      return '$'.$lugarest->total_recibido;
+    })
+
+
 
     ->make(true);
     //Cueri

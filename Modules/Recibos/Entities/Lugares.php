@@ -25,5 +25,17 @@ class Lugares extends Model{
     "activo",
   ];
 
+  public function obteneLocalidad(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Localidad', 'id', 'cve_localidad_origen');
+  }
+
+  public function obteneLocalidad2(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Localidad', 'id', 'cve_localidad_destino');
+  }
+
+  public function obteneZona(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Zona', 'id', 'cve_zona');
+  }
+
 
 }

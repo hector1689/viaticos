@@ -49,7 +49,7 @@
         <div class="row">
           <div class="col-md-2">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° de Empleado: </label>
-              <input type="text" class="form-control" id="n_empleado" onchange="Empleado()" value="@isset($recibos) {{$recibos->num_empleado}} @endisset" placeholder="N° de Empleado" required>
+              <input type="text" class="form-control" id="n_empleado" onchange="Empleado()" value="@isset($recibos) {{$recibos->num_empleado}} @endisset" placeholder="N° de Empleado" onkeypress='return validaNumericos(event)' required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
@@ -63,7 +63,7 @@
           </div>
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">RFC: </label>
-              <input type="text" class="form-control" id="rfc"  placeholder="RFC" value="@isset($recibos) {{$recibos->rfc}} @endisset" required>
+              <input type="text" class="form-control" id="rfc" name='prov_rfc'  placeholder="RFC" value="@isset($recibos) {{$recibos->rfc}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
@@ -188,7 +188,7 @@
         <div class="row">
           <div class="col-md-12">
             <label for="inputPassword4" style="font-size:12px;" class="form-label">Descripcion de la Comisión: </label>
-            <input type="text" class="form-control" id="descripcion"  placeholder="Descripcion de la Comisión" value="@isset($recibos) {{$recibos->descripcion_comision}} @endisset" required>
+            <input type="text" class="form-control" id="descripcion" onchange="abrirLugar()"  placeholder="Descripcion de la Comisión" value="@isset($recibos) {{$recibos->descripcion_comision}} @endisset" required>
           </div>
        </div>
 
@@ -240,7 +240,7 @@
 
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Origen: </label>
-                        <select class="form-control" id="origen_lugar">
+                        <select class="form-control" id="origen_lugar" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad1 as $loc1)
                           <option value="{{ $loc1->id }}">{{ $loc1->localidad }}-{{ $loc1->obteneMunicipio->nombre }}-{{ $loc1->obteneEstado->nombre }}-{{ $loc1->obtenePais->nombre }}</option>
@@ -249,7 +249,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Destino: </label>
-                        <select class="form-control" id="destino_lugar">
+                        <select class="form-control" id="destino_lugar" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad2 as $loc2)
                           <option value="{{ $loc2->id }}">{{ $loc2->localidad }}-{{ $loc2->obteneMunicipio->nombre }}-{{ $loc2->obteneEstado->nombre }}-{{ $loc2->obtenePais->nombre }}</option>
@@ -279,7 +279,54 @@
                               </tr>
                           </thead>
                           <tbody>
-
+                            @isset($lugares)
+                              @foreach($lugares as $key => $lugar)
+                              <tr id="filas_{{$key}}'">
+                                <td><input type="hidden" id="figura_nueva" value="{{$lugar->id}}"/>{{ $lugar->obteneLocalidad->localidad }} - {{ $lugar->obteneLocalidad->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad->obtenePais->nombre }}</td>
+                                <td>{{ $lugar->obteneLocalidad2->localidad }} - {{ $lugar->obteneLocalidad2->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad2->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad2->obtenePais->nombre }}</td>
+                                <td><input type="text" class="form-control" id="dias_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')" value="{{ $lugar->dias }}" disabled></td>
+                                <td>{{ $lugar->obteneZona->nombre }}</td>
+                                <td><input type="text" class="form-control" id="kilometraje_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')" value="{{ $lugar->kilometros }}" disabled></td>
+                                <td>
+                                  <div class="form-group">
+                                      <div class="checkbox-list">
+                                          <label class="checkbox">
+                                              <input type="checkbox" name="gasolina_{{$key}}" value="{{ $lugar->combustible }}" @if($lugar->combustible != 0) checked @endif   disabled>
+                                              <span></span>
+                                          </label>
+                                      </div>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="form-group">
+                                      <div class="checkbox-list">
+                                          <label class="checkbox">
+                                              <input type="checkbox" name="hospedaje_{{$key}}"  value="{{ $lugar->hospedaje }}" @if($lugar->hospedaje != 0) checked @endif disabled>
+                                              <span></span>
+                                          </label>
+                                      </div>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="checkbox-inline">
+                                       <label class="checkbox">
+                                           <input type="checkbox" name="desayuno_{{$key}}"  value="{{ $lugar->desayuno }}" @if($lugar->desayuno != 0) checked @endif disabled>
+                                           <span></span>
+                                       </label>
+                                       <label class="checkbox">
+                                           <input type="checkbox" name="comida_{{$key}}" value="{{ $lugar->comida }}" @if($lugar->comida != 0) checked @endif disabled>
+                                           <span></span>
+                                       </label>
+                                       <label class="checkbox">
+                                           <input type="checkbox" name="cena_{{$key}}" value="{{ $lugar->cena }}" @if($lugar->cena != 0) checked @endif disabled>
+                                           <span></span>
+                                       </label>
+                                   </div>
+                                </td>
+                                <td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="bajaLugar({{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+                                </tr>
+                              @endforeach
+                            @endisset
                           </tbody>
                           <tfoot id="footLugar">
                             <tr>
@@ -300,8 +347,8 @@
 
                       <div class="col-md-8">
                           <label for="inputPassword4" style="font-size:12px;" class="form-label">Programa: </label>
-                          <select class="form-control" id="programalugar">
-                            <option value="">Selecciona</option>
+                          <select class="form-control" id="programalugar" disabled onchange="verBtn()">
+                            <option value="0">Selecciona</option>
                             @foreach($programa as $pro)
                             <option value="{{ $pro->id }}">{{ $pro->nombre }}</option>
                             @endforeach
@@ -310,11 +357,15 @@
                             Por Favor Ingrese Apellido Paterno
                           </div>
                       </div>
-                      <div class="col-md-2">
+
+
+
+                      <div class="col-md-2 calculobtn" >
                         <label for="" style="visibility:hidden;">dfdfdf</label><br>
                         <button type="button" class="btn btn-primary" onclick="calcularViaticoLugar()">Calcular viático</button>
                       </div>
-                      <div class="col-md-2">
+
+                      <div class="col-md-2 calculobtn" >
                         <label for="">Total Recibido</label>
                         <div id="total_recibido_lugar"></div>
                       </div>
@@ -329,7 +380,7 @@
                   <div class="row">
                     <div class="col-md-2">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Kilometro recorrido interno: </label>
-                        <input type="text" class="form-control" id="kilometrorecorrido" value="@isset($transporte) {{ $transporte->kilometro_interno }} @endisset"  placeholder="Kilometro recorrido interno" >
+                        <input type="text" class="form-control" id="kilometrorecorrido" value="@isset($transporte) {{ $transporte->kilometro_interno }} @endisset"  placeholder="Kilometro recorrido interno" onkeypress='return validaNumericos(event)'>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
@@ -343,7 +394,7 @@
                     </div>
                     <div class="col-md-2">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Total de Km recorridos: </label>
-                        <input type="text" class="form-control" id="totalkm"  value="@isset($transporte) {{ $transporte->total_km_recorrido }} @endisset" placeholder="Total de Km recorridos" >
+                        <input type="text" class="form-control" id="totalkm"  value="@isset($transporte) {{ $transporte->total_km_recorrido }} @endisset" placeholder="Total de Km recorridos" onkeypress='return validaNumericos(event)'>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
@@ -1162,7 +1213,7 @@
                     </div>
                     <div class="col-md-6">
                       <label for="">CHEQUE N°</label>
-                      <input type="text" class="form-control" id="cheque" placeholder="Escribir n° de cheque" value="@isset($pagos) {{ $pagos->num_cheque }} @endisset">
+                      <input type="text" class="form-control" id="cheque" placeholder="Escribir n° de cheque" value="@isset($pagos) {{ $pagos->num_cheque }} @endisset" onkeypress='return validaNumericos(event)'>
                     </div>
                   </div>
 
@@ -1295,9 +1346,30 @@ var ObjetoLugares = {};
 var arrayLugares = [];
 
 
-$('#footLugar').hide();
-// $('#total_recibido_lugar').hide();
 
+
+@isset($recibos)
+$('#footLugar').show();
+$('.calculobtn').show();
+@else
+$('#footLugar').hide();
+$('.calculobtn').hide();
+@endisset
+
+
+function verBtn(){
+  var programalugar = $('#programalugar').val();
+  if (programalugar == 0) {
+    $('.calculobtn').hide();
+  }else{
+    $('.calculobtn').show();
+  }
+}
+
+function abrirLugar(){
+  $('#origen_lugar').prop('disabled',false);
+  $('#destino_lugar').prop('disabled',false);
+}
 
 
 $('#tabla1').show();
@@ -1385,94 +1457,108 @@ $('#tabla6').hide();
       format: 'dd/mm/yyyy',
   });
 });
+
+
+$("input[name=prov_rfc]").change(function(){
+
+var length = $("input[name=prov_rfc]").val().length;
+  var curp = $("input[name=prov_rfc]").val();
+        curpValida = validarRFC(curp);
+        //console.log(length);
+        //length == 12 && curpValida == true
+        if(length == 12 && curpValida == true){
+//console.log('entro')
+        }else if(length == 13 && curpValida == true){
+
+        }else{
+          Swal.fire("Lo Sentimos", 'RFC No Valido', "warning");
+          $("input[name=prov_rfc]").val('');
+        }
+
+});
+
+
+function validarRFC(campo){
+  if (campo.length == 12) {
+    var RegExPattern = /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Z\d]{2}))?$/i;
+  }else if(campo.length == 13){
+    var RegExPattern = /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Z\d]{3}))?$/i;
+  }
+  //
+
+    //console.log(RegExPattern)
+    if ((campo.match(RegExPattern)) && (campo!='')) {
+      return true;
+    } else {
+      return false;
+    }
+}
+
+
 var objectLugar = {};
 var arrayLugar = [];
+
+
 function agregarLugar(){
+
+
+$('#programalugar').prop('disabled',false);
 var nivel = $('#nivel').val();
 var origen_lugar = $('#origen_lugar').val();
 var destino_lugar = $('#destino_lugar').val();
 var origen_lugar_name = $('#origen_lugar').find('option:selected').text();
 var destino_lugar_name = $('#destino_lugar').find('option:selected').text();
 
- $.ajax({
-        type:"POST",
-        url:"/recibos/AlimentacionTime",
-        headers: {
-         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data:{
-            nivel:nivel,
-          },
-         success:function(dars){
+
+if (origen_lugar == 0 || destino_lugar == 0) {
+
+}else{
+  $.ajax({
+         type:"POST",
+         url:"/recibos/AlimentacionTime",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+             nivel:nivel,
+           },
+          success:function(dars){
 
 
 
-           objectLugar = {
-             desayuno:dars.alimentos[0].importe_desayuno,
-             comida:dars.alimentos[0].importe_comida,
-             cena:dars.alimentos[0].importe_cena,
-             zona:dars.alimentos[0].zona,
-             gasolina:dars.gasolina.precio_litro,
-             hospedaje:dars.hospedaje[0].importe,
-             nivel_persona:nivel,
-             origen:origen_lugar,
-             destino:destino_lugar,
-             origen_name:origen_lugar_name,
-             destino_name:destino_lugar_name,
-           }
+            objectLugar = {
+              desayuno:dars.alimentos[0].importe_desayuno,
+              comida:dars.alimentos[0].importe_comida,
+              cena:dars.alimentos[0].importe_cena,
+              zona:dars.alimentos[0].zona,
+              gasolina:dars.gasolina.precio_litro,
+              hospedaje:dars.hospedaje[0].importe,
+              nivel_persona:nivel,
+              origen:origen_lugar,
+              destino:destino_lugar,
+              origen_name:origen_lugar_name,
+              destino_name:destino_lugar_name,
+            }
 
 
 
-           agregarLugares(objectLugar);
-           arrayLugar.push(objectLugar);
+            agregarLugares(objectLugar);
+            arrayLugar.push(objectLugar);
 
-           ObjetoLugares = {
-             nivel_persona:nivel,
-             origen:origen_lugar,
-             destino:destino_lugar,
-             origen_name:origen_lugar_name,
-             destino_name:destino_lugar_name,
-           }
-           arrayLugares.push(ObjetoLugares);
+            ObjetoLugares = {
+              nivel_persona:nivel,
+              origen:origen_lugar,
+              destino:destino_lugar,
+              origen_name:origen_lugar_name,
+              destino_name:destino_lugar_name,
+            }
+            arrayLugares.push(ObjetoLugares);
 
-           //console.log(arrayLugar)
+          }
 
-             // console.log(dars.alimentos[0].importe_desayuno)
-             // console.log(dars.alimentos[0].importe_comida)
-             // console.log(dars.alimentos[0].importe_cena)
-             // console.log(dars.gasolina.precio_litro)
-             // console.log(dars.hospedaje[0].importe)
-             // console.log(nivel)
-             // console.log(origen_lugar)
-             // console.log(destino_lugar)
-             // console.log(origen_lugar_name)
-             // console.log(destino_lugar_name)
+    });
 
-
-         }
-
-         // console.log(arrayLugar);
-   });
-
-
-
-   // var min = 1000;
-   // var  max = 3000;
-   // for (var i = min; i<=max; i++){
-   //    //console.log(i);
-   //    arrayNumeros.push(i);
-   //  }
-   //
-   //  console.info(arrayNumeros.includes(nivel));
-   //  console.log(arrayNumeros);
-   //
-   //  var date = new Date();
-   //  var dia = date.getDate();
-   //  var mes = date.getMonth()+1;
-   //  var yyy = date.getFullYear();
-   //  var fechilla = yyy+'/'+mes+'/'+dia;
-   //  //console.log(yyy+'/'+mes+'/'+dia)
-
+}
 
 }
 var contador_lugares = 0;
@@ -1801,7 +1887,7 @@ function calcularViaticoLugar(){
 
 
   //$('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
-  $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_totales.toFixed(2)+'" id="total_extraer">');
+  $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_totales.toFixed(2)+'" id="total_extraer" disabled>');
 
 
 
@@ -2741,11 +2827,6 @@ function cantidadletra(){
                 $('#nivel').val(nivel);
 
 
-
-
-
-
-
                 $.ajax({
                        type:"POST",
                        url:"/recibos/TraerNombreDependencia",
@@ -2862,20 +2943,20 @@ function cantidadletra(){
   function guardar(){
 
     @isset($recibos)
-    var id = {{ $recibos->id }});
+    var id = {{ $recibos->id }};
 
     @else
 
     var id = 0;
     @endisset
     @isset($firmantes)
-    var id_firmante = {{ $firmantes->id }});
+    var id_firmante = {{ $firmantes->id }};
     @else
 
     var id_firmante = 0;
     @endisset
     @isset($pagos)
-    var id_pagos = {{ $pagos->id }});
+    var id_pagos = {{ $pagos->id }};
     @else
 
     var id_pagos = 0;

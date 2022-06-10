@@ -159,9 +159,60 @@
       <span class="negras"></span><br>
 
       <p style="font-size: 9.5pt;text-align:justify;">
-        sirvase presentarse de victoria a reten militar la coma mpo. de cruillas, de reten militar la coma mpo. de cruillas a ejido benito juarez mpio. de jimenez, de ejido benito juarez mpio. de jimenez a reten la coma mpio. de cruillas
-         a ejido benito juarez mpio. de jimenez,de ejido benito juarez mpio. de jimenez a reten la coma mpio. de cruillas, de reten militar la coma mpo. de cruillas a ejido benito juarez mpio. de jimenez los dias del 22 al 23 de abril
-         para llevar a cabo la siguiente comisión: <strong>suministro de agua</strong> debiendo partir el dia
+        sirvase presentarse de @foreach($lugares as $lugar) {{ $lugar->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidad->obtenePais->nombre }} a {{ $lugar->obteneLocalidad2->localidad }} MPIO de {{ $lugar->obteneLocalidad2->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidad2->obteneEstado->nombre }},{{ $lugar->obteneLocalidad2->obtenePais->nombre }}, @endforeach los dias del
+        <?php
+        list($fecha,$hora) = explode(' ',$recibos->fecha_hora_salida);
+        list($dia,$mes,$anio) = explode('-',$fecha);
+        echo $anio;
+         ?>
+         al
+         <?php
+         list($fecha2,$hora2) = explode(' ',$recibos->fecha_hora_recibio);
+         list($dia2,$mes2,$anio2) = explode('-',$fecha2);
+         echo $anio2;
+          ?>
+          de
+          <?php
+          list($fecha2,$hora2) = explode(' ',$recibos->fecha_hora_recibio);
+          list($dia2,$mes2,$anio2) = explode('-',$fecha2);
+                  if ($mes2 == 1) {
+                    echo 'ENERO';
+                  }elseif($mes2 == 2){
+                    echo 'FEBRERO';
+
+                  }elseif($mes2 == 3){
+                    echo 'MARZO';
+
+                  }elseif($mes2 == 4){
+                    echo 'ABRIL';
+
+                  }elseif($mes2 == 5){
+                    echo 'MAYO';
+
+                  }elseif($mes2 == 6){
+                    echo 'JUNIO';
+
+                  }elseif($mes2 == 7){
+                    echo 'JULIO';
+
+                  }elseif($mes2 == 8){
+                    echo 'AGOSTO';
+
+                  }elseif($mes2 == 9){
+                    echo 'SEPTIEMBRE';
+
+                  }elseif($mes2 == 10){
+                    echo 'OCTUBRE';
+
+                  }elseif($mes2 == 11){
+                    echo 'NOVIEMBRE';
+
+                  }elseif($mes2 == 12){
+                    echo 'DICIEMBRE';
+                  }
+           ?>
+
+          para llevar a cabo la siguiente comisión: <strong>{{ $recibos->descripcion_comision }}</strong> debiendo partir el dia
          <?php
          list($fecha,$hora) = explode(' ',$recibos->fecha_hora_salida);
 
