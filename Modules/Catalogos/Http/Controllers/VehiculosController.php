@@ -153,21 +153,38 @@ class VehiculosController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
 
-      $acciones = [
-         "Editar" => [
-           "icon" => "edit blue",
-           "href" => "/catalogos/vehiculos/$value->id/edit"
-         ],
-        // "Ver" => [
-        //   "icon" => "fas fa-circle",
-        //   "href" => "/guardianes/conocenos/$value->id/show"
-        // ],
+      if(Auth::user()->can(['editar vehiculos','eliminar vehiculos'])){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/vehiculos/$value->id/edit"
+           ],
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ],
+        ];
+      }else if(Auth::user()->can('eliminar vehiculos')){
+        $acciones = [
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ]
+        ];
+      }else if(Auth::user()->can('editar vehiculos')){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/vehiculos/$value->id/edit"
+           ]
+        ];
+      }else{
+        $acciones = [
 
-        "Eliminar" => [
-          "icon" => "edit blue",
-          "onclick" => "eliminar($value->id)"
-        ],
-      ];
+        ];
+      }
+
+
 
 
 

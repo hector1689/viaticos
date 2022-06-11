@@ -14,13 +14,17 @@
                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
                     <!--begin::Navigation-->
                     <ul class="navi navi-hover py-5">
-
+                      @can('crear gasolina')
                       <li class="navi-item">
                           <a href="/catalogos/gasolina/create" class="navi-link">
                               <span class="navi-icon"><i class="fas fa-plus"></i></span>
                               <span class="navi-text">Agregar</span>
                           </a>
                       </li>
+                      @else
+
+                      @endcan
+
 
                     </ul>
                     <!--end::Navigation-->

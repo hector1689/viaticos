@@ -15,13 +15,16 @@
                     <!--begin::Navigation-->
                     <ul class="navi navi-hover py-5">
 
+                      @can('crear alimentacion')
                       <li class="navi-item">
                           <a href="/catalogos/alimentacion/create" class="navi-link">
                               <span class="navi-icon"><i class="fas fa-plus"></i></span>
                               <span class="navi-text">Agregar</span>
                           </a>
                       </li>
+                      @else
 
+                      @endcan
                     </ul>
                     <!--end::Navigation-->
                 </div>

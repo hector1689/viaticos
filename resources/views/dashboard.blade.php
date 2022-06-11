@@ -19,7 +19,7 @@
       <!--begin::Body-->
       <div class="card-body">
 
-          <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">29</span>
+          <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{$capturados}}</span>
           <span class="font-weight-bold text-dark  font-size-sm">Capturados</span>
       </div>
       <!--end::Body-->
@@ -32,7 +32,7 @@
       <!--begin::ody-->
       <div class="card-body">
 
-          <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">44</span>
+          <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{$proceso}}</span>
           <span class="font-weight-bold text-dark font-size-sm">En Proceso</span>
       </div>
       <!--end::Body-->
@@ -45,7 +45,7 @@
       <!--begin::Body-->
       <div class="card-body">
 
-          <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">50</span>
+          <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{$finiquitado}}</span>
           <span class="font-weight-bold text-dark  font-size-sm">Finiquitados</span>
       </div>
       <!--end::Body-->
@@ -58,8 +58,8 @@
       <!--begin::Body-->
       <div class="card-body">
 
-          <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">23</span>
-          <span class="font-weight-bold text-dark  font-size-sm">Otros</span>
+          <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{$pendiente}}</span>
+          <span class="font-weight-bold text-dark  font-size-sm">Pendientes</span>
       </div>
       <!--end::Body-->
   </div>

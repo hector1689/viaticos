@@ -161,21 +161,39 @@ class TaxiController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
 
-      $acciones = [
-         "Editar" => [
-           "icon" => "edit blue",
-           "href" => "/catalogos/taxi/$value->id/edit"
-         ],
-        // "Ver" => [
-        //   "icon" => "fas fa-circle",
-        //   "href" => "/guardianes/conocenos/$value->id/show"
-        // ],
+      if(Auth::user()->can(['editar taxi','eliminar taxi'])){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/taxi/$value->id/edit"
+           ],
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ],
+        ];
+      }else if(Auth::user()->can('eliminar taxi')){
+        $acciones = [
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ]
+        ];
+      }else if(Auth::user()->can('editar taxi')){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/taxi/$value->id/edit"
+           ]
 
-        "Eliminar" => [
-          "icon" => "edit blue",
-          "onclick" => "eliminar($value->id)"
-        ],
-      ];
+        ];
+      }else{
+        $acciones = [
+
+        ];
+      }
+
+
 
 
 

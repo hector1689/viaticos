@@ -13,4 +13,5 @@
 
 Route::prefix('reportes')->group(function() {
     Route::get('/', 'ReportesController@index');
+    Route::get('/fechas/{fecha1}/{fecha2}', 'ReportesController@descargar');
 });

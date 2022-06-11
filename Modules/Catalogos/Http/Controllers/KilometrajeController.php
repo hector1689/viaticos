@@ -105,7 +105,7 @@ class KilometrajeController extends Controller
         $kilometraje->save();
 
         return response()->json(['success'=>'Ha sido editado con éxito']);
-        
+
       } catch (\Exception $e) {
           dd($e->getMessage());
       }
@@ -151,21 +151,38 @@ class KilometrajeController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
 
-      $acciones = [
-         "Editar" => [
-           "icon" => "edit blue",
-           "href" => "/catalogos/kilometraje/$value->id/edit"
-         ],
-        // "Ver" => [
-        //   "icon" => "fas fa-circle",
-        //   "href" => "/guardianes/conocenos/$value->id/show"
-        // ],
+      if(Auth::user()->can(['editar kilometraje','eliminar kilometraje'])){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/kilometraje/$value->id/edit"
+           ],
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ]
+        ];
+      }else if(Auth::user()->can('eliminar kilometraje')){
+        $acciones = [
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ]
+        ];
+      }else if(Auth::user()->can('editar kilometraje')){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/kilometraje/$value->id/edit"
+           ]
+        ];
+      }else{
+        $acciones = [
 
-        "Eliminar" => [
-          "icon" => "edit blue",
-          "onclick" => "eliminar($value->id)"
-        ],
-      ];
+        ];
+      }
+
+
 
 
 

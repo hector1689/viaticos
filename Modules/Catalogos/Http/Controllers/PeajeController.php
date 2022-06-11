@@ -144,21 +144,40 @@ class PeajeController extends Controller
      $data = $datatable->getData();
      foreach ($data->data as $key => $value) {
 
-       $acciones = [
-          "Editar" => [
-            "icon" => "edit blue",
-            "href" => "/catalogos/peaje/$value->id/edit"
-          ],
-         // "Ver" => [
-         //   "icon" => "fas fa-circle",
-         //   "href" => "/guardianes/conocenos/$value->id/show"
-         // ],
+       if(Auth::user()->can(['editar peaje','eliminar peaje'])){
+         $acciones = [
+            "Editar" => [
+              "icon" => "edit blue",
+              "href" => "/catalogos/peaje/$value->id/edit"
+            ],
 
-         "Eliminar" => [
-           "icon" => "edit blue",
-           "onclick" => "eliminar($value->id)"
-         ],
-       ];
+           "Eliminar" => [
+             "icon" => "edit blue",
+             "onclick" => "eliminar($value->id)"
+           ],
+         ];
+      }else if(Auth::user()->can('eliminar peaje')){
+        $acciones = [
+
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ]
+        ];
+      }else if(Auth::user()->can('editar peaje')){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/peaje/$value->id/edit"
+           ]
+        ];
+      }else{
+        $acciones = [
+
+        ];
+      }
+
+
 
 
 

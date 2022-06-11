@@ -132,6 +132,7 @@ class RecibosController extends Controller
         $recibo->num_dias = $request->n_dias;
         $recibo->num_dias_inhabiles = $request->n_dias_ina;
         $recibo->descripcion_comision = $request->descripcion;
+        $recibo->importe =$request->total_extraer;
         $recibo->cve_usuario = Auth::user()->id;
         $recibo->save();
 
@@ -194,6 +195,9 @@ class RecibosController extends Controller
             $lugares->total_recibido = $request->total_extraer;
             $lugares->cve_usuario =Auth::user()->id;
             $lugares->save();
+
+
+
 
 
 
@@ -770,6 +774,7 @@ class RecibosController extends Controller
           $recibo->num_dias = $request->n_dias;
           $recibo->num_dias_inhabiles = $request->n_dias_ina;
           $recibo->descripcion_comision = $request->descripcion;
+          $recibo->importe =$request->total_extraer;
           $recibo->cve_usuario = Auth::user()->id;
           $recibo->save();
 
@@ -1025,55 +1030,53 @@ class RecibosController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
 
-      $acciones = [
-         "Editar" => [
-           "icon" => "edit blue",
-           "href" => "/recibos/$value->id/edit"
-         ],
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/recibos/$value->id/edit"
+           ],
 
-        "Ver" => [
-          "icon" => "fas fa-circle",
-          "href" => "/recibos/$value->id/show"
-        ],
-        "Finiquitar Provisional" => [
-          "icon" => "fas fa-circle",
-          "onclick" => "finiquitarP($value->id)"
-        ],
-        "Finiquitar" => [
-          "icon" => "fas fa-circle",
-          "onclick" => "finiquitar($value->id)"
-        ],
-        "Cancelar" => [
-          "icon" => "fas fa-circle",
-          "onclick" => "baja($value->id)"
-        ],
-        "Recibo Complementario" => [
-          "icon" => "fas fa-circle",
-          "href" => "/recibos/$value->id/recibo"
-        ],
-        "Comprobaciones" => [
-          "icon" => "fas fa-circle",
-          "href" => "/recibos/$value->id/comprobantes"
-        ],
-        "Imprimir Recibo" => [
-          "icon" => "fas fa-circle",
-          "href" => "/recibos/$value->id/imprimir"
-        ],
-        "Oficio de Comisión" => [
-          "icon" => "fas fa-circle",
-          "href" => "/recibos/$value->id/oficio"
-        ],
-        "Especificación de Comisión" => [
-          "icon" => "fas fa-circle",
-          "href" => "/recibos/$value->id/especificacioncomision"
-        ],
+          "Ver" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/show"
+          ],
+          "Finiquitar Provisional" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "finiquitarP($value->id)"
+          ],
+          "Finiquitar" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "finiquitar($value->id)"
+          ],
+          "Cancelar" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "baja($value->id)"
+          ],
+          "Recibo Complementario" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/recibo"
+          ],
+          "Comprobaciones" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/comprobantes"
+          ],
+          "Imprimir Recibo" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/imprimir"
+          ],
+          "Oficio de Comisión" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/oficio"
+          ],
+          "Especificación de Comisión" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/especificacioncomision"
+          ],
+
+        ];
 
 
-        // "Cancelar" => [
-        //   "icon" => "edit blue",
-        //   "onclick" => "eliminar($value->id)"
-        // ],
-      ];
+
 
 
 

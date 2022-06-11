@@ -106,7 +106,7 @@ class GasolinaController extends Controller
         try {
           list($dia,$mes,$anio)=explode('/',$request->vigencia);
           $fecha1 = $anio.'-'.$mes.'-'.$dia;
-  
+
           $gasolina = Gasolina::find($request->id);
           $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
           $gasolina->anio = $request->anio;
@@ -156,21 +156,38 @@ class GasolinaController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
 
-      $acciones = [
-         "Editar" => [
-           "icon" => "edit blue",
-           "href" => "/catalogos/gasolina/$value->id/edit"
-         ],
-        // "Ver" => [
-        //   "icon" => "fas fa-circle",
-        //   "href" => "/guardianes/conocenos/$value->id/show"
-        // ],
+      if(Auth::user()->can(['editar gasolina','eliminar gasolina'])){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/gasolina/$value->id/edit"
+           ],
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ],
+        ];
+      }else if(Auth::user()->can('eliminar gasolina')){
+        $acciones = [
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ],
+        ];
+      }else if(Auth::user()->can('editar gasolina')){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/gasolina/$value->id/edit"
+           ],
+        ];
+      }else{
+        $acciones = [
 
-        "Eliminar" => [
-          "icon" => "edit blue",
-          "onclick" => "eliminar($value->id)"
-        ],
-      ];
+        ];
+      }
+
+
 
 
 

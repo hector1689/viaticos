@@ -10,7 +10,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Auth;
 use \DB;
-
+use \Modules\Recibos\Entities\Recibos;
 class HomeController extends Controller
 {
     /**
@@ -20,7 +20,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-      return view('dashboard');
+
+      $data['capturados'] = Recibos::where([
+        ['activo',1],
+        ['cve_estatus',1]
+        ])->count();
+        $data['proceso'] = Recibos::where([
+          ['activo',1],
+          ['cve_estatus',2]
+          ])->count();
+          $data['finiquitado'] = Recibos::where([
+            ['activo',1],
+            ['cve_estatus',4]
+            ])->count();
+            $data['pendiente'] = Recibos::where([
+              ['activo',1],
+              ['cve_estatus',7]
+              ])->count();
+      return view('dashboard')->with($data);
     }
 
     public function actualizar(Request $request){

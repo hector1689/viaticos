@@ -140,21 +140,41 @@ class RendimientoController extends Controller
      $data = $datatable->getData();
      foreach ($data->data as $key => $value) {
 
-       $acciones = [
-          "Editar" => [
+      if(Auth::user()->can(['editar rendimiento','eliminar rendimiento'])){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/rendimiento/$value->id/edit"
+           ],
+          "Eliminar" => [
             "icon" => "edit blue",
-            "href" => "/catalogos/rendimiento/$value->id/edit"
+            "onclick" => "eliminar($value->id)"
           ],
-         // "Ver" => [
-         //   "icon" => "fas fa-circle",
-         //   "href" => "/guardianes/conocenos/$value->id/show"
-         // ],
+        ];
 
-         "Eliminar" => [
-           "icon" => "edit blue",
-           "onclick" => "eliminar($value->id)"
-         ],
-       ];
+      }else if(Auth::user()->can('eliminar rendimiento')){
+        $acciones = [
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ]
+        ];
+
+      }else if(Auth::user()->can('editar rendimiento')){
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/catalogos/rendimiento/$value->id/edit"
+           ]
+
+        ];
+
+      }else{
+        $acciones = [
+
+        ];
+      }
+
 
 
 

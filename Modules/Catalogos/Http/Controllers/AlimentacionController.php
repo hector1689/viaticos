@@ -160,21 +160,39 @@ class AlimentacionController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
 
-      $acciones = [
-         "Editar" => [
-           "icon" => "edit blue",
-           "href" => "/catalogos/alimentacion/$value->id/edit"
-         ],
-        // "Ver" => [
-        //   "icon" => "fas fa-circle",
-        //   "href" => "/guardianes/conocenos/$value->id/show"
-        // ],
+          if(Auth::user()->can(['editar alimentacion','eliminar alimentacion'])){
+            $acciones = [
+               "Editar" => [
+                 "icon" => "edit blue",
+                 "href" => "/catalogos/alimentacion/$value->id/edit"
+               ],
+              "Eliminar" => [
+                "icon" => "edit blue",
+                "onclick" => "eliminar($value->id)"
+              ]
+            ];
+          }else if(Auth::user()->can('eliminar alimentacion')){
+            $acciones = [
+              "Eliminar" => [
+                "icon" => "edit blue",
+                "onclick" => "eliminar($value->id)"
+              ]
+            ];
+          }else if(Auth::user()->can('editar alimentacion')){
+            $acciones = [
+               "Editar" => [
+                 "icon" => "edit blue",
+                 "href" => "/catalogos/alimentacion/$value->id/edit"
+               ]
 
-        "Eliminar" => [
-          "icon" => "edit blue",
-          "onclick" => "eliminar($value->id)"
-        ],
-      ];
+            ];
+          }else{
+            $acciones = [
+
+            ];
+          }
+
+
 
 
 
