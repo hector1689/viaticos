@@ -42,10 +42,14 @@
           </div>
 
           <div class="col-md-6" style="text-align: right;">
-              <a href="javascript: editaArea(0, 0);" class="btn btn-primary">
-                  <i class="fas fa-plus icon-sm"></i>
-                  Nueva estructura inicial
-              </a>
+            @can('crear estructura')
+            <a href="javascript: editaArea(0, 0);" class="btn btn-primary">
+                <i class="fas fa-plus icon-sm"></i>
+                Nueva estructura inicial
+            </a>
+            @else
+            @endcan
+
           </div>
 
       </div>
@@ -562,33 +566,38 @@
                             t += '</div>';
                             t += '<div class="col-md-6" style="text-align: right !important;">';
 
-
+                                @can('eliminar estructura')
                                     t += '<span class="caret" onclick="elimina_area(' +value.id +')" title ="Elimina área">';
                                       t += '<i class="fas fa-minus text-danger mr-5 icon-nm"> </i>';
                                     t += '</span>';
-
+                                @endcan
+                                @can('editar estructura')
                                 t += '<span class="caret" onclick="editaArea(' +value.id +', ' +value.nivel+')" title ="Editar área">';
                                       t += '<i class="far fa-edit text-primary mr-5 icon-nm"> </i>';
                                 t += '</span>';
-
+                                @endcan
                                 if (value.nivel == 5) {
                                   // t += '<span  class="caret"  title ="Agrega área">';
                                   //     t += '<i class="fas fa-plus text-primary mr-5 icon-nm" style="visibility:hidden;"> </i>';
                                   // t += '</span>';
                                 }else{
+                                  @can('crear nivel estrcutura')
+
                                   t += '<span class="caret" id="agregar_area" onclick="agrega_area(' +value.id +', ' +value.nivel +')" title ="Agrega área">';
                                     t += '<i class="fas fa-plus text-primary mr-5 icon-nm"> </i>';
                                   t += '</span>';
+                                  @endcan
                                 }
-
+                                    @can('responsable estructura')
                                     t += '<span class="caret" onclick="agrega_responsable(' +value.id +', ' +value.nivel +')" title ="Agrega Responsable">';
                                         t += '<i class="far fa-user text-primary mr-5 icon-nm"> </i>';
                                     t += '</span>';
-
+                                    @endcan
+                                    @can('firmante estructura')
                                     t += '<span class="caret" onclick="agrega_firmantes(' +value.id +', ' +value.nivel +')" title ="Agrega Firmantes">';
                                         t += '<i class="fas fa-pencil-alt text-primary mr-5 icon-nm"> </i>';
                                     t += '</span>';
-
+                                    @endcan
 
                             t += '</div>';
                         t += '</div>';

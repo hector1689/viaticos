@@ -109,24 +109,44 @@ class PermisosController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) { //el array acciones se constuye en el helpers dropdown - helpers esta con bootsrap
 
-      $acciones = [
-        // "Ver" => [
-        //   "icon" => "edit blue",
-        //   "href" => "/usuarios/$value->id/show"
-        // ],
-        "Editar" => [
-          "icon" => "edit blue",
-          "href" => "/usuarios/permisos/$value->id/edit" //esta ruta esta en el archivo web
-        ],
-        "Eliminar" => [
-          "icon" => "edit blue",
-          "onclick" => "eliminar($value->id)"
-        ],
-        // "Login As" => [
-        //   "icon" => "user blue",
-        //   "href" => "/usuarios/loginAs/$value->id"
-        // ]
-      ];
+      if(Auth::user()->can(['editar permisos','eliminar permisos'])){
+        $acciones = [
+
+          "Editar" => [
+            "icon" => "edit blue",
+            "href" => "/usuarios/permisos/$value->id/edit" //esta ruta esta en el archivo web
+          ],
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ],
+        ];
+
+      }else if(Auth::user()->can('eliminar permisos')){
+        $acciones = [
+
+          "Eliminar" => [
+            "icon" => "edit blue",
+            "onclick" => "eliminar($value->id)"
+          ],
+        ];
+
+      }else if(Auth::user()->can('editar permisos')){
+        $acciones = [
+
+          "Editar" => [
+            "icon" => "edit blue",
+            "href" => "/usuarios/permisos/$value->id/edit" //esta ruta esta en el archivo web
+          ],
+        ];
+
+      }else{
+        $acciones = [
+
+        ];
+      }
+
+
 
 
     $value->acciones = generarDropdown($acciones);
