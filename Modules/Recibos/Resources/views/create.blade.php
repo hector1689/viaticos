@@ -71,6 +71,7 @@
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Nivel: </label>
               <input type="text" class="form-control" id="nivel"  placeholder="Nivel" value="@isset($recibos) {{$recibos->nivel}} @endisset" disabled required>
+              <input type="hidden" id="area_id" >
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
@@ -2823,8 +2824,11 @@ function cantidadletra(){
                 var nombre  = data.nombre+' '+data.apellido_paterno+' '+data.apellido_materno;
                 var nivel = data.nivel;
 
+                var id_area = data.cve_area_departamentos;
+
                 $('#nombre_empleado').val(nombre);
                 $('#nivel').val(nivel);
+                $('#area_id').val(id_area);
 
 
                 $.ajax({
@@ -2964,6 +2968,9 @@ function cantidadletra(){
 
     var n_empleado = $('#n_empleado').val();
     var nombre_empleado = $('#nombre_empleado').val();
+    var area_id = $('#area_id').val();
+
+
     var rfc = $('#rfc').val();
     var nivel = $('#nivel').val();
     var clave_departamental = $('#clave_departamental').val();
@@ -3090,6 +3097,7 @@ function cantidadletra(){
                tablalugares:nuevoObjeto,
                total_extraer:total_extraer,
                programalugar:programalugar,
+               area_id:area_id,
              },
              // data: formData,
              // processData: false,

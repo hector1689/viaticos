@@ -9,11 +9,14 @@ use Illuminate\Routing\Controller;
 use \Modules\Usuarios\Entities\Roles;
 use \Modules\Usuarios\Entities\RolesPermisos;
 use \Modules\Usuarios\Entities\ModeloRoles;
+use \Modules\Usuarios\Entities\Asociar;
+
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Storage;
 use Yajra\Datatables\Datatables;
 use \App\Models\User;
+use \Modules\Catalogos\Entities\Areas;
 use Auth;
 use \DB;
 class UsuariosController extends Controller
@@ -32,7 +35,8 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-        return view('usuarios::index');
+       $data['areas'] = Areas::where('activo',1)->get();
+        return view('usuarios::index')->with($data);
     }
 
     /**
@@ -47,6 +51,28 @@ class UsuariosController extends Controller
       return view('usuarios::create')->with($data);
     }
 
+    public function asociarusuario(Request $request){
+        try {
+          $asociar = Asociar::where('id_usuario',$request->id)->first();
+
+          if (isset($asociar)) {
+            $as = Asociar::find($asociar->id);
+            $as->id_dependencia = $request->dependencia;
+            $as->save();
+          }else{
+            $as = new Asociar();
+            $as->id_usuario = $request->id;
+            $as->id_dependencia = $request->dependencia;
+            $as->save();
+          }
+
+          return response()->json(['success'=>'Se Agrego Satisfactoriamente']);
+
+        } catch (\Exception $e) {
+           dd($e->getMessage());
+        }
+
+    }
 
 
     /**
@@ -227,6 +253,11 @@ class UsuariosController extends Controller
               "icon" => "edit blue",
               "href" => "/usuarios/$value->id/edit" //esta ruta esta en el archivo web
             ],
+            "Asociar" => [
+              "icon" => "edit blue",
+              "onclick" => "asociar($value->id)"
+            ],
+            "Login as" => [ "onclick" => "as('$value->id')" ],
             "Eliminar" => [
               "icon" => "edit blue",
               "onclick" => "eliminar($value->id)"
@@ -238,12 +269,20 @@ class UsuariosController extends Controller
               "icon" => "edit blue",
               "onclick" => "eliminar($value->id)"
             ],
+            "Asociar" => [
+              "icon" => "edit blue",
+              "onclick" => "asociar($value->id)"
+            ],
           ];
         }else if(Auth::user()->can('editar usuario')){
           $acciones = [
             "Editar" => [
               "icon" => "edit blue",
               "href" => "/usuarios/$value->id/edit" //esta ruta esta en el archivo web
+            ],
+            "Asociar" => [
+              "icon" => "edit blue",
+              "onclick" => "asociar($value->id)"
             ],
           ];
         }else{
@@ -292,6 +331,38 @@ class UsuariosController extends Controller
       //dd($filets);
 
 
+
+    }
+
+    public function as(Request $request){
+      $reserva = \Auth::user()->id;
+      $user = User::find($request->id);
+      \Auth::loginUsingId($user->id);
+
+      $idOriginal = $request->session()->get('idOriginal');
+          if ( is_null( $idOriginal ) ) {
+            $request->session()->put('idOriginal', $reserva);
+          }else if( $idOriginal == $user->id ){
+            $request->session()->forget('idOriginal');
+          }
+
+      return response()->json(['success'=>'cambio de usuario exitosamente']);
+      // return redirect('/dashboard');
+    }
+    public function as2(Request $request){
+      $loginAs = \Auth::user()->id;
+      $user = User::find($request->id);
+      \Auth::login($user);
+
+      $idOriginal = $request->session()->get('idOriginal');
+      if ( is_null( $idOriginal ) ) {
+        $request->session()->put('idOriginal', $reserva);
+      }else if( $idOriginal == $user->id ){
+        $request->session()->forget('idOriginal');
+      }
+
+
+      return 1;
 
     }
 

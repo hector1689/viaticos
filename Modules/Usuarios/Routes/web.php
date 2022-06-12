@@ -24,12 +24,13 @@ Route::prefix('usuarios')->group(function() {
     Route::get('/archivos', 'UsuariosController@archivosview');
     Route::get('/tablaarchivos', 'UsuariosController@tablaarchivos');
     Route::post('/Eliminararchivos', 'UsuariosController@Eliminararchivos');
-
+    Route::post('/as', 'UsuariosController@as');
+    Route::post('/loginAs', 'UsuariosController@as2');
     Route::post('/municipio', 'UsuariosController@municipio');
     Route::post('/escuelas', 'UsuariosController@escuelas');
     Route::post('/createEscuela', 'UsuariosController@storeEscuela');
-
-
+    Route::post('/asociarusuario', 'UsuariosController@asociarusuario');
+    //////////////////////////////////////////////////////////////////////////
     Route::prefix('/roles')->group(function() {
         Route::get('/', 'RolesController@index');
         Route::get('/tablaroles', 'RolesController@tablaroles');

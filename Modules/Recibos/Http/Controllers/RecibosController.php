@@ -37,7 +37,7 @@ use \Modules\Recibos\Entities\Transporte;
 use \Modules\Recibos\Entities\Vehiculo;
 use \Modules\Recibos\Entities\VehiculoOficial;
 use \Modules\Recibos\Entities\Lugares;
-
+use \Modules\Usuarios\Entities\Asociar;
 /////////////////////////////////////////////////////////////////
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -130,6 +130,7 @@ class RecibosController extends Controller
         $recibo->departamentos = $request->departamento;
         $recibo->lugar_adscripcion = $request->lugar_adscripcion;
         $recibo->num_dias = $request->n_dias;
+        $recibo->id_dependencia = $request->area_id;
         $recibo->num_dias_inhabiles = $request->n_dias_ina;
         $recibo->descripcion_comision = $request->descripcion;
         $recibo->importe =$request->total_extraer;
@@ -774,6 +775,7 @@ class RecibosController extends Controller
           $recibo->num_dias = $request->n_dias;
           $recibo->num_dias_inhabiles = $request->n_dias_ina;
           $recibo->descripcion_comision = $request->descripcion;
+          $recibo->id_dependencia = $request->area_id;
           $recibo->importe =$request->total_extraer;
           $recibo->cve_usuario = Auth::user()->id;
           $recibo->save();
@@ -1007,7 +1009,23 @@ class RecibosController extends Controller
     setlocale(LC_TIME, 'es_ES');
     \DB::statement("SET lc_time_names = 'es_ES'");
     //dd('entro');
-    $registros = Recibos::where('activo', 1); //Conocenos es la entidad
+
+    $tipo_usuario = Auth::user()->tipo_usuario;
+
+    if($tipo_usuario == 1){
+      $registros = Recibos::where('activo', 1);
+    }else{
+      $id = Auth::user()->id;
+      $asociar = Asociar::where('id_usuario',$id)->first();
+
+      $registros = Recibos::where([
+        ['activo', 1],
+        ['id_dependencia',$asociar->id_dependencia]
+      ])->get();
+    }
+
+
+
     $datatable = DataTables::of($registros)
     ->editColumn('cve_estatus', function ($registros) {
 

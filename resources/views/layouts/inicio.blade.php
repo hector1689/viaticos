@@ -232,7 +232,12 @@ License: You must have a valid license purchased only from themeforest(the above
                       <ul class="navi navi-hover py-4">
                           <!--begin::Item-->
                           <li class="navi-item">
-                                                      <a onclick="actualizar()" class="navi-link"  class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5"><span class="navi-text"><i class="fas fa-sync"></i> Actualizar</span></a>
+                              @if ( session('idOriginal') )
+                                <a class="navi-link" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5" onclick="as2({{ session('idOriginal') }})">
+                                  <span class="navi-text" style="font-size:7.5pt;"><i class="fas fa-user-check"></i> Regresar a mi usuario</span>
+                                </a>
+                              @endif
+                              <a onclick="actualizar()" class="navi-link"  class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5"><span class="navi-text"><i class="fas fa-sync"></i> Actualizar</span></a>
                               <a href="{{ route('logout') }}" class="navi-link" onclick="event.preventDefault();
                               document.getElementById('logout-form').submit();" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5"><span class="navi-text"><i class="fas fa-power-off"></i> Cerrar Sesión</span></a>
                               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -490,6 +495,30 @@ function actualizar(){
 
     }
   });
+}
+
+function as2(id) {
+
+  $.ajax({
+
+   type:"POST",
+     url:"/usuarios/loginAs",
+   headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+   },
+   data:{
+    id : id,
+   },
+
+    success:function(data){
+
+      if (data == 1) {
+        location.href ="/dashboard";
+      }
+
+    }
+  });
+
 }
         </script>
 

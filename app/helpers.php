@@ -129,7 +129,7 @@ if (!function_exists('generarDropdown')) {
         }
         if ( array_key_exists('onclick', $value) ) {
           $dropdown .=
-            "<div class='dropdown-item' onclick=".$value["onclick"]." ".$attrData.">
+            "<div style='cursor: pointer;' class='dropdown-item' onclick=".$value["onclick"]." ".$attrData.">
               $key
             </div>";
         }else if(array_key_exists('href', $value)) {

@@ -47,7 +47,71 @@
 </table>
 </div>
 </div>
+
+<div class="modal fade" id="asociar_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Asociar Dependencia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="id_usuario_asociar" id="id_usuario_asociar" >
+              <div class="row">
+                <div class="col-md-12">
+                  <select class="form form-control dependencia" name="dependencia" >
+                    <option value="0">Seleccionar</option>
+                    @foreach($areas as $area)
+                    <option value="{{$area->id}}">{{$area->nombre}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary font-weight-bold" onclick="guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type="text/javascript">
+    $('#asociar_modal').modal('hide');
+
+    $('.dependencia').select2({
+            width: '100%',
+        });
+
+    function guardar(){
+      var id = $('#id_usuario_asociar').val();
+      var dependencia = $('select[name=dependencia]').val();
+
+      $.ajax({
+
+         type:"POST",
+
+         url:"/usuarios/asociarusuario",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+           id:id,
+           dependencia:dependencia,
+         },
+
+          success:function(data){
+            Swal.fire("Excelente!", data.success, "success").then(function(){ tabla.ajax.reload(); $('#asociar_modal').modal('hide'); $('select[name=dependencia]').prop('selectedIndex',0); });
+
+          }
+
+
+      });
+
+    }
     var tabla;
     $(function() {
     tabla = $('#kt_datatable').DataTable({
@@ -74,6 +138,45 @@
       language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
     });
     });
+
+    function as(id) {
+
+    Swal.fire({
+          title: "¿Estas seguro?",
+          text: "Cambiaras de Usuario!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Si, Cambiar!"
+      }).then(function(result) {
+          if (result.value) {
+
+            $.ajax({
+
+               type:"POST",
+
+               url:"/usuarios/as",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+                 id:id,
+               },
+
+                success:function(data){
+
+                  Swal.fire("Excelente!", data.success, "success").then(function(){ location.href ="/dashboard"; });
+
+                }
+
+
+            });
+
+
+          }
+      })
+
+
+  }
 
     function eliminar(id){
 //console.log(id);
@@ -110,6 +213,12 @@
 
           }
       })
+    }
+
+  function asociar(id){
+    // console.log(id);
+    $('#id_usuario_asociar').val(id);
+    $('#asociar_modal').modal('show');
     }
 
 
