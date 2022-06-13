@@ -3,6 +3,7 @@
 @section('content')
 <div class="card card-custom example example-compact">
 <div class="card-body">
+  @if($tipo_usuario == 1 || $tipo_usuario == 2)
   <div class="row">
       <div class="col-xl-3">
           <!--begin::Stats Widget 25-->
@@ -57,6 +58,9 @@
         <!--end::Stat: Widget 28-->
       </div>
   </div>
+  @else
+
+  @endif
   <div role="separator" class="dropdown-divider"></div>
   <div class="row">
     <div class="col-md-12">
@@ -86,13 +90,6 @@
     </div>
 
   </div>
-
-
-
-
-
-
-
   </div>
 </div>
 <script src="https://code.highcharts.com/highcharts.js"></script>

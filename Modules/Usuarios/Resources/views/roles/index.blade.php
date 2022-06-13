@@ -62,5 +62,42 @@ function eliminar(id) {
   $('#modalEliminar form').attr('action', "/usuarios/roles/" + id + "/destroy");
   $('#modalEliminar').modal('show');
 }
+
+function eliminar(id){
+//console.log(id);
+var id_user = id;
+Swal.fire({
+      title: "¿Estas seguro?",
+      text: "No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Si, bórralo!"
+  }).then(function(result) {
+      if (result.value) {
+
+        $.ajax({
+
+           type:"Delete",
+
+           url:"/usuarios/roles/borrar",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+          id_user:id_user,
+           },
+
+            success:function(data){
+              Swal.fire("Excelente!", data.success, "success").then(function(){ tabla.ajax.reload(); });
+
+            }
+
+
+        });
+
+
+      }
+  })
+}
 </script>
 @endsection

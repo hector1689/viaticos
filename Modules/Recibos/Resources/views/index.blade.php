@@ -11,6 +11,7 @@
                 <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="ki ki-bold-more-ver"></i>
                 </a>
+                @can('crear recibo')
                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
                     <!--begin::Navigation-->
                     <ul class="navi navi-hover py-5">
@@ -25,6 +26,7 @@
                     </ul>
                     <!--end::Navigation-->
                 </div>
+                @endcan
             </div>
         </div>
 </div>
@@ -156,10 +158,44 @@
 
 <!--MODAL REUBICAR BIEN -->
 
+<!--MODAL TURNAR -->
+
+<div class="modal fade" id="turnarorg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Turnar Organo de Control</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6">
+                    <label for="inputPassword4" style="font-size:12px;" class="form-label">turnar: </label>
+                    <input type="hidden" name="id_turnar" id="id_turnar" >
+                    <select class="form form-control" name="">
+                      <option value="0">seleccionar</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary font-weight-bold" onclick="turnar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!--MODAL TURNAR -->
+
+
 <script type="text/javascript">
 $('#finiquitar').modal('hide');
 $('#finiquitarP').modal('hide');
 $('#baja').modal('hide');
+$('#turnarorg').modal('hide');
 
 function baja(id){
   $('#baja').modal('show');
@@ -313,42 +349,37 @@ tabla = $('#kt_datatable').DataTable({
   language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" }
 });
 });
-// function eliminar(id){
-// //console.log(id);
-// Swal.fire({
-//       title: "¿Esta seguro de eliminar el registro?",
-//       text: "No se podrá recuperar la información",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonText: "Aceptar",
-//       cancelButtonText: "Cancelar"
-//   }).then(function(result) {
-//       if (result.value) {
-//
-//         $.ajax({
-//
-//            type:"Delete",
-//
-//            url:"/catalogos/alimentacion/borrar",
-//            headers: {
-//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//            },
-//            data:{
-//               id:id,
-//            },
-//
-//             success:function(data){
-//               Swal.fire("", data.success, "success").then(function(){ tabla.ajax.reload(); });
-//
-//             }
-//
-//
-//         });
-//
-//
-//       }
-//   })
-// }
+function turnar(id){
+
+  Swal.fire({
+        title: "¿Esta seguro de Turnar el registro?",
+        text: "No se podrá revertir",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then(function(result) {
+        if (result.value) {
+          $.ajax({
+             type:"POST",
+             url:"/recibos/Turnar",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data:{
+               id:id,
+             },
+              success:function(data){
+                Swal.fire("", data.success, "success").then(function(){
+                  tabla.ajax.reload();
+                });
+              }
+          });
+        }
+    })
+
+
+}
 
 </script>
 @endsection

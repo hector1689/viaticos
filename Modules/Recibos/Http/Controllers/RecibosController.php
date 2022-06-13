@@ -18,6 +18,7 @@ use \Modules\Catalogos\Entities\Rendimiento;
 use \Modules\Catalogos\Entities\Programa;
 use \Modules\Catalogos\Entities\Alimentos;
 use \Modules\Catalogos\Entities\Hospedaje;
+use \Modules\Catalogos\Entities\Folios;
 use \Modules\Recibos\Entities\Comprobaciones;
 use Illuminate\Support\Facades\Storage;
 use \Modules\Recibos\Entities\Recibos;
@@ -93,6 +94,8 @@ class RecibosController extends Controller
     {
     //dd($request->all());
 
+    // $folio = Folios::where();
+
     try {
       list($fecha1,$hora1) = explode(" ",$request->inicia);
       list($dia,$mes,$anio) = explode('/',$fecha1);
@@ -103,12 +106,13 @@ class RecibosController extends Controller
       $fecha_final = $anio2.'-'.$mes2.'-'.$dia2.' '.$hora2;
 
 
-      $existe_folio = Recibos::where([['activo',1],['folio','!=','NULL']])->first();
-
+      $existe_folio = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','DESC')->first();
+      //dd($existe_folio);
         if (isset($existe_folio)) {
           $numero = $existe_folio->folio;
-
+          //dd($existe_folio->folio);
           $folio = $numero + 1;
+        //  dd($folio,$numero);
         }else{
           $numero = 1;
           $folio = $numero;
@@ -913,6 +917,25 @@ class RecibosController extends Controller
         }
     }
 
+    public function Turnar(Request $request){
+      try {
+          $recibos = Recibos::find($request->id);
+          $recibos->cve_estatus = 8;
+          $recibos->save();
+
+          $bitacora = new Bitacora();
+          $bitacora->cve_t_viatico = $request->id;
+          $bitacora->fecha = date('Y-m-d H:i:s');
+          $bitacora->tarea = 'Turnar Registro a Organo de Control';
+          $bitacora->cve_usuario = Auth::user()->id;
+          $bitacora->save();
+
+          return response()->json(['success'=>'Turnado exitosamente']);
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+    }
+
 
     public function comprobar(Request $request){
       try {
@@ -1014,13 +1037,18 @@ class RecibosController extends Controller
 
     if($tipo_usuario == 1){
       $registros = Recibos::where('activo', 1);
-    }else{
+    }elseif($tipo_usuario == 2){
       $id = Auth::user()->id;
       $asociar = Asociar::where('id_usuario',$id)->first();
 
       $registros = Recibos::where([
         ['activo', 1],
         ['id_dependencia',$asociar->id_dependencia]
+      ])->get();
+    }elseif($tipo_usuario == 3){
+      $registros = Recibos::where([
+        ['activo', 1],
+        ['cve_estatus',8]
       ])->get();
     }
 
@@ -1048,50 +1076,164 @@ class RecibosController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
 
-        $acciones = [
-           "Editar" => [
-             "icon" => "edit blue",
-             "href" => "/recibos/$value->id/edit"
-           ],
 
-          "Ver" => [
-            "icon" => "fas fa-circle",
-            "href" => "/recibos/$value->id/show"
-          ],
-          "Finiquitar Provisional" => [
-            "icon" => "fas fa-circle",
-            "onclick" => "finiquitarP($value->id)"
-          ],
-          "Finiquitar" => [
-            "icon" => "fas fa-circle",
-            "onclick" => "finiquitar($value->id)"
-          ],
-          "Cancelar" => [
-            "icon" => "fas fa-circle",
-            "onclick" => "baja($value->id)"
-          ],
-          "Recibo Complementario" => [
-            "icon" => "fas fa-circle",
-            "href" => "/recibos/$value->id/recibo"
-          ],
-          "Comprobaciones" => [
-            "icon" => "fas fa-circle",
-            "href" => "/recibos/$value->id/comprobantes"
-          ],
-          "Imprimir Recibo" => [
-            "icon" => "fas fa-circle",
-            "href" => "/recibos/$value->id/imprimir"
-          ],
-          "Oficio de Comisión" => [
-            "icon" => "fas fa-circle",
-            "href" => "/recibos/$value->id/oficio"
-          ],
-          "Especificación de Comisión" => [
-            "icon" => "fas fa-circle",
-            "href" => "/recibos/$value->id/especificacioncomision"
-          ],
+        if (Auth::user()->tipo_usuario == 1) {
+          $acciones = [
+             "Editar" => [
+               "icon" => "edit blue",
+               "href" => "/recibos/$value->id/edit"
+             ],
 
-        ];
+            "Ver" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/show"
+            ],
+            "Finiquitar Provisional" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "finiquitarP($value->id)"
+            ],
+            "Finiquitar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "finiquitar($value->id)"
+            ],
+            "Cancelar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "baja($value->id)"
+            ],
+            "Recibo Complementario" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/recibo"
+            ],
+            "Comprobaciones" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/comprobantes"
+            ],
+            "Imprimir Recibo" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/imprimir"
+            ],
+            "Oficio de Comisión" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/oficio"
+            ],
+            "Especificación de Comisión" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/especificacioncomision"
+            ],
+            "Turnar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "turnar($value->id)"
+            ],
+            "Autorizar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "autorizar($value->id)"
+            ],
+          ];
+        }elseif(Auth::user()->tipo_usuario == 2){
+          $acciones = [
+             "Editar" => [
+               "icon" => "edit blue",
+               "href" => "/recibos/$value->id/edit"
+             ],
+
+            "Ver" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/show"
+            ],
+            "Finiquitar Provisional" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "finiquitarP($value->id)"
+            ],
+            "Finiquitar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "finiquitar($value->id)"
+            ],
+            "Cancelar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "baja($value->id)"
+            ],
+            "Recibo Complementario" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/recibo"
+            ],
+            "Comprobaciones" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/comprobantes"
+            ],
+            "Imprimir Recibo" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/imprimir"
+            ],
+            "Oficio de Comisión" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/oficio"
+            ],
+            "Especificación de Comisión" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/especificacioncomision"
+            ],
+            "Turnar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "turnar($value->id)"
+            ],
+
+          ];
+        }elseif(Auth::user()->tipo_usuario == 3){
+          $acciones = [
+             // "Editar" => [
+             //   "icon" => "edit blue",
+             //   "href" => "/recibos/$value->id/edit"
+             // ],
+
+            "Ver" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/show"
+            ],
+            "Autorizar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "autorizar($value->id)"
+            ],
+            // "Finiquitar Provisional" => [
+            //   "icon" => "fas fa-circle",
+            //   "onclick" => "finiquitarP($value->id)"
+            // ],
+            // "Finiquitar" => [
+            //   "icon" => "fas fa-circle",
+            //   "onclick" => "finiquitar($value->id)"
+            // ],
+            // "Cancelar" => [
+            //   "icon" => "fas fa-circle",
+            //   "onclick" => "baja($value->id)"
+            // ],
+            // "Recibo Complementario" => [
+            //   "icon" => "fas fa-circle",
+            //   "href" => "/recibos/$value->id/recibo"
+            // ],
+            // "Comprobaciones" => [
+            //   "icon" => "fas fa-circle",
+            //   "href" => "/recibos/$value->id/comprobantes"
+            // ],
+            // "Imprimir Recibo" => [
+            //   "icon" => "fas fa-circle",
+            //   "href" => "/recibos/$value->id/imprimir"
+            // ],
+            // "Oficio de Comisión" => [
+            //   "icon" => "fas fa-circle",
+            //   "href" => "/recibos/$value->id/oficio"
+            // ],
+            // "Especificación de Comisión" => [
+            //   "icon" => "fas fa-circle",
+            //   "href" => "/recibos/$value->id/especificacioncomision"
+            // ],
+            // "Turnar" => [
+            //   "icon" => "fas fa-circle",
+            //   "onclick" => "turnar($value->id)"
+            // ],
+
+          ];
+        }
+
+
 
 
 

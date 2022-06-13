@@ -105,13 +105,25 @@ public function update(Request $request){
 
 }
 
+public function destroy(Request $request)
+{
+  try {
+    $usuario = Roles::find($request->id_user);
+    $usuario->activo = 0;
+    $usuario->save();
+    return response()->json(['success'=>'Eliminado exitosamente']);
+  } catch (\Exception $e) {
+    dd($e->getMessage());
+  }
+}
+
 
 
 
   public function tablaroles(){
     setlocale(LC_TIME, 'es_ES');
     \DB::statement("SET lc_time_names = 'es_ES'");
-    $registros = Roles::all(); //user es una entidad que se trae desde la app
+    $registros = Roles::where('activo',1); //user es una entidad que se trae desde la app
     $datatable = DataTables::of($registros)
     // ->editColumn('tipo_usuario', function ($registros) {
     //   // if ($registros->tipo_usuario==1) {
