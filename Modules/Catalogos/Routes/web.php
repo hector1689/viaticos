@@ -125,6 +125,9 @@ Route::prefix('catalogos')->group(function() {
         Route::post('/update', 'FolioController@update');
         Route::get('/show', 'FolioController@show');
         Route::post('/TraerEncargado', 'FolioController@TraerEncargado');
+        Route::post('/TraerFirmantes', 'FolioController@TraerFirmantes');
+
+
 
 
     });

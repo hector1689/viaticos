@@ -22,4 +22,8 @@ class Folios extends Model{
     return $this->hasOne('\App\Models\User', 'id', 'cve_usuario_inmediato');
   }
 
+  public function obtenerArea(){
+    return $this->hasOne('Modules\Catalogos\Entities\Areas', 'id', 'dependencia');
+  }
+
 }

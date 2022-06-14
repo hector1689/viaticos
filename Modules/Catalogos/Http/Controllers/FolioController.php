@@ -10,6 +10,8 @@ use \Modules\Catalogos\Entities\Folios;
 use \Modules\Catalogos\Entities\Areas;
 use \Modules\Catalogos\Entities\Personal_Siti;
 use \Modules\Catalogos\Entities\TablaFolios;
+use \Modules\Catalogos\Entities\Departamento_Firmantes;
+
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
@@ -45,7 +47,7 @@ class FolioController extends Controller
 
 
       $data['usuarios'] = User::where([['activo',1]])->get();
-      $data['areas'] = Areas::where([['activo',1],['id_tipo',1]])->get();
+      $data['areas'] = Areas::where([['activo',1]])->get();
         return view('catalogos::folios.create')->with($data);
     }
 
@@ -56,6 +58,7 @@ class FolioController extends Controller
      */
     public function store(Request $request)
     {
+      //dd($request->all());
       try {
         $folios = new Folios();
         $folios->dependencia = $request->dependencia;
@@ -73,6 +76,11 @@ class FolioController extends Controller
             $foliost->cve_folio = $folios->id;
             $foliost->tipo_folio = $value['tipo'];
             $foliost->foliador = $value['folio'];
+
+            $foliost->posicion1 = $value['posicion1'];
+            $foliost->posicion2 = $value['posicion2'];
+            $foliost->posicion3 = $value['posicion3'];
+            $foliost->posicion4 = $value['posicion4'];
             $foliost->cve_usuario = Auth::user()->id;
             $foliost->save();
           }
@@ -138,6 +146,10 @@ class FolioController extends Controller
             $foliost->cve_folio = $folios->id;
             $foliost->tipo_folio = $value['tipo'];
             $foliost->foliador = $value['folio'];
+            $foliost->posicion1 = $value['posicion1'];
+            $foliost->posicion2 = $value['posicion2'];
+            $foliost->posicion3 = $value['posicion3'];
+            $foliost->posicion4 = $value['posicion4'];
             $foliost->cve_usuario = Auth::user()->id;
             $foliost->save();
           }
@@ -166,10 +178,10 @@ class FolioController extends Controller
     //dd('entro');
     $registros = Folios::where('activo', 1); //Conocenos es la entidad
     $datatable = DataTables::of($registros)
-    // ->editColumn('cve_tipo_gasolina', function ($registros) {
-    //
-    //   return $registros->obteneGasolina->nombre;
-    // })
+    ->editColumn('dependencia', function ($registros) {
+
+      return $registros->obtenerArea->nombre;
+    })
 
     ->make(true);
     //Cueri
@@ -224,5 +236,13 @@ class FolioController extends Controller
       ['cve_cat_deptos_siti',$request->dependencia],
     ])->first();
     return $personal;
+  }
+
+  public function TraerFirmantes(Request $request){
+    $firmantes = Departamento_Firmantes::where([
+      ['activo',1],
+      ['cve_area_departamentos',$request->area_encargada],
+    ])->get();
+    return $firmantes;
   }
 }

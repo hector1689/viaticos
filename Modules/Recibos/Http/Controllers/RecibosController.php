@@ -94,7 +94,7 @@ class RecibosController extends Controller
     {
     //dd($request->all());
 
-    // $folio = Folios::where();
+
 
     try {
       list($fecha1,$hora1) = explode(" ",$request->inicia);
@@ -109,19 +109,60 @@ class RecibosController extends Controller
       $existe_folio = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','DESC')->first();
       //dd($existe_folio);
         if (isset($existe_folio)) {
-          $numero = $existe_folio->folio;
-          //dd($existe_folio->folio);
-          $folio = $numero + 1;
+
+
+          $existe_folio_ultimo = Recibos::where([['activo',1],['oficio_comision','!=','NULL']])->orderBy('id','DESC')->first();
+
+          if(isset($existe_folio_ultimo)){
+
+            $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+            ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+
+            $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+            ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+
+            //dd($folio_existes->foliador);
+
+            list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio_ultimo->folio);
+
+            list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio_ultimo->oficio_comision);
+
+            //dd($paso4);
+            $sumafolio = $paso4 + 1;
+            $sumafolio2 = $paso8 + 1;
+
+            $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+            $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+
+            $folio_comision = $folio_completo2;
+
+            //$numero = $existe_folio->folio;
+            //dd($existe_folio->folio);
+            //$folio = $numero + 1;
+            $folio = $folio_completo;
+
+          }
+
+
         //  dd($folio,$numero);
         }else{
+          $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+          ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+          $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+          ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+          $folio_comision = $folio_existes2->foliador;
           $numero = 1;
-          $folio = $numero;
+          $folio = $folio_existes->foliador;
         }
+
+
+
 
 
         $recibo = new Recibos();
         $recibo->cve_estatus = 1;
         $recibo->folio = $folio;
+        $recibo->oficio_comision = $folio_comision;
         $recibo->num_empleado = $request->n_empleado;
         $recibo->nombre = $request->nombre_empleado;
         $recibo->rfc = $request->rfc;
@@ -162,7 +203,7 @@ class RecibosController extends Controller
         $datospago->fehca_inicia = $fecha_pago;
         $datospago->cantidad = $request->cantidad;
         $datospago->cantidad_letra = $request->letras_cantidad;
-        $datospago->favor_cargo_banco = 'banco de mexico';
+        $datospago->favor_cargo_banco = $request->banco;
         $datospago->cve_usuario = Auth::user()->id;
         $datospago->save();
 
@@ -284,6 +325,10 @@ class RecibosController extends Controller
                           ])->get();
       // return view('recibos::oficio')->with($data);
 
+      $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+      ->where([['cat_folios.activo',1],['cat_folios.dependencia',$data['recibos']->id_dependencia],['cat_t_folios.tipo_folio',1]])->first();
+
+      $data['folio_oficio'] = $folio_existes->foliador;
       $fechaEmision = Carbon::parse($data['recibos']->fecha_hora_salida);
       $fechaExpiracion = Carbon::parse($data['recibos']->fecha_hora_recibio);
 
@@ -804,7 +849,7 @@ class RecibosController extends Controller
           $datospago->fehca_inicia = $fecha_pago;
           $datospago->cantidad = $request->cantidad;
           $datospago->cantidad_letra = $request->letras_cantidad;
-          $datospago->favor_cargo_banco = 'banco de mexico';
+          $datospago->favor_cargo_banco = $request->banco;
           $datospago->cve_usuario = Auth::user()->id;
           $datospago->save();
 

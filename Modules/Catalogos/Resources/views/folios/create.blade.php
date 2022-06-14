@@ -19,11 +19,15 @@
         <div class="row">
           <div class="col-md-6">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Dependencia: </label>
                   <!-- <input type="text" class="form-control" id="dependencia" placeholder="Dependencia"  value="@isset($folios) {{ $folios->dependencia }} @endisset"required> -->
                   <select class="form-control" id="dependencia" onchange="encargado()" required>
+                    @isset($folios)
+                    <option value="{{ $folios->dependencia }}">{{ $folios->obtenerArea->nombre }}</option>
+                    @else
                     <option value="">Seleccionar</option>
+                    @endisset
                     @foreach($areas as $area)
                     <option value="{{ $area->id }}">{{ $area->nombre }}</option>
                     @endforeach
@@ -32,22 +36,23 @@
                     Por Favor Ingrese Dependencia
                   </div>
               </div>
-              <div class="col-md-4">
+              <!-- <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Dirección de área: </label>
                   <input type="text" class="form-control" id="direccion_area" placeholder="Dirección de área" value="@isset($folios) {{ $folios->direccion_area }} @endisset" required>
                   <div class="invalid-feedback">
                     Por Favor Ingrese Dirección de área
                   </div>
-              </div>
+              </div> -->
+
+            </div>
+            <div class="row">
               <div class="col-md-4">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Director Administrativo: </label>
-                  <input type="text" class="form-control" id="director_administrativo" placeholder="DIrector Administrativo" value="@isset($folios) {{ $folios->director_administrativo }} @endisset" required>
+                  <input type="text" class="form-control" id="director_administrativo" placeholder="DIrector Administrativo" value="@isset($folios) {{ $folios->director_administrativo }} @endisset" disabled required>
                   <div class="invalid-feedback">
                     Por Favor Ingrese Director Administrativo
                   </div>
               </div>
-            </div>
-            <div class="row">
               <div class="col-md-4">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Comisario: </label>
                   <input type="text" class="form-control" id="comisario" placeholder="Comisario" value="@isset($folios) {{ $folios->comisario }} @endisset" required>
@@ -104,7 +109,7 @@
                   <option value="1">Siglas de Dependencia</option>
                   <option value="2">Siglas tipo de folio</option>
                   <option value="3">Año</option>
-                  <option value="4">Consecutivo</option>
+                  <!-- <option value="4">Consecutivo</option> -->
                 </select>
 
               </div>
@@ -121,14 +126,14 @@
                     <option value="1">Siglas de Dependencia</option>
                     <option value="2">Siglas tipo de folio</option>
                     <option value="3">Año</option>
-                    <option value="4">Consecutivo</option>
+                    <!-- <option value="4">Consecutivo</option> -->
                   </select>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Año: </label>
-                  <input type="text" class="form-control" id="anio" onchange="siglas3()" placeholder="Año" data-nivel="3">
+                  <input type="text" class="form-control" id="anio" onchange="siglas3()" onkeypress='return validaNumericos(event)' placeholder="Año" data-nivel="3">
               </div>
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Posición 3: </label>
@@ -137,22 +142,22 @@
                     <option value="1">Siglas de Dependencia</option>
                     <option value="2">Siglas tipo de folio</option>
                     <option value="3">Año</option>
-                    <option value="4">Consecutivo</option>
+                    <!-- <option value="4">Consecutivo</option> -->
                   </select>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Consecutivo: </label>
-                  <input type="text" class="form-control" id="consecutivo" onchange="siglas4()" placeholder="Consecutivo" data-nivel="4">
+                  <input type="text" class="form-control" id="consecutivo" onchange="siglas4()" onkeypress='return validaNumericos(event)' placeholder="Consecutivo" data-nivel="4">
               </div>
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Posición 4: </label>
                   <select class="form-control" name="posicion_4" onchange="posicion4()" disabled>
                     <option >Seleccionar</option>
-                    <option value="1">Siglas de Dependencia</option>
+                    <!-- <option value="1">Siglas de Dependencia</option>
                     <option value="2">Siglas tipo de folio</option>
-                    <option value="3">Año</option>
+                    <option value="3">Año</option> -->
                     <option value="4">Consecutivo</option>
                   </select>
               </div>
@@ -212,7 +217,7 @@
                 <option value="">Seleccionar</option>
                 @endisset
                 @foreach($usuarios as $usuario)
-                <option value="{{ $usuario->id }}">{{ $usuario->nombre }} {{ $usuario->apellido_paterno }} {{ $usuario->apellido_materno }}</option>
+                <option value="{{ $usuario->id }}">{{ $usuario->nombre }} {{ $usuario->apellido_paterno }} {{ $usuario->apellido_materno }} - {{ $usuario->obtenerUser->name }}</option>
                 @endforeach
               </select>
               <div class="invalid-feedback">
@@ -245,6 +250,39 @@ var arrayNivel = [];
 var objTabla = {};
 
 
+        function validaNumericos(event) {
+            if(event.charCode >= 48 && event.charCode <= 57){
+              return true;
+             }
+             return false;
+        }
+
+        @isset($folios)
+        $.ajax({
+
+               type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+               url:"/catalogos/folios/TraerFirmantes", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+               },
+               data:{
+                   area_encargada: {{ $folios->dependencia}},
+                 },
+                success:function(data){
+                  //console.log(data)
+                  for (var i = 0; i < data.length; i++) {
+                      var nombre = data[i].nombre+' '+data[i].apellido_paterno+' '+data[i].apellido_materno;
+                    if (data[i].cve_cargo == 1) {
+                      $('#director_administrativo').val(nombre);
+                    }
+
+                  }
+
+                }
+          });
+        @endisset
+
         function encargado(){
             var dependencia = $('#dependencia').val();
             $.ajax({
@@ -259,12 +297,40 @@ var objTabla = {};
                        dependencia:dependencia,
                      },
                     success:function(data){
-                      //console.log(data)
+                      //console.log(data.id)
+
+                      $.ajax({
+
+                             type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+                             url:"/catalogos/folios/TraerFirmantes", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+                             },
+                             data:{
+                                 area_encargada:data.id,
+                               },
+                              success:function(data){
+                                //console.log(data)
+                                for (var i = 0; i < data.length; i++) {
+                                    var nombre = data[i].nombre+' '+data[i].apellido_paterno+' '+data[i].apellido_materno;
+                                  if (data[i].cve_cargo == 1) {
+                                    $('#director_administrativo').val(nombre);
+                                  }
+
+                                }
+
+                              }
+                        });
+
+
                     }
               });
 
         }
-        $('#usuarios').select2({
+
+
+        $('#dependencia').select2({
           width: '100%',
         });
 
@@ -401,6 +467,10 @@ var objTabla = {};
         array_table.push({
          tipo : tipo,
          folio : folio,
+         posicion1:arrayPosicion[0]['valor'],
+         posicion2:arrayPosicion[1]['valor'],
+         posicion3:arrayPosicion[2]['valor'],
+         posicion4:arrayPosicion[3]['valor']
         });
 
         indexH = array_tabla.push(objTabla);

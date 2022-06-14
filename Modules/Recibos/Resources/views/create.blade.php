@@ -26,7 +26,7 @@
           </div>
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Oficio de Comisión: </label>
-              <input type="text" class="form-control" id="apellido_paterno"  placeholder="Oficio de Comisión" disabled required>
+              <input type="text" class="form-control" id="apellido_paterno" value="@isset($recibos){{ $recibos->oficio_comision }}@endisset" placeholder="Oficio de Comisión" disabled required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
@@ -48,7 +48,7 @@
         @endisset
         <div class="row">
           <div class="col-md-2">
-              <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° de Empleado: </label>
+              <label for="inputPassword4"  style="font-size:12px;"class="form-label"><strong style="color:red">*</strong>N° de Empleado: </label>
               <input type="text" class="form-control" id="n_empleado" onchange="Empleado()" value="@isset($recibos) {{$recibos->num_empleado}} @endisset" placeholder="N° de Empleado" onkeypress='return validaNumericos(event)' required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
@@ -62,7 +62,7 @@
               </div>
           </div>
           <div class="col-md-2">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label">RFC: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>RFC: </label>
               <input type="text" class="form-control" id="rfc" name='prov_rfc'  placeholder="RFC" value="@isset($recibos) {{$recibos->rfc}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
@@ -77,7 +77,7 @@
               </div>
           </div>
           <div class="col-md-2">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label">Clave Departamental: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Clave Departamental: </label>
               <input type="text" class="form-control" id="clave_departamental"  placeholder="Clave Departamental" value="@isset($recibos) {{$recibos->clave_departamental}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
@@ -102,7 +102,7 @@
               </div>
           </div>
           <div class="col-md-3">
-          <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha y Hora de Salida: </label>
+          <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Fecha y Hora de Salida: </label>
           @isset($recibos)
           <?php
           list($fecha,$hora) = explode(' ',$recibos->fecha_hora_salida);
@@ -126,7 +126,7 @@
           </div>
 				</div>
         <div class="col-md-3">
-          <label for="inputPassword4" style="font-size:12px;" class="form-label">Fecha y Hora de Recibido: </label>
+          <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Fecha y Hora de Recibido: </label>
           @isset($recibos)
           <?php
           list($fecha,$hora) = explode(' ',$recibos->fecha_hora_recibio);
@@ -162,14 +162,14 @@
               </div>
           </div>
           <div class="col-md-4">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label">Lugar de Adscripción: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Lugar de Adscripción: </label>
               <input type="text" class="form-control" id="lugar_adscripcion"  placeholder="Lugar de Adscripción" value="@isset($recibos) {{$recibos->lugar_adscripcion}} @endisset"  required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
           <div class="col-md-2">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>N° de dias: </label>
               <input type="text" class="form-control" id="n_dias"  placeholder="N° de dias" value="@isset($recibos) {{$recibos->num_dias}} @endisset" onkeypress='return validaNumericos(event)' required>
 
               <div class="invalid-feedback">
@@ -177,7 +177,7 @@
               </div>
           </div>
           <div class="col-md-2">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias inhabiles: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>N° de dias inhabiles: </label>
               <input type="text" class="form-control" id="n_dias_ina"  placeholder="N° de dias inhabiles" value="@isset($recibos) {{$recibos->num_dias_inhabiles}} @endisset" onkeypress='return validaNumericos(event)' required>
 
               <div class="invalid-feedback">
@@ -188,7 +188,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <label for="inputPassword4" style="font-size:12px;" class="form-label">Descripcion de la Comisión: </label>
+            <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Descripcion de la Comisión: </label>
             <input type="text" class="form-control" id="descripcion" onchange="abrirLugar()"  placeholder="Descripcion de la Comisión" value="@isset($recibos) {{$recibos->descripcion_comision}} @endisset" required>
           </div>
        </div>
@@ -240,7 +240,7 @@
 
 
                     <div class="col-md-3">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Origen: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Origen: </label>
                         <select class="form-control" id="origen_lugar" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad1 as $loc1)
@@ -249,7 +249,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Destino: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Destino: </label>
                         <select class="form-control" id="destino_lugar" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad2 as $loc2)
@@ -347,7 +347,7 @@
 
 
                       <div class="col-md-8">
-                          <label for="inputPassword4" style="font-size:12px;" class="form-label">Programa: </label>
+                          <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Programa: </label>
                           <select class="form-control" id="programalugar" disabled onchange="verBtn()">
                             <option value="0">Selecciona</option>
                             @foreach($programa as $pro)
@@ -380,21 +380,21 @@
                 <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                   <div class="row">
                     <div class="col-md-2">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Kilometro recorrido interno: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Kilometro recorrido interno: </label>
                         <input type="text" class="form-control" id="kilometrorecorrido" value="@isset($transporte) {{ $transporte->kilometro_interno }} @endisset"  placeholder="Kilometro recorrido interno" onkeypress='return validaNumericos(event)'>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Especificar el recorrido: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Especificar el recorrido: </label>
                         <input type="text" class="form-control" id="especificarcomision"  value="@isset($transporte) {{ $transporte->especificar_recorrido }} @endisset" placeholder="Especificar el recorrido" required>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Total de Km recorridos: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Total de Km recorridos: </label>
                         <input type="text" class="form-control" id="totalkm"  value="@isset($transporte) {{ $transporte->total_km_recorrido }} @endisset" placeholder="Total de Km recorridos" onkeypress='return validaNumericos(event)'>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
@@ -1213,14 +1213,14 @@
                       <input type="text" id="secretaria_pago" class="form-control" value="@isset($pagos) {{ $pagos->secretaria }} @endisset" disabled>
                     </div>
                     <div class="col-md-6">
-                      <label for="">CHEQUE N°</label>
+                      <label for=""><strong style="color:red">*</strong>CHEQUE N°</label>
                       <input type="text" class="form-control" id="cheque" placeholder="Escribir n° de cheque" value="@isset($pagos) {{ $pagos->num_cheque }} @endisset" onkeypress='return validaNumericos(event)'>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-md-6">
-                      <label for="">DE FECHA</label>
+                      <label for=""><strong style="color:red">*</strong>DE FECHA</label>
                       @isset($pagos)
                       <?php
                       list($dia,$mes,$anio) = explode('-',$pagos->fehca_inicia);
@@ -1230,7 +1230,7 @@
                       <input type="text" class="form-control" id="kt_datepicker" name='fecha_pago' value="@isset($pagos) {{ $fecha }} @endisset" placeholder="Selecciona Fecha">
                     </div>
                     <div class="col-md-6">
-                      <label for="">POR LA CANTIDAD DE</label>
+                      <label for=""><strong style="color:red">*</strong>POR LA CANTIDAD DE</label>
                       <input type="text" class="form-control" id="cantidad" onchange="cantidadletra()" placeholder="Escribir Cantidad" value="@isset($pagos) {{ $pagos->cantidad }} @endisset">
                     </div>
                   </div>
@@ -1246,7 +1246,8 @@
                     </div>
                     <div class="col-md-12">
                       <label for="">A MI FAVOR Y CARGO DEL BANCO</label>
-                      <p>@isset($pagos) {{ $pagos->favor_cargo_banco }} @endisset</p>
+                      <input type="text" id="banco" class="form form-control" value="@isset($pagos) {{ $pagos->favor_cargo_banco }} @endisset">
+
                     </div>
                   </div>
 
@@ -1270,7 +1271,7 @@
                     <div class="col-md-6">
 
                       <input type="text" class="form-control" id="cheque_firma" value="@isset($firmantes) {{ $firmantes->recibi_cheque }} @endisset">
-                      <p style="text-align:center;">RECIBÍ CHEQUE</p>
+                      <p style="text-align:center;"><strong style="color:red">*</strong>RECIBÍ CHEQUE</p>
                     </div>
                   </div>
                   <div class="row">
@@ -1347,6 +1348,9 @@ var ObjetoLugares = {};
 var arrayLugares = [];
 
 
+$('#estado').select2({
+    width: '100%',
+});
 
 
 @isset($recibos)
@@ -2999,6 +3003,8 @@ function cantidadletra(){
     var kilometrorecorrido = $('#kilometrorecorrido').val();
     var especificarcomision = $('#especificarcomision').val();
     var totalkm = $('#totalkm').val();
+    var banco = $('#banco').val();
+
 
     var total_extraer = $('#total_extraer').val();
     var programalugar = $('#programalugar').val();
@@ -3098,6 +3104,7 @@ function cantidadletra(){
                total_extraer:total_extraer,
                programalugar:programalugar,
                area_id:area_id,
+               banco:banco,
              },
              // data: formData,
              // processData: false,
