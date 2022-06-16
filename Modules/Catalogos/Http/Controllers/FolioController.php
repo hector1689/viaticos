@@ -115,7 +115,7 @@ class FolioController extends Controller
       $data['usuarios'] = User::where([['activo',1]])->get();
       $data['areas'] = Areas::where([['activo',1],['id_tipo',1]])->get();
 
-      $data['tabla_folios'] = TablaFolios::where('cve_folio',$id)->get();
+      $data['tabla_folios'] = TablaFolios::where([['activo',1],['cve_folio',$id]])->get();
 
         return view('catalogos::folios.create')->with($data);
     }
@@ -167,9 +167,28 @@ class FolioController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+      try {
+        $folios = Folios::find($request->id);
+        $folios->activo = 0;
+        $folios->save();
+
+        $folios = TablaFolios::where('cve_folio',$folios->id)->update([
+          'activo' => 0
+        ]);
+
+        return response()->json(['success'=>'Registro Eliminado exitosamente']);
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
+    }
+
+    public function borrarFolio(Request $request){
+      $folios = TablaFolios::find($request->id);
+      $folios->activo = 0;
+      $folios->save();
+      return response()->json(['success'=>'Ha sido eliminado con éxito']);
     }
 
     public function tabla(){

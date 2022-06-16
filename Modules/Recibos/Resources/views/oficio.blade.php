@@ -108,7 +108,7 @@
           <tr style="border: 4px solid orange;">
             <td style="width: 100%;">
               <div style="text-align: right;font-size: 8pt;hyphens: auto;word-wrap: break-word;word-break: break-word;">
-                Oficio n° {{ $recibos->oficio_comision }} <br> a <?php echo date('d');?> DE <?php
+                Oficio n° <strong>{{ $recibos->oficio_comision }}</strong> <br> a <?php echo date('d');?> DE <?php
 
                 if (date('m') == 1) {
                   echo 'ENERO';

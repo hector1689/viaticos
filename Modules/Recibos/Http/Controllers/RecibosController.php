@@ -110,37 +110,114 @@ class RecibosController extends Controller
       //dd($existe_folio);
         if (isset($existe_folio)) {
 
+          $existe_folio_ultimos = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','ASC')->first();
 
-          $existe_folio_ultimo = Recibos::where([['activo',1],['oficio_comision','!=','NULL']])->orderBy('id','DESC')->first();
+          $existe_folio_ultimo = Recibos::where([['activo',1],['oficio_comision','!=','NULL']])->orderBy('id','ASC')->first();
 
           if(isset($existe_folio_ultimo)){
 
             $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-            ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+            ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+
+            //////////////////////// FOLIO RECIBO /////////////////////////////////////////////////////////////////////
+            //dd($existe_folio_ultimos->folio,$folio_existes->foliador);
+            if ($existe_folio_ultimos->folio != $folio_existes->foliador) {
+              $foliots = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimos->folio]])->first();
+
+              if (isset($foliots)) {
+                list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
+                $sumafolio = $paso4 + 1;
+                $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+                $folio = $folio_completo;
+
+              }else{
+                $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+
+                  $existe_folio_existente = Recibos::where([['activo',1],['folio',$folio_existes->foliador]])->orderBy('id','ASC')->first();
+                //list($paso1,$paso2,$paso3,$paso4) = explode('/',$folio_existes->foliador);
+                // $sumafolio = $paso4 + 1;
+                // $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+
+                if (isset($existe_folio_existente)) {
+                  list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio_existente->folio);
+                  $sumafolio = $paso4 + 1;
+                  $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+                  $folio = $folio_completo;
+                }else{
+                  $folio = $folio_existes->foliador;
+                }
+              }
+
+            }else{
+              list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
+              $sumafolio = $paso4 + 1;
+              $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+              $folio = $folio_completo;
+            }
+            // else{
+            //   list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
+            //   $sumafolio = $paso4 + 1;
+            //   $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+            //   $folio = $folio_completo;
+            // }
+
+
+
+            //
+            // else{
+            //   list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
+            //   $sumafolio2 = $paso8 + 1;
+            //   $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+            //   $folio_comision = $folio_completo2;
+            // }
+          }
+
+          if(isset($existe_folio_ultimo)){
 
             $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-            ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+            ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+            /////////////////////// FOLIO COMISION ////////////////////////////////////////////////////////
+            //dd($existe_folio_ultimo->oficio_comision,$folio_existes2->foliador);
+            if ($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador) {
+              //dd($existe_folio_ultimo->oficio_comision);
+              $foliots2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimo->oficio_comision]])->first();
+              //dd($foliots2);
+              if (isset($foliots2)) {
+                //dd('ENTRO');
+                list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
+                $sumafolio2 = $paso8 + 1;
+                $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+                $folio_comision = $folio_completo2;
 
-            //dd($folio_existes->foliador);
+              }else{
+              //  dd('ENTRO AQUI');
+                $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
 
-            list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio_ultimo->folio);
+                $existe_folio_existente2 = Recibos::where([['activo',1],['oficio_comision',$folio_existes2->foliador]])->orderBy('id','ASC')->first();
 
-            list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio_ultimo->oficio_comision);
+                if(isset($existe_folio_existente2)){
+                  list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio_existente2->oficio_comision);
+                  $sumafolio2 = $paso8 + 1;
+                  $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+                  $folio_comision = $folio_completo2;
+                }else{
+                  $folio_comision = $folio_existes2->foliador;
+                }
+                // list($paso5,$paso6,$paso7,$paso8) = explode('/',$folio_existes2->foliador);
+                // $sumafolio2 = $paso8 + 1;
+                // $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
 
-            //dd($paso4);
-            $sumafolio = $paso4 + 1;
-            $sumafolio2 = $paso8 + 1;
-
-            $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
-            $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
-
-            $folio_comision = $folio_completo2;
-
-            //$numero = $existe_folio->folio;
-            //dd($existe_folio->folio);
-            //$folio = $numero + 1;
-            $folio = $folio_completo;
-
+              }
+            }else{
+              list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
+              $sumafolio2 = $paso8 + 1;
+              $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+              $folio_comision = $folio_completo2;
+            }
           }
 
 
@@ -740,7 +817,7 @@ class RecibosController extends Controller
                               ['cve_t_viatico',$id],
                             ])->first();
         $data['peajes'] = Peaje::where('activo',1)->get();
-        $data['gasolina'] = Gasolina::where('activo',1)->get();
+        $data['gasolina'] = Gasolina::where('activo',1)->orderBy('id','DESC')->get();
         $data['rendimiento'] = Rendimiento::where('activo',1)->get();
         $data['programa'] = Programa::where('activo',1)->get();
         $data['taxi'] = Taxi::where('activo',1)->get();
@@ -873,9 +950,17 @@ class RecibosController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+      try {
+        $folios = Recibos::find($request->id);
+        $folios->activo = 0;
+        $folios->save();
+
+        return response()->json(['success'=>'Registro Eliminado exitosamente']);
+      } catch (\Exception $e) {
+        dd($e->getMessage());
+      }
     }
 
     public function TraerFirmaJefes(Request $request){
@@ -1173,6 +1258,10 @@ class RecibosController extends Controller
               "icon" => "fas fa-circle",
               "onclick" => "autorizar($value->id)"
             ],
+            "Eliminar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "eliminar($value->id)"
+            ],
           ];
         }elseif(Auth::user()->tipo_usuario == 2){
           $acciones = [
@@ -1221,7 +1310,10 @@ class RecibosController extends Controller
               "icon" => "fas fa-circle",
               "onclick" => "turnar($value->id)"
             ],
-
+            "Eliminar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "eliminar($value->id)"
+            ],
           ];
         }elseif(Auth::user()->tipo_usuario == 3){
           $acciones = [
@@ -1238,6 +1330,7 @@ class RecibosController extends Controller
               "icon" => "fas fa-circle",
               "onclick" => "autorizar($value->id)"
             ],
+
             // "Finiquitar Provisional" => [
             //   "icon" => "fas fa-circle",
             //   "onclick" => "finiquitarP($value->id)"

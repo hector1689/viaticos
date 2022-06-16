@@ -126,10 +126,7 @@ Route::prefix('catalogos')->group(function() {
         Route::get('/show', 'FolioController@show');
         Route::post('/TraerEncargado', 'FolioController@TraerEncargado');
         Route::post('/TraerFirmantes', 'FolioController@TraerFirmantes');
-
-
-
-
+        Route::post('/borrarFolio', 'FolioController@borrarFolio');
     });
 
     Route::prefix('programa')->group(function() {

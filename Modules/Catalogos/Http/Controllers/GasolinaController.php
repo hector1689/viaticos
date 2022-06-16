@@ -53,17 +53,44 @@ class GasolinaController extends Controller
     {
       try {
 
-        list($dia,$mes,$anio)=explode('/',$request->vigencia);
-        $fecha1 = $anio.'-'.$mes.'-'.$dia;
+        $existe = Gasolina::where([['activo',1],['cve_tipo_gasolina',$request->cve_tipo_gasolina]])->orderBy('id','DESC')->first();
 
-        $gasolina = new Gasolina();
-        $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
-        $gasolina->anio = $request->anio;
-        $gasolina->mes = $request->mes;
-        $gasolina->precio_litro = $request->precio_litro;
-        $gasolina->vigencia = $fecha1;
-        $gasolina->cve_usuario = Auth::user()->id;
-        $gasolina->save();
+        if(isset($existe)){
+
+          $gasolina = Gasolina::find($existe->id);
+          $gasolina->activo = 0;
+          $gasolina->save();
+
+          list($dia,$mes,$anio)=explode('/',$request->vigencia);
+          $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+          $gasolina = new Gasolina();
+          $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
+          $gasolina->anio = $request->anio;
+          $gasolina->mes = $request->mes;
+          $gasolina->precio_litro = $request->precio_litro;
+          $gasolina->vigencia = $fecha1;
+          $gasolina->cve_usuario = Auth::user()->id;
+          $gasolina->save();
+
+        }else{
+          list($dia,$mes,$anio)=explode('/',$request->vigencia);
+          $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+          $gasolina = new Gasolina();
+          $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
+          $gasolina->anio = $request->anio;
+          $gasolina->mes = $request->mes;
+          $gasolina->precio_litro = $request->precio_litro;
+          $gasolina->vigencia = $fecha1;
+          $gasolina->cve_usuario = Auth::user()->id;
+          $gasolina->save();
+        }
+
+
+
+
+
 
         return response()->json(['success'=>'Registro agregado satisfactoriamente']);
 

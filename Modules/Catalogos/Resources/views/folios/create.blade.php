@@ -200,7 +200,7 @@
                                ?>
                             </td>
                             <td>{{ $folio->foliador }}</td>
-                            <td style=" text-align: center;"><div class="btn btn-danger " onclick="borrar({{ $folio->id }})" ><i  class="fas fa-trash"></i></div></td>
+                            <td style=" text-align: center;"><div class="btn btn-danger " onclick="borrarFolios({{ $folio->id }},{{$key}})" ><i  class="fas fa-trash"></i></div></td>
                           </tr>
                         @endforeach
                     @endisset
@@ -483,12 +483,12 @@ var objTabla = {};
           nombre = 'Oficio de Comisión'
         }
 
-        var tr = '<tr id="id-figura-'+objTabla.id+'">'+
+        var tr = '<tr id="filas'+objTabla.id+'">'+
         + objTabla.tipo +
         //'<td><input type="hidden" id="figura_nueva" value="'+objTabla.id+'"/>'+
         '<td><input type="hidden" id="figura_nueva" value="'+objTabla.id+'"/>'+nombre+'</td>'+
         '<td>'+ objTabla.folio +'</td>'+
-        '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" figura_nueva_id="'+objTabla.id+'" ><i  class="fas fa-trash"></i></div></td>'
+        '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarFolioOficial('+objTabla.id+')" ><i  class="fas fa-trash"></i></div></td>'
         '</tr>';
 
         $("#tabla").append(tr);
@@ -525,10 +525,33 @@ var objTabla = {};
 
         }
 
-        function borrar(id){
+        function eliminarFolioOficial(id){
+
+          arrayPosicion.splice(id,1);
+          $('#filas'+id).remove();
 
         }
 
+        function borrarFolios(id,id_key){
+
+          ///////////////////////////////////////////////////////7
+          $.ajax({
+
+                 type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+                 url:"/catalogos/folios/borrarFolio", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+                 headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+                 },
+                 data:{
+                     id:id,
+                   }
+            });
+
+            $('#orden_'+id_key).remove();
+
+
+        }
         function guardar(){
 
           var dependencia = $('#dependencia').val();

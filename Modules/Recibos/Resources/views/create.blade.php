@@ -227,7 +227,7 @@
             <div class="tab-content mt-5" id="myTabContent">
                 <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                   <div class="row">
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">¿Remoto?: </label>
                         <div class="checkbox-list">
                             <label class="checkbox">
@@ -236,7 +236,7 @@
                                 SI
                             </label>
                         </div>
-                    </div>
+                    </div> -->
 
 
                     <div class="col-md-3">
@@ -292,7 +292,7 @@
                                   <div class="form-group">
                                       <div class="checkbox-list">
                                           <label class="checkbox">
-                                              <input type="checkbox" name="gasolina_{{$key}}" value="{{ $lugar->combustible }}" @if($lugar->combustible != 0) checked @endif   disabled>
+                                              <input type="checkbox" name="gasolina_{{$key}}" value="{{ $lugar->combustible }}" @if($lugar->combustible != 0) checked @endif   >
                                               <span></span>
                                           </label>
                                       </div>
@@ -302,7 +302,7 @@
                                   <div class="form-group">
                                       <div class="checkbox-list">
                                           <label class="checkbox">
-                                              <input type="checkbox" name="hospedaje_{{$key}}"  value="{{ $lugar->hospedaje }}" @if($lugar->hospedaje != 0) checked @endif disabled>
+                                              <input type="checkbox" name="hospedaje_{{$key}}"  value="{{ $lugar->hospedaje }}" @if($lugar->hospedaje != 0) checked @endif >
                                               <span></span>
                                           </label>
                                       </div>
@@ -311,15 +311,15 @@
                                 <td>
                                   <div class="checkbox-inline">
                                        <label class="checkbox">
-                                           <input type="checkbox" name="desayuno_{{$key}}"  value="{{ $lugar->desayuno }}" @if($lugar->desayuno != 0) checked @endif disabled>
+                                           <input type="checkbox" name="desayuno_{{$key}}"  value="{{ $lugar->desayuno }}" @if($lugar->desayuno != 0) checked @endif >
                                            <span></span>
                                        </label>
                                        <label class="checkbox">
-                                           <input type="checkbox" name="comida_{{$key}}" value="{{ $lugar->comida }}" @if($lugar->comida != 0) checked @endif disabled>
+                                           <input type="checkbox" name="comida_{{$key}}" value="{{ $lugar->comida }}" @if($lugar->comida != 0) checked @endif >
                                            <span></span>
                                        </label>
                                        <label class="checkbox">
-                                           <input type="checkbox" name="cena_{{$key}}" value="{{ $lugar->cena }}" @if($lugar->cena != 0) checked @endif disabled>
+                                           <input type="checkbox" name="cena_{{$key}}" value="{{ $lugar->cena }}" @if($lugar->cena != 0) checked @endif >
                                            <span></span>
                                        </label>
                                    </div>
@@ -455,17 +455,17 @@
                                       <label for="">Viaje <span style="color:red;">*</span></label>
                                       <div class="radio-inline" id="radiopage">
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='1'>
+                                              <input type="radio" name="vhof" value='1' onclick="redondo_vhof()">
                                               <span></span>
                                               Redondo
                                           </label>
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='2'>
+                                              <input type="radio" name="vhof" value='2' onclick="redondo_vhof()">
                                               <span></span>
                                               Solo Ida
                                           </label>
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='3'>
+                                              <input type="radio" name="vhof" value='3' onclick="redondo_vhof()">
                                               <span></span>
                                               Solo regreso
                                           </label>
@@ -583,17 +583,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='1'>
+                                            <input type="radio" name="vh2" value='1' onclick="redondo_vh2()">
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='2'>
+                                            <input type="radio" name="vh2" value='2' onclick="redondo_vh2()">
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='3'>
+                                            <input type="radio" name="vh2" value='3' onclick="redondo_vh2()">
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -697,17 +697,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="1">
+                                            <input type="radio" name="tipoViajeAutobus" value="1" onclick="redondo_tipoViajeAutobus()">
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="2">
+                                            <input type="radio" name="tipoViajeAutobus" value="2" onclick="redondo_tipoViajeAutobus()">
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="3">
+                                            <input type="radio" name="tipoViajeAutobus" value="3" onclick="redondo_tipoViajeAutobus()">
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -816,17 +816,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="page_avion" value="1">
+                                            <input type="radio" name="page_avion" value="1" onclick="redondo_page_avion()">
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="page_avion" value="2">
+                                            <input type="radio" name="page_avion" value="2" onclick="redondo_page_avion()">
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="page_avion" value="3">
+                                            <input type="radio" name="page_avion" value="3" onclick="redondo_page_avion()">
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -1346,6 +1346,138 @@ var arrayNumeros = [];
 
 var ObjetoLugares = {};
 var arrayLugares = [];
+
+function redondo_vhof(){
+
+  $(":radio[name=vhof]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+
+          if ($(this).val() == 1) {
+            // $('#home-tab-5').hide();
+            $('#este-tab-5').hide();
+            $('#profile-tab-5').hide();
+            $('#contact-tab-5').hide();
+            $('#taxi-tab-5').hide();
+            $('#avion-tab-5').hide();
+          }else if($(this).val() == 2){
+            $('#este-tab-5').show();
+            $('#profile-tab-5').show();
+            $('#contact-tab-5').show();
+            $('#taxi-tab-5').show();
+            $('#avion-tab-5').show();
+          }else if($(this).val() == 3){
+            $('#este-tab-5').show();
+            $('#profile-tab-5').show();
+            $('#contact-tab-5').show();
+            $('#taxi-tab-5').show();
+            $('#avion-tab-5').show();
+          }
+
+
+      }
+  });
+
+}
+
+function redondo_vh2(){
+  $(":radio[name=vh2]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+
+          if ($(this).val() == 1) {
+            $('#home-tab-5').hide();
+            //$('#este-tab-5').hide();
+            $('#profile-tab-5').hide();
+            $('#contact-tab-5').hide();
+            $('#taxi-tab-5').hide();
+            $('#avion-tab-5').hide();
+          }else if($(this).val() == 2){
+            $('#home-tab-5').show();
+            $('#profile-tab-5').show();
+            $('#contact-tab-5').show();
+            $('#taxi-tab-5').show();
+            $('#avion-tab-5').show();
+          }else if($(this).val() == 3){
+            $('#home-tab-5').show();
+            $('#profile-tab-5').show();
+            $('#contact-tab-5').show();
+            $('#taxi-tab-5').show();
+            $('#avion-tab-5').show();
+          }
+
+
+      }
+  });
+
+}
+
+function redondo_tipoViajeAutobus(){
+  $(":radio[name=tipoViajeAutobus]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+
+          if ($(this).val() == 1) {
+            $('#home-tab-5').hide();
+            $('#este-tab-5').hide();
+            //$('#profile-tab-5').hide();
+            $('#contact-tab-5').hide();
+            $('#taxi-tab-5').hide();
+            $('#avion-tab-5').hide();
+          }else if($(this).val() == 2){
+            $('#home-tab-5').show();
+            //$('#profile-tab-5').show();
+            $('#este-tab-5').show();
+            $('#contact-tab-5').show();
+            $('#taxi-tab-5').hide();
+            $('#avion-tab-5').show();
+          }else if($(this).val() == 3){
+            $('#home-tab-5').show();
+            //$('#profile-tab-5').show();
+            $('#este-tab-5').show();
+
+            $('#contact-tab-5').show();
+            $('#taxi-tab-5').hide();
+            $('#avion-tab-5').show();
+          }
+
+
+      }
+  });
+}
+
+function redondo_page_avion(){
+  $(":radio[name=page_avion]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+
+          if ($(this).val() == 1) {
+            $('#home-tab-5').hide();
+            $('#este-tab-5').hide();
+            $('#profile-tab-5').hide();
+            $('#contact-tab-5').hide();
+            $('#taxi-tab-5').hide();
+            //$('#avion-tab-5').hide();
+          }else if($(this).val() == 2){
+            $('#home-tab-5').show();
+            $('#profile-tab-5').show();
+            $('#este-tab-5').show();
+            $('#contact-tab-5').hide();
+            $('#taxi-tab-5').show();
+            //$('#avion-tab-5').show();
+          }else if($(this).val() == 3){
+            $('#home-tab-5').show();
+            $('#profile-tab-5').show();
+            $('#este-tab-5').show();
+            $('#contact-tab-5').hide();
+            $('#taxi-tab-5').show();
+            //$('#avion-tab-5').show();
+          }
+
+
+      }
+  });
+}
 
 
 $('#estado').select2({
@@ -1900,7 +2032,7 @@ function calcularViaticoLugar(){
 
  //Recorremos el arreglo
 
- console.log(arrayTablaLugares)
+ // console.log(arrayTablaLugares)
  arrayTablaLugares.forEach( x => {
    //Si la ciudad no existe en nuevoObjeto entonces
    //la creamos e inicializamos el arreglo de profesionales.
@@ -2040,7 +2172,7 @@ function calcularViaticoLugar(){
 
  })
 
- console.log(nuevoObjeto)
+ //console.log(nuevoObjeto)
 
   // tablalugar.push({
   //   dias:arrayTablaLugares[i].dias,

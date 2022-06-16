@@ -328,7 +328,7 @@ $(function() {
 tabla = $('#kt_datatable').DataTable({
   processing: true,
   serverSide: true,
-  order: [[0, 'desc']],
+  order: [[0, 'ASC']],
   ajax: {
     url: "/recibos/tabla",
   },
@@ -363,6 +363,38 @@ function turnar(id){
           $.ajax({
              type:"POST",
              url:"/recibos/Turnar",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data:{
+               id:id,
+             },
+              success:function(data){
+                Swal.fire("", data.success, "success").then(function(){
+                  tabla.ajax.reload();
+                });
+              }
+          });
+        }
+    })
+
+
+}
+
+function eliminar(id){
+
+  Swal.fire({
+        title: "¿Esta seguro de Eliminar el registro?",
+        text: "No se podrá revertir",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then(function(result) {
+        if (result.value) {
+          $.ajax({
+             type:"POST",
+             url:"/recibos/borrar",
              headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },

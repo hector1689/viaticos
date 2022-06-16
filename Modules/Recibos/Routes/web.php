@@ -32,6 +32,7 @@ Route::prefix('recibos')->group(function() {
   Route::get('/tabla', 'RecibosController@tabla');
   Route::get('/{id}/edit', 'RecibosController@edit');
   Route::post('/cancelar', 'RecibosController@cancelar');
+  Route::post('/borrar', 'RecibosController@destroy');
   Route::post('/finiquitar', 'RecibosController@finiquitar');
   Route::post('/finiquitarP', 'RecibosController@finiquitarP');
   Route::post('/Turnar', 'RecibosController@Turnar');
