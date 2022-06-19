@@ -19,7 +19,7 @@ Route::prefix('recibos')->group(function() {
   Route::get('/{id}/oficio', 'RecibosController@oficio');
   Route::get('/especificacion', 'RecibosController@especificacion');
   Route::get('/{id}/especificacioncomision', 'RecibosController@especificacioncomision');
-  Route::get('/imprimir', 'RecibosController@imprimir');
+  Route::get('/{id}/imprimir', 'RecibosController@imprimir');
   Route::get('/{id}/comprobantes', 'RecibosController@comprobantes');
   Route::post('/TraerEmpleado', 'RecibosController@TraerEmpleado');
   Route::post('/TraerNombreDependencia', 'RecibosController@TraerNombreDependencia');
@@ -48,6 +48,12 @@ Route::prefix('recibos')->group(function() {
   Route::post('/TraerPeaje', 'RecibosController@TraerPeaje');
   Route::post('/TraerRecorrido', 'RecibosController@TraerRecorrido');
   Route::post('/AlimentacionTime', 'RecibosController@AlimentacionTime');
+  Route::post('/borrarVHf', 'RecibosController@borrarVHf');
+  Route::post('/borrarVH', 'RecibosController@borrarVH');
+  Route::post('/borrarAutob', 'RecibosController@borrarAutob');
+
+
+
 
 
 

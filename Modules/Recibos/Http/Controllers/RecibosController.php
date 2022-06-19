@@ -156,22 +156,6 @@ class RecibosController extends Controller
               $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
               $folio = $folio_completo;
             }
-            // else{
-            //   list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
-            //   $sumafolio = $paso4 + 1;
-            //   $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
-            //   $folio = $folio_completo;
-            // }
-
-
-
-            //
-            // else{
-            //   list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
-            //   $sumafolio2 = $paso8 + 1;
-            //   $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
-            //   $folio_comision = $folio_completo2;
-            // }
           }
 
           if(isset($existe_folio_ultimo)){
@@ -284,24 +268,125 @@ class RecibosController extends Controller
         $datospago->cve_usuario = Auth::user()->id;
         $datospago->save();
 
-
+        //dd($request->VehiculoOficial[0]);
         $transporte = new Transporte();
         $transporte->kilometro_interno = $request->kilometrorecorrido;
         $transporte->cve_t_viatico = $recibo->id;
         $transporte->especificar_recorrido = $request->especificarcomision;
         $transporte->total_km_recorrido = $request->totalkm;
+        $transporte->programavehiculo = $request->programavehiculof;
+        $transporte->total_transporte = $request->total_transporte_vehiculof;
         $transporte->cve_usuario = Auth::user()->id;
         $transporte->save();
 
 
 
+        if (isset($request->VehiculoOficial)) {
+          foreach ($request->VehiculoOficial as $key => $value) {
+            $vhof = new VehiculoOficial();
+            $vhof->cve_t_transporte = $transporte->id;
+            $vhof->numero_oficial = $value['num_oficial'];
+            $vhof->tipo_transporte = $value['tipotransporte'];
+            $vhof->tipo_viaje = $value['tipo_viaje'];
+            $vhof->marca = $value['marca'];
+            $vhof->modelo = $value['modelo'];
+            $vhof->tipo = $value['tipo'];
+            $vhof->placas = $value['placas'];
+            $vhof->cilindraje = $value['cilindraje'];
+            $vhof->cuota = $value['cuota'];
+            $vhof->gasolina = $value['gasolina'];
+            $vhof->mes_gasolina = $value['mes_gasolina'];
+            $vhof->gasolina_vh_oficial = $value['gasolina_vehiculo'];
+            $vhof->cve_usuario = Auth::user()->id;
+            $vhof->save();
+          }
+        }
 
-        $bitacora = new Bitacora();
-        $bitacora->cve_t_viatico = $recibo->id;
-        $bitacora->fecha = date('Y-m-d H:i:s');
-        $bitacora->tarea = 'Alta Registro';
-        $bitacora->cve_usuario = Auth::user()->id;
-        $bitacora->save();
+        if (isset($request->Vehiculo)) {
+          foreach ($request->Vehiculo as $key => $value) {
+            $vh = new Vehiculo();
+            $vh->cve_t_transporte = $transporte->id;
+            $vh->tipo_transporte = $value['tipotransporte'];
+            $vh->tipo_viaje = $value['tipo_viaje'];
+            $vh->marca = $value['marca'];
+            $vh->modelo = $value['modelo'];
+            $vh->tipo = $value['tipo'];
+            $vh->placas = $value['placas'];
+            $vh->cilindraje = $value['cilindraje'];
+            $vh->cuota = $value['cuota'];
+            $vh->gasolina = $value['gasolina'];
+            $vh->mes_gasolina = $value['mes_gasolina'];
+            $vh->gasolina_vh_oficial = $value['gasolina_vehiculo'];
+            $vh->cve_usuario = Auth::user()->id;
+            $vh->save();
+          }
+        }
+
+        //dd($request->Autobus,$request->Avion);
+
+        if(isset($request->Autobus)){
+          foreach ($request->Autobus as $key => $value) {
+
+            $autobus = new Autobus();
+            $autobus->cve_t_transporte = $transporte->id;
+            $autobus->tipo_transporte = $value['tipotransporte'];
+            $autobus->tipo_viaje = $value['tipo_viaje'];
+            $autobus->costo_total = $value['costoAutobus'];
+            $autobus->cve_usuario = Auth::user()->id;
+            $autobus->save();
+          }
+        }
+
+        if (isset($request->Avion)) {
+          foreach ($request->Avion as $key => $value) {
+            $avion = new Avion();
+            $avion->cve_t_transporte = $transporte->id;
+            $avion->tipo_viaje = $value['tipo_viaje'];
+            $avion->costo_total = $value['costoAvion'];
+            $avion->cve_usuario = Auth::user()->id;
+            $avion->save();
+          }
+        }
+
+
+        if (isset($request->Peaje)) {
+          foreach ($request->Peaje as $key => $value) {
+            $peaje = new PeajeTransporte();
+            $peaje->cve_peaje = $transporte->id;
+            $peaje->cve_t_transporte = $value['tipotransporte'];
+            $peaje->nombre = $value['peaje'];
+            $peaje->costo = $value['costo'];
+            $peaje->cve_usuario = Auth::user()->id;
+            $peaje->save();
+          }
+        }
+
+        if (isset($request->Recorrido)) {
+          foreach ($request->Recorrido as $key => $value) {
+
+            dd($value);
+            $taxi = new TaxiTransporte();
+            $taxi->cve_peaje = $transporte->id;
+
+            $taxi->cve_t_transporte = $value['tipotransporte'];
+            $taxi->nombre = $value['peaje'];
+            $taxi->costo = $value['costo'];
+            $taxi->cve_usuario = Auth::user()->id;
+            $taxi->save();
+          }
+        }
+
+        if (isset($request->valeCombustible)) {
+
+          $transportex = Transporte::find($transporte->id);
+          $transportex->valeCombustible = $request->valeCombustible[0];
+          $transportex->save();
+        }else{
+          $transportex = Transporte::find($transporte->id);
+          $transportex->valeCombustible = 0;
+          $transportex->save();
+        }
+
 
         //dd($request->tablalugares);
         foreach ($request->tablalugares as $key => $value) {
@@ -318,11 +403,6 @@ class RecibosController extends Controller
             $lugares->total_recibido = $request->total_extraer;
             $lugares->cve_usuario =Auth::user()->id;
             $lugares->save();
-
-
-
-
-
 
             if (isset($value['lugar'][8]['gasolina'])) {
               $existe_lugar = Lugares::find($lugares->id);
@@ -356,13 +436,20 @@ class RecibosController extends Controller
               $existe_lugar->save();
             }
 
-
-
-
-
-
         }
 
+
+
+
+
+
+
+        $bitacora = new Bitacora();
+        $bitacora->cve_t_viatico = $recibo->id;
+        $bitacora->fecha = date('Y-m-d H:i:s');
+        $bitacora->tarea = 'Alta Registro';
+        $bitacora->cve_usuario = Auth::user()->id;
+        $bitacora->save();
 
 
 
@@ -436,8 +523,47 @@ class RecibosController extends Controller
 
     }
 
-    public function imprimir(){
-      return view('recibos::imprimir');
+    public function imprimir($id){
+      $data['id'] = $id;
+      $data['recibos'] = Recibos::find($id);
+      $data['firmantes'] =   ReciboFirmantes::where([
+                                  ['activo',1],
+                                  ['cve_t_viaticos',$id],
+                                ])->first();
+      $data['pagos'] =   DatosPago::where([
+                            ['activo',1],
+                            ['cve_t_viatico',$id],
+                          ])->first();
+      $data['lugares'] = Lugares::where([
+                            ['activo',1],
+                            ['cve_t_viatico',$id],
+                          ])->get();
+      $data['rendimiento'] = Rendimiento::where('activo',1)->get();
+
+      $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
+      $data['Vehiculoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      $data['vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      $data['avion'] = Avion::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      $data['taxi'] = TaxiTransporte::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      $data['peaje'] = PeajeTransporte::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      //dd($diasDiferencia);
+      $bitacora = new Bitacora();
+      $bitacora->cve_t_viatico = $id;
+      $bitacora->fecha = date('Y-m-d H:i:s');
+      $bitacora->tarea = 'Impresión Recibo';
+      $bitacora->cve_usuario = Auth::user()->id;
+      $bitacora->save();
+
+      $pdf = PDF::loadView('recibos::imprimir', $data);
+      $pdf->setPaper(array(0,0,612.00, 790.00), 'portrait');
+      $pdf->setOptions(['enable_php' => true,'isHtml5ParserEnabled' => true,'isRemoteEnabled' => true]);
+
+      $pdf->output();
+
+      $namePdf = 'Oficio de Comisión.pdf';
+      return $pdf->download($namePdf);
+      return $pdf->stream();
 
     }
     public function especificacioncomision($id){
@@ -822,8 +948,14 @@ class RecibosController extends Controller
         $data['programa'] = Programa::where('activo',1)->get();
         $data['taxi'] = Taxi::where('activo',1)->get();
         $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
+        $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+        $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
         $data['lacalidad1'] = Localidad::where('activo',1)->get();
         $data['lacalidad2'] = Localidad::where('activo',1)->get();
+        $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+        $data['autobustabla'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+        $data['Vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+        $data['Vehiculotabla'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
         $data['lugares'] = Lugares::where([
                               ['activo',1],
                               ['cve_t_viatico',$id],
@@ -852,6 +984,30 @@ class RecibosController extends Controller
       //dd($request->ids);
       $taxi = Taxi::where('activo',1)->whereIN('id',$request->ids)->get();
       return $taxi;
+    }
+
+    public function borrarVHf(Request $request){
+      $vhof = VehiculoOficial::find($request->id);
+      $vhof->activo = 0;
+      $vhof->save();
+
+      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+    }
+
+    public function borrarVH(Request $request){
+      $vh = Vehiculo::find($request->id);
+      $vh->activo = 0;
+      $vh->save();
+
+      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+    }
+
+    public function borrarAutob(Request $request){
+      $autobs = Autobus::find($request->id);
+      $autobs->activo = 0;
+      $autobs->save();
+
+      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
     }
 
     /**

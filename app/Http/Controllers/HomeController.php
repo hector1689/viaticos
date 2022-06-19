@@ -98,7 +98,7 @@ class HomeController extends Controller
         $query ="
         SELECT
         *
-        FROM cat_area_departamentos where activo = 1 ";
+        FROM cat_area_departamentos where activo = 1  ";
         $cursoss = DB::select($query);
 
         $nombre_cursos = [];

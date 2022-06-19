@@ -12,9 +12,17 @@ class Transporte extends Model{
     "cve_t_viatico",
     "especificar_recorrido",
     "total_km_recorrido",
+    "programavehiculo",
+    "valeCombustible",
+    "total_transporte",
     "activo",
     "cve_usuario",
   ];
+
+  public function obtenePrograma(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Programa', 'id', 'programavehiculo');
+  }
+
 
 
 }

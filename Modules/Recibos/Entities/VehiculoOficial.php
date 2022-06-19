@@ -9,6 +9,7 @@ class VehiculoOficial extends Model{
   protected $fillable = [
     "id",
     "cve_t_transporte",
+    "numero_oficial",
     "tipo_transporte",
     "tipo_viaje",
     "marca",
@@ -26,6 +27,11 @@ class VehiculoOficial extends Model{
     "activo",
     "cve_usuario",
   ];
+
+  public function obteneGasolinas(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Gasolina', 'id', 'gasolina');
+  }
+
 
 
 }

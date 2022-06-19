@@ -12,7 +12,20 @@ class TaxiTransporte extends Model{
     "clasificacion_recorrido",
     "cve_kilometraje_origen",
     "cve_kilometraje_destino",
+
+    "tipotransporte",
+    "region",
+    "region_name",
     "dia_adicional",
+    "recorrido1",
+    "recorrido2",
+    "name_recorrido",
+    "name_recorrido2",
+    "tarifa_evento",
+    "tarifa_evento2",
+    "tarifa_adicional",
+    "tarifa_adicional2",
+
     "activo",
     "cve_usuario",
   ];

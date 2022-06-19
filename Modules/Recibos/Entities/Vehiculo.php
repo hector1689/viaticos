@@ -27,5 +27,9 @@ class Vehiculo extends Model{
     "cve_usuario",
   ];
 
+  public function obteneGasolinas2(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Gasolina', 'id', 'gasolina');
+  }
+
 
 }
