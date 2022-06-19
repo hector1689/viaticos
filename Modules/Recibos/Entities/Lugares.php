@@ -37,5 +37,9 @@ class Lugares extends Model{
     return $this->hasOne('\Modules\Catalogos\Entities\Zona', 'id', 'cve_zona');
   }
 
+  public function obtenePrograma(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Programa', 'id', 'cve_programa');
+  }
+
 
 }

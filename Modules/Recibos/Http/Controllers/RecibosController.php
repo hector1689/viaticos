@@ -114,10 +114,13 @@ class RecibosController extends Controller
 
           $existe_folio_ultimo = Recibos::where([['activo',1],['oficio_comision','!=','NULL']])->orderBy('id','ASC')->first();
 
+
           if(isset($existe_folio_ultimo)){
 
             $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
             ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+
+            //dd($folio_existes->foliador);
 
             //////////////////////// FOLIO RECIBO /////////////////////////////////////////////////////////////////////
             //dd($existe_folio_ultimos->folio,$folio_existes->foliador);
@@ -163,7 +166,7 @@ class RecibosController extends Controller
             $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
             ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
             /////////////////////// FOLIO COMISION ////////////////////////////////////////////////////////
-            //dd($existe_folio_ultimo->oficio_comision,$folio_existes2->foliador);
+            //dd($folio_existes2->foliador);
             if ($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador) {
               //dd($existe_folio_ultimo->oficio_comision);
               $foliots2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
@@ -439,11 +442,6 @@ class RecibosController extends Controller
         }
 
 
-
-
-
-
-
         $bitacora = new Bitacora();
         $bitacora->cve_t_viatico = $recibo->id;
         $bitacora->fecha = date('Y-m-d H:i:s');
@@ -461,6 +459,301 @@ class RecibosController extends Controller
 
     }
 
+    public function edit($id)
+    {
+        $data['recibos'] = Recibos::find($id);
+        $data['estatus'] = EstatusRecibo::all();
+        $data['firmantes'] =   ReciboFirmantes::where([
+                              ['activo',1],
+                              ['cve_t_viaticos',$id],
+                            ])->first();
+
+        $data['bitacora'] =  Bitacora::where([
+                                          ['activo',1],
+                                          ['cve_t_viatico',$id],
+                                        ])->get();
+        $data['pagos'] =   DatosPago::where([
+                              ['activo',1],
+                              ['cve_t_viatico',$id],
+                            ])->first();
+        $data['peajes'] = Peaje::where('activo',1)->get();
+        $data['gasolina'] = Gasolina::where('activo',1)->orderBy('id','DESC')->get();
+        $data['rendimiento'] = Rendimiento::where('activo',1)->get();
+        $data['programa'] = Programa::where('activo',1)->get();
+        $data['taxi'] = Taxi::where('activo',1)->get();
+        $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
+        $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+        $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+        $data['lacalidad1'] = Localidad::where('activo',1)->get();
+        $data['lacalidad2'] = Localidad::where('activo',1)->get();
+        $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+        $data['autobustabla'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+        $data['Vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+        $data['Vehiculotabla'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+        $data['lugares'] = Lugares::where([
+                              ['activo',1],
+                              ['cve_t_viatico',$id],
+                            ])->get();
+        $data['lugares2'] = Lugares::where([
+                              ['activo',1],
+                              ['cve_t_viatico',$id],
+                            ])->first();
+        return view('recibos::create')->with($data);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     * @param Request $request
+     * @param int $id
+     * @return Renderable
+     */
+    public function update(Request $request)
+    {
+      try {
+        list($fecha1,$hora1) = explode(" ",$request->inicia);
+        list($dia,$mes,$anio) = explode('/',$fecha1);
+        $fecha_incio = $anio.'-'.$mes.'-'.$dia.' '.$hora1;
+
+        list($fecha2,$hora2) = explode(" ",$request->final);
+        list($dia2,$mes2,$anio2) = explode('/',$fecha2);
+        $fecha_final = $anio2.'-'.$mes2.'-'.$dia2.' '.$hora2;
+
+
+          $recibo = Recibos::find($request->id);
+          // $recibo->cve_estatus = 1;
+          // $recibo->folio = $folio;
+          $recibo->num_empleado = $request->n_empleado;
+          $recibo->nombre = $request->nombre_empleado;
+          $recibo->rfc = $request->rfc;
+          $recibo->nivel = $request->nivel;
+          $recibo->clave_departamental = $request->clave_departamental;
+          $recibo->dependencia = $request->dependencia;
+          $recibo->direccion = $request->direccion;
+          $recibo->fecha_hora_salida = $fecha_incio;
+          $recibo->fecha_hora_recibio = $fecha_final;
+          $recibo->departamentos = $request->departamento;
+          $recibo->lugar_adscripcion = $request->lugar_adscripcion;
+          $recibo->num_dias = $request->n_dias;
+          $recibo->num_dias_inhabiles = $request->n_dias_ina;
+          $recibo->descripcion_comision = $request->descripcion;
+          $recibo->id_dependencia = $request->area_id;
+          $recibo->importe =$request->total_extraer;
+          $recibo->cve_usuario = Auth::user()->id;
+          $recibo->save();
+
+
+          $firmantes = ReciboFirmantes::find($request->id_firmante);
+          $firmantes->director_area = $request->director_area_firma;
+          $firmantes->organo_control = $request->organo_control_firma;
+          $firmantes->director_administrativo = $request->director_administrativo_firma;
+          $firmantes->recibi_cheque = $request->cheque_firma;
+          $firmantes->superior_inmediato = $request->jefe_firma;
+          $firmantes->cve_usuario = Auth::user()->id;
+          $firmantes->save();
+
+          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+
+
+          $datospago = DatosPago::find($request->id_pagos);
+          $datospago->secretaria = $request->secretaria_pago;
+          $datospago->num_cheque = $request->cheque;
+          $datospago->fehca_inicia = $fecha_pago;
+          $datospago->cantidad = $request->cantidad;
+          $datospago->cantidad_letra = $request->letras_cantidad;
+          $datospago->favor_cargo_banco = $request->banco;
+          $datospago->cve_usuario = Auth::user()->id;
+          $datospago->save();
+
+          $transporte = Transporte::find($request->id_transporte);
+          $transporte->kilometro_interno = $request->kilometrorecorrido;
+          $transporte->cve_t_viatico = $recibo->id;
+          $transporte->especificar_recorrido = $request->especificarcomision;
+          $transporte->total_km_recorrido = $request->totalkm;
+          $transporte->programavehiculo = $request->programavehiculof;
+          $transporte->total_transporte = $request->total_transporte_vehiculof;
+          $transporte->cve_usuario = Auth::user()->id;
+          $transporte->save();
+
+
+
+          if (isset($request->VehiculoOficial)) {
+            foreach ($request->VehiculoOficial as $key => $value) {
+              $vhof = new VehiculoOficial();
+              $vhof->cve_t_transporte = $transporte->id;
+              $vhof->numero_oficial = $value['num_oficial'];
+              $vhof->tipo_transporte = $value['tipotransporte'];
+              $vhof->tipo_viaje = $value['tipo_viaje'];
+              $vhof->marca = $value['marca'];
+              $vhof->modelo = $value['modelo'];
+              $vhof->tipo = $value['tipo'];
+              $vhof->placas = $value['placas'];
+              $vhof->cilindraje = $value['cilindraje'];
+              $vhof->cuota = $value['cuota'];
+              $vhof->gasolina = $value['gasolina'];
+              $vhof->mes_gasolina = $value['mes_gasolina'];
+              $vhof->gasolina_vh_oficial = $value['gasolina_vehiculo'];
+              $vhof->cve_usuario = Auth::user()->id;
+              $vhof->save();
+            }
+          }
+
+          if (isset($request->Vehiculo)) {
+            foreach ($request->Vehiculo as $key => $value) {
+              $vh = new Vehiculo();
+              $vh->cve_t_transporte = $transporte->id;
+              $vh->tipo_transporte = $value['tipotransporte'];
+              $vh->tipo_viaje = $value['tipo_viaje'];
+              $vh->marca = $value['marca'];
+              $vh->modelo = $value['modelo'];
+              $vh->tipo = $value['tipo'];
+              $vh->placas = $value['placas'];
+              $vh->cilindraje = $value['cilindraje'];
+              $vh->cuota = $value['cuota'];
+              $vh->gasolina = $value['gasolina'];
+              $vh->mes_gasolina = $value['mes_gasolina'];
+              $vh->gasolina_vh_oficial = $value['gasolina_vehiculo'];
+              $vh->cve_usuario = Auth::user()->id;
+              $vh->save();
+            }
+          }
+
+          //dd($request->Autobus,$request->Avion);
+
+          if(isset($request->Autobus)){
+            foreach ($request->Autobus as $key => $value) {
+
+              $autobus = new Autobus();
+              $autobus->cve_t_transporte = $transporte->id;
+              $autobus->tipo_transporte = $value['tipotransporte'];
+              $autobus->tipo_viaje = $value['tipo_viaje'];
+              $autobus->costo_total = $value['costoAutobus'];
+              $autobus->cve_usuario = Auth::user()->id;
+              $autobus->save();
+            }
+          }
+
+          if (isset($request->Avion)) {
+            foreach ($request->Avion as $key => $value) {
+              $avion = new Avion();
+              $avion->cve_t_transporte = $transporte->id;
+              $avion->tipo_viaje = $value['tipo_viaje'];
+              $avion->costo_total = $value['costoAvion'];
+              $avion->cve_usuario = Auth::user()->id;
+              $avion->save();
+            }
+          }
+
+
+          if (isset($request->Peaje)) {
+            foreach ($request->Peaje as $key => $value) {
+              $peaje = new PeajeTransporte();
+              $peaje->cve_peaje = $transporte->id;
+              $peaje->cve_t_transporte = $value['tipotransporte'];
+              $peaje->nombre = $value['peaje'];
+              $peaje->costo = $value['costo'];
+              $peaje->cve_usuario = Auth::user()->id;
+              $peaje->save();
+            }
+          }
+
+          if (isset($request->Recorrido)) {
+            foreach ($request->Recorrido as $key => $value) {
+
+              dd($value);
+              $taxi = new TaxiTransporte();
+              $taxi->cve_peaje = $transporte->id;
+
+              $taxi->cve_t_transporte = $value['tipotransporte'];
+              $taxi->nombre = $value['peaje'];
+              $taxi->costo = $value['costo'];
+              $taxi->cve_usuario = Auth::user()->id;
+              $taxi->save();
+            }
+          }
+
+          if (isset($request->valeCombustible)) {
+
+            $transportex = Transporte::find($transporte->id);
+            $transportex->valeCombustible = $request->valeCombustible[0];
+            $transportex->save();
+          }else{
+            $transportex = Transporte::find($transporte->id);
+            $transportex->valeCombustible = 0;
+            $transportex->save();
+          }
+
+
+          //dd($request->tablalugares);
+          if (isset($request->tablalugares)) {
+            foreach ($request->tablalugares as $key => $value) {
+
+                $lugares = new Lugares();
+                $lugares->remoto = 0;
+                $lugares->cve_t_viatico = $recibo->id;
+                $lugares->cve_localidad_origen = $value['lugar'][0]['origen'];
+                $lugares->cve_localidad_destino = $value['lugar'][1]['destino'];
+                $lugares->dias = $value['lugar'][6]['dias'];
+                $lugares->cve_zona = $value['lugar'][4]['zona'];
+                $lugares->kilometros = $value['lugar'][7]['kilometraje'];
+                $lugares->cve_programa = $request->programalugar;
+                $lugares->total_recibido = $request->total_extraer;
+                $lugares->cve_usuario =Auth::user()->id;
+                $lugares->save();
+
+                if (isset($value['lugar'][8]['gasolina'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->combustible = $value['lugar'][8]['gasolina'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][9]['hospedaje'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->hospedaje = $value['lugar'][9]['hospedaje'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][11]['comida'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->comida = $value['lugar'][11]['comida'];
+                  $existe_lugar->save();
+                }
+
+
+                if (isset($value['lugar'][10]['desayuno'])) {
+                  //dd('entro');
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->desayuno = $value['lugar'][10]['desayuno'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][12]['cena'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->cena = $value['lugar'][12]['cena'];
+                  $existe_lugar->save();
+                }
+
+            }
+          }
+
+
+
+          $bitacora = new Bitacora();
+          $bitacora->cve_t_viatico = $recibo->id;
+          $bitacora->fecha = date('Y-m-d H:i:s');
+          $bitacora->tarea = 'Editar Registro';
+          $bitacora->cve_usuario = Auth::user()->id;
+          $bitacora->save();
+
+
+          return response()->json(['success'=>'Registro agregado satisfactoriamente']);
+
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+    }
+
     /**
      * Show the specified resource.
      * @param int $id
@@ -471,9 +764,43 @@ class RecibosController extends Controller
         return view('recibos::show');
     }
 
-    public function recibo()
+    public function recibo($id)
     {
-        return view('recibos::recibo');
+      $data['recibos'] = Recibos::find($id);
+      $data['estatus'] = EstatusRecibo::all();
+      $data['firmantes'] =   ReciboFirmantes::where([
+                            ['activo',1],
+                            ['cve_t_viaticos',$id],
+                          ])->first();
+
+      $data['bitacora'] =  Bitacora::where([
+                                        ['activo',1],
+                                        ['cve_t_viatico',$id],
+                                      ])->get();
+      $data['pagos'] =   DatosPago::where([
+                            ['activo',1],
+                            ['cve_t_viatico',$id],
+                          ])->first();
+      $data['peajes'] = Peaje::where('activo',1)->get();
+      $data['gasolina'] = Gasolina::where('activo',1)->orderBy('id','DESC')->get();
+      $data['rendimiento'] = Rendimiento::where('activo',1)->get();
+      $data['programa'] = Programa::where('activo',1)->get();
+      $data['taxi'] = Taxi::where('activo',1)->get();
+      $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
+      $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+      $data['lacalidad1'] = Localidad::where('activo',1)->get();
+      $data['lacalidad2'] = Localidad::where('activo',1)->get();
+      $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      $data['autobustabla'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+      $data['Vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+      $data['Vehiculotabla'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+      $data['lugares'] = Lugares::where([
+                            ['activo',1],
+                            ['cve_t_viatico',$id],
+                          ])->get();
+      return view('recibos::recibo')->with($data);
+
     }
 
     public function oficio($id){
@@ -925,43 +1252,7 @@ class RecibosController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
-    {
-        $data['recibos'] = Recibos::find($id);
-        $data['estatus'] = EstatusRecibo::all();
-        $data['firmantes'] =   ReciboFirmantes::where([
-                              ['activo',1],
-                              ['cve_t_viaticos',$id],
-                            ])->first();
 
-        $data['bitacora'] =  Bitacora::where([
-                                          ['activo',1],
-                                          ['cve_t_viatico',$id],
-                                        ])->get();
-        $data['pagos'] =   DatosPago::where([
-                              ['activo',1],
-                              ['cve_t_viatico',$id],
-                            ])->first();
-        $data['peajes'] = Peaje::where('activo',1)->get();
-        $data['gasolina'] = Gasolina::where('activo',1)->orderBy('id','DESC')->get();
-        $data['rendimiento'] = Rendimiento::where('activo',1)->get();
-        $data['programa'] = Programa::where('activo',1)->get();
-        $data['taxi'] = Taxi::where('activo',1)->get();
-        $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
-        $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
-        $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
-        $data['lacalidad1'] = Localidad::where('activo',1)->get();
-        $data['lacalidad2'] = Localidad::where('activo',1)->get();
-        $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
-        $data['autobustabla'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
-        $data['Vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
-        $data['Vehiculotabla'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
-        $data['lugares'] = Lugares::where([
-                              ['activo',1],
-                              ['cve_t_viatico',$id],
-                            ])->get();
-        return view('recibos::create')->with($data);
-    }
 
 
     public function TraerGasolina(Request $request){
@@ -1010,96 +1301,7 @@ class RecibosController extends Controller
       return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request)
-    {
-      try {
-        list($fecha1,$hora1) = explode(" ",$request->inicia);
-        list($dia,$mes,$anio) = explode('/',$fecha1);
-        $fecha_incio = $anio.'-'.$mes.'-'.$dia.' '.$hora1;
 
-        list($fecha2,$hora2) = explode(" ",$request->final);
-        list($dia2,$mes2,$anio2) = explode('/',$fecha2);
-        $fecha_final = $anio2.'-'.$mes2.'-'.$dia2.' '.$hora2;
-
-
-        // $existe_folio = Recibos::where([['activo',1],['folio','!=','NULL']])->first();
-        //
-        //   if (isset($existe_folio)) {
-        //     $numero = $existe_folio->folio;
-        //
-        //     $folio = $numero + 1;
-        //   }else{
-        //     $numero = 1;
-        //     $folio = $numero;
-        //   }
-        //
-
-          $recibo = Recibos::find($request->id);
-          // $recibo->cve_estatus = 1;
-          // $recibo->folio = $folio;
-          $recibo->num_empleado = $request->n_empleado;
-          $recibo->nombre = $request->nombre_empleado;
-          $recibo->rfc = $request->rfc;
-          $recibo->nivel = $request->nivel;
-          $recibo->clave_departamental = $request->clave_departamental;
-          $recibo->dependencia = $request->dependencia;
-          $recibo->direccion = $request->direccion;
-          $recibo->fecha_hora_salida = $fecha_incio;
-          $recibo->fecha_hora_recibio = $fecha_final;
-          $recibo->departamentos = $request->departamento;
-          $recibo->lugar_adscripcion = $request->lugar_adscripcion;
-          $recibo->num_dias = $request->n_dias;
-          $recibo->num_dias_inhabiles = $request->n_dias_ina;
-          $recibo->descripcion_comision = $request->descripcion;
-          $recibo->id_dependencia = $request->area_id;
-          $recibo->importe =$request->total_extraer;
-          $recibo->cve_usuario = Auth::user()->id;
-          $recibo->save();
-
-
-          $firmantes = ReciboFirmantes::find($request->id_firmante);
-          $firmantes->director_area = $request->director_area_firma;
-          $firmantes->organo_control = $request->organo_control_firma;
-          $firmantes->director_administrativo = $request->director_administrativo_firma;
-          $firmantes->recibi_cheque = $request->cheque_firma;
-          $firmantes->superior_inmediato = $request->jefe_firma;
-          $firmantes->cve_usuario = Auth::user()->id;
-          $firmantes->save();
-
-          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
-
-
-          $datospago = DatosPago::find($request->id_pagos);
-          $datospago->secretaria = $request->secretaria_pago;
-          $datospago->num_cheque = $request->cheque;
-          $datospago->fehca_inicia = $fecha_pago;
-          $datospago->cantidad = $request->cantidad;
-          $datospago->cantidad_letra = $request->letras_cantidad;
-          $datospago->favor_cargo_banco = $request->banco;
-          $datospago->cve_usuario = Auth::user()->id;
-          $datospago->save();
-
-          $bitacora = new Bitacora();
-          $bitacora->cve_t_viatico = $recibo->id;
-          $bitacora->fecha = date('Y-m-d H:i:s');
-          $bitacora->tarea = 'Editar Registro';
-          $bitacora->cve_usuario = Auth::user()->id;
-          $bitacora->save();
-
-
-          return response()->json(['success'=>'Registro agregado satisfactoriamente']);
-
-        } catch (\Exception $e) {
-          dd($e->getMessage());
-        }
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -1369,11 +1571,11 @@ class RecibosController extends Controller
                "icon" => "edit blue",
                "href" => "/recibos/$value->id/edit"
              ],
-
-            "Ver" => [
-              "icon" => "fas fa-circle",
-              "href" => "/recibos/$value->id/show"
-            ],
+            //
+            // "Ver" => [
+            //   "icon" => "fas fa-circle",
+            //   "href" => "/recibos/$value->id/show"
+            // ],
             "Finiquitar Provisional" => [
               "icon" => "fas fa-circle",
               "onclick" => "finiquitarP($value->id)"
@@ -1420,57 +1622,116 @@ class RecibosController extends Controller
             ],
           ];
         }elseif(Auth::user()->tipo_usuario == 2){
-          $acciones = [
-             "Editar" => [
-               "icon" => "edit blue",
-               "href" => "/recibos/$value->id/edit"
-             ],
 
-            "Ver" => [
-              "icon" => "fas fa-circle",
-              "href" => "/recibos/$value->id/show"
-            ],
-            "Finiquitar Provisional" => [
-              "icon" => "fas fa-circle",
-              "onclick" => "finiquitarP($value->id)"
-            ],
-            "Finiquitar" => [
-              "icon" => "fas fa-circle",
-              "onclick" => "finiquitar($value->id)"
-            ],
-            "Cancelar" => [
-              "icon" => "fas fa-circle",
-              "onclick" => "baja($value->id)"
-            ],
-            "Recibo Complementario" => [
-              "icon" => "fas fa-circle",
-              "href" => "/recibos/$value->id/recibo"
-            ],
-            "Comprobaciones" => [
-              "icon" => "fas fa-circle",
-              "href" => "/recibos/$value->id/comprobantes"
-            ],
-            "Imprimir Recibo" => [
-              "icon" => "fas fa-circle",
-              "href" => "/recibos/$value->id/imprimir"
-            ],
-            "Oficio de Comisión" => [
-              "icon" => "fas fa-circle",
-              "href" => "/recibos/$value->id/oficio"
-            ],
-            "Especificación de Comisión" => [
-              "icon" => "fas fa-circle",
-              "href" => "/recibos/$value->id/especificacioncomision"
-            ],
-            "Turnar" => [
-              "icon" => "fas fa-circle",
-              "onclick" => "turnar($value->id)"
-            ],
-            "Eliminar" => [
-              "icon" => "fas fa-circle",
-              "onclick" => "eliminar($value->id)"
-            ],
-          ];
+          $recibo_existe = Recibos::where([
+            ['activo',1],
+            ['id',$value->id]
+          ])->first();
+
+          if ($recibo_existe->recibo_complentario == 0) {
+            $acciones = [
+               "Editar" => [
+                 "icon" => "edit blue",
+                 "href" => "/recibos/$value->id/edit"
+               ],
+
+              // "Ver" => [
+              //   "icon" => "fas fa-circle",
+              //   "href" => "/recibos/$value->id/show"
+              // ],
+              "Finiquitar Provisional" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "finiquitarP($value->id)"
+              ],
+              "Finiquitar" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "finiquitar($value->id)"
+              ],
+              "Cancelar" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "baja($value->id)"
+              ],
+              "Comprobaciones" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/comprobantes"
+              ],
+              "Imprimir Recibo" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/imprimir"
+              ],
+              "Oficio de Comisión" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/oficio"
+              ],
+              "Especificación de Comisión" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/especificacioncomision"
+              ],
+              "Turnar" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "turnar($value->id)"
+              ],
+              "Eliminar" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "eliminar($value->id)"
+              ],
+            ];
+          }else{
+            $acciones = [
+               "Editar" => [
+                 "icon" => "edit blue",
+                 "href" => "/recibos/$value->id/edit"
+               ],
+
+              // "Ver" => [
+              //   "icon" => "fas fa-circle",
+              //   "href" => "/recibos/$value->id/show"
+              // ],
+              "Finiquitar Provisional" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "finiquitarP($value->id)"
+              ],
+              "Finiquitar" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "finiquitar($value->id)"
+              ],
+              "Cancelar" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "baja($value->id)"
+              ],
+              "Recibo Complementario" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/recibo"
+              ],
+              "Comprobaciones" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/comprobantes"
+              ],
+              "Imprimir Recibo" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/imprimir"
+              ],
+              "Oficio de Comisión" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/oficio"
+              ],
+              "Especificación de Comisión" => [
+                "icon" => "fas fa-circle",
+                "href" => "/recibos/$value->id/especificacioncomision"
+              ],
+              "Turnar" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "turnar($value->id)"
+              ],
+              "Eliminar" => [
+                "icon" => "fas fa-circle",
+                "onclick" => "eliminar($value->id)"
+              ],
+            ];
+          }
+
+
+
         }elseif(Auth::user()->tipo_usuario == 3){
           $acciones = [
              // "Editar" => [
@@ -1480,7 +1741,7 @@ class RecibosController extends Controller
 
             "Ver" => [
               "icon" => "fas fa-circle",
-              "href" => "/recibos/$value->id/show"
+              "href" => "/recibos/$value->id/recibo"
             ],
             "Autorizar" => [
               "icon" => "fas fa-circle",

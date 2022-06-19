@@ -285,9 +285,9 @@
                               <tr id="filas_{{$key}}'">
                                 <td><input type="hidden" id="figura_nueva" value="{{$lugar->id}}"/>{{ $lugar->obteneLocalidad->localidad }} - {{ $lugar->obteneLocalidad->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad->obtenePais->nombre }}</td>
                                 <td>{{ $lugar->obteneLocalidad2->localidad }} - {{ $lugar->obteneLocalidad2->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad2->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad2->obtenePais->nombre }}</td>
-                                <td><input type="text" class="form-control" id="dias_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')" value="{{ $lugar->dias }}" disabled></td>
+                                <td><input type="text" class="form-control" id="dias_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')" value="{{ $lugar->dias }}" ></td>
                                 <td>{{ $lugar->obteneZona->nombre }}</td>
-                                <td><input type="text" class="form-control" id="kilometraje_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')" value="{{ $lugar->kilometros }}" disabled></td>
+                                <td><input type="text" class="form-control" id="kilometraje_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')" value="{{ $lugar->kilometros }}" ></td>
                                 <td>
                                   <div class="form-group">
                                       <div class="checkbox-list">
@@ -348,8 +348,13 @@
 
                       <div class="col-md-8">
                           <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Programa: </label>
-                          <select class="form-control" id="programalugar" disabled onchange="verBtn()">
-                            <option value="0">Selecciona</option>
+                          <select class="form-control" id="programalugar" @isset($lugares) @else disabled @endisset onchange="verBtn()">
+
+                             @isset($lugares2)
+                             <option value="{{ $lugares2->cve_programa }}">{{ $lugares2->obtenePrograma->nombre }}</option>
+                             @else
+                             <option value="0">Selecciona</option>
+                             @endisset
                             @foreach($programa as $pro)
                             <option value="{{ $pro->id }}">{{ $pro->nombre }}</option>
                             @endforeach
@@ -1465,6 +1470,58 @@ var arrayLugares = [];
 $('#total_transporte_vehiculof').val({{$transporte->total_transporte}} );
 @endisset
 
+@isset($lugares2)
+var total = {{ $lugares2->total_recibido }};
+  $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total+'" id="total_extraer" disabled>');
+@endisset
+
+@isset($lugares)
+var suma_dias2 = 0;
+var suma_kilometraje2 = 0;
+
+var suma_gasolina2 = 0;
+var suma_hospedaje2 = 0;
+
+var suma_kilometraje2 = 0;
+
+var suma_desayuno2 = 0;
+var suma_comida2 = 0;
+var suma_cena2 = 0;
+
+var total_alimentos2 = 0;
+
+
+
+var arraysito ={!!  json_encode($lugares) !!};
+
+arraysito.forEach (function(x){
+  suma_dias2 += parseInt(x.dias);
+  suma_kilometraje2 += parseInt(x.kilometros);
+
+  suma_gasolina2 += parseFloat(x.combustible);
+  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+  suma_desayuno2 += parseFloat(x.desayuno);
+  suma_comida2 += parseFloat(x.comida);
+  suma_cena2 += parseFloat(x.cena);
+
+  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+});
+
+
+
+$('#total_dias').html('<p>'+suma_dias2+'</p>');
+$('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+$('#total_gasolina').html('<p>$'+suma_gasolina2+'</p>');
+$('#total_hospedaje').html('<p>$'+suma_hospedaje2+'</p>');
+$('#total_comidas').html('<p>$'+total_alimentos2+'</p>');
+
+@endisset
+
+
+
+
 function  sumarKM(){
   var kilometraje_interno = $('#kilometrorecorrido').val();
 
@@ -1547,11 +1604,10 @@ function guardar(){
 
   @isset($recibos)
   var id = {{ $recibos->id }};
-
   @else
-
   var id = 0;
   @endisset
+
   @isset($firmantes)
   var id_firmante = {{ $firmantes->id }};
   @else
@@ -1561,8 +1617,13 @@ function guardar(){
   @isset($pagos)
   var id_pagos = {{ $pagos->id }};
   @else
-
   var id_pagos = 0;
+  @endisset
+
+  @isset($transporte)
+  var id_transporte = {{ $transporte->id }};
+  @else
+  var id_transporte = 0;
   @endisset
 
   var n_empleado = $('#n_empleado').val();
@@ -1673,6 +1734,7 @@ function guardar(){
              Autobus:Autobus,
              Peaje:Peaje,
              Recorrido:Recorrido,
+             id_transporte:id_transporte,
            },
            // data: formData,
            // processData: false,
