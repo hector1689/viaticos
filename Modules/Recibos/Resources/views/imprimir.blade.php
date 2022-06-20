@@ -102,7 +102,7 @@
       <tbody>
         <tr>
           <td>
-            <img src="https://staticstam.tamaulipas.gob.mx:9000/cdn/logotamgris.png" style=" height: 55px;">
+            <img src="https://mesadeayuda.tamaulipas.gob.mx/images/tam.png" style=" height: 55px;">
           </td>
           <td>
             <span style="width: 25px; color: rgba(0,0,0,0);">.</span>
@@ -283,9 +283,9 @@
             <?php
             $suma = 0;
             foreach ($lugares as $key => $value) {
-              echo $suma+=$value['hospedaje'];
+               $suma+=$value['hospedaje'];
             }
-
+              echo $suma;
              ?>
           </td>
           <td style="width: 50%">Subtotal</td>
@@ -300,9 +300,9 @@
               $sumac+=$value['comida'];
               $sumace+=$value['cena'];
 
-              echo $sumatotal = $sumad + $sumac + $sumace;
+              $sumatotal = $sumad + $sumac + $sumace;
             }
-
+              echo $sumatotal;
              ?>
           </td>
           <td style="width: 50%">TOtal</td>
@@ -342,11 +342,10 @@
     <br>
     <table style="width: 100%;" class="borderTop">
       <tbody>
-
         <tr>
-          <td >n° vh.ofc.: @if(isset($Vehiculoficial)) {{ $Vehiculoficial->numero_oficial }} @endif</td>
-          <td >atobus: &nbsp;</td>
-          <td >particular: &nbsp;</td>
+          <td >n° vh.ofc.: @if(isset($Vehiculoficial)) x @endif</td>
+          <td >autobus: @if(isset($autobus)) x @endif</td>
+          <td >particular: @if(isset($vehiculo)) x @endif</td>
           <td >marca: @if(isset($Vehiculoficial)) {{ $Vehiculoficial->marca }} @endif @if(isset($vehiculo)) {{ $vehiculo->marca }} @endif</td>
           <td >modelo: @if(isset($Vehiculoficial)) {{ $Vehiculoficial->modelo }} @endif @if(isset($vehiculo)) {{ $vehiculo->modelo }} @endif</td>
         </tr>
@@ -395,8 +394,8 @@
         </tr>
         <tr>
           <td style="width: 30%">kms recorridos interno: {{ $transporte->total_km_recorrido }}</td>
-          <td style="width: 30%">precio combustible: 16.81</td>
-          <td style="width: 40%" colspan="3">peaje/taxi/autobus: 0.00</td>
+          <td style="width: 30%">precio combustible: @if(isset($Vehiculoficial)) {{ $Vehiculoficial->gasolina_vh_oficial }} @endif  @if(isset($vehiculo)) {{ $vehiculo->gasolina_vh_oficial }} @endif</td>
+          <td style="width: 40%" colspan="3">peaje/taxi/autobus:  @if(isset($peaje)) {{ $peaje->costo }} @endif / @if(isset($taxi)) {{ $taxi->tarifa_evento }} @endif / @if(isset($autobus)) {{ $autobus->costo_total }} @endif </td>
 
         </tr>
 
@@ -408,7 +407,7 @@
 
         </tr>
         <tr>
-          <td style="width: 40%" colspan="4">el combustible se proporciona en vales: 1281</td>
+          <td style="width: 40%" colspan="4"> @if(isset($transporte)) @if($transporte->valeCombustible == 1) el combustible se proporciona en vales @else  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @endif @endif</td>
 
         </tr>
         <tr>
@@ -464,7 +463,7 @@
     </table>
     <br>
     <br>
-    <div style="height:202px;"></div>
+    <div style="height:200px;"></div>
     <!-- <div style="width:800px;">
       <div style="width:300px; float:left;text-align:center;">
 

@@ -385,7 +385,7 @@
                 <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                   <div class="row">
                     <div class="col-md-2">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Kilometro recorrido interno: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Recorrido interno: </label>
                         <input type="text" class="form-control" id="kilometrorecorrido" value="@isset($transporte) {{ $transporte->kilometro_interno }} @endisset" onchange="sumarKM()"  placeholder="Kilometro recorrido interno" onkeypress='return validaNumericos(event)'>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
@@ -460,17 +460,17 @@
                                       <label for="">Viaje <span style="color:red;">*</span></label>
                                       <div class="radio-inline" id="radiopage">
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='1' onclick="redondo_vhof()" @isset($vhoficial) @if($vhoficial->tipo_transporte == 1) checked @else @endif @endisset>
+                                              <input type="radio" name="vhof" value='1' onclick="redondo_vhof()" >
                                               <span></span>
                                               Redondo
                                           </label>
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='2' onclick="redondo_vhof()" @isset($vhoficial) @if($vhoficial->tipo_transporte == 2) checked @else @endif @endisset>
+                                              <input type="radio" name="vhof" value='2' onclick="redondo_vhof()" >
                                               <span></span>
                                               Solo Ida
                                           </label>
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='3' onclick="redondo_vhof()" @isset($vhoficial) @if($vhoficial->tipo_transporte == 3) checked @else @endif @endisset>
+                                              <input type="radio" name="vhof" value='3' onclick="redondo_vhof()" >
                                               <span></span>
                                               Solo regreso
                                           </label>
@@ -490,35 +490,35 @@
                                   <div class="row">
                                     <div class="col-md-2">
                                         <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° Oficial: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="num_oficial" value="@isset($vhoficial) {{ $vhoficial->numero_oficial }} @endisset"  placeholder="N° Oficial" disabled required>
+                                        <input type="text" class="form-control" id="num_oficial"   placeholder="N° Oficial" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Nombre
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Marca: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="marca" value="@isset($vhoficial) {{ $vhoficial->marca }} @endisset"  placeholder="Marca" disabled required>
+                                        <input type="text" class="form-control" id="marca"   placeholder="Marca" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Paterno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Modelo: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="modelo" value="@isset($vhoficial) {{ $vhoficial->modelo }} @endisset"  placeholder="Modelo" disabled required>
+                                        <input type="text" class="form-control" id="modelo"  placeholder="Modelo" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Tipo: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="tipo"  value="@isset($vhoficial) {{ $vhoficial->tipo }} @endisset" placeholder="Tipo" disabled required>
+                                        <input type="text" class="form-control" id="tipo"   placeholder="Tipo" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Placas: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="placas" value="@isset($vhoficial) {{ $vhoficial->placas }} @endisset"  placeholder="Placas" disabled required>
+                                        <input type="text" class="form-control" id="placas" placeholder="Placas" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
@@ -529,7 +529,7 @@
                                   <div class="row">
                                     <div class="col-md-4">
                                         <label for="inputPassword4"  style="font-size:12px;"class="form-label">Cilindraje: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="cilindraje"  value="@isset($vhoficial) {{ $vhoficial->cilindraje }} @endisset" placeholder="Cilindraje" disabled required>
+                                        <input type="text" class="form-control" id="cilindraje"   placeholder="Cilindraje" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Nombre
                                         </div>
@@ -539,7 +539,7 @@
                                         <div class="radio-inline">
                                           @foreach($rendimiento as $rendi)
                                             <label class="radio">
-                                                <input type="radio" name="page" value="{{ $rendi->id }}" @isset($vhoficial)  @if($vhoficial->cuota == $rendi->kilometros_litros) checked  @endif  @endisset >
+                                                <input type="radio" name="page" value="{{ $rendi->id }}" >
                                                 <span></span>
                                                 {{ $rendi->tarifa }}
                                             </label>
@@ -549,11 +549,9 @@
                                     <div class="col-md-4">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Gasolina: <span style="color:red;">*</span></label>
                                         <select class="form-control" name="gasolina" id="gasolina" onchange="traerGasolina()"  required>
-                                          @isset($vhoficial)
-                                          <option value="{{ $vhoficial->gasolina }}">{{ $vhoficial->obteneGasolinas->obteneGasolina->nombre}}</option>
-                                          @else
+
                                           <option value="0">Seleccionar</option>
-                                          @endisset
+
 
                                           @foreach($gasolina as $gaso)
                                           <option value="{{ $gaso->id }}">{{ $gaso->obteneGasolina->nombre }}</option>
@@ -570,14 +568,14 @@
                                   <div class="row">
                                     <div class="col-md-6">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Mes $ Gasolina: </label>
-                                        <input type="text" class="form-control" id="mes_gasolina"  value="@isset($vhoficial) {{ $vhoficial->mes_gasolina }} @endisset" placeholder="Mes precio Gasolina" disabled required>
+                                        <input type="text" class="form-control" id="mes_gasolina"   placeholder="Mes precio Gasolina" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">$ Gasolina vh. Oficial: </label>
-                                        <input type="text" class="form-control" id="gasolina_vehiculo" value="@isset($vhoficial) {{ $vhoficial->gasolina_vh_oficial }} @endisset"  placeholder="$ Gasolina vh. Oficial" disabled required>
+                                        <input type="text" class="form-control" id="gasolina_vehiculo"   placeholder="$ Gasolina vh. Oficial" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
@@ -593,17 +591,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='1' onclick="redondo_vh2()" @isset($Vehiculo) @if($Vehiculo->tipo_viaje == 1) checked @else @endif @endisset>
+                                            <input type="radio" name="vh2" value='1' onclick="redondo_vh2()" >
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='2' onclick="redondo_vh2()" @isset($Vehiculo) @if($Vehiculo->tipo_viaje == 2) checked @else @endif @endisset>
+                                            <input type="radio" name="vh2" value='2' onclick="redondo_vh2()" >
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='3' onclick="redondo_vh2()" @isset($Vehiculo) @if($Vehiculo->tipo_viaje == 3) checked @else @endif @endisset>
+                                            <input type="radio" name="vh2" value='3' onclick="redondo_vh2()" >
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -615,28 +613,28 @@
 
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Marca: </label>
-                                      <input type="text" class="form-control" id="marca2" value="@isset($Vehiculo) {{ $Vehiculo->marca }} @endisset"  placeholder="Marca" required>
+                                      <input type="text" class="form-control" id="marca2"   placeholder="Marca" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Paterno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Modelo: </label>
-                                      <input type="text" class="form-control" id="modelo2" value="@isset($Vehiculo) {{ $Vehiculo->modelo }} @endisset"  placeholder="Modelo" required>
+                                      <input type="text" class="form-control" id="modelo2"   placeholder="Modelo" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Tipo: </label>
-                                      <input type="text" class="form-control" id="tipo2" value="@isset($Vehiculo) {{ $Vehiculo->tipo }} @endisset"  placeholder="Tipo" required>
+                                      <input type="text" class="form-control" id="tipo2"   placeholder="Tipo" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Placas: </label>
-                                      <input type="text" class="form-control" id="placas2" value="@isset($Vehiculo) {{ $Vehiculo->placas }} @endisset"  placeholder="Placas" required>
+                                      <input type="text" class="form-control" id="placas2"  placeholder="Placas" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
@@ -647,7 +645,7 @@
                                 <div class="row">
                                   <div class="col-md-4">
                                       <label for="inputPassword4"  style="font-size:12px;"class="form-label">Cilindraje: </label>
-                                      <input type="text" class="form-control" id="cilindraje2" value="@isset($Vehiculo) {{ $Vehiculo->cilindraje }} @endisset"  placeholder="Cilindraje" required>
+                                      <input type="text" class="form-control" id="cilindraje2"   placeholder="Cilindraje" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Nombre
                                       </div>
@@ -657,7 +655,7 @@
                                       <div class="radio-inline">
                                         @foreach($rendimiento as $rendi)
                                           <label class="radio">
-                                              <input type="radio" name="page2" value="{{ $rendi->id }}"  @isset($Vehiculo)  @if($Vehiculo->cuota == $rendi->kilometros_litros) checked  @endif  @endisset >
+                                              <input type="radio" name="page2" value="{{ $rendi->id }}"   >
                                               <span></span>
                                               {{ $rendi->tarifa }}
                                           </label>
@@ -667,11 +665,9 @@
                                   <div class="col-md-4">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Gasolina: </label>
                                       <select class="form-control" name="gasolina" id="gasolina2" onchange="traerGasolina2()"  required>
-                                        @isset($Vehiculo)
-                                        <option value="{{ $Vehiculo->gasolina }}">{{ $Vehiculo->obteneGasolinas2->obteneGasolina->nombre}}</option>
-                                        @else
+
                                         <option value="0">Seleccionar</option>
-                                        @endisset
+
                                         @foreach($gasolina as $gaso)
                                         <option value="{{ $gaso->id }}">{{ $gaso->obteneGasolina->nombre }}</option>
                                         @endforeach
@@ -687,14 +683,14 @@
                                 <div class="row">
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Mes $ Gasolina: </label>
-                                      <input type="text" class="form-control" id="mes_gasolina2" value="@isset($Vehiculo) {{ $Vehiculo->mes_gasolina }} @endisset"  placeholder="Mes precio Gasolina" disabled required>
+                                      <input type="text" class="form-control" id="mes_gasolina2"   placeholder="Mes precio Gasolina" disabled required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">$ Gasolina vh. Oficial: </label>
-                                      <input type="text" class="form-control" id="gasolina_vehiculo2" value="@isset($Vehiculo) {{ $Vehiculo->gasolina_vh_oficial }} @endisset"  placeholder="$ Gasolina vh. Oficial" disabled required>
+                                      <input type="text" class="form-control" id="gasolina_vehiculo2"  placeholder="$ Gasolina vh. Oficial" disabled required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
@@ -711,17 +707,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="1" @isset($autobus) @if($autobus->tipo_viaje == 1) checked @endif @endisset onclick="redondo_tipoViajeAutobus()">
+                                            <input type="radio" name="tipoViajeAutobus" value="1">
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="2" @isset($autobus) @if($autobus->tipo_viaje == 2) checked @endif @endisset onclick="redondo_tipoViajeAutobus()">
+                                            <input type="radio" name="tipoViajeAutobus" value="2" >
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="3" @isset($autobus) @if($autobus->tipo_viaje == 3) checked @endif @endisset onclick="redondo_tipoViajeAutobus()">
+                                            <input type="radio" name="tipoViajeAutobus" value="3" >
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -734,7 +730,7 @@
 
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Costo Total Transporte de Autobus: </label>
-                                      <input type="text" class="form-control" id="costoAutobus" value=" @isset($autobus) {{ $autobus->costo_total }} @endisset"  placeholder="Costo Total Transporte de Autobus"  required>
+                                      <input type="text" class="form-control" id="costoAutobus"   placeholder="Costo Total Transporte de Autobus"  required>
                                   </div>
 
                                 </div>
@@ -766,16 +762,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- <tr>
-                                                <td>Auto</td>
-                                                <td>2500</td>
-                                                <td>
-                                                  <span class="label label-inline label-light-danger font-weight-bold">
-                                                      <i class="far fa-trash-alt"></i>
-                                                  </span>
-                                                </td>
-                                            </tr> -->
-
+                                          @isset($peaje_t_tabla)
+                                          @foreach($peaje_t_tabla as $key => $peajet)
+                                            <tr id="filapeaje_{{$key}}">
+                                                <td>{{ $peajet->nombre }}</td>
+                                                <td>{{ $peajet->costo }}</td>
+                                                <td><div class="btn btn-danger borrar_figura"  onclick="eliminarpeajeTabla({{$peajet->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+                                            </tr>
+                                          @endforeach
+                                          @endisset
                                         </tbody>
                                         <!-- <tfoot>
                                           <td>total peaje</td>
@@ -1170,8 +1165,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-
+                              @isset($taxi_t_tabla)
+                                @foreach($taxi_t_tabla as $key => $tabtx)
+                                <tr id="figurataxi{{$key}}">
+                                  <td>{{  $tabtx->name_calsificacion }}</td>
+                                  <td>{{  $tabtx->name_kilometraje_origen }}</td>
+                                  <td>{{  $tabtx->name_kilometraje_destino }}</td>
+                                  <td>{{  $tabtx->dia_adicional }}</td>
+                                  <td><div class="btn btn-danger borrar_figura"  onclick="eliminartaxiTabla({{$tabtx->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+                                </tr>
+                                @endforeach
+                              @endisset
                             </tbody>
                           </table>
                       </div>
@@ -1211,7 +1215,31 @@
                                 </tr>
                             </thead>
                             <tbody>
+                              @isset($avion_t_tabla)
+                                @foreach($avion_t_tabla as $key => $tabavion)
+                                  <tr id="figuraavion{{ $key }}">
+                                    <td>Avion</td>
+                                    <td>
+                                      <?php
 
+                                        if ($tabavion->tipo_viaje == 1) {
+                                          echo 'Redondo';
+                                        }else if($tabavion->tipo_viaje == 2){
+                                          echo 'Ida';
+
+                                        }else if($tabavion->tipo_viaje == 3){
+                                          echo 'Regreso';
+
+                                        }
+
+                                       ?>
+                                    </td>
+                                    <td>{{ $tabavion->costo_total }}</td>
+                                    <td><div class="btn btn-danger borrar_figura"  onclick="eliminaravionTabla({{$tabavion->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+
+                                  </tr>
+                                @endforeach
+                              @endisset
                             </tbody>
                           </table>
                       </div>
@@ -1238,7 +1266,7 @@
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Programa: </label>
                         <select class="form-control" id="programavehiculof">
                           @isset($transporte)
-                            <option value="{{ $transporte->programavehiculof }}">{{ $transporte->obtenePrograma->nombre}}</option>
+                            <option value="{{ $transporte->programavehiculo }}">{{ $transporte->obtenePrograma->nombre}}</option>
                           @else
                             <option value="">Selecciona</option>
                           @endisset
@@ -1428,6 +1456,7 @@
 </div>
 <script src="/admin/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js?v=7.0.6"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.es.min.js" charset="UTF-8"></script>
+
 <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 <script type="text/javascript">
 var selectedCouta1 = [];
@@ -1556,6 +1585,23 @@ function eliminarvehiculooficialTabla(id,id_key){
     $('#figuraVHO_'+id_key).remove();
 }
 
+function eliminarpeajeTabla(id,id_key){
+  $.ajax({
+
+         type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+         url:"/recibos/borrarPeaje", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+         },
+         data:{
+             id:id,
+           }
+    });
+
+    $('#filapeaje_'+id_key).remove();
+}
+
  function eliminarautoTabla(id,id_key){
   $.ajax({
 
@@ -1572,6 +1618,42 @@ function eliminarvehiculooficialTabla(id,id_key){
 
     $('#figuraAuto_'+id_key).remove();
 }
+
+function eliminaravionTabla(id,id_key){
+  $.ajax({
+
+         type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+         url:"/recibos/borrarAvion", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+         },
+         data:{
+             id:id,
+           }
+    });
+
+    $('#figuraavion'+id_key).remove();
+}
+
+function eliminartaxiTabla(id,id_key){
+  $.ajax({
+
+         type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+         url:"/recibos/borrarTaxi", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+         },
+         data:{
+             id:id,
+           }
+    });
+
+    $('#figurataxi'+id_key).remove();
+}
+
+
 
 function eliminarvehiculoTabla(id,id_key){
   $.ajax({
@@ -2161,6 +2243,7 @@ $('#tabla6').hide();
       language: 'es',
       format: 'dd/mm/yyyy',
   });
+   $.datetimepicker.setLocale('es');
 });
 
 
@@ -2276,7 +2359,7 @@ if (objectLugar.zona == 1) {
   zonita = 'Frontera y Entidades Federativas del Extranjero';
 }
 
-  var tr = '<tr id="filas'+contador_lugares+'">'+
+  var tr = '<tr id="filas_lugar'+contador_lugares+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
   '<td>'+objectLugar.destino_name+'</td>'+
   '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')"></td>'+
@@ -2317,7 +2400,7 @@ if (objectLugar.zona == 1) {
          '</label>'+
      '</div>'+
   '</td>'+
-  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onchange="lugarEstadia('+contador_lugares+')" onclick="eliminarvehiculooficial('+contador_lugares+')"  ><i  class="fas fa-trash"></i></div></td>'
+  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura"  onclick="eliminarlugar('+contador_lugares+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
   $("#tablaLugares").append(tr);
 
@@ -2338,6 +2421,11 @@ if (objectLugar.zona == 1) {
 
   contador_lugares ++;
 }
+
+
+
+
+
 
 var objectDiasLugares = {};
 var arrayDiasLugares = [];
@@ -2419,13 +2507,13 @@ function gasolinaLugar(id){
 
             arrayGasolinaLugares.push(objectGasolinaLugares)
 
+        }else {
 
-            //
-            // ObjetoLugares = {
-            //   gasolina:$(this).val(),
-            // }
-            // $.extend( ObjetoLugares, ObjetoLugares );
-
+          arrayGasolinaLugares.forEach(function(x, index, object) {
+              if(x.id === id){
+                object.splice(index, 1);
+              }
+          });
 
         }
     });
@@ -2434,6 +2522,7 @@ function gasolinaLugar(id){
 
 function hospedajeLugar(id){
     $(":checkbox[name=hospedaje_"+id+"]").each(function(){
+
         if (this.checked) {
             /////////////////////////////////////////////////////
             arrayTablaLugares.push({
@@ -2451,6 +2540,14 @@ function hospedajeLugar(id){
             //   hospedaje:$(this).val(),
             // }
             // arrayLugares.push(ObjetoLugares);
+
+        }else {
+
+          arrayHospedajeLugares.forEach(function(x, index, object) {
+              if(x.id === id){
+                object.splice(index, 1);
+              }
+          });
 
         }
     });
@@ -2471,11 +2568,13 @@ function desayunoLugar(id){
           }
 
           arrayDesayunoLugares.push(objectDesayunoLugares)
+      }else {
 
-          // ObjetoLugares = {
-          //   desayuno:$(this).val(),
-          // }
-          // arrayLugares.push(ObjetoLugares);
+        arrayDesayunoLugares.forEach(function(x, index, object) {
+            if(x.id === id){
+              object.splice(index, 1);
+            }
+        });
 
       }
   });
@@ -2494,11 +2593,13 @@ function comidaLugar(id){
           }
 
           arrayComidaLugares.push(objectComidaLugares)
+      }else {
 
-          // ObjetoLugares = {
-          //   comida:$(this).val(),
-          // }
-          // arrayLugares.push(ObjetoLugares);
+        arrayComidaLugares.forEach(function(x, index, object) {
+            if(x.id === id){
+              object.splice(index, 1);
+            }
+        });
 
       }
   });
@@ -2517,16 +2618,101 @@ function cenaLugar(id){
           }
 
           arrayCenaLugares.push(objectCenaLugares)
+      }else {
 
-          // ObjetoLugares = {
-          //   cena:$(this).val(),
-          // }
-          //
-          //
-          // arrayLugares.push(ObjetoLugares);
+        arrayCenaLugares.forEach(function(x, index, object) {
+            if(x.id === id){
+              object.splice(index, 1);
+            }
+        });
 
       }
   });
+}
+
+
+function eliminarlugar(id){
+  //console.log(id)
+  arrayLugar.splice(id,1);
+
+
+
+  arrayDiasLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayKilometrajeLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayGasolinaLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayHospedajeLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayDesayunoLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayComidaLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayCenaLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+
+
+
+  $('#filas_lugar'+id).remove();
+
+  // console.log(arrayDiasLugares)
+  // console.log(arrayKilometrajeLugares)
+  // console.log(arrayGasolinaLugares)
+  // console.log(arrayHospedajeLugares)
+  // console.log(arrayDesayunoLugares)
+  // console.log(arrayComidaLugares)
+  // console.log(arrayCenaLugares)
+  //
+  //
+  // console.log(arrayLugar == 0,id,arrayLugar,arrayTablaLugares)
+
+  if (arrayLugar == 0) {
+    $('#footLugar').hide();
+    // $('#total_recibido_lugar').show();
+
+    $('#total_dias').html('<p>0</p>');
+    $('#total_kilometros').html('<p>0</p>');
+    $('#total_gasolina').html('<p>$0</p>');
+    $('#total_hospedaje').html('<p>$0</p>');
+    $('#total_comidas').html('<p>$0</p>');
+
+
+    //$('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
+    $('#total_recibido_lugar').html('<input type="text" class="form-control" value="0" id="total_extraer" disabled>');
+
+  }
+
+
+
 }
 
 var tablalugar = [];

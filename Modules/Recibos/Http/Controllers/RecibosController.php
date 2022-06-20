@@ -351,7 +351,7 @@ class RecibosController extends Controller
           }
         }
 
-
+        //dd($request->Peaje);
         if (isset($request->Peaje)) {
           foreach ($request->Peaje as $key => $value) {
             $peaje = new PeajeTransporte();
@@ -367,13 +367,20 @@ class RecibosController extends Controller
         if (isset($request->Recorrido)) {
           foreach ($request->Recorrido as $key => $value) {
 
-            dd($value);
+            //dd($value);
             $taxi = new TaxiTransporte();
-            $taxi->cve_peaje = $transporte->id;
-
-            $taxi->cve_t_transporte = $value['tipotransporte'];
-            $taxi->nombre = $value['peaje'];
-            $taxi->costo = $value['costo'];
+            $taxi->cve_t_transporte = $transporte->id;
+            $taxi->clasificacion_recorrido = $value['region'];
+            $taxi->name_calsificacion = $value['region_name'];
+            $taxi->cve_kilometraje_origen = $value['recorrido1'];
+            $taxi->name_kilometraje_origen = $value['name_recorrido'];
+            $taxi->cve_kilometraje_destino = $value['recorrido2'];
+            $taxi->name_kilometraje_destino = $value['name_recorrido2'];
+            $taxi->dia_adicional = $value['dia_adicional'];
+            $taxi->tarifa_evento = $value['tarifa_evento'];
+            $taxi->terifa_evento2 = $value['tarifa_evento2'];
+            $taxi->tarifa_adicional = $value['tarifa_adicional'];
+            $taxi->tarifa_adicional2 = $value['tarifa_adicional2'];
             $taxi->cve_usuario = Auth::user()->id;
             $taxi->save();
           }
@@ -498,6 +505,23 @@ class RecibosController extends Controller
                               ['activo',1],
                               ['cve_t_viatico',$id],
                             ])->first();
+        $data['taxi_t'] = TaxiTransporte::where([
+                              ['activo',1],
+                              ['cve_t_transporte',$data['transporte']->id],
+                            ])->first();
+        $data['taxi_t_tabla'] = TaxiTransporte::where([
+                              ['activo',1],
+                              ['cve_t_transporte',$data['transporte']->id],
+                            ])->get();
+        $data['peaje_t_tabla'] = PeajeTransporte::where([
+                              ['activo',1],
+                              ['cve_t_transporte',$data['transporte']->id],
+                            ])->get();
+        $data['avion_t_tabla'] = Avion::where([
+                              ['activo',1],
+                              ['cve_t_transporte',$data['transporte']->id],
+                            ])->get();
+                          //dd($data['peaje_t_tabla']);
         return view('recibos::create')->with($data);
     }
 
@@ -1301,7 +1325,29 @@ class RecibosController extends Controller
       return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
     }
 
+    public function borrarAvion(Request $request){
+      $avion = Avion::find($request->id);
+      $avion->activo = 0;
+      $avion->save();
 
+      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+    }
+
+    public function borrarTaxi(Request $request){
+      $taxi = TaxiTransporte::find($request->id);
+      $taxi->activo = 0;
+      $taxi->save();
+
+      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+    }
+
+    public function borrarPeaje(Request $request){
+      $peaje = PeajeTransporte::find($request->id);
+      $peaje->activo = 0;
+      $peaje->save();
+
+      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+    }
 
     /**
      * Remove the specified resource from storage.

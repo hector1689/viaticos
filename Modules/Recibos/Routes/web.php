@@ -51,6 +51,10 @@ Route::prefix('recibos')->group(function() {
   Route::post('/borrarVHf', 'RecibosController@borrarVHf');
   Route::post('/borrarVH', 'RecibosController@borrarVH');
   Route::post('/borrarAutob', 'RecibosController@borrarAutob');
+  Route::post('/borrarAvion', 'RecibosController@borrarAvion');
+  Route::post('/borrarTaxi', 'RecibosController@borrarTaxi');
+  Route::post('/borrarPeaje', 'RecibosController@borrarPeaje');
+
 
 
 
