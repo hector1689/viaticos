@@ -282,17 +282,17 @@
                           <tbody>
                             @isset($lugares)
                               @foreach($lugares as $key => $lugar)
-                              <tr id="filas_{{$key}}'">
-                                <td><input type="hidden" id="figura_nueva" value="{{$lugar->id}}"/>{{ $lugar->obteneLocalidad->localidad }} - {{ $lugar->obteneLocalidad->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad->obtenePais->nombre }}</td>
+                              <tr id="orden_luagres{{$key}}">
+                                <td>{{ $lugar->obteneLocalidad->localidad }} - {{ $lugar->obteneLocalidad->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad->obtenePais->nombre }}</td>
                                 <td>{{ $lugar->obteneLocalidad2->localidad }} - {{ $lugar->obteneLocalidad2->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad2->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad2->obtenePais->nombre }}</td>
-                                <td><input type="text" class="form-control" id="dias_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')" value="{{ $lugar->dias }}" ></td>
+                                <td><input type="text" class="form-control" id="dias2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->dias }}" ></td>
                                 <td>{{ $lugar->obteneZona->nombre }}</td>
-                                <td><input type="text" class="form-control" id="kilometraje_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')" value="{{ $lugar->kilometros }}" ></td>
+                                <td><input type="text" class="form-control" id="kilometraje2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->kilometros }}" ></td>
                                 <td>
                                   <div class="form-group">
                                       <div class="checkbox-list">
                                           <label class="checkbox">
-                                              <input type="checkbox" name="gasolina_{{$key}}" value="{{ $lugar->combustible }}" @if($lugar->combustible != 0) checked @endif   >
+                                              <input type="checkbox" name="gasolina2_{{$key}}" value="{{ $lugar->combustible }}" onclick="gasolinaLugar2({{$lugar->id}},{{$key}})"  @if($lugar->combustible != 0) checked @endif   >
                                               <span></span>
                                           </label>
                                       </div>
@@ -302,7 +302,7 @@
                                   <div class="form-group">
                                       <div class="checkbox-list">
                                           <label class="checkbox">
-                                              <input type="checkbox" name="hospedaje_{{$key}}"  value="{{ $lugar->hospedaje }}" @if($lugar->hospedaje != 0) checked @endif >
+                                              <input type="checkbox" name="hospedaje2_{{$key}}"  value="{{ $lugar->hospedaje }}" onclick="hospedajeLugar2({{$lugar->id}},{{$key}})" @if($lugar->hospedaje != 0) checked @endif >
                                               <span></span>
                                           </label>
                                       </div>
@@ -311,20 +311,20 @@
                                 <td>
                                   <div class="checkbox-inline">
                                        <label class="checkbox">
-                                           <input type="checkbox" name="desayuno_{{$key}}"  value="{{ $lugar->desayuno }}" @if($lugar->desayuno != 0) checked @endif >
+                                           <input type="checkbox" name="desayuno2_{{$key}}"  value="{{ $lugar->desayuno }}"  onclick="desayunoLugar2({{$lugar->id}},{{$key}})" @if($lugar->desayuno != 0) checked @endif >
                                            <span></span>
                                        </label>
                                        <label class="checkbox">
-                                           <input type="checkbox" name="comida_{{$key}}" value="{{ $lugar->comida }}" @if($lugar->comida != 0) checked @endif >
+                                           <input type="checkbox" name="comida2_{{$key}}" value="{{ $lugar->comida }}" onclick="comidaLugar2({{$lugar->id}},{{$key}})"  @if($lugar->comida != 0) checked @endif >
                                            <span></span>
                                        </label>
                                        <label class="checkbox">
-                                           <input type="checkbox" name="cena_{{$key}}" value="{{ $lugar->cena }}" @if($lugar->cena != 0) checked @endif >
+                                           <input type="checkbox" name="cena2_{{$key}}" value="{{ $lugar->cena }}" onclick="cenaLugar2({{$lugar->id}},{{$key}})"  @if($lugar->cena != 0) checked @endif >
                                            <span></span>
                                        </label>
                                    </div>
                                 </td>
-                                <td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="bajaLugar({{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+                                <td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="bajaLugar({{$lugar->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
                                 </tr>
                               @endforeach
                             @endisset
@@ -766,7 +766,7 @@
                                           @foreach($peaje_t_tabla as $key => $peajet)
                                             <tr id="filapeaje_{{$key}}">
                                                 <td>{{ $peajet->nombre }}</td>
-                                                <td>{{ $peajet->costo }}</td>
+                                                <td> {{ number_format($peajet->costo, 2, '.', ',') }}</td>
                                                 <td><div class="btn btn-danger borrar_figura"  onclick="eliminarpeajeTabla({{$peajet->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
                                             </tr>
                                           @endforeach
@@ -919,7 +919,7 @@
                                     <td>{{ $vho->cilindraje }}</td>
                                     <td>{{ $vho->cuota }}</td>
                                     <td>{{ $vho->gasolina_vh_oficial }}</td>
-                                    <td>{{ $vho->total_transporte }}</td>
+                                    <td>{{ number_format($vho->total_transporte, 2, '.', ',') }}</td>
                                     <td><div class="btn btn-danger borrar_figura"  onclick="eliminarvehiculooficialTabla({{$vho->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
                                   </tr>
                                 @endforeach
@@ -1071,7 +1071,7 @@
 
                                        ?>
                                     </td>
-                                    <td>{{$tablaautb->costo_total}}</td>
+                                    <td>{{ number_format($tablaautb->costo_total, 2, '.', ',') }}</td>
                                     <td><div class="btn btn-danger borrar_figura"  onclick="eliminarautoTabla({{$tablaautb->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
                                 </tr>
                                 @endforeach
@@ -1234,7 +1234,7 @@
 
                                        ?>
                                     </td>
-                                    <td>{{ $tabavion->costo_total }}</td>
+                                    <td>{{ number_format($tabavion->costo_total, 2, '.', ',') }}</td>
                                     <td><div class="btn btn-danger borrar_figura"  onclick="eliminaravionTabla({{$tabavion->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
 
                                   </tr>
@@ -1377,7 +1377,7 @@
                     </div>
                     <div class="col-md-6">
                       <label for=""><strong style="color:red">*</strong>POR LA CANTIDAD DE</label>
-                      <input type="text" class="form-control" id="cantidad" onchange="cantidadletra()" placeholder="Escribir Cantidad" value="@isset($pagos) {{ $pagos->cantidad }} @endisset">
+                      <input type="text" class="form-control" id="cantidad" onchange="cantidadletra()" placeholder="Escribir Cantidad" value="@isset($pagos) {{ number_format($pagos->cantidad, 2, '.', ',') }} @endisset">
                     </div>
                   </div>
 
@@ -1501,7 +1501,7 @@ $('#total_transporte_vehiculof').val({{$transporte->total_transporte}} );
 
 @isset($lugares2)
 var total = {{ $lugares2->total_recibido }};
-  $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total+'" id="total_extraer" disabled>');
+  $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total.toFixed(2)+'" id="total_extraer" disabled>');
 @endisset
 
 @isset($lugares)
@@ -1542,9 +1542,9 @@ arraysito.forEach (function(x){
 
 $('#total_dias').html('<p>'+suma_dias2+'</p>');
 $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
-$('#total_gasolina').html('<p>$'+suma_gasolina2+'</p>');
-$('#total_hospedaje').html('<p>$'+suma_hospedaje2+'</p>');
-$('#total_comidas').html('<p>$'+total_alimentos2+'</p>');
+$('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+$('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+$('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
 
 @endisset
 
@@ -1579,6 +1579,9 @@ function eliminarvehiculooficialTabla(id,id_key){
          },
          data:{
              id:id,
+           },success:function(data){
+
+             $('#total_transporte_vehiculof').val(data);
            }
     });
 
@@ -1596,6 +1599,10 @@ function eliminarpeajeTabla(id,id_key){
          },
          data:{
              id:id,
+           },success:function(data){
+             //console.log(data)
+             $('#total_transporte_vehiculof').val(data);
+
            }
     });
 
@@ -1613,6 +1620,10 @@ function eliminarpeajeTabla(id,id_key){
          },
          data:{
              id:id,
+           },success:function(data){
+             console.log(data)
+             $('#total_transporte_vehiculof').val(data);
+
            }
     });
 
@@ -1630,6 +1641,10 @@ function eliminaravionTabla(id,id_key){
          },
          data:{
              id:id,
+           },success:function(data){
+            // console.log(data)
+             $('#total_transporte_vehiculof').val(data);
+
            }
     });
 
@@ -1666,215 +1681,139 @@ function eliminarvehiculoTabla(id,id_key){
          },
          data:{
              id:id,
+           },success:function(data){
+            // console.log(data)
+             $('#total_transporte_vehiculof').val(data);
+
            }
     });
   $('#figuraVH_'+id_key).remove();
 }
 
 
-function guardar(){
-
-
-
-  var VehiculoOficial = arrayVehiculoOficial;
-  var Vehiculo = arrayVehiculo;
-  var Avion = arrayAvion;
-  var Autobus = arrayAutobus;
-  var Peaje = arrayPeaje;
-  var Recorrido = arrayRecorrido;
-
-
-  @isset($recibos)
-  var id = {{ $recibos->id }};
-  @else
-  var id = 0;
-  @endisset
-
-  @isset($firmantes)
-  var id_firmante = {{ $firmantes->id }};
-  @else
-
-  var id_firmante = 0;
-  @endisset
-  @isset($pagos)
-  var id_pagos = {{ $pagos->id }};
-  @else
-  var id_pagos = 0;
-  @endisset
-
-  @isset($transporte)
-  var id_transporte = {{ $transporte->id }};
-  @else
-  var id_transporte = 0;
-  @endisset
-
-  var n_empleado = $('#n_empleado').val();
-  var nombre_empleado = $('#nombre_empleado').val();
-  var area_id = $('#area_id').val();
-
-
-  var rfc = $('#rfc').val();
-  var nivel = $('#nivel').val();
-  var clave_departamental = $('#clave_departamental').val();
-  var dependencia = $('#dependencia').val();
-  var direccion = $('#direccion').val();
-  var inicia = $('input[name=fecha_inicial]').val();
-  var final = $('input[name=fecha_final]').val();
-  var departamento = $('#departamento').val();
-  var lugar_adscripcion = $('#lugar_adscripcion').val();
-  var n_dias = $('#n_dias').val();
-  var n_dias_ina = $('#n_dias_ina').val();
-  var descripcion = $('#descripcion').val();
-
-  var director_area_firma = $('#director_area_firma').val();
-  var organo_control_firma = $('#organo_control_firma').val();
-  var director_administrativo_firma = $('#director_administrativo_firma').val();
-  var cheque_firma = $('#cheque_firma').val();
-  var jefe_firma = $('#jefe_firma').val();
-
-  var secretaria_pago = $('#secretaria_pago').val();
-  var cheque = $('#cheque').val();
-  var fecha_pago = $('input[name=fecha_pago]').val();
-  var cantidad = $('#cantidad').val();
-  var letras_cantidad = $('#letras_cantidad').val();
-
-  var kilometrorecorrido = $('#kilometrorecorrido').val();
-  var especificarcomision = $('#especificarcomision').val();
-  var totalkm = $('#totalkm').val();
-  var banco = $('#banco').val();
-
-  var selected = [];
-
-  $(":checkbox[name=valeCombustible]").each(function(){
-      if (this.checked) {
-        selected.push($(this).val());
-      }
-  });
-
-  var programavehiculof = $('#programavehiculof').val();
-  var total_transporte_vehiculof = $('#total_transporte_vehiculof').val();
-  var valeCombustible = selected;
-
-
-
-  var total_extraer = $('#total_extraer').val();
-  var programalugar = $('#programalugar').val();
-
-  var tabla_lugares = arrayTablaLugares;
-
-
-    $.ajax({
-
-           type:"POST",
-
-           url:"{{ ( isset($recibos) ) ? '/recibos/update' : '/recibos/create' }}",
-           headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-           },
-           data:{
-             id:id,
-             id_firmante:id_firmante,
-             id_pagos:id_pagos,
-             n_empleado:n_empleado,
-             nombre_empleado:nombre_empleado,
-             rfc:rfc,
-             nivel:nivel,
-             clave_departamental:clave_departamental,
-             dependencia:dependencia,
-             direccion:direccion,
-             inicia:inicia,
-             final:final,
-             departamento:departamento,
-             lugar_adscripcion:lugar_adscripcion,
-             n_dias:n_dias,
-             n_dias_ina:n_dias_ina,
-             descripcion:descripcion,
-             director_area_firma:director_area_firma,
-             organo_control_firma:organo_control_firma,
-             director_administrativo_firma:director_administrativo_firma,
-             cheque_firma:cheque_firma,
-             jefe_firma:jefe_firma,
-             secretaria_pago:secretaria_pago,
-             cheque:cheque,
-             fecha_pago:fecha_pago,
-             cantidad:cantidad,
-             letras_cantidad:letras_cantidad,
-             kilometrorecorrido:kilometrorecorrido,
-             especificarcomision:especificarcomision,
-             totalkm:totalkm,
-             tablalugares:nuevoObjeto,
-             total_extraer:total_extraer,
-             programalugar:programalugar,
-             area_id:area_id,
-             banco:banco,
-             programavehiculof:programavehiculof,
-             total_transporte_vehiculof:total_transporte_vehiculof,
-             valeCombustible:valeCombustible,
-             VehiculoOficial:VehiculoOficial,
-             Vehiculo:Vehiculo,
-             Avion:Avion,
-             Autobus:Autobus,
-             Peaje:Peaje,
-             Recorrido:Recorrido,
-             id_transporte:id_transporte,
-           },
-           // data: formData,
-           // processData: false,
-           // contentType: false,
-           // cache:false,
-            success:function(data){
-              if (data.success == 'Registro agregado satisfactoriamente') {
-                Swal.fire("", data.success, "success").then(function(){
-                  location.href ="/recibos";
-                });
-
-                Swal.fire({
-                      title: "",
-                      text: data.success,
-                      icon: "success",
-                      timer: 1500,
-                      showConfirmButton: false,
-                  }).then(function(result) {
-                      if (result.value == true) {
-                           $('#nombre').val('');
-
-                      }else{
-                        location.href ="/recibos"; //esta es la ruta del modulo
-                      }
-                  })
-
-              }else if(data.success == 'Ha sido editado con éxito'){
-
-                Swal.fire("", data.success, "success").then(function(){
-                  location.href ="/recibos";
-                });
-
-                Swal.fire({
-                      title: "",
-                      text: data.success,
-                      icon: "success",
-                      timer: 1500,
-                      showConfirmButton: false,
-                  }).then(function(result) {
-
-                      if (result.value == true) {
-
-                      }else{
-                        location.href ="/recibos";
-                      }
-                  })
-              }
-
-
-            }
-      });
-
-}
 
 
 function calcularViaticoTransporte(){
 
+  @isset($transporte)
 
+  ////////////////////////////////////////////////////
+  if (arrayVehiculoOficial == '') {
+  var sumitavof = 0;
+  }else{
+
+    var sumitaautoOf2 = 0;
+    arrayVehiculoOficial.forEach (function(numeroautoOf){
+    sumitaautoOf2 += numeroautoOf.gasolina_vehiculo;
+    });
+  var sumitavof =  sumitaautoOf2;
+  }
+  ///////////////////////////////////////////////////
+  if (arrayVehiculo == '') {
+  var sumitavp = 0;
+  }else{
+
+    var sumitaautop2 = 0;
+    arrayVehiculo.forEach (function(numeroautoP){
+    sumitaautop2 += numeroautoP.gasolina_vehiculo;
+    });
+
+   var sumitavp =  sumitaautop2;
+  }
+  ////////////////////////////////////////////////////
+  if (arrayAvion == '') {
+  var sumitaavion = 0;
+  }else{
+    var sumitaautobus2 = 0;
+    arrayAutobus.forEach (function(numeroautobus){
+    sumitaautobus2 += numeroautobus.costoAutobus;
+    });
+
+  var sumitaavion =  arrayAvion[0]['costoAvion']
+  }
+  ////////////////////////////////////////////////
+  if (arrayAutobus == '') {
+  var sumitaatobus = 0;
+  }else{
+
+    var sumitaautobus2 = 0;
+    arrayAutobus.forEach (function(numeroautobus){
+    sumitaautobus2 += numeroautobus.costoAutobus;
+    });
+
+    var sumitaatobus =  sumitaautobus2;
+  }
+  /////////////////////////////////////////////////////
+  if (arrayPeaje == '') {
+  var sumitapeaje = 0;
+  }else{
+
+
+      var sumitapeaje2 = 0;
+      arrayPeaje.forEach (function(numeropeaje){
+      sumitapeaje2 += numeropeaje.costo;
+      });
+      //console.log(sumitapeaje2);
+
+      var sumitapeaje =  sumitapeaje2
+  }
+  ///////////////////////////////////////////////////
+  if (arrayRecorrido == '') {
+  //console.log(arrayTaxi)
+  var sumitataxi = 0;
+  }else{
+
+    var sumitataxi2 = 0;
+
+    var sumitatarifa1 = 0;
+    var sumitatarifa2 = 0;
+
+    var sumitatarifa_adicional = 0;
+    var sumitatarifa_adicional2 = 0;
+
+    var totaltarifadicional = 0;
+
+    var totalcalculoadicional = 0;
+    var totalcalculo = 0;
+
+    arrayRecorrido.forEach (function(numerotaxi){
+
+      sumitatarifa1 += numerotaxi.tarifa_evento;
+      sumitatarifa2 += numerotaxi.tarifa_evento2;
+
+      sumitatarifa_adicional += numerotaxi.tarifa_adicional;
+      sumitatarifa_adicional2 += numerotaxi.tarifa_adicional2;
+
+      totaltarifadicional = parseFloat(sumitatarifa_adicional) + parseFloat(sumitatarifa_adicional2);
+
+      sumitataxi2 = parseFloat(sumitatarifa1) + parseFloat(sumitatarifa2);
+
+      //console.log(totaltarifadicional);
+
+      dia_adicional = numerotaxi.dia_adicional;
+
+      //console.log(dia_adicional);
+
+
+      totalcalculoadicional = totaltarifadicional * dia_adicional;
+
+
+
+      totalcalculo = parseFloat(totalcalculoadicional) + parseFloat(sumitataxi2);
+    });
+
+    var sumitataxi = totalcalculo;
+
+  }
+
+  var total_yasumado =  $('#total_transporte_vehiculof').val();
+
+  var total = parseFloat(sumitavof) + parseFloat(sumitavp) + parseFloat(sumitaavion) + parseFloat(sumitaatobus) + parseFloat(sumitapeaje) + parseFloat(sumitataxi) + parseFloat(total_yasumado);
+
+  $('#total_transporte_vehiculof').val(total.toFixed(2));
+
+
+  @else
 
   ////////////////////////////////////////////////////
   if (arrayVehiculoOficial == '') {
@@ -1990,6 +1929,9 @@ function calcularViaticoTransporte(){
   var total = parseFloat(sumitavof) + parseFloat(sumitavp) + parseFloat(sumitaavion) + parseFloat(sumitaatobus) + parseFloat(sumitapeaje) + parseFloat(sumitataxi) ;
 
   $('#total_transporte_vehiculof').val(total.toFixed(2));
+
+  @endisset
+
 
   //console.log(total)
 
@@ -2243,7 +2185,7 @@ $('#tabla6').hide();
       language: 'es',
       format: 'dd/mm/yyyy',
   });
-   $.datetimepicker.setLocale('es');
+
 });
 
 
@@ -2358,6 +2300,7 @@ if (objectLugar.zona == 1) {
 }else{
   zonita = 'Frontera y Entidades Federativas del Extranjero';
 }
+console.log(objectLugar.hospedaje)
 
   var tr = '<tr id="filas_lugar'+contador_lugares+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
@@ -2369,7 +2312,7 @@ if (objectLugar.zona == 1) {
     '<div class="form-group">'+
         '<div class="checkbox-list">'+
             '<label class="checkbox">'+
-                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onchange="gasolinaLugar('+contador_lugares+')" value="'+objectLugar.gasolina+'">'+
+                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onclick="gasolinaLugar('+contador_lugares+')" value="'+objectLugar.gasolina+'">'+
                 '<span></span>'+
             '</label>'+
         '</div>'+
@@ -2379,7 +2322,7 @@ if (objectLugar.zona == 1) {
     '<div class="form-group">'+
         '<div class="checkbox-list">'+
             '<label class="checkbox">'+
-                '<input type="checkbox" name="hospedaje_'+contador_lugares+'" onchange="hospedajeLugar('+contador_lugares+')" value="'+objectLugar.hospedaje+'">'+
+                '<input type="checkbox" name="hospedaje_'+contador_lugares+'" onclick="hospedajeLugar('+contador_lugares+')" value="'+objectLugar.hospedaje+'">'+
                 '<span></span>'+
             '</label>'+
         '</div>'+
@@ -2387,15 +2330,15 @@ if (objectLugar.zona == 1) {
   '</td>'+
   '<td><div class="checkbox-inline">'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="desayuno_'+contador_lugares+'" onchange="desayunoLugar('+contador_lugares+')" value="'+objectLugar.desayuno+'">'+
+             '<input type="checkbox" name="desayuno_'+contador_lugares+'" onclick="desayunoLugar('+contador_lugares+')" value="'+objectLugar.desayuno+'">'+
              '<span></span>'+
          '</label>'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="comida_'+contador_lugares+'" onchange="comidaLugar('+contador_lugares+')" value="'+objectLugar.comida+'">'+
+             '<input type="checkbox" name="comida_'+contador_lugares+'" onclick="comidaLugar('+contador_lugares+')" value="'+objectLugar.comida+'">'+
              '<span></span>'+
          '</label>'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="cena_'+contador_lugares+'" onchange="cenaLugar('+contador_lugares+')" value="'+objectLugar.cena+'">'+
+             '<input type="checkbox" name="cena_'+contador_lugares+'" onclick="cenaLugar('+contador_lugares+')" value="'+objectLugar.cena+'">'+
              '<span></span>'+
          '</label>'+
      '</div>'+
@@ -2456,7 +2399,11 @@ var objectTablaLugares = {};
 var arrayTablaLugares = [];
 
 function diasLugares(id){
+
+
   var dias = $('#dias_'+id).val();
+
+  //console.log(dias)
   objectDiasLugares = {
     id:id,
     dias:dias
@@ -2473,8 +2420,58 @@ function diasLugares(id){
 
 
 
+}
+
+
+function diasLugares2(id_key,id){
+
+  var dias = $('#dias2_'+id_key).val();
+  //console.log(dias,id)
+
+  $.ajax({
+         type:"POST",
+         url:"/recibos/CambioDias",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+           dias:dias,
+           id:id,
+           },
+          success:function(data){
+            //console.log(data)
+          }
+    });
+
+
 
 }
+
+
+function KilometrajeLugares2(id_key,id){
+
+  var kilometraje = $('#kilometraje2_'+id_key).val();
+  //console.log(dias,id)
+
+  $.ajax({
+         type:"POST",
+         url:"/recibos/CambioKilometraje",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+           kilometraje:kilometraje,
+           id:id,
+           },
+          success:function(data){
+            //console.log(data)
+          }
+    });
+
+
+
+}
+
 function KilometrajeLugares(id){
 var kilometraje = $('#kilometraje_'+id).val();
 
@@ -2520,30 +2517,1074 @@ function gasolinaLugar(id){
 
 }
 
-function hospedajeLugar(id){
-    $(":checkbox[name=hospedaje_"+id+"]").each(function(){
 
+
+
+
+
+function gasolinaLugar2(id,id_key){
+
+  $(":checkbox[name=gasolina2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var gasolina = $(this).val();
+          //console.log(gasolina)
+
+          if (gasolina == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerGasolinaL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     gasolina:gasolina,
+                     },
+                    success:function(data){
+                      $.ajax({
+                             type:"POST",
+                             url:"/recibos/TraerGasolinaDatosViaticoLugar",
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                             },
+                             data:{
+
+                               gasolina:data.precio_litro,
+                               id : id
+                               },
+                              success:function(data){
+
+                                var suma_dias2 = 0;
+                                var suma_kilometraje2 = 0;
+
+                                var suma_gasolina2 = 0;
+                                var suma_hospedaje2 = 0;
+
+                                var suma_kilometraje2 = 0;
+
+                                var suma_desayuno2 = 0;
+                                var suma_comida2 = 0;
+                                var suma_cena2 = 0;
+
+                                var total_alimentos2 = 0;
+
+
+
+                                data.forEach (function(x){
+                                  suma_dias2 += parseInt(x.dias);
+                                  suma_kilometraje2 += parseInt(x.kilometros);
+
+                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                  suma_desayuno2 += parseFloat(x.desayuno);
+                                  suma_comida2 += parseFloat(x.comida);
+                                  suma_cena2 += parseFloat(x.cena);
+
+                                  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                });
+
+
+
+                                $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                              }
+                            });
+                    }
+                  });
+          }else{
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerGasolinaDatosViaticoLugar",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+
+                     gasolina:gasolina,
+                     id : id
+                     },
+                    success:function(data){
+
+                      var suma_dias2 = 0;
+                      var suma_kilometraje2 = 0;
+
+                      var suma_gasolina2 = 0;
+                      var suma_hospedaje2 = 0;
+
+                      var suma_kilometraje2 = 0;
+
+                      var suma_desayuno2 = 0;
+                      var suma_comida2 = 0;
+                      var suma_cena2 = 0;
+
+                      var total_alimentos2 = 0;
+
+
+
+                      data.forEach (function(x){
+                        suma_dias2 += parseInt(x.dias);
+                        suma_kilometraje2 += parseInt(x.kilometros);
+
+                        suma_gasolina2 += parseFloat(x.combustible);
+                        suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                        suma_desayuno2 += parseFloat(x.desayuno);
+                        suma_comida2 += parseFloat(x.comida);
+                        suma_cena2 += parseFloat(x.cena);
+
+                        total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                      });
+
+
+
+                      $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                      $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                      $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                      $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                      $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                    }
+                  });
+          }
+
+
+
+
+
+
+      }else {
+        var gasolina = 0;
+      //  console.log(id,id_key,gasolina)
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerGasolinaDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 gasolina:gasolina,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function hospedajeLugar2(id,id_key){
+
+
+
+  $(":checkbox[name=hospedaje2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var hospedaje = $(this).val();
+          //console.log(id,id_key,hospedaje)
+
+          if (hospedaje == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerHospedajeL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     hospedaje:hospedaje,
+                     },
+                    success:function(data){
+                        $.ajax({
+                               type:"POST",
+                               url:"/recibos/TraerHospedajeDatosViaticoLugar",
+                               headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                               },
+                               data:{
+
+                                 hospedaje:data.importe,
+                                 id : id
+                                 },
+                                success:function(data){
+
+                                  var suma_dias2 = 0;
+                                  var suma_kilometraje2 = 0;
+
+                                  var suma_gasolina2 = 0;
+                                  var suma_hospedaje2 = 0;
+
+                                  var suma_kilometraje2 = 0;
+
+                                  var suma_desayuno2 = 0;
+                                  var suma_comida2 = 0;
+                                  var suma_cena2 = 0;
+
+                                  var total_alimentos2 = 0;
+
+
+
+                                  data.forEach (function(x){
+                                    suma_dias2 += parseInt(x.dias);
+                                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                                    suma_gasolina2 += parseFloat(x.combustible);
+                                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                    suma_desayuno2 += parseFloat(x.desayuno);
+                                    suma_comida2 += parseFloat(x.comida);
+                                    suma_cena2 += parseFloat(x.cena);
+
+                                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                  });
+
+
+
+                                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                                }
+                              });
+                    }
+                  });
+            }else{
+
+              $.ajax({
+                     type:"POST",
+                     url:"/recibos/TraerHospedajeDatosViaticoLugar",
+                     headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     },
+                     data:{
+
+                       hospedaje:hospedaje,
+                       id : id
+                       },
+                      success:function(data){
+
+                        var suma_dias2 = 0;
+                        var suma_kilometraje2 = 0;
+
+                        var suma_gasolina2 = 0;
+                        var suma_hospedaje2 = 0;
+
+                        var suma_kilometraje2 = 0;
+
+                        var suma_desayuno2 = 0;
+                        var suma_comida2 = 0;
+                        var suma_cena2 = 0;
+
+                        var total_alimentos2 = 0;
+
+
+
+                        data.forEach (function(x){
+                          suma_dias2 += parseInt(x.dias);
+                          suma_kilometraje2 += parseInt(x.kilometros);
+
+                          suma_gasolina2 += parseFloat(x.combustible);
+                          suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                          suma_desayuno2 += parseFloat(x.desayuno);
+                          suma_comida2 += parseFloat(x.comida);
+                          suma_cena2 += parseFloat(x.cena);
+
+                          total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                        });
+
+
+
+                        $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                        $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                        $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                        $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                        $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                      }
+                    });
+            }
+
+
+
+
+
+      }else {
+        var hospedaje = 0;
+      //  console.log(id,id_key,gasolina)
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerHospedajeDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 hospedaje:hospedaje,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function desayunoLugar2(id,id_key){
+
+  $(":checkbox[name=desayuno2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var desayuno = $(this).val();
+          //console.log(id,id_key,gasolina)
+
+          if (desayuno == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerDesayunoL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     desayuno:desayuno,
+                     },
+                    success:function(data){
+                      $.ajax({
+                             type:"POST",
+                             url:"/recibos/TraerDesayunoDatosViaticoLugar",
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                             },
+                             data:{
+
+                               desayuno:data.importe_desayuno,
+                               id : id
+                               },
+                              success:function(data){
+
+                                var suma_dias2 = 0;
+                                var suma_kilometraje2 = 0;
+
+                                var suma_gasolina2 = 0;
+                                var suma_hospedaje2 = 0;
+
+                                var suma_kilometraje2 = 0;
+
+                                var suma_desayuno2 = 0;
+                                var suma_comida2 = 0;
+                                var suma_cena2 = 0;
+
+                                var total_alimentos2 = 0;
+
+
+
+                                data.forEach (function(x){
+                                  suma_dias2 += parseInt(x.dias);
+                                  suma_kilometraje2 += parseInt(x.kilometros);
+
+                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                  suma_desayuno2 += parseFloat(x.desayuno);
+                                  suma_comida2 += parseFloat(x.comida);
+                                  suma_cena2 += parseFloat(x.cena);
+
+                                  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                });
+
+
+
+                                $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                              }
+                            });
+                    }
+                  });
+            }else{
+              $.ajax({
+                     type:"POST",
+                     url:"/recibos/TraerDesayunoDatosViaticoLugar",
+                     headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     },
+                     data:{
+
+                       desayuno:desayuno,
+                       id : id
+                       },
+                      success:function(data){
+
+                        var suma_dias2 = 0;
+                        var suma_kilometraje2 = 0;
+
+                        var suma_gasolina2 = 0;
+                        var suma_hospedaje2 = 0;
+
+                        var suma_kilometraje2 = 0;
+
+                        var suma_desayuno2 = 0;
+                        var suma_comida2 = 0;
+                        var suma_cena2 = 0;
+
+                        var total_alimentos2 = 0;
+
+
+
+                        data.forEach (function(x){
+                          suma_dias2 += parseInt(x.dias);
+                          suma_kilometraje2 += parseInt(x.kilometros);
+
+                          suma_gasolina2 += parseFloat(x.combustible);
+                          suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                          suma_desayuno2 += parseFloat(x.desayuno);
+                          suma_comida2 += parseFloat(x.comida);
+                          suma_cena2 += parseFloat(x.cena);
+
+                          total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                        });
+
+
+
+                        $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                        $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                        $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                        $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                        $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                      }
+                    });
+            }
+
+
+      }else {
+        var desayuno = 0;
+      //  console.log(id,id_key,gasolina)
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerDesayunoDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 desayuno:desayuno,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function comidaLugar2(id,id_key){
+
+  $(":checkbox[name=comida2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var comida = $(this).val();
+        //console.log(comida)
+
+          if (comida == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerComidaL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     comida:comida,
+                     },
+                    success:function(data){
+
+                      $.ajax({
+                             type:"POST",
+                             url:"/recibos/TraerComidaDatosViaticoLugar",
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                             },
+                             data:{
+
+                               comida:data.importe_comida,
+                               id : id
+                               },
+                              success:function(data){
+
+                                var suma_dias2 = 0;
+                                var suma_kilometraje2 = 0;
+
+                                var suma_gasolina2 = 0;
+                                var suma_hospedaje2 = 0;
+
+                                var suma_kilometraje2 = 0;
+
+                                var suma_desayuno2 = 0;
+                                var suma_comida2 = 0;
+                                var suma_cena2 = 0;
+
+                                var total_alimentos2 = 0;
+
+
+
+                                data.forEach (function(x){
+                                  suma_dias2 += parseInt(x.dias);
+                                  suma_kilometraje2 += parseInt(x.kilometros);
+
+                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                  suma_desayuno2 += parseFloat(x.desayuno);
+                                  suma_comida2 += parseFloat(x.comida);
+                                  suma_cena2 += parseFloat(x.cena);
+
+                                  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                });
+
+
+
+                                $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                              }
+                            });
+                    }
+                  });
+            }else{
+              $.ajax({
+                     type:"POST",
+                     url:"/recibos/TraerComidaDatosViaticoLugar",
+                     headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     },
+                     data:{
+
+                       comida:comida,
+                       id : id
+                       },
+                      success:function(data){
+
+                        var suma_dias2 = 0;
+                        var suma_kilometraje2 = 0;
+
+                        var suma_gasolina2 = 0;
+                        var suma_hospedaje2 = 0;
+
+                        var suma_kilometraje2 = 0;
+
+                        var suma_desayuno2 = 0;
+                        var suma_comida2 = 0;
+                        var suma_cena2 = 0;
+
+                        var total_alimentos2 = 0;
+
+
+
+                        data.forEach (function(x){
+                          suma_dias2 += parseInt(x.dias);
+                          suma_kilometraje2 += parseInt(x.kilometros);
+
+                          suma_gasolina2 += parseFloat(x.combustible);
+                          suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                          suma_desayuno2 += parseFloat(x.desayuno);
+                          suma_comida2 += parseFloat(x.comida);
+                          suma_cena2 += parseFloat(x.cena);
+
+                          total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                        });
+
+
+
+                        $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                        $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                        $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                        $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                        $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                      }
+                    });
+            }
+
+      }else {
+        var comida = 0;
+      //  console.log(id,id_key,gasolina)
+
+
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerComidaDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 comida:comida,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function cenaLugar2(id,id_key){
+
+  $(":checkbox[name=cena2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var cena = $(this).val();
+          //console.log(cena)
+
+          if (cena == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerCenaL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     cena:cena,
+                     },
+                    success:function(data){
+                      $.ajax({
+                             type:"POST",
+                             url:"/recibos/TraerCenaDatosViaticoLugar",
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                             },
+                             data:{
+
+                               cena:data.importe_cena,
+                               id : id
+                               },
+                              success:function(data){
+
+                                var suma_dias2 = 0;
+                                var suma_kilometraje2 = 0;
+
+                                var suma_gasolina2 = 0;
+                                var suma_hospedaje2 = 0;
+
+                                var suma_kilometraje2 = 0;
+
+                                var suma_desayuno2 = 0;
+                                var suma_comida2 = 0;
+                                var suma_cena2 = 0;
+
+                                var total_alimentos2 = 0;
+
+
+
+                                data.forEach (function(x){
+                                  suma_dias2 += parseInt(x.dias);
+                                  suma_kilometraje2 += parseInt(x.kilometros);
+
+                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                  suma_desayuno2 += parseFloat(x.desayuno);
+                                  suma_comida2 += parseFloat(x.comida);
+                                  suma_cena2 += parseFloat(x.cena);
+
+                                  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                });
+
+
+
+                                $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                              }
+                            });
+                    }
+                  });
+            }else{
+
+            }
+
+          $.ajax({
+                 type:"POST",
+                 url:"/recibos/TraerCenaDatosViaticoLugar",
+                 headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 },
+                 data:{
+
+                   cena:cena,
+                   id : id
+                   },
+                  success:function(data){
+
+                    var suma_dias2 = 0;
+                    var suma_kilometraje2 = 0;
+
+                    var suma_gasolina2 = 0;
+                    var suma_hospedaje2 = 0;
+
+                    var suma_kilometraje2 = 0;
+
+                    var suma_desayuno2 = 0;
+                    var suma_comida2 = 0;
+                    var suma_cena2 = 0;
+
+                    var total_alimentos2 = 0;
+
+
+
+                    data.forEach (function(x){
+                      suma_dias2 += parseInt(x.dias);
+                      suma_kilometraje2 += parseInt(x.kilometros);
+
+                      suma_gasolina2 += parseFloat(x.combustible);
+                      suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                      suma_desayuno2 += parseFloat(x.desayuno);
+                      suma_comida2 += parseFloat(x.comida);
+                      suma_cena2 += parseFloat(x.cena);
+
+                      total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                    });
+
+
+
+                    $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                    $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                    $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                    $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                    $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                  }
+                });
+
+
+
+
+      }else {
+        var cena = 0;
+      //  console.log(id,id_key,gasolina)
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerCenaDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 cena:cena,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function hospedajeLugar(id){
+
+    var value_ckeck = $(":checkbox[name=hospedaje_"+id+"]").val();
+    //console.log(value_ckeck == 'undefined')
+    if (value_ckeck == 'undefined') {
+      $(":checkbox[name=hospedaje_"+id+"]").prop('checked',false);
+      $(":checkbox[name=hospedaje_"+id+"]").prop('disabled',true);
+      Swal.fire("Lo Sentimos", 'El nivel del empleado no esta en el rango de hospedaje', "warning");
+    }else{
+      $(":checkbox[name=hospedaje_"+id+"]").each(function(){
+
+          if (this.checked) {
+              /////////////////////////////////////////////////////
+              arrayTablaLugares.push({
+                id:id,
+                hospedaje:$(this).val(),
+              })
+              objectHospedajeLugares = {
+                id:id,
+              hospedaje:$(this).val(),
+              }
+
+              arrayHospedajeLugares.push(objectHospedajeLugares)
+
+              // ObjetoLugares = {
+              //   hospedaje:$(this).val(),
+              // }
+              // arrayLugares.push(ObjetoLugares);
+
+          }else {
+
+            arrayHospedajeLugares.forEach(function(x, index, object) {
+                if(x.id === id){
+                  object.splice(index, 1);
+                }
+            });
+
+          }
+      });
+    }
+
+
+}
+
+function desayunoLugar(id){
+  var value_ckeck = $(":checkbox[name=desayuno_"+id+"]").val();
+  if (value_ckeck == 'undefined') {
+    $(":checkbox[name=desayuno_"+id+"]").prop('checked',false);
+    $(":checkbox[name=desayuno_"+id+"]").prop('disabled',true);
+    Swal.fire("Lo Sentimos", 'El nivel del empleado no esta en el rango de desayuno', "warning");
+  }else{
+    $(":checkbox[name=desayuno_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
             arrayTablaLugares.push({
               id:id,
-              hospedaje:$(this).val(),
+              desayuno:$(this).val(),
             })
-            objectHospedajeLugares = {
+            objectDesayunoLugares = {
               id:id,
-            hospedaje:$(this).val(),
+            desayuno:$(this).val(),
             }
 
-            arrayHospedajeLugares.push(objectHospedajeLugares)
-
-            // ObjetoLugares = {
-            //   hospedaje:$(this).val(),
-            // }
-            // arrayLugares.push(ObjetoLugares);
-
+            arrayDesayunoLugares.push(objectDesayunoLugares)
         }else {
 
-          arrayHospedajeLugares.forEach(function(x, index, object) {
+          arrayDesayunoLugares.forEach(function(x, index, object) {
               if(x.id === id){
                 object.splice(index, 1);
               }
@@ -2551,85 +3592,141 @@ function hospedajeLugar(id){
 
         }
     });
+  }
 
-}
-
-function desayunoLugar(id){
-  $(":checkbox[name=desayuno_"+id+"]").each(function(){
-      if (this.checked) {
-          /////////////////////////////////////////////////////
-          arrayTablaLugares.push({
-            id:id,
-            desayuno:$(this).val(),
-          })
-          objectDesayunoLugares = {
-            id:id,
-          desayuno:$(this).val(),
-          }
-
-          arrayDesayunoLugares.push(objectDesayunoLugares)
-      }else {
-
-        arrayDesayunoLugares.forEach(function(x, index, object) {
-            if(x.id === id){
-              object.splice(index, 1);
-            }
-        });
-
-      }
-  });
 }
 function comidaLugar(id){
-  $(":checkbox[name=comida_"+id+"]").each(function(){
-      if (this.checked) {
-          /////////////////////////////////////////////////////
-          arrayTablaLugares.push({
-            id:id,
+  var value_ckeck = $(":checkbox[name=comida_"+id+"]").val();
+  if (value_ckeck == 'undefined') {
+    $(":checkbox[name=comida_"+id+"]").prop('checked',false);
+    $(":checkbox[name=comida_"+id+"]").prop('disabled',true);
+    Swal.fire("Lo Sentimos", 'El nivel del empleado no esta en el rango de comida', "warning");
+  }else{
+    $(":checkbox[name=comida_"+id+"]").each(function(){
+        if (this.checked) {
+            /////////////////////////////////////////////////////
+            arrayTablaLugares.push({
+              id:id,
+              comida:$(this).val(),
+            })
+            objectComidaLugares = {
+              id:id,
             comida:$(this).val(),
-          })
-          objectComidaLugares = {
-            id:id,
-          comida:$(this).val(),
-          }
-
-          arrayComidaLugares.push(objectComidaLugares)
-      }else {
-
-        arrayComidaLugares.forEach(function(x, index, object) {
-            if(x.id === id){
-              object.splice(index, 1);
             }
-        });
 
-      }
-  });
+            arrayComidaLugares.push(objectComidaLugares)
+        }else {
+
+          arrayComidaLugares.forEach(function(x, index, object) {
+              if(x.id === id){
+                object.splice(index, 1);
+              }
+          });
+
+        }
+    });
+  }
+
 }
 function cenaLugar(id){
-  $(":checkbox[name=cena_"+id+"]").each(function(){
-      if (this.checked) {
-          /////////////////////////////////////////////////////
-          arrayTablaLugares.push({
-            id:id,
-            cena:$(this).val(),
-          })
-          objectCenaLugares = {
-            id:id,
-            cena:$(this).val(),
-          }
-
-          arrayCenaLugares.push(objectCenaLugares)
-      }else {
-
-        arrayCenaLugares.forEach(function(x, index, object) {
-            if(x.id === id){
-              object.splice(index, 1);
+  var value_ckeck = $(":checkbox[name=cena_"+id+"]").val();
+  if (value_ckeck == 'undefined') {
+    $(":checkbox[name=cena_"+id+"]").prop('checked',false);
+    $(":checkbox[name=cena_"+id+"]").prop('disabled',true);
+    Swal.fire("Lo Sentimos", 'El nivel del empleado no esta en el rango de cena', "warning");
+  }else{
+    $(":checkbox[name=cena_"+id+"]").each(function(){
+        if (this.checked) {
+            /////////////////////////////////////////////////////
+            arrayTablaLugares.push({
+              id:id,
+              cena:$(this).val(),
+            })
+            objectCenaLugares = {
+              id:id,
+              cena:$(this).val(),
             }
-        });
 
-      }
-  });
+            arrayCenaLugares.push(objectCenaLugares)
+        }else {
+
+          arrayCenaLugares.forEach(function(x, index, object) {
+              if(x.id === id){
+                object.splice(index, 1);
+              }
+          });
+
+        }
+    });
+  }
+
 }
+ function bajaLugar(id,id_key){
+   //console.log(id_key)
+   $('#orden_luagres'+id_key).remove();
+   @isset($recibos)
+   id_recibo = {{$recibos->id}};
+   @else
+   id_recibo = 0;
 
+   @endisset
+   $.ajax({
+          type:"POST",
+          url:"/recibos/TraerBorrarDatosViaticoLugar",
+          headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          data:{
+
+            id_recibo:id_recibo,
+            id : id
+            },
+           success:function(data){
+
+             var suma_dias2 = 0;
+             var suma_kilometraje2 = 0;
+
+             var suma_gasolina2 = 0;
+             var suma_hospedaje2 = 0;
+
+             var suma_kilometraje2 = 0;
+
+             var suma_desayuno2 = 0;
+             var suma_comida2 = 0;
+             var suma_cena2 = 0;
+
+             var total_alimentos2 = 0;
+
+
+
+             data.forEach (function(x){
+               suma_dias2 += parseInt(x.dias);
+               suma_kilometraje2 += parseInt(x.kilometros);
+
+               suma_gasolina2 += parseFloat(x.combustible);
+               suma_hospedaje2 += parseFloat(x.hospedaje);
+
+               suma_desayuno2 += parseFloat(x.desayuno);
+               suma_comida2 += parseFloat(x.comida);
+               suma_cena2 += parseFloat(x.cena);
+
+               total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+             });
+
+
+
+             $('#total_dias').html('<p>'+suma_dias2+'</p>');
+             $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+             $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+             $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+             $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+           }
+         });
+
+
+ }
 
 function eliminarlugar(id){
   //console.log(id)
@@ -2696,8 +3793,72 @@ function eliminarlugar(id){
   // console.log(arrayLugar == 0,id,arrayLugar,arrayTablaLugares)
 
   if (arrayLugar == 0) {
-    $('#footLugar').hide();
+    $('#footLugar').show();
     // $('#total_recibido_lugar').show();
+
+    @isset($lugares)
+
+
+    $.ajax({
+           type:"POST",
+           url:"/recibos/TraerDatosViaticoLugar",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+
+             id:{{$recibos->id}},
+             },
+            success:function(data){
+
+              var suma_dias2 = 0;
+              var suma_kilometraje2 = 0;
+
+              var suma_gasolina2 = 0;
+              var suma_hospedaje2 = 0;
+
+              var suma_kilometraje2 = 0;
+
+              var suma_desayuno2 = 0;
+              var suma_comida2 = 0;
+              var suma_cena2 = 0;
+
+              var total_alimentos2 = 0;
+
+
+
+              data.forEach (function(x){
+                suma_dias2 += parseInt(x.dias);
+                suma_kilometraje2 += parseInt(x.kilometros);
+
+                suma_gasolina2 += parseFloat(x.combustible);
+                suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                suma_desayuno2 += parseFloat(x.desayuno);
+                suma_comida2 += parseFloat(x.comida);
+                suma_cena2 += parseFloat(x.cena);
+
+                total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+              });
+
+
+
+              $('#total_dias').html('<p>'+suma_dias2+'</p>');
+              $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+              $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+              $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+              $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+            }
+          });
+
+
+
+
+
+
+    @else
 
     $('#total_dias').html('<p>0</p>');
     $('#total_kilometros').html('<p>0</p>');
@@ -2708,6 +3869,11 @@ function eliminarlugar(id){
 
     //$('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
     $('#total_recibido_lugar').html('<input type="text" class="form-control" value="0" id="total_extraer" disabled>');
+
+    @endisset
+
+
+
 
   }
 
@@ -2720,7 +3886,261 @@ let nuevoObjeto = {}
 function calcularViaticoLugar(){
 
 
+  @isset($lugares)
 
+  $.ajax({
+         type:"POST",
+         url:"/recibos/TraerDatosViaticoLugar",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+
+           id:{{$recibos->id}},
+           },
+          success:function(data){
+
+
+            var suma_dias2 = 0;
+            var suma_kilometraje2 = 0;
+
+            var suma_gasolina2 = 0;
+            var suma_hospedaje2 = 0;
+
+            var suma_kilometraje2 = 0;
+
+            var suma_desayuno2 = 0;
+            var suma_comida2 = 0;
+            var suma_cena2 = 0;
+
+            var total_alimentos2 = 0;
+
+
+
+            data.forEach (function(x){
+              suma_dias2 += parseInt(x.dias);
+              suma_kilometraje2 += parseInt(x.kilometros);
+
+              suma_gasolina2 += parseFloat(x.combustible);
+              suma_hospedaje2 += parseFloat(x.hospedaje);
+
+              suma_desayuno2 += parseFloat(x.desayuno);
+              suma_comida2 += parseFloat(x.comida);
+              suma_cena2 += parseFloat(x.cena);
+
+              total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+            });
+
+            var suma_dias = 0;
+            arrayDiasLugares.forEach (function(numero){
+            suma_dias += parseInt(numero.dias);
+            });
+            //console.log(arrayDiasLugares)
+
+            var suma_kilometraje = 0;
+            arrayKilometrajeLugares.forEach (function(numero_kilometraje){
+            suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
+            });
+
+
+
+            var suma_gasolina = 0;
+            arrayGasolinaLugares.forEach (function(numero_gasolina){
+            suma_gasolina += parseFloat(numero_gasolina.gasolina);
+            });
+
+
+            var suma_hospedaje = 0;
+            arrayHospedajeLugares.forEach (function(numero_hospedaje){
+            suma_hospedaje += parseFloat(numero_hospedaje.hospedaje);
+            });
+
+
+            var suma_desayuno = 0;
+            arrayDesayunoLugares.forEach (function(numero_desayuno){
+            suma_desayuno += parseFloat(numero_desayuno.desayuno);
+            });
+
+
+            var suma_comida = 0;
+            arrayComidaLugares.forEach (function(numero_comida){
+            suma_comida += parseFloat(numero_comida.comida);
+            });
+
+
+            var suma_cena = 0;
+            arrayCenaLugares.forEach (function(numero_cena){
+            suma_cena += parseFloat(numero_cena.cena);
+            });
+
+
+
+
+            var suma_total_comidas = parseFloat(suma_desayuno) + parseFloat(suma_comida) + parseFloat(suma_cena);
+
+            var suma_total_totales = parseFloat(suma_gasolina) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas);
+
+            var suma_total_totales2 = parseFloat(suma_gasolina2) + parseFloat(suma_hospedaje2) + parseFloat(total_alimentos2);
+
+
+
+            var suma_dias_total = parseInt(suma_dias) + parseInt(suma_dias2);
+            var suma_kilometraje_total = parseInt(suma_kilometraje) + parseInt(suma_kilometraje2);
+
+            var suma_hospedaje_total = parseFloat(suma_hospedaje2) + parseFloat(suma_hospedaje);
+            var suma_gasolina_total = parseFloat(suma_gasolina2) + parseFloat(suma_gasolina);
+            var suma_alimentos_total = parseFloat(suma_total_comidas) + parseFloat(total_alimentos2);
+
+            var suma_total_total = parseFloat(suma_total_totales2) + parseFloat(suma_total_totales);
+
+            $('#total_dias').html('<p>'+suma_dias_total+'</p>');
+            $('#total_kilometros').html('<p>'+suma_kilometraje_total+'</p>');
+            $('#total_gasolina').html('<p>$'+suma_gasolina_total.toFixed(2)+'</p>');
+            $('#total_hospedaje').html('<p>$'+suma_hospedaje_total.toFixed(2)+'</p>');
+            $('#total_comidas').html('<p>$'+suma_alimentos_total.toFixed(2)+'</p>');
+            $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_total.toFixed(2)+'" id="total_extraer" disabled>');
+
+            // console.log(arrayTablaLugares)
+            arrayTablaLugares.forEach( x => {
+              //Si la ciudad no existe en nuevoObjeto entonces
+              //la creamos e inicializamos el arreglo de profesionales.
+              if( !nuevoObjeto.hasOwnProperty(x.id)){
+                nuevoObjeto[x.id] = {
+                  lugar: []
+                }
+              }
+
+              if (typeof x.dias == 'undefined') {
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+
+                  dias: x.dias,
+                })
+              }
+
+
+             if (typeof x.origen == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 origen: x.origen,
+               })
+             }
+
+             if (typeof x.destino == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 destino: x.destino,
+               })
+             }
+
+
+             if (typeof x.origen_nombre == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 origen: x.origen_nombre,
+               })
+             }
+
+             if (typeof x.destino_nombre == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 destino: x.destino_nombre,
+               })
+             }
+
+
+             if (typeof x.zona == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 zona: x.zona,
+               })
+             }
+
+
+             if (typeof x.namezona_ == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 zona_nombre: x.namezona_,
+               })
+             }
+
+
+
+
+              if (typeof x.kilometraje == 'undefined') {
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+
+                  kilometraje: x.kilometraje,
+                })
+              }
+
+              if(typeof x.gasolina == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                  gasolina: x.gasolina,
+                })
+              }
+
+
+              if(typeof x.hospedaje == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                   hospedaje: x.hospedaje,
+                })
+              }
+
+              if(typeof x.desayuno == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                  desayuno: x.desayuno,
+                })
+              }
+
+
+              if(typeof x.cena == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                   cena: x.cena,
+                })
+              }
+
+
+              if(typeof x.comida == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                  comida: x.comida,
+                })
+              }
+
+
+            })
+
+
+
+
+          }
+    });
+
+
+
+
+
+  @else
 
   var suma_dias = 0;
   arrayDiasLugares.forEach (function(numero){
@@ -2913,36 +4333,10 @@ function calcularViaticoLugar(){
    }
 
 
-   // nuevoObjeto[x.id].lugar.push({
-   //   // id: x.id,
-   //   kilometraje: x.kilometraje,
-   //   gasolina: x.gasolina,
-   //   hospedaje: x.hospedaje,
-   //   desayuno: x.desayuno,
-   //   cena: x.cena,
-   //   comida: x.comida,
-   // })
-   //Agregamos los datos de profesionales.
-
  })
 
- //console.log(nuevoObjeto)
 
-  // tablalugar.push({
-  //   dias:arrayTablaLugares[i].dias,
-  //   // kilometros:arrayTablaLugares[i]['kilometraje'],
-  //   // gasolina:arrayTablaLugares[i].gasolina,
-  //   // hospedaje:arrayTablaLugares[i].hospedaje,
-  //   // desayuno:arrayTablaLugares[i].desayuno,
-  //   // comida:arrayTablaLugares[i].comida,
-  //   // cena:arrayTablaLugares[i].cena,
-  // })
-
-
-
-
-
-
+  @endisset
 
 
 
@@ -3833,6 +5227,207 @@ function cantidadletra(){
 
     //nombre_empleado
   }
+
+  function guardar(){
+
+
+
+    var VehiculoOficial = arrayVehiculoOficial;
+    var Vehiculo = arrayVehiculo;
+    var Avion = arrayAvion;
+    var Autobus = arrayAutobus;
+    var Peaje = arrayPeaje;
+    var Recorrido = arrayRecorrido;
+
+
+    @isset($recibos)
+    var id = {{ $recibos->id }};
+    @else
+    var id = 0;
+    @endisset
+
+    @isset($firmantes)
+    var id_firmante = {{ $firmantes->id }};
+    @else
+
+    var id_firmante = 0;
+    @endisset
+    @isset($pagos)
+    var id_pagos = {{ $pagos->id }};
+    @else
+    var id_pagos = 0;
+    @endisset
+
+    @isset($transporte)
+    var id_transporte = {{ $transporte->id }};
+    @else
+    var id_transporte = 0;
+    @endisset
+
+    var n_empleado = $('#n_empleado').val();
+    var nombre_empleado = $('#nombre_empleado').val();
+    var area_id = $('#area_id').val();
+
+
+    var rfc = $('#rfc').val();
+    var nivel = $('#nivel').val();
+    var clave_departamental = $('#clave_departamental').val();
+    var dependencia = $('#dependencia').val();
+    var direccion = $('#direccion').val();
+    var inicia = $('input[name=fecha_inicial]').val();
+    var final = $('input[name=fecha_final]').val();
+    var departamento = $('#departamento').val();
+    var lugar_adscripcion = $('#lugar_adscripcion').val();
+    var n_dias = $('#n_dias').val();
+    var n_dias_ina = $('#n_dias_ina').val();
+    var descripcion = $('#descripcion').val();
+
+    var director_area_firma = $('#director_area_firma').val();
+    var organo_control_firma = $('#organo_control_firma').val();
+    var director_administrativo_firma = $('#director_administrativo_firma').val();
+    var cheque_firma = $('#cheque_firma').val();
+    var jefe_firma = $('#jefe_firma').val();
+
+    var secretaria_pago = $('#secretaria_pago').val();
+    var cheque = $('#cheque').val();
+    var fecha_pago = $('input[name=fecha_pago]').val();
+    var cantidad = $('#cantidad').val();
+    var letras_cantidad = $('#letras_cantidad').val();
+
+    var kilometrorecorrido = $('#kilometrorecorrido').val();
+    var especificarcomision = $('#especificarcomision').val();
+    var totalkm = $('#totalkm').val();
+    var banco = $('#banco').val();
+
+    var selected = [];
+
+    $(":checkbox[name=valeCombustible]").each(function(){
+        if (this.checked) {
+          selected.push($(this).val());
+        }
+    });
+
+    var programavehiculof = $('#programavehiculof').val();
+    var total_transporte_vehiculof = $('#total_transporte_vehiculof').val();
+    var valeCombustible = selected;
+
+
+
+    var total_extraer = $('#total_extraer').val();
+    var programalugar = $('#programalugar').val();
+
+    //var tabla_lugares = arrayTablaLugares;
+
+    //console.log(tabla_lugares)
+      $.ajax({
+
+             type:"POST",
+
+             url:"{{ ( isset($recibos) ) ? '/recibos/update' : '/recibos/create' }}",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data:{
+               id:id,
+               id_firmante:id_firmante,
+               id_pagos:id_pagos,
+               n_empleado:n_empleado,
+               nombre_empleado:nombre_empleado,
+               rfc:rfc,
+               nivel:nivel,
+               clave_departamental:clave_departamental,
+               dependencia:dependencia,
+               direccion:direccion,
+               inicia:inicia,
+               final:final,
+               departamento:departamento,
+               lugar_adscripcion:lugar_adscripcion,
+               n_dias:n_dias,
+               n_dias_ina:n_dias_ina,
+               descripcion:descripcion,
+               director_area_firma:director_area_firma,
+               organo_control_firma:organo_control_firma,
+               director_administrativo_firma:director_administrativo_firma,
+               cheque_firma:cheque_firma,
+               jefe_firma:jefe_firma,
+               secretaria_pago:secretaria_pago,
+               cheque:cheque,
+               fecha_pago:fecha_pago,
+               cantidad:cantidad,
+               letras_cantidad:letras_cantidad,
+               kilometrorecorrido:kilometrorecorrido,
+               especificarcomision:especificarcomision,
+               totalkm:totalkm,
+               tablalugares:nuevoObjeto,
+               total_extraer:total_extraer,
+               programalugar:programalugar,
+               area_id:area_id,
+               banco:banco,
+               programavehiculof:programavehiculof,
+               total_transporte_vehiculof:total_transporte_vehiculof,
+               valeCombustible:valeCombustible,
+               VehiculoOficial:VehiculoOficial,
+               Vehiculo:Vehiculo,
+               Avion:Avion,
+               Autobus:Autobus,
+               Peaje:Peaje,
+               Recorrido:Recorrido,
+               id_transporte:id_transporte,
+
+             },
+             // data: formData,
+             // processData: false,
+             // contentType: false,
+             // cache:false,
+              success:function(data){
+                if (data.success == 'Registro agregado satisfactoriamente') {
+                  Swal.fire("", data.success, "success").then(function(){
+                    location.href ="/recibos";
+                  });
+
+                  Swal.fire({
+                        title: "",
+                        text: data.success,
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    }).then(function(result) {
+                        if (result.value == true) {
+                             $('#nombre').val('');
+
+                        }else{
+                          location.href ="/recibos"; //esta es la ruta del modulo
+                        }
+                    })
+
+                }else if(data.success == 'Ha sido editado con éxito'){
+
+                  Swal.fire("", data.success, "success").then(function(){
+                    location.href ="/recibos";
+                  });
+
+                  Swal.fire({
+                        title: "",
+                        text: data.success,
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    }).then(function(result) {
+
+                        if (result.value == true) {
+
+                        }else{
+                          location.href ="/recibos";
+                        }
+                    })
+                }
+
+
+              }
+        });
+
+  }
+
 
 
 </script>

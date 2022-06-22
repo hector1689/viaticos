@@ -75,7 +75,7 @@ class RecibosController extends Controller
     public function create()
     {
         $data['peajes'] = Peaje::where('activo',1)->get();
-        $data['gasolina'] = Gasolina::where('activo',1)->get();
+        $data['gasolina'] = Gasolina::where('activo',1)->orderBy('id','DESC')->get();
         $data['rendimiento'] = Rendimiento::where('activo',1)->get();
         $data['programa'] = Programa::where('activo',1)->get();
         $data['taxi'] = Taxi::where('activo',1)->get();
@@ -600,6 +600,196 @@ class RecibosController extends Controller
           $transporte->cve_usuario = Auth::user()->id;
           $transporte->save();
 
+          //total_extraer
+
+
+          //dd($request->tablalugares);
+          if (isset($request->tablalugares)) {
+            foreach ($request->tablalugares as $key => $value) {
+
+                $lugares = new Lugares();
+                $lugares->remoto = 0;
+                $lugares->cve_t_viatico = $recibo->id;
+                $lugares->cve_localidad_origen = $value['lugar'][0]['origen'];
+                $lugares->cve_localidad_destino = $value['lugar'][1]['destino'];
+                $lugares->dias = $value['lugar'][6]['dias'];
+                $lugares->cve_zona = $value['lugar'][4]['zona'];
+                $lugares->kilometros = $value['lugar'][7]['kilometraje'];
+                $lugares->cve_programa = $request->programalugar;
+                $lugares->total_recibido = $request->total_extraer;
+                $lugares->cve_usuario =Auth::user()->id;
+                $lugares->save();
+
+               Lugares::where([
+                  ['activo',1],
+                  ['cve_t_viatico',$recibo->id]
+                ])->update([
+                  'total_recibido' => $request->total_extraer,
+                ]);
+                //////////////// GASOLINA /////////////////////////////////
+                if (isset($value['lugar'][8]['gasolina'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->combustible = $value['lugar'][8]['gasolina'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][9]['gasolina'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->combustible = $value['lugar'][9]['gasolina'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][10]['gasolina'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->combustible = $value['lugar'][10]['gasolina'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][11]['gasolina'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->combustible = $value['lugar'][11]['gasolina'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][12]['gasolina'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->combustible = $value['lugar'][12]['gasolina'];
+                  $existe_lugar->save();
+                }
+                /////////////// HOSPEDAJE ///////////////////////////////////
+                if (isset($value['lugar'][8]['hospedaje'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->hospedaje = $value['lugar'][8]['hospedaje'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][9]['hospedaje'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->hospedaje = $value['lugar'][9]['hospedaje'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][10]['hospedaje'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->hospedaje = $value['lugar'][10]['hospedaje'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][11]['hospedaje'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->hospedaje = $value['lugar'][11]['hospedaje'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][12]['hospedaje'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->hospedaje = $value['lugar'][12]['hospedaje'];
+                  $existe_lugar->save();
+                }
+
+                ////////////////// COMIDA //////////////////////////////////
+                if (isset($value['lugar'][8]['comida'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->comida = $value['lugar'][8]['comida'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][9]['comida'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->comida = $value['lugar'][9]['comida'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][10]['comida'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->comida = $value['lugar'][10]['comida'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][11]['comida'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->comida = $value['lugar'][11]['comida'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][10]['comida'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->comida = $value['lugar'][10]['comida'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][12]['comida'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->comida = $value['lugar'][12]['comida'];
+                  $existe_lugar->save();
+                }
+
+                /////////////////////// DESAYUNO ////////////////////
+                if (isset($value['lugar'][8]['desayuno'])) {
+                  //dd('entro');
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->desayuno = $value['lugar'][8]['desayuno'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][9]['desayuno'])) {
+                  //dd('entro');
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->desayuno = $value['lugar'][9]['desayuno'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][10]['desayuno'])) {
+                  //dd('entro');
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->desayuno = $value['lugar'][10]['desayuno'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][11]['desayuno'])) {
+                  //dd('entro');
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->desayuno = $value['lugar'][11]['desayuno'];
+                  $existe_lugar->save();
+                }
+
+                if (isset($value['lugar'][12]['desayuno'])) {
+                  //dd('entro');
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->desayuno = $value['lugar'][12]['desayuno'];
+                  $existe_lugar->save();
+                }
+                ////////////////// CENA //////////////////////////////////////
+                if (isset($value['lugar'][8]['cena'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->cena = $value['lugar'][8]['cena'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][9]['cena'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->cena = $value['lugar'][9]['cena'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][10]['cena'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->cena = $value['lugar'][10]['cena'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][11]['cena'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->cena = $value['lugar'][11]['cena'];
+                  $existe_lugar->save();
+                }
+                if (isset($value['lugar'][12]['cena'])) {
+                  $existe_lugar = Lugares::find($lugares->id);
+                  $existe_lugar->cena = $value['lugar'][12]['cena'];
+                  $existe_lugar->save();
+                }
+
+            }
+          }else{
+            Lugares::where([
+               ['activo',1],
+               ['cve_t_viatico',$recibo->id]
+             ])->update([
+               'total_recibido' => $request->total_extraer,
+             ]);
+          }
+
 
 
           if (isset($request->VehiculoOficial)) {
@@ -685,13 +875,19 @@ class RecibosController extends Controller
           if (isset($request->Recorrido)) {
             foreach ($request->Recorrido as $key => $value) {
 
-              dd($value);
               $taxi = new TaxiTransporte();
-              $taxi->cve_peaje = $transporte->id;
-
-              $taxi->cve_t_transporte = $value['tipotransporte'];
-              $taxi->nombre = $value['peaje'];
-              $taxi->costo = $value['costo'];
+              $taxi->cve_t_transporte = $transporte->id;
+              $taxi->clasificacion_recorrido = $value['region'];
+              $taxi->name_calsificacion = $value['region_name'];
+              $taxi->cve_kilometraje_origen = $value['recorrido1'];
+              $taxi->name_kilometraje_origen = $value['name_recorrido'];
+              $taxi->cve_kilometraje_destino = $value['recorrido2'];
+              $taxi->name_kilometraje_destino = $value['name_recorrido2'];
+              $taxi->dia_adicional = $value['dia_adicional'];
+              $taxi->tarifa_evento = $value['tarifa_evento'];
+              $taxi->terifa_evento2 = $value['tarifa_evento2'];
+              $taxi->tarifa_adicional = $value['tarifa_adicional'];
+              $taxi->tarifa_adicional2 = $value['tarifa_adicional2'];
               $taxi->cve_usuario = Auth::user()->id;
               $taxi->save();
             }
@@ -709,57 +905,7 @@ class RecibosController extends Controller
           }
 
 
-          //dd($request->tablalugares);
-          if (isset($request->tablalugares)) {
-            foreach ($request->tablalugares as $key => $value) {
 
-                $lugares = new Lugares();
-                $lugares->remoto = 0;
-                $lugares->cve_t_viatico = $recibo->id;
-                $lugares->cve_localidad_origen = $value['lugar'][0]['origen'];
-                $lugares->cve_localidad_destino = $value['lugar'][1]['destino'];
-                $lugares->dias = $value['lugar'][6]['dias'];
-                $lugares->cve_zona = $value['lugar'][4]['zona'];
-                $lugares->kilometros = $value['lugar'][7]['kilometraje'];
-                $lugares->cve_programa = $request->programalugar;
-                $lugares->total_recibido = $request->total_extraer;
-                $lugares->cve_usuario =Auth::user()->id;
-                $lugares->save();
-
-                if (isset($value['lugar'][8]['gasolina'])) {
-                  $existe_lugar = Lugares::find($lugares->id);
-                  $existe_lugar->combustible = $value['lugar'][8]['gasolina'];
-                  $existe_lugar->save();
-                }
-
-                if (isset($value['lugar'][9]['hospedaje'])) {
-                  $existe_lugar = Lugares::find($lugares->id);
-                  $existe_lugar->hospedaje = $value['lugar'][9]['hospedaje'];
-                  $existe_lugar->save();
-                }
-
-                if (isset($value['lugar'][11]['comida'])) {
-                  $existe_lugar = Lugares::find($lugares->id);
-                  $existe_lugar->comida = $value['lugar'][11]['comida'];
-                  $existe_lugar->save();
-                }
-
-
-                if (isset($value['lugar'][10]['desayuno'])) {
-                  //dd('entro');
-                  $existe_lugar = Lugares::find($lugares->id);
-                  $existe_lugar->desayuno = $value['lugar'][10]['desayuno'];
-                  $existe_lugar->save();
-                }
-
-                if (isset($value['lugar'][12]['cena'])) {
-                  $existe_lugar = Lugares::find($lugares->id);
-                  $existe_lugar->cena = $value['lugar'][12]['cena'];
-                  $existe_lugar->save();
-                }
-
-            }
-          }
 
 
 
@@ -783,10 +929,122 @@ class RecibosController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show()
+    public function CambioDias(Request $request)
     {
-        return view('recibos::show');
+      $lugares = Lugares::find($request->id);
+      $lugares->dias = $request->dias;
+      $lugares->save();
+
+      return $lugares;
     }
+
+    public function CambioKilometraje(Request $request)
+    {
+      $lugares = Lugares::find($request->id);
+      $lugares->kilometros = $request->kilometraje;
+      $lugares->save();
+
+      return $lugares;
+    }
+
+
+
+    public function TraerDatosViaticoLugar(Request $request){
+      $lugares = Lugares::where([['activo',1],['cve_t_viatico',$request->id]])->get();
+
+
+      return $lugares;
+    }
+
+    public function TraerBorrarDatosViaticoLugar(Request $request){
+      $lugar = Lugares::find($request->id);
+      $lugar->activo = 0;
+      $lugar->save();
+
+
+
+      $lugares = Lugares::where([['activo',1],['cve_t_viatico',$request->id_recibo]])->get();
+      return $lugares;
+    }
+
+    public function TraerGasolinaDatosViaticoLugar(Request $request){
+      $lugar = Lugares::find($request->id);
+      $lugar->combustible = $request->gasolina;
+      $lugar->save();
+
+      $lugares = Lugares::where([['activo',1],['cve_t_viatico',$request->id_recibo]])->get();
+      return $lugares;
+    }
+
+    public function TraerHospedajeDatosViaticoLugar(Request $request){
+      $lugar = Lugares::find($request->id);
+      $lugar->hospedaje = $request->hospedaje;
+      $lugar->save();
+
+      $lugares = Lugares::where([['activo',1],['cve_t_viatico',$request->id_recibo]])->get();
+      return $lugares;
+    }
+
+    public function TraerDesayunoDatosViaticoLugar(Request $request){
+      $lugar = Lugares::find($request->id);
+      $lugar->desayuno = $request->desayuno;
+      $lugar->save();
+
+      $lugares = Lugares::where([['activo',1],['cve_t_viatico',$request->id_recibo]])->get();
+      return $lugares;
+    }
+
+    public function TraerComidaDatosViaticoLugar(Request $request){
+      $lugar = Lugares::find($request->id);
+      $lugar->comida = $request->comida;
+      $lugar->save();
+
+      $lugares = Lugares::where([['activo',1],['cve_t_viatico',$request->id_recibo]])->get();
+      return $lugares;
+    }
+
+    public function TraerCenaDatosViaticoLugar(Request $request){
+      $lugar = Lugares::find($request->id);
+      $lugar->cena = $request->cena;
+      $lugar->save();
+
+      $lugares = Lugares::where([['activo',1],['cve_t_viatico',$request->id_recibo]])->get();
+      return $lugares;
+    }
+
+    public function TraerGasolinaL(Request $request){
+      $gasolina = Gasolina::where('activo',1)->orderBy('id','DESC')->first();
+      return $gasolina;
+    }
+
+    public function TraerHospedajeL(Request $request){
+      $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
+      return $hospedaje;
+    }
+
+    public function TraerDesayunoL(Request $request){
+      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+      return $alimentos;
+    }
+
+    public function TraerComidaL(Request $request){
+      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+      return $alimentos;
+    }
+
+    public function TraerCenaL(Request $request){
+      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+      return $alimentos;
+    }
+
+
+
+
+
+
+
+
+
 
     public function recibo($id)
     {
@@ -940,7 +1198,7 @@ class RecibosController extends Controller
       $array_todo = [];
       $dato = $request->nivel;
       //////////////////////// ALIMENTOS ///////////////////////////////////////
-      $alimentos = Alimentos::orderBy('vigencia_final','Asc')->first();
+      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
       $array = [];
       $array_alimentos = [];
       foreach (range($alimentos->rango_inicia, $alimentos->rango_final) as $numero) {
@@ -959,7 +1217,7 @@ class RecibosController extends Controller
 
 
       ///////////////////////// HOSPEDAJE /////////////////////////////////////
-      $hospedaje = Hospedaje::orderBy('vigencia_final','Asc')->first();
+      $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
       $arrays = [];
       $array_hospedaje = [];
 
@@ -977,11 +1235,11 @@ class RecibosController extends Controller
         array_push($array_hospedaje,$hospedaje);
       }
       ///////////////////////// GASOLINA //////////////////////////////////////
-      $gasolina = Gasolina::orderBy('vigencia','Asc')->first();
+      $gasolina = Gasolina::orderBy('vigencia','DESC')->first();
 
 
       /////////////////////////////////////////////////////////////////////////
-
+      //dd($array_hospedaje);
       $array_todo = ['alimentos' => $array_alimentos,'gasolina' => $gasolina,'hospedaje' => $array_hospedaje];
 
       return $array_todo;
@@ -1306,7 +1564,15 @@ class RecibosController extends Controller
       $vhof->activo = 0;
       $vhof->save();
 
-      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+      $transporte = Transporte::find($vhof->cve_t_transporte);
+
+      $resta_total = $transporte->total_transporte - $vhof->gasolina_vh_oficial;
+
+      $transportes = Transporte::find($vhof->cve_t_transporte);
+      $transportes->total_transporte = $resta_total;
+      $transportes->save();
+
+      return $transportes->total_transporte;
     }
 
     public function borrarVH(Request $request){
@@ -1314,7 +1580,15 @@ class RecibosController extends Controller
       $vh->activo = 0;
       $vh->save();
 
-      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+      $transporte = Transporte::find($vh->cve_t_transporte);
+
+      $resta_total = $transporte->total_transporte - $vh->gasolina_vh_oficial;
+
+      $transportes = Transporte::find($vh->cve_t_transporte);
+      $transportes->total_transporte = $resta_total;
+      $transportes->save();
+
+      return $transportes->total_transporte;
     }
 
     public function borrarAutob(Request $request){
@@ -1322,7 +1596,15 @@ class RecibosController extends Controller
       $autobs->activo = 0;
       $autobs->save();
 
-      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+      $transporte = Transporte::find($autobs->cve_t_transporte);
+
+      $resta_total = $transporte->total_transporte - $autobs->costo_total;
+
+      $transportes = Transporte::find($autobs->cve_t_transporte);
+      $transportes->total_transporte = $resta_total;
+      $transportes->save();
+
+      return $transportes->total_transporte;
     }
 
     public function borrarAvion(Request $request){
@@ -1330,13 +1612,23 @@ class RecibosController extends Controller
       $avion->activo = 0;
       $avion->save();
 
-      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+      $transporte = Transporte::find($avion->cve_t_transporte);
+
+      $resta_total = $transporte->total_transporte - $avion->costo_total;
+
+      $transportes = Transporte::find($avion->cve_t_transporte);
+      $transportes->total_transporte = $resta_total;
+      $transportes->save();
+
+      return $transportes->total_transporte;
     }
 
     public function borrarTaxi(Request $request){
       $taxi = TaxiTransporte::find($request->id);
       $taxi->activo = 0;
       $taxi->save();
+
+
 
       return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
     }
@@ -1346,7 +1638,15 @@ class RecibosController extends Controller
       $peaje->activo = 0;
       $peaje->save();
 
-      return response()->json(['success'=>'Registro eliminado satisfactoriamente']);
+      $transporte = Transporte::find($peaje->cve_t_transporte);
+
+      $resta_total = $transporte->total_transporte - $peaje->costo;
+
+      $transportes = Transporte::find($peaje->cve_t_transporte);
+      $transportes->total_transporte = $resta_total;
+      $transportes->save();
+
+      return $transportes->total_transporte;
     }
 
     /**
@@ -1600,7 +1900,7 @@ class RecibosController extends Controller
         ['cve_t_viatico',$registros->id],
         ])->first();
 
-      return '$'.$lugarest->total_recibido;
+      return '$'.number_format($lugarest->total_recibido, 2, '.', ',');
     })
 
 

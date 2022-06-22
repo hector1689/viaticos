@@ -54,6 +54,29 @@ Route::prefix('recibos')->group(function() {
   Route::post('/borrarAvion', 'RecibosController@borrarAvion');
   Route::post('/borrarTaxi', 'RecibosController@borrarTaxi');
   Route::post('/borrarPeaje', 'RecibosController@borrarPeaje');
+  Route::post('/CambioDias', 'RecibosController@CambioDias');
+  Route::post('/TraerDatosViaticoLugar', 'RecibosController@TraerDatosViaticoLugar');
+  Route::post('/CambioKilometraje', 'RecibosController@CambioKilometraje');
+  Route::post('/TraerBorrarDatosViaticoLugar', 'RecibosController@TraerBorrarDatosViaticoLugar');
+  Route::post('/TraerGasolinaDatosViaticoLugar', 'RecibosController@TraerGasolinaDatosViaticoLugar');
+
+  Route::post('/TraerHospedajeDatosViaticoLugar', 'RecibosController@TraerHospedajeDatosViaticoLugar');
+  Route::post('/TraerDesayunoDatosViaticoLugar', 'RecibosController@TraerDesayunoDatosViaticoLugar');
+  Route::post('/TraerComidaDatosViaticoLugar', 'RecibosController@TraerComidaDatosViaticoLugar');
+  Route::post('/TraerCenaDatosViaticoLugar', 'RecibosController@TraerCenaDatosViaticoLugar');
+  Route::post('/TraerGasolinaL', 'RecibosController@TraerGasolinaL');
+  Route::post('/TraerHospedajeL', 'RecibosController@TraerHospedajeL');
+  Route::post('/TraerDesayunoL', 'RecibosController@TraerDesayunoL');
+  Route::post('/TraerComidaL', 'RecibosController@TraerComidaL');
+  Route::post('/TraerCenaL', 'RecibosController@TraerCenaL');
+
+
+
+
+
+
+
+
 
 
 
