@@ -5319,6 +5319,11 @@ function cantidadletra(){
     //var tabla_lugares = arrayTablaLugares;
 
     //console.log(tabla_lugares)
+
+    if (rfc == '' || clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == '' || n_dias_ina == '' || descripcion == '' || cheque_firma == '' || cheque == ''
+    || fecha_pago == '' || cantidad == '' || kilometrorecorrido == '' || especificarcomision == '' || programavehiculof == '') {
+      Swal.fire("Lo Sentimos", 'Llenar los campos obligatorios', "warning");
+    }else{
       $.ajax({
 
              type:"POST",
@@ -5425,6 +5430,8 @@ function cantidadletra(){
 
               }
         });
+    }
+
 
   }
 
