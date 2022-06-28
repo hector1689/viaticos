@@ -8,7 +8,7 @@
     <!--begin::Login Header-->
     <div class="d-flex flex-center mb-15">
       <a href="#">
-        <img src="/admin/assets/media/bg/logo-educacionV2.png" class="max-h-75px" height="200" width="300" alt=""/>
+        <img src="/admin/assets/media/bg/logo-educacionV2.png"  width="300" alt=""/>
       </a>
     </div>
     <!--end::Login Header-->
