@@ -71,7 +71,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-6">
                 <label class="checkbox">
                     <input type="checkbox" name="page" >
@@ -82,7 +82,7 @@
               <div class="col-md-6">
 
               </div>
-            </div>
+            </div> -->
             <div role="separator" class="dropdown-divider"></div>
             <div class="row">
               <div class="col-md-6">

@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Auth;
 use \Modules\Catalogos\Entities\Folios;
 use \Modules\Catalogos\Entities\Areas;
+use \Modules\Usuarios\Entities\Asociar;
 use \Modules\Catalogos\Entities\Personal_Siti;
 use \Modules\Catalogos\Entities\TablaFolios;
 use \Modules\Catalogos\Entities\Departamento_Firmantes;
@@ -44,11 +45,21 @@ class FolioController extends Controller
      */
     public function create()
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        //$data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
+        $data['usuarios'] = User::where([['activo',1]])->get();
+        $data['areas'] = Areas::where([['activo',1]])->get();
+          return view('catalogos::folios.create')->with($data);
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+        $data['usuarios'] = User::where([['activo',1]])->get();
+        $data['areas'] = Areas::where([['activo',1],['id',$area]])->get();
+          return view('catalogos::folios.create')->with($data);
+      }
 
 
-      $data['usuarios'] = User::where([['activo',1]])->get();
-      $data['areas'] = Areas::where([['activo',1]])->get();
-        return view('catalogos::folios.create')->with($data);
     }
 
     /**

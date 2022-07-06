@@ -17,6 +17,7 @@ use \Modules\Catalogos\Entities\Areas;
 use \Modules\Catalogos\Entities\Personal_Siti;
 use \Modules\Catalogos\Entities\Siti;
 use \Modules\Catalogos\Entities\Personal_Departamento;
+use \Modules\Usuarios\Entities\Asociar;
 use \DB;
 class ComisionadosController extends Controller
 {
@@ -67,65 +68,163 @@ public function index()
  * Show the form for creating a new resource.
  * @return Response
  */
+
+
+
  ////////////////////// NUEVO CODIGO ////////////////////////////////////
  public function buscaAreas($id = 0, $filtra_roles = 0, $cve_cat_tipo, $permitidas = 0) {
 
-     $usuario    = Auth::user();
-     $id_usuario = $usuario->id;
-
-     $lista_areas = [];
 
 
-       // $itemUser  = Usuario::where('cve_usuario_unico',Auth::user()->id)->where('activo',1)->first();
+     $soloNiv2 = false; $tabla = 0;
 
-         // if($cve_cat_tipo!='' && $cve_cat_tipo !='0'){
-         //   $arrayTipos = explode(",", $cve_cat_tipo);
-         //   //dd($arrayTipos);
-         //   $registros = Areas::where('activo', 1)
-         //                         ->where('id_rama','=', $itemUser->cve_cat_dependencia)
-         //                         ->whereIn('id_tipo','=', $arrayTipos)
-         //                         ->get();
-         //                         dd($registros);
-         //
-         // }else{
-           //dd('entro');
-           // $table = getenv('PREFIJO_AMBIENTE') . "ms036";
-           // $tables = getenv('PREFIJO_AMBIENTE') . "ms011";
-           $registros = Areas::leftjoin('cat_personal_jefes','cat_personal_jefes.cve_cat_deptos_siti','=','cat_area_departamentos.id')->
-           select(
-             'cat_area_departamentos.id',
-             'cat_area_departamentos.id_padre',
-             'cat_area_departamentos.nivel',
-             'cat_area_departamentos.nombre',
-             'cat_area_departamentos.corto',
-             'cat_area_departamentos.clave',
-             'cat_area_departamentos.centro_gestor',
-             'cat_area_departamentos.activo',
-             'cat_area_departamentos.id_tipo',
-             'cat_personal_jefes.nombre_empleado',
-             'cat_personal_jefes.apellido_p_empleado',
-             'cat_personal_jefes.apellido_m_empleado'
-             )->
-           where([['cat_area_departamentos.activo', 1],['cat_area_departamentos.id_rama','=', 1],['cat_personal_jefes.activo','=', 1]])->get();
+     if (Auth::user()->tipo_usuario == 4) {
 
-           //dd($registros);
-         // }
 
-       $data['rol'] = 'ADMINDEPENDENCIA';
-     $id_padre = null;
-     //dd($registros);
-     foreach ($registros as $key => $value) {
+       $registros = Areas::leftjoin('cat_personal_jefes','cat_personal_jefes.cve_cat_deptos_siti','=','cat_area_departamentos.id')->
+       select(
+         'cat_area_departamentos.id',
+         'cat_area_departamentos.id_padre',
+         'cat_area_departamentos.nivel',
+         'cat_area_departamentos.nombre',
+         'cat_area_departamentos.corto',
+         'cat_area_departamentos.clave',
+         'cat_area_departamentos.centro_gestor',
+         'cat_area_departamentos.activo',
+         'cat_area_departamentos.id_tipo',
+         'cat_personal_jefes.nombre_empleado',
+         'cat_personal_jefes.apellido_p_empleado',
+         'cat_personal_jefes.apellido_m_empleado'
+         )->where([['cat_area_departamentos.activo', 1],['cat_area_departamentos.id_rama','=', 1],['cat_personal_jefes.activo','=', 1]])->get();
 
-         $id_padre = $value->id_padre;
-                 $areas [] = $this->crea_arreglo($value, 0);
 
-     }
-     //dd($areas);
-     if(isset($areas)){
-       return array($areas, '');
-     } else {
-       $areas = [];
-       return array($areas,'');
+
+           $data['rol'] = 'ADMINDEPENDENCIA';
+         $id_padre = null;
+         //dd($registros);
+         foreach ($registros as $key => $value) {
+
+             $id_padre = $value->id_padre;
+                     $areas [] = $this->crea_arreglo($value, 0);
+
+         }
+         //dd($areas);
+         if(isset($areas)){
+           return array($areas, '');
+         } else {
+           $areas = [];
+           return array($areas,'');
+         }
+     }else{
+       $usuario    = Auth::user();
+       $id_usuario = $usuario->id;
+       $usuario_asociado = Asociar::where('id_usuario',$id_usuario)->first();
+
+       $reg = Areas::find($usuario_asociado->id_dependencia);
+
+         $id_reg = 0;
+         $id_est = 0;
+         $nivel1 = [];
+         $nivel2 = [];
+         $nivel3 = [];
+         $nivel4 = [];
+         $nivel5 = [];
+
+
+         if($reg) {
+             $nivel  = $reg->nivel;
+
+
+             $id_reg = $reg->id ;   // cve_t_estructura;
+             $id_est = $reg->id;
+             //dd($id_reg,$nivel);
+             if ($nivel == 1) {
+                 $id_reg = $reg->id;
+                 // $id_est = $reg->id;
+                 $data = [];
+                 $regs = Areas::where([ ['activo', 1], ['id', $id_reg] ])->get();
+                 foreach ($regs as $key => $value) {
+                     $data [] = [ 'id' => $value->id, 'valor' => $value->id_padre , 'tipo' => $value->id_tipo ];
+
+                     array_push($nivel1,$value->id);
+
+
+
+                       $regs2 = Areas::where([ ['activo', 1], ['id_padre', $reg->id] , ['nivel', 2] ])->get();
+                       foreach ($regs2 as $key => $value2) {
+                           array_push($nivel1,$value2->id);
+                       }
+
+
+
+                       $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', 3] ])->get();
+                       foreach ($regs3 as $key => $value3) {
+                           array_push($nivel1,$value3->id);
+                       }
+
+
+
+
+                       $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
+                       foreach ($regs4 as $key => $value4) {
+                           array_push($nivel1,$value4->id);
+                       }
+
+
+
+                       $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
+                       foreach ($regs5 as $key => $value5) {
+                           array_push($nivel1,$value5->id);
+                       }
+                     
+
+
+                 }
+             }
+
+       }
+
+
+       $lista_areas = [];
+
+             $usuario_asociado = Asociar::where('id_usuario',$id_usuario)->first();
+
+             $registros = Areas::leftjoin('cat_personal_jefes','cat_personal_jefes.cve_cat_deptos_siti','=','cat_area_departamentos.id')->
+             select(
+               'cat_area_departamentos.id',
+               'cat_area_departamentos.id_padre',
+               'cat_area_departamentos.nivel',
+               'cat_area_departamentos.nombre',
+               'cat_area_departamentos.corto',
+               'cat_area_departamentos.clave',
+               'cat_area_departamentos.centro_gestor',
+               'cat_area_departamentos.activo',
+               'cat_area_departamentos.id_tipo',
+               'cat_personal_jefes.nombre_empleado',
+               'cat_personal_jefes.apellido_p_empleado',
+               'cat_personal_jefes.apellido_m_empleado'
+               )->where([['cat_area_departamentos.activo', 1],['cat_area_departamentos.id_rama','=', 1],['cat_personal_jefes.activo','=', 1]])->whereIN('cat_area_departamentos.id',$nivel1)->get();
+
+           //dd($registros); ->whereIN('cat_area_departamentos.id',$nivel1)
+           // }
+
+         $data['rol'] = 'ADMINDEPENDENCIA';
+       $id_padre = null;
+       //dd($registros);
+       foreach ($registros as $key => $value) {
+
+           $id_padre = $value->id_padre;
+                   $areas [] = $this->crea_arreglo($value, 0);
+
+       }
+       //dd($areas);
+       if(isset($areas)){
+         return array($areas, '');
+       } else {
+         $areas = [];
+         return array($areas,'');
+       }
+
      }
 
 
