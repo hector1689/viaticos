@@ -162,21 +162,25 @@ public function index()
                            array_push($nivel1,$value3->id);
                        }
 
+                       if (isset($value3->id)) {
+                         $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
+                         foreach ($regs4 as $key => $value4) {
+                             array_push($nivel1,$value4->id);
+                         }
+                       }
 
-
-
-                       $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
-                       foreach ($regs4 as $key => $value4) {
-                           array_push($nivel1,$value4->id);
+                       if (isset($value4->id)) {
+                         $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
+                         foreach ($regs5 as $key => $value5) {
+                             array_push($nivel1,$value5->id);
+                         }
                        }
 
 
 
-                       $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
-                       foreach ($regs5 as $key => $value5) {
-                           array_push($nivel1,$value5->id);
-                       }
-                     
+
+
+
 
 
                  }
