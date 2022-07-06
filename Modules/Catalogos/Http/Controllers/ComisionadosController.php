@@ -147,47 +147,38 @@ public function index()
                      $data [] = [ 'id' => $value->id, 'valor' => $value->id_padre , 'tipo' => $value->id_tipo ];
 
                      array_push($nivel1,$value->id);
-
-
-                     if (isset($reg->id)) {
-                       $regs2 = Areas::where([ ['activo', 1], ['id_padre', $reg->id] , ['nivel', 2] ])->get();
-                       foreach ($regs2 as $key => $value2) {
-                           array_push($nivel1,$value2->id);
-                       }
-                     }
-
-
-
-                       if (isset($value2->id)) {
-                         $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', 3] ])->get();
-                         foreach ($regs3 as $key => $value3) {
-                             array_push($nivel1,$value3->id);
-                         }
-                       }
-
-
-                       if (isset($value3->id)) {
-                         $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
-                         foreach ($regs4 as $key => $value4) {
-                             array_push($nivel1,$value4->id);
-                         }
-                       }
-
-                       if (isset($value4->id)) {
-                         $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
-                         foreach ($regs5 as $key => $value5) {
-                             array_push($nivel1,$value5->id);
-                         }
-                       }
-
-
-
-
-
-
-
-
                  }
+
+                 if (isset($reg->id)) {
+                   $regs2 = Areas::where([ ['activo', 1], ['id_padre', $reg->id] , ['nivel', 2] ])->get();
+                   foreach ($regs2 as $key => $value2) {
+                       array_push($nivel1,$value2->id);
+                   }
+                 }
+
+
+
+                   if (isset($value2->id)) {
+                     $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', 3] ])->get();
+                     foreach ($regs3 as $key => $value3) {
+                         array_push($nivel1,$value3->id);
+                     }
+                   }
+
+
+                   if (isset($value3->id)) {
+                     $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
+                     foreach ($regs4 as $key => $value4) {
+                         array_push($nivel1,$value4->id);
+                     }
+                   }
+
+                   if (isset($value4->id)) {
+                     $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
+                     foreach ($regs5 as $key => $value5) {
+                         array_push($nivel1,$value5->id);
+                     }
+                   }
              }
 
        }
