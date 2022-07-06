@@ -46,7 +46,7 @@ class UsuariosController extends Controller
     public function create()
     {
 
-      $data['roles'] = Roles::all();
+      $data['roles'] = Roles::where('id','!=',4)->get();
 
       return view('usuarios::create')->with($data);
     }
