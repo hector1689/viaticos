@@ -81,7 +81,6 @@ class RecibosController extends Controller
         $data['taxi'] = Taxi::where('activo',1)->get();
         $data['lacalidad1'] = Localidad::where('activo',1)->get();
         $data['lacalidad2'] = Localidad::where('activo',1)->get();
-
         return view('recibos::create')->with($data);
     }
 
@@ -1868,8 +1867,9 @@ class RecibosController extends Controller
     //dd('entro');
 
     $tipo_usuario = Auth::user()->tipo_usuario;
-
-    if($tipo_usuario == 1){
+    if($tipo_usuario == 4){
+      $registros = Recibos::where('activo', 1);
+    }else if($tipo_usuario == 1){
       $registros = Recibos::where('activo', 1);
     }elseif($tipo_usuario == 2){
       $id = Auth::user()->id;
@@ -1910,8 +1910,63 @@ class RecibosController extends Controller
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
 
-
-        if (Auth::user()->tipo_usuario == 1) {
+      if (Auth::user()->tipo_usuario == 4) {
+        $acciones = [
+           "Editar" => [
+             "icon" => "edit blue",
+             "href" => "/recibos/$value->id/edit"
+           ],
+          //
+          // "Ver" => [
+          //   "icon" => "fas fa-circle",
+          //   "href" => "/recibos/$value->id/show"
+          // ],
+          "Finiquitar Provisional" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "finiquitarP($value->id)"
+          ],
+          "Finiquitar" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "finiquitar($value->id)"
+          ],
+          "Cancelar" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "baja($value->id)"
+          ],
+          "Recibo Complementario" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/recibo"
+          ],
+          "Comprobaciones" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/comprobantes"
+          ],
+          "Imprimir Recibo" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/imprimir"
+          ],
+          "Oficio de Comisión" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/oficio"
+          ],
+          "Especificación de Comisión" => [
+            "icon" => "fas fa-circle",
+            "href" => "/recibos/$value->id/especificacioncomision"
+          ],
+          "Turnar" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "turnar($value->id)"
+          ],
+          "Autorizar" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "autorizar($value->id)"
+          ],
+          "Eliminar" => [
+            "icon" => "fas fa-circle",
+            "onclick" => "eliminar($value->id)"
+          ],
+        ];
+      }else if (Auth::user()->tipo_usuario == 1) {
           $acciones = [
              "Editar" => [
                "icon" => "edit blue",
