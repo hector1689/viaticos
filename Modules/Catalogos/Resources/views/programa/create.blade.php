@@ -26,6 +26,27 @@
           </div>
         </div>
 
+        @isset($area)
+        <div class="row">
+          <div class="col-md-6">
+            <label for="">Dependencia</label>
+            <select class="form-control" id="area" >
+              @isset($programas)
+              <option value="{{$programas->id_dependencia}}">{{$programas->obtenerDependencia->nombre}}</option>
+              @else
+              <option value="0">Seleccionar</option>
+              @endisset
+
+              @foreach($area as $ar)
+              <option value="{{ $ar->id }}">{{ $ar->nombre }}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        @else
+
+        @endisset
+
 
 
 </div>
@@ -57,6 +78,10 @@ function guardar(){
 
     @isset($programas)
     formData.append('id',{{ $programas->id }});
+    @endisset
+    @isset($area)
+    var area = $('#area').val();
+    formData.append('area',area);
     @endisset
     formData.append('nombre', nombre);
 

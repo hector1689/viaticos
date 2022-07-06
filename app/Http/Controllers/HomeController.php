@@ -26,7 +26,50 @@ class HomeController extends Controller
 
       $tipo_usuario = Auth::user()->tipo_usuario;
 
-      if($tipo_usuario == 1){
+      if($tipo_usuario == 4){
+        $data['capturados'] = Recibos::where([
+        ['activo',1],
+        ['cve_estatus',1]
+        ])->count();
+        $data['proceso'] = Recibos::where([
+        ['activo',1],
+        ['cve_estatus',2]
+        ])->count();
+        $data['finiquitado'] = Recibos::where([
+        ['activo',1],
+        ['cve_estatus',4]
+        ])->count();
+        $data['pendiente'] = Recibos::where([
+        ['activo',1],
+        ['cve_estatus',7]
+        ])->count();
+        $data['tipo_usuario'] = $tipo_usuario;
+        ////////////////////////////////////////////////////////////////
+        $query ="
+        SELECT
+        *
+        FROM cat_area_departamentos where activo = 1 ";
+        $cursoss = DB::select($query);
+
+        $nombre_cursos = [];
+        $numero_cursos = [];
+
+        $data1 = array();
+        $data2 = array();
+
+
+        foreach ($cursoss as $key => $value) {
+
+          //$value->nombre_curso;
+
+          $data1[] = $value->nombre;
+          $data2[] = $key;
+          array_push($nombre_cursos,$value->nombre.',');
+          array_push($numero_cursos,$key.',');
+        }
+          $data['data1'] = $data1;
+          $data['id_cursos'] = Recibos::where([['activo',1]])->select('id_dependencia')->orderby('id','asc')->get();
+      }elseif($tipo_usuario == 1){
         $data['capturados'] = Recibos::where([
         ['activo',1],
         ['cve_estatus',1]
@@ -194,7 +237,9 @@ class HomeController extends Controller
 
       $tipo_usuario = Auth::user()->tipo_usuario;
 
-      if($tipo_usuario == 1){
+      if($tipo_usuario == 4){
+        $registros = Recibos::where('activo', 1)->take(5)->orderBy('id','ASC')->get();
+      }elseif($tipo_usuario == 1){
         $registros = Recibos::where('activo', 1)->take(5)->orderBy('id','ASC')->get();
       }elseif($tipo_usuario == 2){
         $id = Auth::user()->id;

@@ -11,6 +11,7 @@ class Gasolina extends Model{
     "cve_tipo_gasolina",
     "anio",
     "mes",
+    'id_dependencia',
     "precio_litro",
     "vigencia",
     "activo",
@@ -18,6 +19,10 @@ class Gasolina extends Model{
 
   public function obteneGasolina(){
     return $this->hasOne('\Modules\Catalogos\Entities\TipoGasolina', 'id', 'cve_tipo_gasolina');
+  }
+
+  public function obtenerDependencia(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Areas', 'id', 'id_dependencia');
   }
 
 }

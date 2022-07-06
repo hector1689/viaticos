@@ -35,7 +35,7 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-       $data['areas'] = Areas::where('activo',1)->get();
+       $data['areas'] = Areas::where([['activo',1],['id_padre',0]])->get();
         return view('usuarios::index')->with($data);
     }
 
@@ -237,7 +237,10 @@ class UsuariosController extends Controller
     public function tablausuarios(){
       setlocale(LC_TIME, 'es_ES');
       \DB::statement("SET lc_time_names = 'es_ES'");
-      $registros = User::where('activo', 1); //user es una entidad que se trae desde la app
+      $registros = User::where([
+        ['activo', 1],
+        ['tipo_usuario','!=',4]
+    ]);
       $datatable = DataTables::of($registros)
       ->editColumn('tipo_usuario', function ($registros) {
         return $registros->obtenerUser->name;//relacion
@@ -247,49 +250,79 @@ class UsuariosController extends Controller
       $data = $datatable->getData();
       foreach ($data->data as $key => $value) { //el array acciones se constuye en el helpers dropdown - helpers esta con bootsrap
 
-        if(Auth::user()->can(['editar usuario','eliminar usuario'])){
-          $acciones = [
-            "Editar" => [
-              "icon" => "edit blue",
-              "href" => "/usuarios/$value->id/edit" //esta ruta esta en el archivo web
-            ],
-            "Asociar" => [
-              "icon" => "edit blue",
-              "onclick" => "asociar($value->id)"
-            ],
-            "Login as" => [ "onclick" => "as('$value->id')" ],
-            "Eliminar" => [
-              "icon" => "edit blue",
-              "onclick" => "eliminar($value->id)"
-            ],
-          ];
-        }else if(Auth::user()->can('eliminar usuario')){
-          $acciones = [
-            "Eliminar" => [
-              "icon" => "edit blue",
-              "onclick" => "eliminar($value->id)"
-            ],
-            "Asociar" => [
-              "icon" => "edit blue",
-              "onclick" => "asociar($value->id)"
-            ],
-          ];
-        }else if(Auth::user()->can('editar usuario')){
-          $acciones = [
-            "Editar" => [
-              "icon" => "edit blue",
-              "href" => "/usuarios/$value->id/edit" //esta ruta esta en el archivo web
-            ],
-            "Asociar" => [
-              "icon" => "edit blue",
-              "onclick" => "asociar($value->id)"
-            ],
-          ];
-        }else{
-          $acciones = [
+        if ($value->tipo_usuario == 'Administrador') {
+          if(Auth::user()->can(['editar usuario','eliminar usuario'])){
+            $acciones = [
+              "Editar" => [
+                "icon" => "edit blue",
+                "href" => "/usuarios/$value->id/edit" //esta ruta esta en el archivo web
+              ],
+              "Asociar" => [
+                "icon" => "edit blue",
+                "onclick" => "asociar($value->id)"
+              ],
+              "Login as" => [ "onclick" => "as('$value->id')" ],
+              "Eliminar" => [
+                "icon" => "edit blue",
+                "onclick" => "eliminar($value->id)"
+              ],
+            ];
+          }else if(Auth::user()->can('eliminar usuario')){
+            $acciones = [
+              "Eliminar" => [
+                "icon" => "edit blue",
+                "onclick" => "eliminar($value->id)"
+              ],
+            ];
+          }else if(Auth::user()->can('editar usuario')){
+            $acciones = [
+              "Editar" => [
+                "icon" => "edit blue",
+                "href" => "/usuarios/$value->id/edit" //esta ruta esta en el archivo web
+              ],
 
-          ];
+            ];
+          }else{
+            $acciones = [
+
+            ];
+          }
+        }else{
+          if(Auth::user()->can(['editar usuario','eliminar usuario'])){
+            $acciones = [
+              "Editar" => [
+                "icon" => "edit blue",
+                "href" => "/usuarios/$value->id/edit" //esta ruta esta en el archivo web
+              ],
+              "Login as" => [ "onclick" => "as('$value->id')" ],
+              "Eliminar" => [
+                "icon" => "edit blue",
+                "onclick" => "eliminar($value->id)"
+              ],
+            ];
+          }else if(Auth::user()->can('eliminar usuario')){
+            $acciones = [
+              "Eliminar" => [
+                "icon" => "edit blue",
+                "onclick" => "eliminar($value->id)"
+              ],
+            ];
+          }else if(Auth::user()->can('editar usuario')){
+            $acciones = [
+              "Editar" => [
+                "icon" => "edit blue",
+                "href" => "/usuarios/$value->id/edit" //esta ruta esta en el archivo web
+              ],
+
+            ];
+          }else{
+            $acciones = [
+
+            ];
+          }
         }
+
+
 
 
 

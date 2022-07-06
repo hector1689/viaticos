@@ -12,8 +12,13 @@ class Rendimiento extends Model{
     "kilometros_litros",
     "descripcion",
     "activo",
+    'id_dependencia',
     "cve_usuario",
   ];
+
+  public function obtenerDependencia(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Areas', 'id', 'id_dependencia');
+  }
 
 
 }

@@ -161,36 +161,58 @@ class HospedajeController extends Controller
     //Cueri
     $data = $datatable->getData();
     foreach ($data->data as $key => $value) {
-      if(Auth::user()->can(['editar hospedaje','eliminar hospedaje'])){
-        $acciones = [
-           "Editar" => [
-             "icon" => "edit blue",
-             "href" => "/catalogos/hospedaje/$value->id/edit"
-           ],
-          "Eliminar" => [
-            "icon" => "edit blue",
-            "onclick" => "eliminar($value->id)"
-          ],
-        ];
-      }else if(Auth::user()->can('eliminar hospedaje')){
-        $acciones = [
-          "Eliminar" => [
-            "icon" => "edit blue",
-            "onclick" => "eliminar($value->id)"
-          ],
-        ];
-      }else if(Auth::user()->can('editar hospedaje')){
-        $acciones = [
-           "Editar" => [
-             "icon" => "edit blue",
-             "href" => "/catalogos/hospedaje/$value->id/edit"
-           ],
-        ];
-      }else{
-        $acciones = [
 
-        ];
+      $tipo_usuario = Auth::user()->tipo_usuario;
+
+      if($tipo_usuario == 4){
+        if(Auth::user()->can(['editar hospedaje','eliminar hospedaje'])){
+          $acciones = [
+             "Editar" => [
+               "icon" => "edit blue",
+               "href" => "/catalogos/hospedaje/$value->id/edit"
+             ],
+            "Eliminar" => [
+              "icon" => "edit blue",
+              "onclick" => "eliminar($value->id)"
+            ],
+          ];
+        }else if(Auth::user()->can('eliminar hospedaje')){
+          $acciones = [
+            "Eliminar" => [
+              "icon" => "edit blue",
+              "onclick" => "eliminar($value->id)"
+            ],
+          ];
+        }else if(Auth::user()->can('editar hospedaje')){
+          $acciones = [
+             "Editar" => [
+               "icon" => "edit blue",
+               "href" => "/catalogos/hospedaje/$value->id/edit"
+             ],
+          ];
+        }else{
+          $acciones = [
+
+          ];
+        }
+      }else{
+        
+        if(Auth::user()->can('editar hospedaje')){
+          $acciones = [
+             "Editar" => [
+               "icon" => "edit blue",
+               "href" => "/catalogos/hospedaje/$value->id/edit"
+             ],
+          ];
+        }else{
+          $acciones = [
+
+          ];
+        }
       }
+
+
+
 
 
 

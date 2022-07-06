@@ -9,6 +9,8 @@ use Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use \Modules\Catalogos\Entities\Peaje;
+use \Modules\Catalogos\Entities\Areas;
+use \Modules\Usuarios\Entities\Asociar;
 use Yajra\Datatables\Datatables;
 use \DB;
 class PeajeController extends Controller
@@ -37,7 +39,15 @@ class PeajeController extends Controller
      */
     public function create()
     {
-        return view('catalogos::peaje.create');
+
+        if (Auth::user()->tipo_usuario == 4) {
+          $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
+          return view('catalogos::peaje.create')->with($data);
+        }else{
+          return view('catalogos::peaje.create');
+        }
+
+
     }
 
     /**
@@ -51,10 +61,20 @@ class PeajeController extends Controller
         list($dia,$mes,$anio)=explode('/',$request->vigencia);
         $fecha1 = $anio.'-'.$mes.'-'.$dia;
 
+        if(isset($request->area)){
+          $area = $request->area;
+        }else{
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
+        }
+
+
         $peaje = new Peaje();
         $peaje->ubicacion_peaje = $request->ubicacion_peaje;
         $peaje->costo = $request->costo;
         $peaje->vigencia = $fecha1;
+        $peaje->id_dependencia = $area;
         $peaje->cve_usuario = Auth::user()->id;
         $peaje->save();
 
@@ -82,8 +102,15 @@ class PeajeController extends Controller
      */
     public function edit($id)
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
         $data['peaje'] = Peaje::find($id);
         return view('catalogos::peaje.create')->with($data);
+      }else{
+        $data['peaje'] = Peaje::find($id);
+        return view('catalogos::peaje.create')->with($data);
+      }
+
     }
 
     /**
@@ -98,10 +125,19 @@ class PeajeController extends Controller
         list($dia,$mes,$anio)=explode('/',$request->vigencia);
         $fecha1 = $anio.'-'.$mes.'-'.$dia;
 
+        if(isset($request->area)){
+          $area = $request->area;
+        }else{
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
+        }
+
         $peaje = Peaje::find($request->id);
         $peaje->ubicacion_peaje = $request->ubicacion_peaje;
         $peaje->costo = $request->costo;
         $peaje->vigencia = $fecha1;
+        $peaje->id_dependencia = $area;
         $peaje->cve_usuario = Auth::user()->id;
         $peaje->save();
 
@@ -132,7 +168,15 @@ class PeajeController extends Controller
      setlocale(LC_TIME, 'es_ES');
      \DB::statement("SET lc_time_names = 'es_ES'");
      //dd('entro');
-     $registros = Peaje::where('activo', 1); //Conocenos es la entidad
+     if (Auth::user()->tipo_usuario == 4) {
+       $registros = Peaje::where([['activo', 1]]);
+     }else{
+       $usuario = Auth::user()->id;
+       $asociar = Asociar::where('id_usuario',$usuario)->first();
+
+       $registros = Peaje::where([['activo', 1],['id_dependencia',$asociar->id_dependencia]]);
+     }
+     //$registros = Peaje::where('activo', 1); //Conocenos es la entidad
      $datatable = DataTables::of($registros)
      // ->editColumn('cve_tipo_gasolina', function ($registros) {
      //

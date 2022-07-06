@@ -12,6 +12,7 @@ class Localidad extends Model{
     "cve_estado",
     "cve_municipio",
     "localidad",
+    'id_dependencia',
     "activo",
     "cve_usuario",
   ];
@@ -28,5 +29,9 @@ class Localidad extends Model{
 
   public function obteneMunicipio(){
     return $this->hasOne('\Modules\Catalogos\Entities\Municipio', 'id', 'cve_municipio');
+  }
+
+  public function obtenerDependencia(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Areas', 'id', 'id_dependencia');
   }
 }

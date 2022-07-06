@@ -10,8 +10,8 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Yajra\Datatables\Datatables;
 use \Modules\Catalogos\Entities\Vehiculos;
-
-
+use \Modules\Catalogos\Entities\Areas;
+use \Modules\Usuarios\Entities\Asociar;
 use \DB;
 class VehiculosController extends Controller
 {
@@ -40,7 +40,15 @@ class VehiculosController extends Controller
     public function create()
     {
 
-        return view('catalogos::vehiculos.create');
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
+        return view('catalogos::vehiculos.create')->with($data);
+      }else{
+          return view('catalogos::vehiculos.create');
+      }
+
+
+
     }
 
     /**
@@ -52,6 +60,14 @@ class VehiculosController extends Controller
     {
       try {
 
+        if(isset($request->area)){
+          $area = $request->area;
+        }else{
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
+        }
+
 
         $vehiculos = new Vehiculos();
         $vehiculos->num_oficial = $request->num_oficial;
@@ -59,6 +75,7 @@ class VehiculosController extends Controller
         $vehiculos->modelo = $request->modelo;
         $vehiculos->tipo = $request->tipo;
         $vehiculos->placas = $request->placas;
+        $vehiculos->id_dependencia = $area;
         $vehiculos->cilindraje = $request->cilindraje;
         $vehiculos->cve_usuario = Auth::user()->id;
         $vehiculos->save();
@@ -88,8 +105,15 @@ class VehiculosController extends Controller
      */
     public function edit($id)
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
         $data['vehiculos'] = Vehiculos::find($id);
         return view('catalogos::vehiculos.create')->with($data);
+      }else{
+        $data['vehiculos'] = Vehiculos::find($id);
+        return view('catalogos::vehiculos.create')->with($data);
+      }
+
     }
 
     /**
@@ -102,11 +126,20 @@ class VehiculosController extends Controller
     {
         try {
 
+          if(isset($request->area)){
+            $area = $request->area;
+          }else{
+            $usuario = Auth::user()->id;
+            $asociar = Asociar::where('id_usuario',$usuario)->first();
+            $area = $asociar->id_dependencia;
+          }
+
           $vehiculos =  Vehiculos::find($request->id);
           $vehiculos->num_oficial = $request->num_oficial;
           $vehiculos->marca = $request->marca;
           $vehiculos->modelo = $request->modelo;
           $vehiculos->tipo = $request->tipo;
+          $vehiculos->id_dependencia = $area;
           $vehiculos->placas = $request->placas;
           $vehiculos->cilindraje = $request->cilindraje;
           $vehiculos->cve_usuario = Auth::user()->id;
@@ -145,7 +178,15 @@ class VehiculosController extends Controller
     setlocale(LC_TIME, 'es_ES');
     \DB::statement("SET lc_time_names = 'es_ES'");
     //dd('entro');
-    $registros = Vehiculos::where('activo', 1); //Conocenos es la entidad
+    if (Auth::user()->tipo_usuario == 4) {
+      $registros = Vehiculos::where([['activo', 1]]);
+    }else{
+      $usuario = Auth::user()->id;
+      $asociar = Asociar::where('id_usuario',$usuario)->first();
+
+      $registros = Vehiculos::where([['activo', 1],['id_dependencia',$asociar->id_dependencia]]);
+    }
+    //$registros = Vehiculos::where('activo', 1); //Conocenos es la entidad
     $datatable = DataTables::of($registros)
 
     ->make(true);

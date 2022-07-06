@@ -9,6 +9,8 @@ use Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use \Modules\Catalogos\Entities\Rendimiento;
+use \Modules\Catalogos\Entities\Areas;
+use \Modules\Usuarios\Entities\Asociar;
 use Yajra\Datatables\Datatables;
 use \DB;
 class RendimientoController extends Controller
@@ -37,7 +39,14 @@ class RendimientoController extends Controller
      */
     public function create()
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
+        return view('catalogos::rendimiento.create')->with($data);
+      }else{
         return view('catalogos::rendimiento.create');
+      }
+
+
     }
 
     /**
@@ -49,10 +58,19 @@ class RendimientoController extends Controller
     {
       try {
 
+        if(isset($request->area)){
+          $area = $request->area;
+        }else{
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
+        }
+
         $rendimiento = new Rendimiento();
         $rendimiento->tarifa = $request->tarifa;
         $rendimiento->kilometros_litros = $request->kilometros_litros;
         $rendimiento->descripcion = $request->descripcion;
+        $rendimiento->id_dependencia = $area;
         $rendimiento->cve_usuario = Auth::user()->id;
         $rendimiento->save();
 
@@ -80,8 +98,15 @@ class RendimientoController extends Controller
      */
     public function edit($id)
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
         $data['rendimiento'] = Rendimiento::find($id);
         return view('catalogos::rendimiento.create')->with($data);
+      }else{
+        $data['rendimiento'] = Rendimiento::find($id);
+        return view('catalogos::rendimiento.create')->with($data);
+      }
+
     }
 
     /**
@@ -94,10 +119,21 @@ class RendimientoController extends Controller
     {
       try {
 
+        if(isset($request->area)){
+          $area = $request->area;
+        }else{
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
+        }
+
+
+
         $rendimiento = Rendimiento::find($request->id);
         $rendimiento->tarifa = $request->tarifa;
         $rendimiento->kilometros_litros = $request->kilometros_litros;
         $rendimiento->descripcion = $request->descripcion;
+        $rendimiento->id_dependencia = $area;
         $rendimiento->cve_usuario = Auth::user()->id;
         $rendimiento->save();
 
@@ -128,7 +164,15 @@ class RendimientoController extends Controller
      setlocale(LC_TIME, 'es_ES');
      \DB::statement("SET lc_time_names = 'es_ES'");
      //dd('entro');
-     $registros = Rendimiento::where('activo', 1); //Conocenos es la entidad
+     if (Auth::user()->tipo_usuario == 4) {
+       $registros = Rendimiento::where([['activo', 1]]);
+     }else{
+       $usuario = Auth::user()->id;
+       $asociar = Asociar::where('id_usuario',$usuario)->first();
+
+       $registros = Rendimiento::where([['activo', 1],['id_dependencia',$asociar->id_dependencia]]);
+     }
+     //$registros = Rendimiento::where('activo', 1); //Conocenos es la entidad
      $datatable = DataTables::of($registros)
      // ->editColumn('cve_tipo_gasolina', function ($registros) {
      //

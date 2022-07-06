@@ -123,7 +123,7 @@ public function destroy(Request $request)
   public function tablaroles(){
     setlocale(LC_TIME, 'es_ES');
     \DB::statement("SET lc_time_names = 'es_ES'");
-    $registros = Roles::where('activo',1); //user es una entidad que se trae desde la app
+    $registros = Roles::where([['activo',1],['id','!=',4]]); //user es una entidad que se trae desde la app
     $datatable = DataTables::of($registros)
     // ->editColumn('tipo_usuario', function ($registros) {
     //   // if ($registros->tipo_usuario==1) {

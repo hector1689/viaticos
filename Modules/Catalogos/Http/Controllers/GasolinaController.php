@@ -10,8 +10,8 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use \Modules\Catalogos\Entities\TipoGasolina;
 use \Modules\Catalogos\Entities\Gasolina;
-
-
+use \Modules\Catalogos\Entities\Areas;
+use \Modules\Usuarios\Entities\Asociar;
 use Yajra\Datatables\Datatables;
 use \DB;
 class GasolinaController extends Controller
@@ -40,8 +40,16 @@ class GasolinaController extends Controller
      */
     public function create()
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
         $data['tipos_gasolina'] = TipoGasolina::all();
         return view('catalogos::gasolina.create')->with($data);
+      }else{
+        $data['tipos_gasolina'] = TipoGasolina::all();
+        return view('catalogos::gasolina.create')->with($data);
+      }
+
+
     }
 
     /**
@@ -53,39 +61,109 @@ class GasolinaController extends Controller
     {
       try {
 
-        $existe = Gasolina::where([['activo',1],['cve_tipo_gasolina',$request->cve_tipo_gasolina]])->orderBy('id','DESC')->first();
+        if(isset($request->area)){
+          $area = $request->area;
 
-        if(isset($existe)){
+          $existe = Gasolina::where([['activo',1],['cve_tipo_gasolina',$request->cve_tipo_gasolina],['id_dependencia',$area]])->orderBy('id','DESC')->first();
 
-          $gasolina = Gasolina::find($existe->id);
-          $gasolina->activo = 0;
-          $gasolina->save();
+          if(isset($existe)){
 
-          list($dia,$mes,$anio)=explode('/',$request->vigencia);
-          $fecha1 = $anio.'-'.$mes.'-'.$dia;
+            $gasolina = Gasolina::find($existe->id);
+            $gasolina->activo = 0;
+            $gasolina->save();
 
-          $gasolina = new Gasolina();
-          $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
-          $gasolina->anio = $request->anio;
-          $gasolina->mes = $request->mes;
-          $gasolina->precio_litro = $request->precio_litro;
-          $gasolina->vigencia = $fecha1;
-          $gasolina->cve_usuario = Auth::user()->id;
-          $gasolina->save();
+            list($dia,$mes,$anio)=explode('/',$request->vigencia);
+            $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+
+
+            $gasolina = new Gasolina();
+            $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
+            $gasolina->anio = $request->anio;
+            $gasolina->mes = $request->mes;
+            $gasolina->precio_litro = $request->precio_litro;
+            $gasolina->id_dependencia = $area;
+            $gasolina->vigencia = $fecha1;
+            $gasolina->cve_usuario = Auth::user()->id;
+            $gasolina->save();
+
+          }else{
+            list($dia,$mes,$anio)=explode('/',$request->vigencia);
+            $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+            if(isset($request->area)){
+              $area = $request->area;
+            }else{
+              $usuario = Auth::user()->id;
+              $asociar = Asociar::where('id_usuario',$usuario)->first();
+              $area = $asociar->id_dependencia;
+            }
+
+            $gasolina = new Gasolina();
+            $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
+            $gasolina->anio = $request->anio;
+            $gasolina->mes = $request->mes;
+            $gasolina->id_dependencia = $area;
+            $gasolina->precio_litro = $request->precio_litro;
+            $gasolina->vigencia = $fecha1;
+            $gasolina->cve_usuario = Auth::user()->id;
+            $gasolina->save();
+          }
 
         }else{
-          list($dia,$mes,$anio)=explode('/',$request->vigencia);
-          $fecha1 = $anio.'-'.$mes.'-'.$dia;
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
 
-          $gasolina = new Gasolina();
-          $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
-          $gasolina->anio = $request->anio;
-          $gasolina->mes = $request->mes;
-          $gasolina->precio_litro = $request->precio_litro;
-          $gasolina->vigencia = $fecha1;
-          $gasolina->cve_usuario = Auth::user()->id;
-          $gasolina->save();
+          $existe = Gasolina::where([['activo',1],['cve_tipo_gasolina',$request->cve_tipo_gasolina],['id_dependencia',$area]])->orderBy('id','DESC')->first();
+
+          if(isset($existe)){
+
+            $gasolina = Gasolina::find($existe->id);
+            $gasolina->activo = 0;
+            $gasolina->save();
+
+            list($dia,$mes,$anio)=explode('/',$request->vigencia);
+            $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+
+
+            $gasolina = new Gasolina();
+            $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
+            $gasolina->anio = $request->anio;
+            $gasolina->mes = $request->mes;
+            $gasolina->precio_litro = $request->precio_litro;
+            $gasolina->id_dependencia = $area;
+            $gasolina->vigencia = $fecha1;
+            $gasolina->cve_usuario = Auth::user()->id;
+            $gasolina->save();
+
+          }else{
+            list($dia,$mes,$anio)=explode('/',$request->vigencia);
+            $fecha1 = $anio.'-'.$mes.'-'.$dia;
+
+            if(isset($request->area)){
+              $area = $request->area;
+            }else{
+              $usuario = Auth::user()->id;
+              $asociar = Asociar::where('id_usuario',$usuario)->first();
+              $area = $asociar->id_dependencia;
+            }
+
+            $gasolina = new Gasolina();
+            $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
+            $gasolina->anio = $request->anio;
+            $gasolina->mes = $request->mes;
+            $gasolina->id_dependencia = $area;
+            $gasolina->precio_litro = $request->precio_litro;
+            $gasolina->vigencia = $fecha1;
+            $gasolina->cve_usuario = Auth::user()->id;
+            $gasolina->save();
+          }
+
         }
+
+
 
 
 
@@ -117,9 +195,17 @@ class GasolinaController extends Controller
      */
     public function edit($id)
     {
-      $data['tipos_gasolina'] = TipoGasolina::all();
-      $data['gasolina'] = Gasolina::find($id);
-      return view('catalogos::gasolina.create')->with($data);
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
+        $data['tipos_gasolina'] = TipoGasolina::all();
+        $data['gasolina'] = Gasolina::find($id);
+        return view('catalogos::gasolina.create')->with($data);
+      }else{
+        $data['tipos_gasolina'] = TipoGasolina::all();
+        $data['gasolina'] = Gasolina::find($id);
+        return view('catalogos::gasolina.create')->with($data);
+      }
+
     }
 
     /**
@@ -134,10 +220,19 @@ class GasolinaController extends Controller
           list($dia,$mes,$anio)=explode('/',$request->vigencia);
           $fecha1 = $anio.'-'.$mes.'-'.$dia;
 
+          if(isset($request->area)){
+            $area = $request->area;
+          }else{
+            $usuario = Auth::user()->id;
+            $asociar = Asociar::where('id_usuario',$usuario)->first();
+            $area = $asociar->id_dependencia;
+          }
+
           $gasolina = Gasolina::find($request->id);
           $gasolina->cve_tipo_gasolina = $request->cve_tipo_gasolina;
           $gasolina->anio = $request->anio;
           $gasolina->mes = $request->mes;
+          $gasolina->id_dependencia = $area;
           $gasolina->precio_litro = $request->precio_litro;
           $gasolina->vigencia = $fecha1;
           $gasolina->cve_usuario = Auth::user()->id;
@@ -171,7 +266,15 @@ class GasolinaController extends Controller
     setlocale(LC_TIME, 'es_ES');
     \DB::statement("SET lc_time_names = 'es_ES'");
     //dd('entro');
-    $registros = Gasolina::where('activo', 1); //Conocenos es la entidad
+    if (Auth::user()->tipo_usuario == 4) {
+      $registros = Gasolina::where([['activo', 1]]);
+    }else{
+      $usuario = Auth::user()->id;
+      $asociar = Asociar::where('id_usuario',$usuario)->first();
+
+      $registros = Gasolina::where([['activo', 1],['id_dependencia',$asociar->id_dependencia]]);
+    }
+
     $datatable = DataTables::of($registros)
     ->editColumn('cve_tipo_gasolina', function ($registros) {
 

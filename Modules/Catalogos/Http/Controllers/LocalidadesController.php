@@ -12,7 +12,8 @@ use \Modules\Catalogos\Entities\Pais;
 use \Modules\Catalogos\Entities\Estado;
 use \Modules\Catalogos\Entities\Municipio;
 use \Modules\Catalogos\Entities\Localidad;
-
+use \Modules\Catalogos\Entities\Areas;
+use \Modules\Usuarios\Entities\Asociar;
 use Yajra\Datatables\Datatables;
 use \DB;
 class LocalidadesController extends Controller
@@ -41,8 +42,15 @@ class LocalidadesController extends Controller
      */
     public function create()
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
         $data['paises'] = Pais::all();
         return view('catalogos::localidades.create')->with($data);
+      }else{
+        $data['paises'] = Pais::all();
+        return view('catalogos::localidades.create')->with($data);
+      }
+
     }
 
     /**
@@ -53,11 +61,20 @@ class LocalidadesController extends Controller
     public function store(Request $request)
     {
       try {
+        if(isset($request->area)){
+          $area = $request->area;
+        }else{
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
+        }
+
         $localidad = new Localidad();
         $localidad->cve_pais = $request->pais;
         $localidad->cve_estado = $request->estado;
         $localidad->cve_municipio = $request->municipio;
         $localidad->localidad = $request->localidad;
+        $localidad->id_dependencia = $area;
         $localidad->cve_usuario = Auth::user()->id;
         $localidad->save();
 
@@ -86,9 +103,17 @@ class LocalidadesController extends Controller
      */
     public function edit($id)
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
+        $data['paises'] = Pais::all();
+        $data['localidad'] = Localidad::find($id);
+        return view('catalogos::localidades.create')->with($data);
+      }else{
         $data['localidad'] = Localidad::find($id);
         $data['paises'] = Pais::all();
         return view('catalogos::localidades.create')->with($data);
+      }
+
     }
 
     /**
@@ -100,11 +125,19 @@ class LocalidadesController extends Controller
     public function update(Request $request)
     {
       try {
+        if(isset($request->area)){
+          $area = $request->area;
+        }else{
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
+        }
         $localidad = Localidad::find($request->id);
         $localidad->cve_pais = $request->pais;
         $localidad->cve_estado = $request->estado;
         $localidad->cve_municipio = $request->municipio;
         $localidad->localidad = $request->localidad;
+        $localidad->id_dependencia = $area;
         $localidad->cve_usuario = Auth::user()->id;
         $localidad->save();
 
@@ -136,7 +169,16 @@ class LocalidadesController extends Controller
     setlocale(LC_TIME, 'es_ES');
     \DB::statement("SET lc_time_names = 'es_ES'");
     //dd('entro');
-    $registros = Localidad::where('activo', 1); //Conocenos es la entidad
+    if (Auth::user()->tipo_usuario == 4) {
+      $registros = Localidad::where([['activo', 1]]);
+    }else{
+      $usuario = Auth::user()->id;
+      $asociar = Asociar::where('id_usuario',$usuario)->first();
+
+      $registros = Localidad::where([['activo', 1],['id_dependencia',$asociar->id_dependencia]]);
+    }
+
+
     $datatable = DataTables::of($registros)
     ->editColumn('cve_municipio', function ($registros) {
         $municipio = Municipio::find($registros->cve_municipio);

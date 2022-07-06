@@ -19,14 +19,14 @@
         <div class="row">
           <div class="col-md-4">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Tarifa: </label>
-              <input type="text" class="form-control" id="tarifa" placeholder="Tarifa" required>
+              <input type="text" class="form-control" id="tarifa" value="@isset($rendimiento){{ $rendimiento->tarifa }} @endisset" placeholder="Tarifa" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Nombre
               </div>
           </div>
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Kilometros por litro: </label>
-              <input type="text" class="form-control" id="kilometros_litros" placeholder="Kilometros por litro" required>
+              <input type="text" class="form-control" id="kilometros_litros" value="@isset($rendimiento){{ $rendimiento->kilometros_litros }} @endisset"  placeholder="Kilometros por litro" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
@@ -34,12 +34,33 @@
 
           <div class="col-md-4">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Descripción: </label>
-              <input type="text" class="form-control" id="descripcion" placeholder="Descripción" required>
+              <input type="text" class="form-control" id="descripcion" value="@isset($rendimiento){{ $rendimiento->descripcion }} @endisset"  placeholder="Descripción" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
               </div>
           </div>
         </div>
+
+        @isset($area)
+        <div class="row">
+          <div class="col-md-6">
+            <label for="">Dependencia</label>
+            <select class="form-control" id="area" >
+              @isset($rendimiento)
+              <option value="{{$rendimiento->id_dependencia}}">{{$rendimiento->obtenerDependencia->nombre}}</option>
+              @else
+              <option value="0">Seleccionar</option>
+              @endisset
+
+              @foreach($area as $ar)
+              <option value="{{ $ar->id }}">{{ $ar->nombre }}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        @else
+
+        @endisset
 
 
 
@@ -74,6 +95,10 @@ function guardar(){
 
     @isset($rendimiento)
     formData.append('id',{{ $rendimiento->id }});
+    @endisset
+    @isset($area)
+    var area = $('#area').val();
+    formData.append('area',area);
     @endisset
     formData.append('tarifa', tarifa);
     formData.append('kilometros_litros', kilometros_litros);

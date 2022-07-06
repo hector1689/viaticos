@@ -59,6 +59,27 @@
           </div>
         </div>
 
+        @isset($area)
+        <div class="row">
+          <div class="col-md-6">
+            <label for="">Dependencia</label>
+            <select class="form-control" id="area" >
+              @isset($kilometraje)
+              <option value="{{$kilometraje->id_dependencia}}">{{$kilometraje->obtenerDependencia->nombre}}</option>
+              @else
+              <option value="0">Seleccionar</option>
+              @endisset
+
+              @foreach($area as $ar)
+              <option value="{{ $ar->id }}">{{ $ar->nombre }}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        @else
+
+        @endisset
+
 
 
 </div>
@@ -80,7 +101,10 @@ function guardar(){
 
     var formData = new FormData();
      //formData.append('photo', $avatarInput[0].files[0]);
-
+     @isset($area)
+     var area = $('#area').val();
+     formData.append('area',area);
+     @endisset
     @isset($kilometraje)
     formData.append('id',{{ $kilometraje->id }});
     @endisset

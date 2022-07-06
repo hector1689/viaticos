@@ -77,7 +77,7 @@
           </div>
           <div class="col-md-6">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Password: </label>
-              <input type="text" class="form-control" id="password" value="@isset($usuarios){{$usuarios->password_name}}@endisset" placeholder="Password" required>
+              <input type="password" class="form-control" id="password" value="@isset($usuarios){{$usuarios->password_name}}@endisset" placeholder="Password" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Password
               </div>

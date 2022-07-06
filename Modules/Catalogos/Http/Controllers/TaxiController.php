@@ -9,7 +9,8 @@ use Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use \Modules\Catalogos\Entities\Taxi;
-
+use \Modules\Catalogos\Entities\Areas;
+use \Modules\Usuarios\Entities\Asociar;
 use Yajra\Datatables\Datatables;
 use \DB;
 class TaxiController extends Controller
@@ -38,7 +39,14 @@ class TaxiController extends Controller
      */
     public function create()
     {
-        return view('catalogos::taxi.create');
+        if (Auth::user()->tipo_usuario == 4) {
+          $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
+          return view('catalogos::taxi.create')->with($data);
+        }else{
+          return view('catalogos::taxi.create');
+        }
+
+
     }
 
     /**
@@ -50,6 +58,14 @@ class TaxiController extends Controller
     {
       try {
 
+        if(isset($request->area)){
+          $area = $request->area;
+        }else{
+          $usuario = Auth::user()->id;
+          $asociar = Asociar::where('id_usuario',$usuario)->first();
+          $area = $asociar->id_dependencia;
+        }
+
         list($dia,$mes,$anio)=explode('/',$request->vigencia_inicial);
           $fecha1 = $anio.'-'.$mes.'-'.$dia;
 
@@ -60,7 +76,7 @@ class TaxiController extends Controller
         $hospedaje->descripcion = $request->descripcion;
         $hospedaje->tarifa_evento = $request->tarifa_evento;
         $hospedaje->tarifa_adicional = $request->tarifa_adicional;
-
+        $hospedaje->id_dependencia = $area;
         $hospedaje->vigencia_inicial = $fecha1;
         $hospedaje->vigencia_final = $fecha2;
         $hospedaje->cve_usuario =  Auth::user()->id;
@@ -92,8 +108,15 @@ class TaxiController extends Controller
      */
     public function edit($id)
     {
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['area'] = Areas::where([['activo',1],['id_padre',0]])->get();
         $data['taxi'] = Taxi::find($id);
         return view('catalogos::taxi.create')->with($data);
+      }else{
+        $data['taxi'] = Taxi::find($id);
+        return view('catalogos::taxi.create')->with($data);
+      }
+
     }
 
     /**
@@ -111,11 +134,19 @@ class TaxiController extends Controller
           list($dia2,$mes2,$anio2)=explode('/',$request->vigencia_final);
             $fecha2 = $anio2.'-'.$mes2.'-'.$dia2;
 
+            if(isset($request->area)){
+              $area = $request->area;
+            }else{
+              $usuario = Auth::user()->id;
+              $asociar = Asociar::where('id_usuario',$usuario)->first();
+              $area = $asociar->id_dependencia;
+            }
+
           $hospedaje = Taxi::find($request->id);
           $hospedaje->descripcion = $request->descripcion;
           $hospedaje->tarifa_evento = $request->tarifa_evento;
           $hospedaje->tarifa_adicional = $request->tarifa_adicional;
-
+          $hospedaje->id_dependencia = $area;
           $hospedaje->vigencia_inicial = $fecha1;
           $hospedaje->vigencia_final = $fecha2;
           $hospedaje->cve_usuario =  Auth::user()->id;
@@ -150,7 +181,18 @@ class TaxiController extends Controller
     setlocale(LC_TIME, 'es_ES');
     \DB::statement("SET lc_time_names = 'es_ES'");
     //dd('entro');
-    $registros = Taxi::where('activo', 1); //Conocenos es la entidad
+
+
+
+    if (Auth::user()->tipo_usuario == 4) {
+      $registros = Taxi::where([['activo', 1]]);
+    }else{
+      $usuario = Auth::user()->id;
+      $asociar = Asociar::where('id_usuario',$usuario)->first();
+
+      $registros = Taxi::where([['activo', 1],['id_dependencia',$asociar->id_dependencia]]);
+    }
+
     $datatable = DataTables::of($registros)
     // ->editColumn('cve_zona', function ($registros) {
     //

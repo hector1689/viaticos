@@ -870,12 +870,12 @@
         //     }
         // });
         // $('.form-control.nivel').dropdown('set selected', nivel);
-        console.log(nivel);
+        //console.log(nivel);
         $(".form-control.nivel option[value='"+ nivel +"']").attr("selected",true);
 
         var esre = $("#id_tipo option[value='"+ nivel +"']").attr("selected",true);
 
-        console.log(esre)
+      //  console.log(esre)
 
 
         $('#nivel').val(nivel);

@@ -9,9 +9,14 @@ class Programa extends Model{
   protected $fillable = [
     "id",
     "nombre",
+    "id_dependencia",
     "activo",
     "cve_usuario",
   ];
+
+  public function obtenerDependencia(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Areas', 'id', 'id_dependencia');
+  }
 
 
 }

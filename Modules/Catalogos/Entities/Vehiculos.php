@@ -14,9 +14,13 @@ class Vehiculos extends Model{
     "tipo",
     "placas",
     "cilindraje",
+    "id_dependencia",
     "activo",
     "cve_usuario",
   ];
 
+  public function obtenerDependencia(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Areas', 'id', 'id_dependencia');
+  }
 
 }

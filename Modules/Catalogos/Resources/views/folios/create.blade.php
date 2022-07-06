@@ -210,7 +210,7 @@
             <div role="separator" class="dropdown-divider"></div>
             <div class="col-md-8">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Usuarios que usaran esta configuración: </label>
-              <select class="form-control" name="usuario" id="usuarios">
+              <select class="form-control" name="usuario" id="usuarios" @isset($folios) @else required @endisset>
                 @isset($folios)
                 <option value="{{ $folios->cve_usuario_inmediato }}">{{$folios->obteneUsuario->nombre}} {{$folios->obteneUsuario->apellido_paterno}} {{$folios->obteneUsuario->apellido_materno}}</option>
                 @else
