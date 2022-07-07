@@ -71,7 +71,7 @@
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Nivel: </label>
               <input type="text" class="form-control" id="nivel"  placeholder="Nivel" value="@isset($recibos) {{$recibos->nivel}} @endisset" disabled required>
-              <input type="hidden" id="area_id" >
+              <input type="hidden" id="area_id" value=" @isset($recibos) {{ $recibos->id_dependencia }} @endisset">
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>

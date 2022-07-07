@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Barryvdh\DomPDF\Facade as PDF;
 use \Modules\Recibos\Entities\Recibos;
+use \Modules\Catalogos\Entities\Areas;
+use \Modules\Usuarios\Entities\Asociar;
 use \DB;
 use Auth;
 class ReportesController extends Controller
@@ -90,19 +92,65 @@ class ReportesController extends Controller
     list($dia2,$mes2,$anio2) = explode('-',$fecha2);
     $fecha2 = $anio2.'-'.$mes2.'-'.$dia2;
 
+    if (Auth::user()->tipo_usuario == 4) {
+
+      ////////////////////////////////////////////
+      ini_set('memory_limit', '-1');
+      $formulario_query  =  ('
+        SELECT
+        *
+        FROM t_viaticos
+        WHERE t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and t_viaticos.activo = 1
+      ');
+      //dd($formulario_query);
+      $formulario = DB::select($formulario_query);
+      //////////////////////////////////////////////
+      $formulario_total_query  =  ('
+        SELECT SUM(importe) AS total FROM t_viaticos WHERE t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and activo = 1
+      ');
+      //dd($formulario_total_query);
+      $formulario_total = DB::select($formulario_total_query);
+
+      foreach ($formulario_total as $key => $value) {
+        $total = $value->total;
+      }
+      /////////////////////////////////////////////
+
+      $formulario_total_personasquery  =  ('
+        SELECT COUNT(id) AS total_personas FROM t_viaticos WHERE t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and activo = 1
+      ');
+      //dd($formulario_total_personasquery);
+      $formulario_totalp = DB::select($formulario_total_personasquery);
+
+      foreach ($formulario_totalp as $key => $values) {
+        $totalp = $values->total_personas;
+      }
+      ////////////////////////////////////////////
+      $data['elaboro'] = Auth::user()->nombre.' '.Auth::user()->apellido_paterno.' '.Auth::user()->apellido_materno;
+      $data['formulario'] = $formulario;
+      $data['total'] = $total;
+      $data['totalp'] = $totalp;
+      $data['fecha'] = $fecha;
+      $data['fecha2'] = $fecha2;
+
+    }else{
+    $usuario = Auth::user()->id;
+    $asociar = Asociar::where('id_usuario',$usuario)->first();
+    $area = $asociar->id_dependencia;
+
     ////////////////////////////////////////////
     ini_set('memory_limit', '-1');
     $formulario_query  =  ('
       SELECT
       *
       FROM t_viaticos
-      WHERE t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and t_viaticos.activo = 1
+      WHERE t_viaticos.id_dependencia = "'.$area.'" and t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and t_viaticos.activo = 1
     ');
     //dd($formulario_query);
     $formulario = DB::select($formulario_query);
     //////////////////////////////////////////////
     $formulario_total_query  =  ('
-      SELECT SUM(importe) AS total FROM t_viaticos WHERE t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and activo = 1
+      SELECT SUM(importe) AS total FROM t_viaticos WHERE t_viaticos.id_dependencia = "'.$area.'" and t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and activo = 1
     ');
     //dd($formulario_total_query);
     $formulario_total = DB::select($formulario_total_query);
@@ -113,7 +161,7 @@ class ReportesController extends Controller
     /////////////////////////////////////////////
 
     $formulario_total_personasquery  =  ('
-      SELECT COUNT(id) AS total_personas FROM t_viaticos WHERE t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and activo = 1
+      SELECT COUNT(id) AS total_personas FROM t_viaticos WHERE t_viaticos.id_dependencia = "'.$area.'" and  t_viaticos.fecha_hora_salida  BETWEEN "'.$fecha.' 00:00:00" and "'.$fecha2.' 23:59:59" and activo = 1
     ');
     //dd($formulario_total_personasquery);
     $formulario_totalp = DB::select($formulario_total_personasquery);
@@ -128,6 +176,10 @@ class ReportesController extends Controller
     $data['totalp'] = $totalp;
     $data['fecha'] = $fecha;
     $data['fecha2'] = $fecha2;
+
+
+    }
+
 
 
     $pdf = PDF::loadView('reportes::reporte_viaticos_folio', $data);

@@ -46,23 +46,23 @@
 
             </div>
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Director Administrativo: </label>
                   <input type="text" class="form-control" id="director_administrativo" placeholder="DIrector Administrativo" value="@isset($folios) {{ $folios->director_administrativo }} @endisset" disabled required>
                   <div class="invalid-feedback">
                     Por Favor Ingrese Director Administrativo
                   </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Comisario: </label>
                   <input type="text" class="form-control" id="comisario" placeholder="Comisario" value="@isset($folios) {{ $folios->comisario }} @endisset" required>
                   <div class="invalid-feedback">
                     Por Favor Ingrese Comisario
                   </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Superior Inmediato: </label>
-                  <input type="text" class="form-control" id="superior_inmediato" placeholder="Superios Inmediato" value="@isset($folios) {{ $folios->superior_inmediato }} @endisset" required>
+                  <input type="text" class="form-control" id="superior_inmediato" placeholder="Superios Inmediato" value="@isset($folios) {{ $folios->superior_inmediato }} @endisset" disabled required>
                   <div class="invalid-feedback">
                     Por Favor Ingrese Superior Inmediato
                   </div>
@@ -83,6 +83,7 @@
 
               </div>
             </div> -->
+            <label for=""><strong style="color:red">*</strong> diagonales se ponen automaticamente</label>
             <div role="separator" class="dropdown-divider"></div>
             <div class="row">
               <div class="col-md-6">
@@ -217,7 +218,7 @@
                 <option value="">Seleccionar</option>
                 @endisset
                 @foreach($usuarios as $usuario)
-                <option value="{{ $usuario->id }}">{{ $usuario->nombre }} {{ $usuario->apellido_paterno }} {{ $usuario->apellido_materno }} - {{ $usuario->obtenerUser->name }}</option>
+                <option value="{{ $usuario->id }}">{{ $usuario->nombre }} {{ $usuario->apellido_paterno }} {{ $usuario->apellido_materno }} - {{ $usuario->name }}</option>
                 @endforeach
               </select>
               <div class="invalid-feedback">
@@ -297,7 +298,9 @@ var objTabla = {};
                        dependencia:dependencia,
                      },
                     success:function(data){
-                      //console.log(data.id)
+                      //console.log(data)
+
+                      $('#superior_inmediato').val(data.nombre_empleado+' '+data.apellido_p_empleado+' '+data.apellido_m_empleado);
 
                       $.ajax({
 
@@ -309,6 +312,7 @@ var objTabla = {};
                              },
                              data:{
                                  area_encargada:data.id,
+                                 cve_cat_deptos_siti:data.cve_cat_deptos_siti
                                },
                               success:function(data){
                                 //console.log(data)

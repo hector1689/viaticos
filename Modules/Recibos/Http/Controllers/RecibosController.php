@@ -74,6 +74,8 @@ class RecibosController extends Controller
      */
     public function create()
     {
+
+      if (Auth::user()->tipo_usuario == 4) {
         $data['peajes'] = Peaje::where('activo',1)->get();
         $data['gasolina'] = Gasolina::where('activo',1)->orderBy('id','DESC')->get();
         $data['rendimiento'] = Rendimiento::where('activo',1)->get();
@@ -82,6 +84,22 @@ class RecibosController extends Controller
         $data['lacalidad1'] = Localidad::where('activo',1)->get();
         $data['lacalidad2'] = Localidad::where('activo',1)->get();
         return view('recibos::create')->with($data);
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+        $data['peajes'] = Peaje::where([['activo',1],['id_dependencia',$area]])->get();
+        $data['gasolina'] = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('id','DESC')->get();
+        $data['rendimiento'] = Rendimiento::where([['activo',1],['id_dependencia',$area]])->get();
+        $data['programa'] = Programa::where([['activo',1],['id_dependencia',$area]])->get();
+        $data['taxi'] = Taxi::where([['activo',1],['id_dependencia',$area]])->get();
+        $data['lacalidad1'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
+        $data['lacalidad2'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
+        return view('recibos::create')->with($data);
+
+      }
+
     }
 
     /**
@@ -467,6 +485,8 @@ class RecibosController extends Controller
 
     public function edit($id)
     {
+
+      if (Auth::user()->tipo_usuario == 4) {
         $data['recibos'] = Recibos::find($id);
         $data['estatus'] = EstatusRecibo::all();
         $data['firmantes'] =   ReciboFirmantes::where([
@@ -522,6 +542,74 @@ class RecibosController extends Controller
                             ])->get();
                           //dd($data['peaje_t_tabla']);
         return view('recibos::create')->with($data);
+      }else{
+            $usuario = Auth::user()->id;
+            $asociar = Asociar::where('id_usuario',$usuario)->first();
+            $area = $asociar->id_dependencia;
+
+            ///////////////////////////////////////////////////////////////////
+            $data['recibos'] = Recibos::find($id);
+            $data['estatus'] = EstatusRecibo::all();
+
+
+            $data['peajes'] = Peaje::where([['activo',1],['id_dependencia',$area]])->get();
+            $data['gasolina'] = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('id','DESC')->get();
+            $data['rendimiento'] = Rendimiento::where([['activo',1],['id_dependencia',$area]])->get();
+            $data['programa'] = Programa::where([['activo',1],['id_dependencia',$area]])->get();
+            $data['taxi'] = Taxi::where([['activo',1],['id_dependencia',$area]])->get();
+            $data['lacalidad1'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
+            $data['lacalidad2'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
+
+
+            ///////////////////////////////////////////////////////////////////
+            $data['pagos'] =   DatosPago::where([
+                                  ['activo',1],
+                                  ['cve_t_viatico',$id],
+                                ])->first();
+            $data['firmantes'] =   ReciboFirmantes::where([
+                                  ['activo',1],
+                                  ['cve_t_viaticos',$id],
+                                ])->first();
+
+            $data['bitacora'] =  Bitacora::where([
+                                              ['activo',1],
+                                              ['cve_t_viatico',$id],
+                                            ])->get();
+            $data['lugares'] = Lugares::where([
+                                  ['activo',1],
+                                  ['cve_t_viatico',$id],
+                                ])->get();
+            $data['lugares2'] = Lugares::where([
+                                  ['activo',1],
+                                  ['cve_t_viatico',$id],
+                                ])->first();
+            $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
+            $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+            $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+            $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+            $data['autobustabla'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+            $data['Vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
+            $data['Vehiculotabla'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
+            $data['taxi_t'] = TaxiTransporte::where([
+                                  ['activo',1],
+                                  ['cve_t_transporte',$data['transporte']->id],
+                                ])->first();
+            $data['taxi_t_tabla'] = TaxiTransporte::where([
+                                  ['activo',1],
+                                  ['cve_t_transporte',$data['transporte']->id],
+                                ])->get();
+            $data['peaje_t_tabla'] = PeajeTransporte::where([
+                                  ['activo',1],
+                                  ['cve_t_transporte',$data['transporte']->id],
+                                ])->get();
+            $data['avion_t_tabla'] = Avion::where([
+                                  ['activo',1],
+                                  ['cve_t_transporte',$data['transporte']->id],
+                                ])->get();
+                              //dd($data['peaje_t_tabla']);
+            return view('recibos::create')->with($data);
+      }
+
     }
 
 
@@ -1012,36 +1100,79 @@ class RecibosController extends Controller
     }
 
     public function TraerGasolinaL(Request $request){
-      $gasolina = Gasolina::where('activo',1)->orderBy('id','DESC')->first();
-      return $gasolina;
+
+      if (Auth::user()->tipo_usuario == 4) {
+        $gasolina = Gasolina::where('activo',1)->orderBy('id','DESC')->first();
+        return $gasolina;
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+        $gasolina = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('id','DESC')->first();
+        return $gasolina;
+      }
+
+
     }
 
     public function TraerHospedajeL(Request $request){
-      $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
-      return $hospedaje;
+      if (Auth::user()->tipo_usuario == 4) {
+        $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
+        return $hospedaje;
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+        $hospedaje = Hospedaje::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
+        return $hospedaje;
+      }
+
     }
 
     public function TraerDesayunoL(Request $request){
-      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
-      return $alimentos;
+      if (Auth::user()->tipo_usuario == 4) {
+        $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+        return $alimentos;
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+        $alimentos = Alimentos::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
+        return $alimentos;
+      }
+
     }
 
     public function TraerComidaL(Request $request){
-      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
-      return $alimentos;
+      if (Auth::user()->tipo_usuario == 4) {
+        $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+        return $alimentos;
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+        $alimentos = Alimentos::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
+        return $alimentos;
+      }
+
     }
 
     public function TraerCenaL(Request $request){
-      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
-      return $alimentos;
+      if (Auth::user()->tipo_usuario == 4) {
+        $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+        return $alimentos;
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+        $alimentos = Alimentos::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
+        return $alimentos;
+      }
+
     }
-
-
-
-
-
-
-
 
 
 
@@ -1062,11 +1193,27 @@ class RecibosController extends Controller
                             ['activo',1],
                             ['cve_t_viatico',$id],
                           ])->first();
-      $data['peajes'] = Peaje::where('activo',1)->get();
-      $data['gasolina'] = Gasolina::where('activo',1)->orderBy('id','DESC')->get();
-      $data['rendimiento'] = Rendimiento::where('activo',1)->get();
-      $data['programa'] = Programa::where('activo',1)->get();
-      $data['taxi'] = Taxi::where('activo',1)->get();
+
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['peajes'] = Peaje::where('activo',1)->get();
+        $data['gasolina'] = Gasolina::where('activo',1)->orderBy('id','DESC')->get();
+        $data['rendimiento'] = Rendimiento::where('activo',1)->get();
+        $data['programa'] = Programa::where('activo',1)->get();
+        $data['taxi'] = Taxi::where('activo',1)->get();
+      }else{
+      $usuario = Auth::user()->id;
+      $asociar = Asociar::where('id_usuario',$usuario)->first();
+      $area = $asociar->id_dependencia;
+
+      $data['peajes'] = Peaje::where([['activo',1],['id_dependencia',$area]])->get();
+      $data['gasolina'] = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('id','DESC')->get();
+      $data['rendimiento'] = Rendimiento::where([['activo',1],['id_dependencia',$area]])->get();
+      $data['programa'] = Programa::where([['activo',1],['id_dependencia',$area]])->get();
+      $data['taxi'] = Taxi::where([['activo',1],['id_dependencia',$area]])->get();
+
+      }
+
+
       $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
       $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
       $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
@@ -1177,7 +1324,18 @@ class RecibosController extends Controller
     public function especificacioncomision($id){
       $data['id'] = $id;
       $data['personal_comisionado'] = Personal_Departamento::where('activo',1)->get();
-      $data['localidades'] = Kilometraje::where('activo',1)->get();
+
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['localidades'] = Kilometraje::where([['activo',1]])->get();
+      }else{
+            $usuario = Auth::user()->id;
+            $asociar = Asociar::where('id_usuario',$usuario)->first();
+            $area = $asociar->id_dependencia;
+
+            $data['localidades'] = Kilometraje::where([['activo',1],['id_dependencia',$area]])->get();
+        }
+
+
       return view('recibos::especificarcomision')->with($data);
     }
 
@@ -1197,7 +1355,16 @@ class RecibosController extends Controller
       $array_todo = [];
       $dato = $request->nivel;
       //////////////////////// ALIMENTOS ///////////////////////////////////////
-      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+      if (Auth::user()->tipo_usuario == 4) {
+        $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+      }else{
+                  $usuario = Auth::user()->id;
+                  $asociar = Asociar::where('id_usuario',$usuario)->first();
+                  $area = $asociar->id_dependencia;
+
+                  $alimentos = Alimentos::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
+      }
+
       $array = [];
       $array_alimentos = [];
       foreach (range($alimentos->rango_inicia, $alimentos->rango_final) as $numero) {
@@ -1216,7 +1383,15 @@ class RecibosController extends Controller
 
 
       ///////////////////////// HOSPEDAJE /////////////////////////////////////
-      $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
+      if (Auth::user()->tipo_usuario == 4) {
+        $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+        $hospedaje = Hospedaje::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
+      }
+
       $arrays = [];
       $array_hospedaje = [];
 
@@ -1234,7 +1409,15 @@ class RecibosController extends Controller
         array_push($array_hospedaje,$hospedaje);
       }
       ///////////////////////// GASOLINA //////////////////////////////////////
-      $gasolina = Gasolina::orderBy('vigencia','DESC')->first();
+      if (Auth::user()->tipo_usuario == 4) {
+        $gasolina = Gasolina::orderBy('vigencia','DESC')->first();
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+        $gasolina = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia','DESC')->first();
+      }
+
 
 
       /////////////////////////////////////////////////////////////////////////
@@ -1554,6 +1737,7 @@ class RecibosController extends Controller
 
     public function TraerRecorrido(Request $request){
       //dd($request->ids);
+
       $taxi = Taxi::where('activo',1)->whereIN('id',$request->ids)->get();
       return $taxi;
     }
@@ -1870,8 +2054,15 @@ class RecibosController extends Controller
     if($tipo_usuario == 4){
       $registros = Recibos::where('activo', 1);
     }else if($tipo_usuario == 1){
-      $registros = Recibos::where('activo', 1);
+
+
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+      $registros = Recibos::where([['activo', 1],['id_dependencia',$area]]);
     }elseif($tipo_usuario == 2){
+
       $id = Auth::user()->id;
       $asociar = Asociar::where('id_usuario',$id)->first();
 

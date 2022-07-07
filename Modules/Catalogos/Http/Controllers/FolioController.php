@@ -54,8 +54,81 @@ class FolioController extends Controller
         $usuario = Auth::user()->id;
         $asociar = Asociar::where('id_usuario',$usuario)->first();
         $area = $asociar->id_dependencia;
-        $data['usuarios'] = User::where([['activo',1]])->get();
-        $data['areas'] = Areas::where([['activo',1],['id',$area]])->get();
+
+        ////////////////////////////////////////////////////////////////////
+        $reg = Areas::find($area);
+
+          $id_reg = 0;
+          $id_est = 0;
+          $nivel1 = [];
+          if($reg) {
+              $nivel  = $reg->nivel;
+
+
+              $id_reg = $reg->id ;   // cve_t_estructura;
+              $id_est = $reg->id;
+              //dd($id_reg,$nivel);
+              if ($nivel == 1) {
+                  $id_reg = $reg->id;
+                  // $id_est = $reg->id;
+                  $data = [];
+                  $regs = Areas::where([ ['activo', 1], ['id', $id_reg] ])->get();
+                  foreach ($regs as $key => $value) {
+                      $data [] = [ 'id' => $value->id, 'valor' => $value->id_padre , 'tipo' => $value->id_tipo ];
+
+                      array_push($nivel1,$value->id);
+                  }
+
+                  if (isset($reg->id)) {
+                    $regs2 = Areas::where([ ['activo', 1], ['id_padre', $reg->id] , ['nivel', 2] ])->get();
+                    foreach ($regs2 as $key => $value2) {
+                        array_push($nivel1,$value2->id);
+                    }
+                  }
+
+
+
+                    if (isset($value2->id)) {
+                      $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', 3] ])->get();
+                      foreach ($regs3 as $key => $value3) {
+                          array_push($nivel1,$value3->id);
+                      }
+                    }
+
+
+                    if (isset($value3->id)) {
+                      $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
+                      foreach ($regs4 as $key => $value4) {
+                          array_push($nivel1,$value4->id);
+                      }
+                    }
+
+                    if (isset($value4->id)) {
+                      $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
+                      foreach ($regs5 as $key => $value5) {
+                          array_push($nivel1,$value5->id);
+                      }
+                    }
+              }
+
+        }
+
+        //////////////////////////////////////////////////////////////////
+        $data['areas'] = Areas::where([['activo',1]])->whereIN('id',$nivel1)->get();
+        //$data['usuarios'] = User::where([['activo',1],['tipo_usuario','!=',4]])->get();
+
+
+        $data['usuarios'] = User::leftjoin('t_usuarios','t_usuarios.id_usuario','=','users.id')->
+        leftjoin('roles','roles.id','=','users.tipo_usuario')->
+        select(
+          'users.id',
+          'users.nombre',
+          'users.apellido_paterno',
+          'users.apellido_materno',
+          'roles.name'
+          )->where([['users.activo', 1],['users.tipo_usuario','!=', 4],['t_usuarios.id_dependencia', $area]])->get();
+          //dd($usuarios);
+
           return view('catalogos::folios.create')->with($data);
       }
 
@@ -122,13 +195,107 @@ class FolioController extends Controller
      */
     public function edit($id)
     {
-      $data['folios'] = Folios::find($id);
-      $data['usuarios'] = User::where([['activo',1]])->get();
-      $data['areas'] = Areas::where([['activo',1],['id_tipo',1]])->get();
 
-      $data['tabla_folios'] = TablaFolios::where([['activo',1],['cve_folio',$id]])->get();
 
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['folios'] = Folios::find($id);
+        $data['usuarios'] = User::where([['activo',1]])->get();
+        $data['areas'] = Areas::where([['activo',1]])->get();
+
+        $data['tabla_folios'] = TablaFolios::where([['activo',1],['cve_folio',$id]])->get();
         return view('catalogos::folios.create')->with($data);
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+        ////////////////////////////////////////////////////////////////////
+        $reg = Areas::find($area);
+
+          $id_reg = 0;
+          $id_est = 0;
+          $nivel1 = [];
+          if($reg) {
+              $nivel  = $reg->nivel;
+
+
+              $id_reg = $reg->id ;   // cve_t_estructura;
+              $id_est = $reg->id;
+              //dd($id_reg,$nivel);
+              if ($nivel == 1) {
+                  $id_reg = $reg->id;
+                  // $id_est = $reg->id;
+                  $data = [];
+                  $regs = Areas::where([ ['activo', 1], ['id', $id_reg] ])->get();
+                  foreach ($regs as $key => $value) {
+                      $data [] = [ 'id' => $value->id, 'valor' => $value->id_padre , 'tipo' => $value->id_tipo ];
+
+                      array_push($nivel1,$value->id);
+                  }
+
+                  if (isset($reg->id)) {
+                    $regs2 = Areas::where([ ['activo', 1], ['id_padre', $reg->id] , ['nivel', 2] ])->get();
+                    foreach ($regs2 as $key => $value2) {
+                        array_push($nivel1,$value2->id);
+                    }
+                  }
+
+
+
+                    if (isset($value2->id)) {
+                      $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', 3] ])->get();
+                      foreach ($regs3 as $key => $value3) {
+                          array_push($nivel1,$value3->id);
+                      }
+                    }
+
+
+                    if (isset($value3->id)) {
+                      $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
+                      foreach ($regs4 as $key => $value4) {
+                          array_push($nivel1,$value4->id);
+                      }
+                    }
+
+                    if (isset($value4->id)) {
+                      $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
+                      foreach ($regs5 as $key => $value5) {
+                          array_push($nivel1,$value5->id);
+                      }
+                    }
+              }
+
+        }
+
+        //////////////////////////////////////////////////////////////////
+        $data['areas'] = Areas::where([['activo',1]])->whereIN('id',$nivel1)->get();
+        //$data['usuarios'] = User::where([['activo',1],['tipo_usuario','!=',4]])->get();
+        $data['folios'] = Folios::find($id);
+
+        $data['tabla_folios'] = TablaFolios::where([['activo',1],['cve_folio',$id]])->get();
+
+
+        $data['usuarios'] = User::leftjoin('t_usuarios','t_usuarios.id_usuario','=','users.id')->
+        leftjoin('roles','roles.id','=','users.tipo_usuario')->
+        select(
+          'users.id',
+          'users.nombre',
+          'users.apellido_paterno',
+          'users.apellido_materno',
+          'roles.name'
+          )->where([['users.activo', 1],['users.tipo_usuario','!=', 4],['t_usuarios.id_dependencia', $area]])->get();
+          //dd($usuarios);
+
+          return view('catalogos::folios.create')->with($data);
+      }
+
+      // $data['folios'] = Folios::find($id);
+      // $data['usuarios'] = User::where([['activo',1]])->get();
+      // $data['areas'] = Areas::where([['activo',1],['id_tipo',1]])->get();
+      //
+      // $data['tabla_folios'] = TablaFolios::where([['activo',1],['cve_folio',$id]])->get();
+      //
+      //   return view('catalogos::folios.create')->with($data);
     }
 
     /**
@@ -265,14 +432,86 @@ class FolioController extends Controller
       ['activo',1],
       ['cve_cat_deptos_siti',$request->dependencia],
     ])->first();
+
+
     return $personal;
   }
 
   public function TraerFirmantes(Request $request){
+
+      //dd($request->cve_cat_deptos_siti);
+      ////////////////////////////////////////////////////////////////////
+      // $reg = Areas::find($request->cve_cat_deptos_siti);
+      // //dd($reg);
+      //   $id_reg = 0;
+      //   $id_est = 0;
+      //   $nivel1 = [];
+      //   if($reg) {
+      //       $nivel  = $reg->nivel;
+      //
+      //
+      //       $id_reg = $reg->id ;   // cve_t_estructura;
+      //       $id_est = $reg->id;
+      //       //dd($id_reg,$nivel);
+      //
+      //           $id_reg = $reg->id;
+      //           // $id_est = $reg->id;
+      //           $data = [];
+      //           $regs = Areas::where([ ['activo', 1], ['id', $id_reg] ])->get();
+      //           foreach ($regs as $key => $value) {
+      //               $data [] = [ 'id' => $value->id, 'valor' => $value->id_padre , 'tipo' => $value->id_tipo ];
+      //
+      //               array_push($nivel1,$value->id);
+      //           }
+      //
+      //           if (isset($value->id)) {
+      //             dd($regs2,$value->id,$value->nivel);
+      //             $regs2 = Areas::where([ ['activo', 1], ['id_padre', $value->id] , ['nivel',$value->nivel] ])->get();
+      //
+      //             foreach ($regs2 as $key => $value2) {
+      //                 array_push($nivel1,$value2->id);
+      //
+      //             }
+      //           }
+      //
+      //
+      //
+      //             if (isset($value2->id)) {
+      //               $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', $value2->nivel] ])->get();
+      //               foreach ($regs3 as $key => $value3) {
+      //                   array_push($nivel1,$value3->id);
+      //               }
+      //             }
+      //
+      //
+      //             if (isset($value3->id)) {
+      //               $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel',$value3->nivel] ])->get();
+      //               foreach ($regs4 as $key => $value4) {
+      //                   array_push($nivel1,$value4->id);
+      //               }
+      //             }
+      //
+      //             if (isset($value4->id)) {
+      //               $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', $value4->nivel] ])->get();
+      //               foreach ($regs5 as $key => $value5) {
+      //                   array_push($nivel1,$value5->id);
+      //               }
+      //             }
+      //
+      //
+      // }
+      //////////////////////////////////////////////////////////////////
+
+
+
+
+
     $firmantes = Departamento_Firmantes::where([
       ['activo',1],
       ['cve_area_departamentos',$request->area_encargada],
     ])->get();
+
+
     return $firmantes;
   }
 }
