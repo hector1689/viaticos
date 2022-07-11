@@ -91,12 +91,14 @@
 
   </div>
   </div>
+
 </div>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script type="text/javascript">
+var  array_cosas2  = [];
 var tabla;
 $(function() {
 tabla = $('#kt_datatable').DataTable({
@@ -125,7 +127,11 @@ tabla = $('#kt_datatable').DataTable({
 ////////////////////// CHART /////////////////////////////////////////////////
   initCurso();
 
+
+
   async function initCurso(){
+    var array_cosas = [];
+    var array_cosas2 = [];
     var array_IdCursos = [];
     var array_cursos = [];
     var array_alumnos = [];
@@ -133,20 +139,16 @@ tabla = $('#kt_datatable').DataTable({
 
   for (var i = 0; i < cursos_id.length; i++) {
       array_IdCursos.push(cursos_id[i].id_dependencia);
-      //console.log(array_IdCursos);
-
     }
   ///////////////////////////////////////////////////////////////
     for (var i = 0; i < array_IdCursos.length; i++) {
-      var  _temp = await mandarCurso(array_IdCursos[i]);
-      array_cursos.push(_temp);
-      //console.log(array_cursos);
-    }
 
+      var  _temp = await mandarCurso(array_IdCursos[i]);
+      array_cursos.push(array_IdCursos[i]);
+    }
 
     /////////////////////////////////////////////////////////////
       async function mandarCurso(id){
-        //console.log(id)
         var _objeto = $.ajax({
            type:"POST",
            //async:false,
@@ -160,82 +162,123 @@ tabla = $('#kt_datatable').DataTable({
         }).then(data=>{
             var _temp = {'id':'','data':[]};
             _temp.id = id;
-          //  console.log(data)
+
             for (var j = 0; j < data.length; j++) {
               array_alumnos.push(parseInt(data[j].total_incritos));
-              //_temp.data.push(data[j].total_incritos);
-              //console.log(array_alumnos)
+
             }
-            //return _temp;
-
-
         });
 
 
           return _objeto;
       }
 
+
+
       var chart;
       var alumnos = await array_alumnos;
       var alumnosInt = [];
 
+
       for (var i = 0; i < alumnos.length; i++) {
 
         alumnosInt.push(parseInt(alumnos[i]));
+
       }
-      //console.log(alumnosInt);
-      //console.log(parseInt(alumnos))
+
 
       $(document).ready(function() {
 
-        chart = new Highcharts.Chart({
-          chart: {
-            renderTo: 'graficaLineal', 	// Le doy el nombre a la gráfica
-            defaultSeriesType: 'column'	// Pongo que tipo de gráfica es
-          },
-          title: {
-            text: 'Total Viaticos por Dependencia'	// Titulo (Opcional)
-          },
-          subtitle: {
-            text: ''		// Subtitulo (Opcional)
-          },
-          // Pongo los datos en el eje de las 'X'
-          xAxis: {
-            categories: ['<?php echo join("','",$data1); ?>'],
-            // Pongo el título para el eje de las 'X'
-            title: {
-              text: 'Dependencias'
-            }
-          },
-          yAxis: {
-            // Pongo el título para el eje de las 'Y'
-            title: {
-              text: 'Total Viaticos'
-            }
-          },
-          // Doy formato al la "cajita" que sale al pasar el ratón por encima de la gráfica
-          tooltip: {
-            enabled: true,
-            formatter: function() {
-              return '<b>'+ this.series.name +'</b><br/>'+
-                this.x +': '+ this.y +' '+this.series.name;
-            }
-          },
-          // Doy opciones a la gráfica
-          plotOptions: {
-            line: {
-              dataLabels: {
-                enabled: true
-              },
-              enableMouseTracking: true
-            }
-          },
-          // Doy los datos de la gráfica para dibujarlas
-          series: [{
-                        name: 'Dependencia',
-                        data: alumnosInt
-                    }],
-        });
+        $.ajax({
+               type:"POST",
+               url:"/datos1",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+                   array:array_cursos,
+                 },
+                success:function(data){
+
+                  for (var i = 0; i < data.length; i++) {
+
+                    array_cosas.push(data[i].nombre);
+                  }
+
+
+                  $.ajax({
+
+                         type:"POST",
+
+                         url:"/datos2",
+                         headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                         },
+                         data:{
+                             arrays:array_cursos,
+                           },success:function(data){
+                             chart = new Highcharts.Chart({
+                               chart: {
+                                 renderTo: 'graficaLineal',
+                                 defaultSeriesType: 'column'
+                               },
+                               title: {
+                                 text: 'Total Viaticos por Dependencia'
+                               },
+                               subtitle: {
+                                 text: ''
+                               },
+                               // Pongo los datos en el eje de las 'X'
+                               xAxis: {
+                                 categories: array_cosas,
+                                 // Pongo el título para el eje de las 'X'
+                                 title: {
+                                   text: 'Dependencias'
+                                 }
+                               },
+                               yAxis: {
+                                 // Pongo el título para el eje de las 'Y'
+                                 title: {
+                                   text: 'Total Viaticos'
+                                 }
+                               },
+                               // Doy formato al la "cajita" que sale al pasar el ratón por encima de la gráfica
+                               tooltip: {
+                                 enabled: true,
+                                 formatter: function() {
+                                   return '<b>'+ this.series.name +'</b><br/>'+
+                                     this.x +': '+ this.y +' '+this.series.name;
+                                 }
+                               },
+                               // Doy opciones a la gráfica
+                               plotOptions: {
+                                 line: {
+                                   dataLabels: {
+                                     enabled: true
+                                   },
+                                   enableMouseTracking: true
+                                 }
+                               },
+                               // Doy los datos de la gráfica para dibujarlas
+                               series: [{
+                                             name: 'Dependencia',
+                                             data: data
+                                         }],
+                             });
+
+
+
+                           }
+                    });
+
+
+                }
+          });
+
+
+
+
+
       });
 
   }

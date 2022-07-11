@@ -31,5 +31,8 @@ Route::group(["middleware" => ['auth:sanctum', 'verified']], function(){
   Route::post('/actualizar' , [HomeController::class, 'actualizar']);
   Route::get('/tabla' , [HomeController::class, 'tabla']);
   Route::post('/TraerDatosCursos', [HomeController::class, 'TraerDatosCursos']);
+  Route::post('/datos1', [HomeController::class, 'datos1']);
+  Route::post('/datos2', [HomeController::class, 'datos2']);
+
 
 });
