@@ -124,7 +124,7 @@ class RecibosController extends Controller
 
 
       $existe_folio = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','DESC')->first();
-      dd($existe_folio);
+      //dd($existe_folio);
         if (isset($existe_folio)) {
 
           $existe_folio_ultimos = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','ASC')->first();
