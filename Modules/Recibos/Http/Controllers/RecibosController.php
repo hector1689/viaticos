@@ -248,10 +248,14 @@ class RecibosController extends Controller
           }
         }
 
-        $nieveles = asort($nivel1);
-        dd($nieveles);
+        // $nieveles = sort($nivel1);
+        // dd($nieveles);
 
+        foreach ($nivel1 as $key => $value) {
 
+        }
+
+        dd($value);
 
       /////////////////////////////////////////////////////////////////////////
 
