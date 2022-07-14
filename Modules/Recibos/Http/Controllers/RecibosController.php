@@ -1355,15 +1355,17 @@ class RecibosController extends Controller
       $array_todo = [];
       $dato = $request->nivel;
       //////////////////////// ALIMENTOS ///////////////////////////////////////
-      if (Auth::user()->tipo_usuario == 4) {
-        $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
-      }else{
-                  $usuario = Auth::user()->id;
-                  $asociar = Asociar::where('id_usuario',$usuario)->first();
-                  $area = $asociar->id_dependencia;
+      // if (Auth::user()->tipo_usuario == 4) {
+      //   $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
+      // }else{
+      //             $usuario = Auth::user()->id;
+      //             $asociar = Asociar::where('id_usuario',$usuario)->first();
+      //             $area = $asociar->id_dependencia;
+      //
+      //             $alimentos = Alimentos::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
+      // }
 
-                  $alimentos = Alimentos::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
-      }
+      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
 
       $array = [];
       $array_alimentos = [];
