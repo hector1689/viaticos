@@ -248,7 +248,7 @@ class RecibosController extends Controller
           }
         }
 
-        dd($nivel1);
+        dd(asort($nivel1));
       /////////////////////////////////////////////////////////////////////////
 
 
