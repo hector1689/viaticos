@@ -46,7 +46,13 @@ class UsuariosController extends Controller
     public function create()
     {
 
-      $data['roles'] = Roles::where('id','!=',4)->get();
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['roles'] = Roles::all();
+      }else{
+        $data['roles'] = Roles::where('id','!=',4)->get();
+      }
+
+
 
       return view('usuarios::create')->with($data);
     }
@@ -138,7 +144,11 @@ class UsuariosController extends Controller
     {
       $data['usuarios'] = User::find($id);
 
-      $data['roles'] = Roles::all();
+      if (Auth::user()->tipo_usuario == 4) {
+        $data['roles'] = Roles::all();
+      }else{
+        $data['roles'] = Roles::where('id','!=',4)->get();
+      }
       return view('usuarios::create')->with($data);
     }
 
