@@ -227,7 +227,7 @@ class RecibosController extends Controller
 
         //  dd($folio,$numero);
         }else{
-          dd('existe');
+          //dd('existe');
           $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
           ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
           $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
