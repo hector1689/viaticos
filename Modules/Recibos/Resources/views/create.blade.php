@@ -206,14 +206,15 @@
             </label>
             <ul class="nav nav-tabs nav-tabs-line">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Lugares</a>
+                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_2">Transporte</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">Transporte</a>
+                    <a class="nav-link " data-toggle="tab" href="#kt_tab_pane_1">Lugares</a>
                 </li>
-                <li class="nav-item">
+
+                <!-- <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3">Datos de Pago</a>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4" tabindex="-1" aria-disabled="true">Firmas</a>
@@ -1401,17 +1402,17 @@
                 <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
                   <div class="row">
                     <div class="col-md-6">
-                       <input type="text" id="director_area_firma" name="director_area_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->director_area }} @endisset" disabled>
+                       <input type="text" id="director_area_firma" name="director_area_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->director_area }} @endisset" >
                         <p style="text-align:center;">DIRECTOR DEL ÁREA <br> NOMBRE Y FIRMA </p>
                     </div>
                     <div class="col-md-6">
-                      <input type="text" id="organo_control_firma" name="organo_control_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->organo_control }} @endisset" disabled>
+                      <input type="text" id="organo_control_firma" name="organo_control_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->organo_control }} @endisset" >
                         <p style="text-align:center;">ORGANO DE CONTROL<br> NOMBRE Y FIRMA </p>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <input type="text" id="director_administrativo_firma" name="director_administrativo_firma" value="@isset($firmantes) {{ $firmantes->director_administrativo }} @endisset" class="form-control" disabled>
+                      <input type="text" id="director_administrativo_firma" name="director_administrativo_firma" value="@isset($firmantes) {{ $firmantes->director_administrativo }} @endisset" class="form-control" >
                         <p style="text-align:center;">DIRECTOR ADMINISTRATIVO <br> NOMBRE Y FIRMA </p>
                     </div>
                     <div class="col-md-6">
@@ -1422,7 +1423,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                    <input type="text" id="jefe_firma" name="jefe_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->superior_inmediato }} @endisset" disabled>
+                    <input type="text" id="jefe_firma" name="jefe_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->superior_inmediato }} @endisset" >
                         <p style="text-align:center;">SUPERIOR INMEDIATO <br> NOMBRE Y FIRMA </p>
                     </div>
                   </div>
@@ -2300,7 +2301,7 @@ if (objectLugar.zona == 1) {
 }else{
   zonita = 'Frontera y Entidades Federativas del Extranjero';
 }
-console.log(objectLugar.hospedaje)
+//console.log(objectLugar.hospedaje)
 
   var tr = '<tr id="filas_lugar'+contador_lugares+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
@@ -5320,8 +5321,8 @@ function cantidadletra(){
 
     //console.log(tabla_lugares)
 
-    if (rfc == '' || clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == '' || n_dias_ina == '' || descripcion == '' || cheque_firma == '' || cheque == ''
-    || fecha_pago == '' || cantidad == '' || kilometrorecorrido == '' || especificarcomision == '' || programavehiculof == '') {
+    if (rfc == '' || clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == '' || n_dias_ina == '' || descripcion == '' || cheque_firma == ''
+     || kilometrorecorrido == '' || especificarcomision == '' || programavehiculof == '') {
       Swal.fire("Lo Sentimos", 'Llenar los campos obligatorios', "warning");
     }else{
       $.ajax({

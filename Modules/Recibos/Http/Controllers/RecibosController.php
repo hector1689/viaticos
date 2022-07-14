@@ -124,7 +124,7 @@ class RecibosController extends Controller
 
 
       $existe_folio = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','DESC')->first();
-      //dd($existe_folio);
+      dd($existe_folio);
         if (isset($existe_folio)) {
 
           $existe_folio_ultimos = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','ASC')->first();
@@ -231,6 +231,7 @@ class RecibosController extends Controller
           ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
           $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
           ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+
           $folio_comision = $folio_existes2->foliador;
           $numero = 1;
           $folio = $folio_existes->foliador;
