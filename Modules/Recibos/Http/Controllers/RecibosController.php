@@ -1385,14 +1385,16 @@ class RecibosController extends Controller
 
 
       ///////////////////////// HOSPEDAJE /////////////////////////////////////
-      if (Auth::user()->tipo_usuario == 4) {
-        $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
-      }else{
-        $usuario = Auth::user()->id;
-        $asociar = Asociar::where('id_usuario',$usuario)->first();
-        $area = $asociar->id_dependencia;
-        $hospedaje = Hospedaje::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
-      }
+      // if (Auth::user()->tipo_usuario == 4) {
+      //   $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
+      // }else{
+      //   $usuario = Auth::user()->id;
+      //   $asociar = Asociar::where('id_usuario',$usuario)->first();
+      //   $area = $asociar->id_dependencia;
+      //   $hospedaje = Hospedaje::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
+      // }
+
+      $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
 
       $arrays = [];
       $array_hospedaje = [];
