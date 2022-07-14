@@ -123,6 +123,11 @@ class RecibosController extends Controller
       $fecha_final = $anio2.'-'.$mes2.'-'.$dia2.' '.$hora2;
 
 
+      $usuario = Auth::user()->id;
+      $asociar = Asociar::where('id_usuario',$usuario)->first();
+      $area = $asociar->id_dependencia;
+
+
       $existe_folio = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','DESC')->first();
       //dd($existe_folio);
         if (isset($existe_folio)) {
@@ -131,19 +136,19 @@ class RecibosController extends Controller
 
           $existe_folio_ultimo = Recibos::where([['activo',1],['oficio_comision','!=','NULL']])->orderBy('id','ASC')->first();
 
-            dd($existe_folio_ultimos,$existe_folio_ultimo);
+          //  dd($existe_folio_ultimos,$existe_folio_ultimo);
           if(isset($existe_folio_ultimo)){
 
             $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-            ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+            ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.tipo_folio',1]])->first();
 
-            //dd($folio_existes->foliador);
+            //dd($folio_existes->foliador,$area);
 
             //////////////////////// FOLIO RECIBO /////////////////////////////////////////////////////////////////////
             //dd($existe_folio_ultimos->folio,$folio_existes->foliador);
             if ($existe_folio_ultimos->folio != $folio_existes->foliador) {
               $foliots = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimos->folio]])->first();
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.foliador',$existe_folio_ultimos->folio]])->first();
 
               if (isset($foliots)) {
                 list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
@@ -153,7 +158,7 @@ class RecibosController extends Controller
 
               }else{
                 $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.tipo_folio',1]])->first();
 
                   $existe_folio_existente = Recibos::where([['activo',1],['folio',$folio_existes->foliador]])->orderBy('id','ASC')->first();
                 //list($paso1,$paso2,$paso3,$paso4) = explode('/',$folio_existes->foliador);
@@ -181,13 +186,13 @@ class RecibosController extends Controller
           if(isset($existe_folio_ultimo)){
 
             $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-            ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+            ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.tipo_folio',2]])->first();
             /////////////////////// FOLIO COMISION ////////////////////////////////////////////////////////
             //dd($folio_existes2->foliador);
             if ($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador) {
               //dd($existe_folio_ultimo->oficio_comision);
               $foliots2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimo->oficio_comision]])->first();
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.foliador',$existe_folio_ultimo->oficio_comision]])->first();
               //dd($foliots2);
               if (isset($foliots2)) {
                 //dd('ENTRO');
@@ -199,7 +204,7 @@ class RecibosController extends Controller
               }else{
               //  dd('ENTRO AQUI');
                 $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.tipo_folio',2]])->first();
 
                 $existe_folio_existente2 = Recibos::where([['activo',1],['oficio_comision',$folio_existes2->foliador]])->orderBy('id','ASC')->first();
 
@@ -229,11 +234,11 @@ class RecibosController extends Controller
         }else{
           //dd('existe');
           $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-          ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+          ->where([['cat_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.tipo_folio',1]])->first();
 
 
           $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-          ->where([['cat_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+          ->where([['cat_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.tipo_folio',2]])->first();
 
           //dd($folio_existes,$folio_existes2,$request->area_id);
 
@@ -262,7 +267,7 @@ class RecibosController extends Controller
         $recibo->departamentos = $request->departamento;
         $recibo->lugar_adscripcion = $request->lugar_adscripcion;
         $recibo->num_dias = $request->n_dias;
-        $recibo->id_dependencia = $request->area_id;
+        $recibo->id_dependencia = $area;
         $recibo->num_dias_inhabiles = $request->n_dias_ina;
         $recibo->descripcion_comision = $request->descripcion;
         $recibo->importe =$request->total_extraer;
@@ -628,6 +633,12 @@ class RecibosController extends Controller
     public function update(Request $request)
     {
       try {
+
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+
         list($fecha1,$hora1) = explode(" ",$request->inicia);
         list($dia,$mes,$anio) = explode('/',$fecha1);
         $fecha_incio = $anio.'-'.$mes.'-'.$dia.' '.$hora1;
@@ -654,7 +665,7 @@ class RecibosController extends Controller
           $recibo->num_dias = $request->n_dias;
           $recibo->num_dias_inhabiles = $request->n_dias_ina;
           $recibo->descripcion_comision = $request->descripcion;
-          $recibo->id_dependencia = $request->area_id;
+          $recibo->id_dependencia = $area;
           $recibo->importe =$request->total_extraer;
           $recibo->cve_usuario = Auth::user()->id;
           $recibo->save();
