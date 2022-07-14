@@ -252,10 +252,10 @@ class RecibosController extends Controller
         // dd($nieveles);
 
         foreach ($nivel1 as $key => $value) {
-
+          // code...
         }
 
-        dd($value);
+
 
       /////////////////////////////////////////////////////////////////////////
 
@@ -274,7 +274,7 @@ class RecibosController extends Controller
             $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
             ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
 
-            dd($folio_existes->foliador,$request->area_id);
+            //dd($folio_existes->foliador,$request->area_id);
 
             //////////////////////// FOLIO RECIBO /////////////////////////////////////////////////////////////////////
             //dd($existe_folio_ultimos->folio,$folio_existes->foliador);
