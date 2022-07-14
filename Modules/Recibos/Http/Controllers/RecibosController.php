@@ -142,7 +142,7 @@ class RecibosController extends Controller
             $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
             ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$area],['cat_t_folios.tipo_folio',1]])->first();
 
-            //dd($folio_existes->foliador,$area);
+            dd($folio_existes->foliador,$area);
 
             //////////////////////// FOLIO RECIBO /////////////////////////////////////////////////////////////////////
             //dd($existe_folio_ultimos->folio,$folio_existes->foliador);
