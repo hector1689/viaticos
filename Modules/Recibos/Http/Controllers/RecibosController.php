@@ -258,7 +258,8 @@ class RecibosController extends Controller
 
 
       /////////////////////////////////////////////////////////////////////////
-
+      $folio_comision ='';
+      $folio ='';
 
       $existe_folio = Recibos::where([['activo',1],['folio','!=','NULL']])->orderBy('id','DESC')->first();
       //dd($existe_folio);
@@ -268,7 +269,7 @@ class RecibosController extends Controller
 
           $existe_folio_ultimo = Recibos::where([['activo',1],['oficio_comision','!=','NULL']])->orderBy('id','ASC')->first();
 
-          //  dd($existe_folio_ultimos,$existe_folio_ultimo);
+          // dd($existe_folio_ultimos,$existe_folio_ultimo);
           if(isset($existe_folio_ultimo)){
 
             $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
@@ -281,7 +282,7 @@ class RecibosController extends Controller
             if ($existe_folio_ultimos->folio != $folio_existes->foliador) {
               $foliots = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
               ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimos->folio]])->first();
-
+              //dd(isset($foliots));
               if (isset($foliots)) {
                 list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
                 $sumafolio = $paso4 + 1;
@@ -296,12 +297,15 @@ class RecibosController extends Controller
                 //list($paso1,$paso2,$paso3,$paso4) = explode('/',$folio_existes->foliador);
                 // $sumafolio = $paso4 + 1;
                 // $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
-
+                // dd($folio_existes,$existe_folio_existente);
                 if (isset($existe_folio_existente)) {
+                  //dd($existe_folio_existente->folio);
                   list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio_existente->folio);
                   $sumafolio = $paso4 + 1;
                   $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
                   $folio = $folio_completo;
+                  //dd($folio);
+
                 }else{
                   $folio = $folio_existes->foliador;
                 }
@@ -314,17 +318,19 @@ class RecibosController extends Controller
               $folio = $folio_completo;
             }
           }
-
+          /////////////////////////////////////////////////////////////////////
+        //  dd(isset($existe_folio_ultimo));
           if(isset($existe_folio_ultimo)){
 
             $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
             ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
             /////////////////////// FOLIO COMISION ////////////////////////////////////////////////////////
-            //dd($folio_existes2->foliador);
+            //dd($request->area_id,$folio_existes2);
+            //dd($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador);
             if ($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador) {
               //dd($existe_folio_ultimo->oficio_comision);
               $foliots2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimo->oficio_comision]])->first();
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$folio_existes2->oficio_comision]])->first();
               //dd($foliots2);
               if (isset($foliots2)) {
                 //dd('ENTRO');
@@ -334,13 +340,14 @@ class RecibosController extends Controller
                 $folio_comision = $folio_completo2;
 
               }else{
-              //  dd('ENTRO AQUI');
+              //dd('ENTRO AQUI');
                 $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
                 ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
 
                 $existe_folio_existente2 = Recibos::where([['activo',1],['oficio_comision',$folio_existes2->foliador]])->orderBy('id','ASC')->first();
-
+                //dd($existe_folio_existente2);
                 if(isset($existe_folio_existente2)){
+
                   list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio_existente2->oficio_comision);
                   $sumafolio2 = $paso8 + 1;
                   $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
@@ -381,6 +388,7 @@ class RecibosController extends Controller
 
 
 
+      //  dd($folio_comision,$folio);
 
 
         $recibo = new Recibos();
@@ -417,19 +425,19 @@ class RecibosController extends Controller
         $firmantes->cve_usuario = Auth::user()->id;
         $firmantes->save();
 
-        list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-        $fecha_pago = $anio.'-'.$mes.'-'.$dia;
-
-        $datospago = new DatosPago();
-        $datospago->cve_t_viatico = $recibo->id;
-        $datospago->secretaria = $request->secretaria_pago;
-        $datospago->num_cheque = $request->cheque;
-        $datospago->fehca_inicia = $fecha_pago;
-        $datospago->cantidad = $request->cantidad;
-        $datospago->cantidad_letra = $request->letras_cantidad;
-        $datospago->favor_cargo_banco = $request->banco;
-        $datospago->cve_usuario = Auth::user()->id;
-        $datospago->save();
+        // list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+        // $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+        //
+        // $datospago = new DatosPago();
+        // $datospago->cve_t_viatico = $recibo->id;
+        // $datospago->secretaria = $request->secretaria_pago;
+        // $datospago->num_cheque = $request->cheque;
+        // $datospago->fehca_inicia = $fecha_pago;
+        // $datospago->cantidad = $request->cantidad;
+        // $datospago->cantidad_letra = $request->letras_cantidad;
+        // $datospago->favor_cargo_banco = $request->banco;
+        // $datospago->cve_usuario = Auth::user()->id;
+        // $datospago->save();
 
         //dd($request->VehiculoOficial[0]);
         $transporte = new Transporte();
@@ -806,19 +814,19 @@ class RecibosController extends Controller
           $firmantes->cve_usuario = Auth::user()->id;
           $firmantes->save();
 
-          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
-
-
-          $datospago = DatosPago::find($request->id_pagos);
-          $datospago->secretaria = $request->secretaria_pago;
-          $datospago->num_cheque = $request->cheque;
-          $datospago->fehca_inicia = $fecha_pago;
-          $datospago->cantidad = $request->cantidad;
-          $datospago->cantidad_letra = $request->letras_cantidad;
-          $datospago->favor_cargo_banco = $request->banco;
-          $datospago->cve_usuario = Auth::user()->id;
-          $datospago->save();
+          // list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+          // $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+          //
+          //
+          // $datospago = DatosPago::find($request->id_pagos);
+          // $datospago->secretaria = $request->secretaria_pago;
+          // $datospago->num_cheque = $request->cheque;
+          // $datospago->fehca_inicia = $fecha_pago;
+          // $datospago->cantidad = $request->cantidad;
+          // $datospago->cantidad_letra = $request->letras_cantidad;
+          // $datospago->favor_cargo_banco = $request->banco;
+          // $datospago->cve_usuario = Auth::user()->id;
+          // $datospago->save();
 
           $transporte = Transporte::find($request->id_transporte);
           $transporte->kilometro_interno = $request->kilometrorecorrido;
@@ -2207,7 +2215,65 @@ class RecibosController extends Controller
         $asociar = Asociar::where('id_usuario',$usuario)->first();
         $area = $asociar->id_dependencia;
 
-      $registros = Recibos::where([['activo', 1],['id_dependencia',$area]]);
+        $reg = Areas::find($area);
+
+          $id_reg = 0;
+          $id_est = 0;
+          $nivel1 = [];
+          if($reg) {
+              $nivel  = $reg->nivel;
+
+
+              $id_reg = $reg->id ;   // cve_t_estructura;
+              $id_est = $reg->id;
+              //dd($id_reg,$nivel);
+              if ($nivel == 1) {
+                  $id_reg = $reg->id;
+                  // $id_est = $reg->id;
+                  $data = [];
+                  $regs = Areas::where([ ['activo', 1], ['id', $id_reg] ])->get();
+                  foreach ($regs as $key => $value) {
+                      $data [] = [ 'id' => $value->id, 'valor' => $value->id_padre , 'tipo' => $value->id_tipo ];
+
+                      array_push($nivel1,$value->id);
+                  }
+
+                  if (isset($reg->id)) {
+                    $regs2 = Areas::where([ ['activo', 1], ['id_padre', $reg->id] , ['nivel', 2] ])->get();
+                    foreach ($regs2 as $key => $value2) {
+                        array_push($nivel1,$value2->id);
+                    }
+                  }
+
+
+
+                    if (isset($value2->id)) {
+                      $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', 3] ])->get();
+                      foreach ($regs3 as $key => $value3) {
+                          array_push($nivel1,$value3->id);
+                      }
+                    }
+
+
+                    if (isset($value3->id)) {
+                      $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
+                      foreach ($regs4 as $key => $value4) {
+                          array_push($nivel1,$value4->id);
+                      }
+                    }
+
+                    if (isset($value4->id)) {
+                      $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
+                      foreach ($regs5 as $key => $value5) {
+                          array_push($nivel1,$value5->id);
+                      }
+                    }
+              }
+
+        }
+        //dd($nivel1);
+
+      $registros = Recibos::where([['activo', 1]])->whereIN('id_dependencia',$nivel1)->get();
     }elseif($tipo_usuario == 2){
 
       $id = Auth::user()->id;

@@ -74,33 +74,98 @@ class HomeController extends Controller
 
         $id = Auth::user()->id;
         $asociar = Asociar::where('id_usuario',$id)->first();
+        $usuario = Auth::user()->id;
+
+
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+
+        $reg = Areas::find($area);
+
+          $id_reg = 0;
+          $id_est = 0;
+          $nivel1 = [];
+          if($reg) {
+              $nivel  = $reg->nivel;
+
+
+              $id_reg = $reg->id ;   // cve_t_estructura;
+              $id_est = $reg->id;
+              //dd($id_reg,$nivel);
+              if ($nivel == 1) {
+                  $id_reg = $reg->id;
+                  // $id_est = $reg->id;
+                  $data = [];
+                  $regs = Areas::where([ ['activo', 1], ['id', $id_reg] ])->get();
+                  foreach ($regs as $key => $value) {
+                      $data [] = [ 'id' => $value->id, 'valor' => $value->id_padre , 'tipo' => $value->id_tipo ];
+
+                      array_push($nivel1,$value->id);
+                  }
+
+                  if (isset($reg->id)) {
+                    $regs2 = Areas::where([ ['activo', 1], ['id_padre', $reg->id] , ['nivel', 2] ])->get();
+                    foreach ($regs2 as $key => $value2) {
+                        array_push($nivel1,$value2->id);
+                    }
+                  }
+
+
+
+                    if (isset($value2->id)) {
+                      $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', 3] ])->get();
+                      foreach ($regs3 as $key => $value3) {
+                          array_push($nivel1,$value3->id);
+                      }
+                    }
+
+
+                    if (isset($value3->id)) {
+                      $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
+                      foreach ($regs4 as $key => $value4) {
+                          array_push($nivel1,$value4->id);
+                      }
+                    }
+
+                    if (isset($value4->id)) {
+                      $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
+                      foreach ($regs5 as $key => $value5) {
+                          array_push($nivel1,$value5->id);
+                      }
+                    }
+              }
+
+        }
+        //dd($nivel1);
+
+
+
 
         $data['capturados'] = Recibos::where([
         ['activo',1],
         ['cve_estatus',1],
-        ['id_dependencia',$asociar->id_dependencia]
-        ])->count();
+        //['id_dependencia',$asociar->id_dependencia]
+        ])->whereIN('id_dependencia',$nivel1)->count();
         $data['proceso'] = Recibos::where([
         ['activo',1],
         ['cve_estatus',2],
-        ['id_dependencia',$asociar->id_dependencia]
-        ])->count();
+        //['id_dependencia',$asociar->id_dependencia]
+        ])->whereIN('id_dependencia',$nivel1)->count();
         $data['finiquitado'] = Recibos::where([
         ['activo',1],
         ['cve_estatus',4],
-        ['id_dependencia',$asociar->id_dependencia]
-        ])->count();
+        //['id_dependencia',$asociar->id_dependencia]
+        ])->whereIN('id_dependencia',$nivel1)->count();
         $data['pendiente'] = Recibos::where([
         ['activo',1],
         ['cve_estatus',7],
-        ['id_dependencia',$asociar->id_dependencia]
-        ])->count();
+        //['id_dependencia',$asociar->id_dependencia]
+        ])->whereIN('id_dependencia',$nivel1)->count();
         $data['tipo_usuario'] = $tipo_usuario;
         ////////////////////////////////////////////////////////////////
-        $usuario = Auth::user()->id;
-        $asociar = Asociar::where('id_usuario',$usuario)->first();
-        $area = $asociar->id_dependencia;
-          $data['id_cursos'] = Recibos::where([['activo',1],['id_dependencia',$area]])->select('id_dependencia')->orderby('id','asc')->get();
+
+          $data['id_cursos'] = Recibos::where([['activo',1]])->whereIN('id_dependencia',$nivel1)->select('id_dependencia')->orderby('id','asc')->get();
         ////////////////////////////////////////////////////////////////////
       }elseif($tipo_usuario == 2){
           $id = Auth::user()->id;
@@ -237,7 +302,66 @@ class HomeController extends Controller
         $asociar = Asociar::where('id_usuario',$usuario)->first();
         $area = $asociar->id_dependencia;
 
-        $registros = Recibos::where([['activo', 1],['id_dependencia',$area]])->take(5)->orderBy('id','ASC')->get();
+
+        $reg = Areas::find($area);
+
+          $id_reg = 0;
+          $id_est = 0;
+          $nivel1 = [];
+          if($reg) {
+              $nivel  = $reg->nivel;
+
+
+              $id_reg = $reg->id ;   // cve_t_estructura;
+              $id_est = $reg->id;
+              //dd($id_reg,$nivel);
+              if ($nivel == 1) {
+                  $id_reg = $reg->id;
+                  // $id_est = $reg->id;
+                  $data = [];
+                  $regs = Areas::where([ ['activo', 1], ['id', $id_reg] ])->get();
+                  foreach ($regs as $key => $value) {
+                      $data [] = [ 'id' => $value->id, 'valor' => $value->id_padre , 'tipo' => $value->id_tipo ];
+
+                      array_push($nivel1,$value->id);
+                  }
+
+                  if (isset($reg->id)) {
+                    $regs2 = Areas::where([ ['activo', 1], ['id_padre', $reg->id] , ['nivel', 2] ])->get();
+                    foreach ($regs2 as $key => $value2) {
+                        array_push($nivel1,$value2->id);
+                    }
+                  }
+
+
+
+                    if (isset($value2->id)) {
+                      $regs3 = Areas::where([ ['activo', 1], ['id_padre', $value2->id] , ['nivel', 3] ])->get();
+                      foreach ($regs3 as $key => $value3) {
+                          array_push($nivel1,$value3->id);
+                      }
+                    }
+
+
+                    if (isset($value3->id)) {
+                      $regs4 = Areas::where([ ['activo', 1], ['id_padre', $value3->id] , ['nivel', 4] ])->get();
+                      foreach ($regs4 as $key => $value4) {
+                          array_push($nivel1,$value4->id);
+                      }
+                    }
+
+                    if (isset($value4->id)) {
+                      $regs5 = Areas::where([ ['activo', 1], ['id_padre', $value4->id] , ['nivel', 5] ])->get();
+                      foreach ($regs5 as $key => $value5) {
+                          array_push($nivel1,$value5->id);
+                      }
+                    }
+              }
+
+        }
+        //dd($nivel1);
+
+        $registros = Recibos::where([['activo', 1]])->whereIN('id_dependencia',$nivel1)->take(5)->orderBy('id','ASC')->get();
 
       }elseif($tipo_usuario == 2){
 

@@ -226,7 +226,7 @@
                 @endisset
             </ul>
             <div class="tab-content mt-5" id="myTabContent">
-                <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                <div class="tab-pane fade " id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                   <div class="row">
                     <!-- <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">¿Remoto?: </label>
@@ -383,7 +383,7 @@
 
                 </div>
 
-                <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                <div class="tab-pane fade show active" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                   <div class="row">
                     <div class="col-md-2">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Recorrido interno: </label>
@@ -1553,16 +1553,16 @@ $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
 
 
 function  sumarKM(){
-  var kilometraje_interno = $('#kilometrorecorrido').val();
-
-  var suma_kilometraje = 0;
-  arrayKilometrajeLugares.forEach (function(numero_kilometraje){
-  suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
-  });
-
-  var totalito = parseInt(kilometraje_interno) + parseInt(suma_kilometraje);
-
-   $('#totalkm').val(totalito);
+  // var kilometraje_interno = $('#kilometrorecorrido').val();
+  //
+  // var suma_kilometraje = 0;
+  // arrayKilometrajeLugares.forEach (function(numero_kilometraje){
+  // suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
+  // });
+  //
+  // var totalito = parseInt(kilometraje_interno) + parseInt(suma_kilometraje);
+  //
+  //  $('#totalkm').val(totalito);
 
 
 
@@ -4335,6 +4335,19 @@ function calcularViaticoLugar(){
 
 
  })
+
+
+ ///////////////////////////////////
+ var kilometraje_interno = $('#kilometrorecorrido').val();
+
+ var suma_kilometraje = 0;
+ arrayKilometrajeLugares.forEach (function(numero_kilometraje){
+ suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
+ });
+
+ var totalito = parseInt(kilometraje_interno) + parseInt(suma_kilometraje);
+
+  $('#totalkm').val(totalito);
 
 
   @endisset
