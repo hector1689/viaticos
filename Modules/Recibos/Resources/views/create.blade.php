@@ -228,16 +228,15 @@
             <div class="tab-content mt-5" id="myTabContent">
                 <div class="tab-pane fade " id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                   <div class="row">
-                    <!-- <div class="col-md-3">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label">¿Remoto?: </label>
-                        <div class="checkbox-list">
-                            <label class="checkbox">
-                                <input type="checkbox" name="Checkboxes1">
-                                <span></span>
-                                SI
-                            </label>
-                        </div>
-                    </div> -->
+                    <div class="col-md-3">
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Zona : </label>
+                        <select class="form-control" id="zona_trayectoria" @isset($recibos) @else disabled @endisset>
+                          <option value="0">seleccionar</option>
+                          <option value="C">Centro de Tamaulipas</option>
+                          <option value="E">Extranjero y mas de 50 millas de la frontera con México en USA</option>
+                          <option value="M">Méx.,Mty., Nvo. Ldo.,+ de 800 kms.</option>
+                        </select>
+                    </div>
 
 
                     <div class="col-md-3">
@@ -1622,7 +1621,7 @@ function eliminarpeajeTabla(id,id_key){
          data:{
              id:id,
            },success:function(data){
-             console.log(data)
+             //console.log(data)
              $('#total_transporte_vehiculof').val(data);
 
            }
@@ -2098,6 +2097,7 @@ function verBtn(){
 
 function abrirLugar(){
   $('#origen_lugar').prop('disabled',false);
+  $('#zona_trayectoria').prop('disabled',false);
   $('#destino_lugar').prop('disabled',false);
 }
 
@@ -2239,11 +2239,31 @@ var origen_lugar = $('#origen_lugar').val();
 var destino_lugar = $('#destino_lugar').val();
 var origen_lugar_name = $('#origen_lugar').find('option:selected').text();
 var destino_lugar_name = $('#destino_lugar').find('option:selected').text();
+var zona_trayectoria = $('#zona_trayectoria').val();
+
 
 
 if (origen_lugar == 0 || destino_lugar == 0) {
 
 }else{
+
+  // $.ajax({
+  //        type:"POST",
+  //        url:"/recibos/NivelAlimentacion",
+  //        headers: {
+  //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //        },
+  //        data:{
+  //            nivel:nivel,
+  //            zona_trayectoria:zona_trayectoria,
+  //          },
+  //         success:function(dars){
+  //           console.log(dars)
+  //         }
+  //
+  //   });
+
+
   $.ajax({
          type:"POST",
          url:"/recibos/AlimentacionTime",
@@ -2252,6 +2272,7 @@ if (origen_lugar == 0 || destino_lugar == 0) {
          },
          data:{
              nivel:nivel,
+             zona_trayectoria:zona_trayectoria,
            },
           success:function(dars){
 
@@ -2269,6 +2290,7 @@ if (origen_lugar == 0 || destino_lugar == 0) {
               destino:destino_lugar,
               origen_name:origen_lugar_name,
               destino_name:destino_lugar_name,
+              zona_trayectoria:zona_trayectoria,
             }
 
 
@@ -2307,7 +2329,7 @@ if (objectLugar.zona == 1) {
   '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
   '<td>'+objectLugar.destino_name+'</td>'+
   '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')"></td>'+
-  '<td>'+zonita+'</td>'+
+  '<td>'+objectLugar.zona_trayectoria+'</td>'+
   '<td><input type="text" class="form-control" id="kilometraje_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')"></td>'+
   '<td>'+
     '<div class="form-group">'+
@@ -2350,6 +2372,9 @@ if (objectLugar.zona == 1) {
 
   $('#origen_lugar').prop('selectedIndex',0);
   $('#destino_lugar').prop('selectedIndex',0);
+  $('#zona_trayectoria').prop('selectedIndex',0);
+
+
 
   arrayTablaLugares.push({
     id:contador_lugares,
@@ -4483,6 +4508,8 @@ function agregarVehiculo1(ObjetoVehiculoOficial){
     tipo_viaje = 'SOLO REGRESO';
   }
 
+  var total = parseFloat(ObjetoVehiculoOficial.cuota) * parseFloat(ObjetoVehiculoOficial.gasolina_vehiculo);
+
   var tr = '<tr id="filas'+contador_vehiculo1+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo1+'"/>Vehiculo Oficial</td>'+
   '<td>'+tipo_viaje+'</td>'+
@@ -4495,7 +4522,7 @@ function agregarVehiculo1(ObjetoVehiculoOficial){
   '<td>'+ObjetoVehiculoOficial.cuota+'</td>'+
   '<td>$'+ObjetoVehiculoOficial.gasolina_vehiculo+'</td>'+
 
-  '<td>$100</td>'+
+  '<td>$'+total+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculooficial('+contador_vehiculo1+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
@@ -4614,7 +4641,7 @@ function agregarVehiculo2(ObjetoVehiculo){
   }else if(ObjetoVehiculo.tipo_viaje == 3){
     tipo_viaje = 'SOLO REGRESO';
   }
-
+  var total = parseFloat(ObjetoVehiculo.cuota) * parseFloat(ObjetoVehiculo.gasolina_vehiculo);
   var tr = '<tr id="filasVh'+contador_vehiculo2+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo2+'"/>Vehiculo Particular</td>'+
   '<td>'+tipo_viaje+'</td>'+
@@ -4626,7 +4653,7 @@ function agregarVehiculo2(ObjetoVehiculo){
   '<td>'+ObjetoVehiculo.cuota+'</td>'+
   '<td>$'+ObjetoVehiculo.gasolina_vehiculo+'</td>'+
 
-  '<td>$100</td>'+
+  '<td>$'+total+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculo('+contador_vehiculo2+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
@@ -5121,7 +5148,7 @@ function cantidadletra(){
               }else{
                 var nombre  = data.nombre+' '+data.apellido_paterno+' '+data.apellido_materno;
                 var nivel = data.nivel;
-
+                console.log(nivel);
                 var id_area = data.cve_area_departamentos;
 
                 $('#nombre_empleado').val(nombre);

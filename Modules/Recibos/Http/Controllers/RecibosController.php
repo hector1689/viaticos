@@ -83,12 +83,14 @@ class RecibosController extends Controller
         $data['taxi'] = Taxi::where('activo',1)->get();
         $data['lacalidad1'] = Localidad::where('activo',1)->get();
         $data['lacalidad2'] = Localidad::where('activo',1)->get();
+        $data['alimentos'] =  Alimentos::where('activo',1)->get();
+
         return view('recibos::create')->with($data);
       }else{
         $usuario = Auth::user()->id;
         $asociar = Asociar::where('id_usuario',$usuario)->first();
         $area = $asociar->id_dependencia;
-
+        $data['alimentos'] =  Alimentos::where('activo',1)->get();
         $data['peajes'] = Peaje::where([['activo',1],['id_dependencia',$area]])->get();
         $data['gasolina'] = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('id','DESC')->get();
         $data['rendimiento'] = Rendimiento::where([['activo',1],['id_dependencia',$area]])->get();
@@ -1497,6 +1499,64 @@ class RecibosController extends Controller
 
     }
 
+    // public function NivelAlimentacion(Request $request){
+    //   $array_todo = [];
+    //   $dato = $request->nivel;
+    //
+    //   $alimentoss = Alimentos::where('zona',$request->zona_trayectoria)->get();
+    //   $array = [];
+    //   $arrayid = [];
+    //   $array2 = [];
+    //   $arrayid2 = [];
+    //   $array3 = [];
+    //   $arrayid3 = [];
+    //   $array_alimentos = [];
+    //   foreach ($alimentoss as $key => $value) {
+    //     //dd($value);
+    //     array_push($arrayid,$value['id']);
+    //
+    //     foreach (range(1, 159) as $numero) {
+    //       array_push($array,$numero);
+    //     }
+    //
+    //     foreach (range(160, 189) as $numero) {
+    //       array_push($array2,$numero);
+    //     }
+    //
+    //     foreach (range(190, 199) as $numero) {
+    //       array_push($array3,$numero);
+    //     }
+    //
+    //
+    //
+    //   }
+    //   //dd($array);
+    //   if (array_search($dato,$array)) {
+    //     $epale = 'existe';
+    //     //dd($epale,$arrayid[0]);
+    //     $alimentos = Alimentos::find($arrayid[0]);
+    //     array_push($array_alimentos,$alimentos);
+    //   }elseif(array_search($dato,$array2)){
+    //     $epale = 'existe 2';
+    //     //dd($epale);
+    //
+    //     $alimentos = Alimentos::find($arrayid[1]);
+    //     array_push($array_alimentos,$alimentos);
+    //   }elseif(array_search($dato,$array3)){
+    //     $epale = 'existe 3';
+    //     //dd($epale);
+    //
+    //     $alimentos = Alimentos::find($arrayid[2]);
+    //     array_push($array_alimentos,$alimentos);
+    //   }
+    //
+    //   dd($array_alimentos);
+    //
+    //
+    //
+    //
+    // }
+
     public function AlimentacionTime(Request $request){
 
       // list($dias,$mes,$anio) = explode('/',$request->fecha);
@@ -1505,35 +1565,53 @@ class RecibosController extends Controller
 
       $array_todo = [];
       $dato = $request->nivel;
-      //////////////////////// ALIMENTOS ///////////////////////////////////////
-      // if (Auth::user()->tipo_usuario == 4) {
-      //   $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
-      // }else{
-      //             $usuario = Auth::user()->id;
-      //             $asociar = Asociar::where('id_usuario',$usuario)->first();
-      //             $area = $asociar->id_dependencia;
-      //
-      //             $alimentos = Alimentos::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
-      // }
 
-      $alimentos = Alimentos::orderBy('vigencia_final','DESC')->first();
-
+      $alimentoss = Alimentos::where('zona',$request->zona_trayectoria)->get();
       $array = [];
+      $arrayid = [];
+      $array2 = [];
+      $arrayid2 = [];
+      $array3 = [];
+      $arrayid3 = [];
       $array_alimentos = [];
-      foreach (range($alimentos->rango_inicia, $alimentos->rango_final) as $numero) {
-        array_push($array,$numero);
-      }
+      foreach ($alimentoss as $key => $value) {
+        //dd($value);
+        array_push($arrayid,$value['id']);
 
+        foreach (range(1, 159) as $numero) {
+          array_push($array,$numero);
+        }
+
+        foreach (range(160, 189) as $numero) {
+          array_push($array2,$numero);
+        }
+
+        foreach (range(190, 199) as $numero) {
+          array_push($array3,$numero);
+        }
+
+
+
+      }
+      //dd($array);
       if (array_search($dato,$array)) {
-        $epale = 'existe';
-        $alimentos = Alimentos::find($alimentos->id);
+        //$epale = 'existe';
+        //dd($epale,$arrayid[0]);
+        $alimentos = Alimentos::find($arrayid[0]);
         array_push($array_alimentos,$alimentos);
-      }else{
-        $epale = 'no existe';
-        $alimentos = 0;
+      }elseif(array_search($dato,$array2)){
+        //$epale = 'existe 2';
+        //dd($epale);
+
+        $alimentos = Alimentos::find($arrayid[1]);
+        array_push($array_alimentos,$alimentos);
+      }elseif(array_search($dato,$array3)){
+        //$epale = 'existe 3';
+        //dd($epale);
+
+        $alimentos = Alimentos::find($arrayid[2]);
         array_push($array_alimentos,$alimentos);
       }
-
 
       ///////////////////////// HOSPEDAJE /////////////////////////////////////
       // if (Auth::user()->tipo_usuario == 4) {
@@ -1545,24 +1623,55 @@ class RecibosController extends Controller
       //   $hospedaje = Hospedaje::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
       // }
 
-      $hospedaje = Hospedaje::orderBy('vigencia_final','DESC')->first();
+      $hospedaje = Hospedaje::where('activo',1)->get();
 
-      $arrays = [];
+      $array4 = [];
+      $array5 = [];
+      $array6 = [];
       $array_hospedaje = [];
+      // foreach (range($hospedaje->rango_inicia, $hospedaje->rango_final) as $numeroh) {
+      //   array_push($arrays,$numeroh);
+      // }
+      foreach ($hospedaje as $key => $valueh) {
+        //dd($value);
+        array_push($arrayid2,$valueh['id']);
 
-      foreach (range($hospedaje->rango_inicia, $hospedaje->rango_final) as $numeroh) {
-        array_push($arrays,$numeroh);
+        foreach (range(1, 159) as $numero2) {
+          array_push($array4,$numero2);
+        }
+
+        foreach (range(160, 189) as $numero2) {
+          array_push($array5,$numero2);
+        }
+
+        foreach (range(190, 199) as $numero2) {
+          array_push($array6,$numero2);
+        }
+
       }
 
-      if (array_search($dato,$arrays)) {
-        $epale = 'existe';
-        $hospedaje = Hospedaje::find($hospedaje->id);
+      if (array_search($dato,$array4)) {
+        $hospedaje = Hospedaje::find($arrayid2[0]);
         array_push($array_hospedaje,$hospedaje);
-      }else{
-        $epale = 'no existe';
-        $hospedaje = 0;
+      }elseif(array_search($dato,$array5)){
+
+        $hospedaje = Hospedaje::find($arrayid2[1]);
+        array_push($array_hospedaje,$hospedaje);
+      }elseif(array_search($dato,$array6)){
+
+        $hospedaje = Hospedaje::find($arrayid2[2]);
         array_push($array_hospedaje,$hospedaje);
       }
+
+      // if (array_search($dato,$arrays)) {
+      //   $epale = 'existe';
+      //   $hospedaje = Hospedaje::find($hospedaje->id);
+      //   array_push($array_hospedaje,$hospedaje);
+      // }else{
+      //   $epale = 'no existe';
+      //   $hospedaje = 0;
+      //   array_push($array_hospedaje,$hospedaje);
+      // }
       ///////////////////////// GASOLINA //////////////////////////////////////
       if (Auth::user()->tipo_usuario == 4) {
         $gasolina = Gasolina::orderBy('vigencia','DESC')->first();
