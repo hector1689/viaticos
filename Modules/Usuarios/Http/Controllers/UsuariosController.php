@@ -35,7 +35,17 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-       $data['areas'] = Areas::where([['activo',1],['id_padre',0]])->get();
+      $tipo_usuario = Auth::user()->tipo_usuario;
+
+      if($tipo_usuario == 4){
+        $data['areas'] = Areas::where([['activo',1],['id_padre',0]])->get();
+      }else{
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+        $data['areas'] = Areas::where([['activo',1],['id',$area]])->get();
+      }
+
         return view('usuarios::index')->with($data);
     }
 
@@ -247,10 +257,25 @@ class UsuariosController extends Controller
     public function tablausuarios(){
       setlocale(LC_TIME, 'es_ES');
       \DB::statement("SET lc_time_names = 'es_ES'");
-      $registros = User::where([
-        ['activo', 1],
-        ['tipo_usuario','!=',4]
-    ]);
+      $tipo_usuario = Auth::user()->tipo_usuario;
+
+      if($tipo_usuario == 4){
+        $registros = User::where('activo', 1);
+      }else{
+
+
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+        $area = $asociar->id_dependencia;
+
+        $registros = User::join('t_usuarios','t_usuarios.id_usuario','users.id')->
+        where([
+          ['users.activo', 1],
+          ['users.tipo_usuario','!=',4]
+        ])->where([['users.tipo_usuario',$tipo_usuario],['t_usuarios.id_dependencia',$area]])->get();
+
+      }
+
       $datatable = DataTables::of($registros)
       ->editColumn('tipo_usuario', function ($registros) {
         return $registros->obtenerUser->name;//relacion
