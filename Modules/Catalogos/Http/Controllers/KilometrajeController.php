@@ -45,7 +45,10 @@ class KilometrajeController extends Controller
         $data['localidades'] = Localidad::where('activo',1)->get();
         return view('catalogos::kilometraje.create')->with($data);
       }else{
-        $data['localidades'] = Localidad::where('activo',1)->get();
+        $usuario = Auth::user()->id;
+        $asociar = Asociar::where('id_usuario',$usuario)->first();
+ 
+        $data['localidades'] = Localidad::where([['activo',1],['id_dependencia',$asociar->id_dependencia]])->get();
         return view('catalogos::kilometraje.create')->with($data);
       }
 
