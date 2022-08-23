@@ -185,10 +185,10 @@ class HospedajeController extends Controller
           ];
         }else if(Auth::user()->can('editar hospedaje')){
           $acciones = [
-             "Editar" => [
-               "icon" => "edit blue",
-               "href" => "/catalogos/hospedaje/$value->id/edit"
-             ],
+             // "Editar" => [
+             //   "icon" => "edit blue",
+             //   "href" => "/catalogos/hospedaje/$value->id/edit"
+             // ],
           ];
         }else{
           $acciones = [
@@ -196,13 +196,13 @@ class HospedajeController extends Controller
           ];
         }
       }else{
-        
+
         if(Auth::user()->can('editar hospedaje')){
           $acciones = [
-             "Editar" => [
-               "icon" => "edit blue",
-               "href" => "/catalogos/hospedaje/$value->id/edit"
-             ],
+             // "Editar" => [
+             //   "icon" => "edit blue",
+             //   "href" => "/catalogos/hospedaje/$value->id/edit"
+             // ],
           ];
         }else{
           $acciones = [
