@@ -740,8 +740,8 @@
                       $("#corto").prop("disabled", true);
                       //$('.form-control.tipo').dropdown('set selected', r.id_tipo);
                       $(".form-control.tipo option[value='"+  r.id_tipo +"']").attr("selected",true);
-                      $('.form-control.tipo').prop('disabled', true);
-                      $('.form-control.nivel').prop('disabled', true);
+                      //$('.form-control.tipo').prop('disabled', true);
+                      //$('.form-control.nivel').prop('disabled', true);
 
 
 
@@ -776,8 +776,8 @@
                     //$('.form-control.tipo').dropdown('set selected', r.id_tipo);
                     $(".form-control.tipo option[value='"+  r.id_tipo +"']").attr("selected",true);
 
-                    $('.form-control.tipo').prop('disabled', true);
-                    $('.form-control.nivel').prop('disabled', true);
+                    //$('.form-control.tipo').prop('disabled', true);
+                    //$('.form-control.nivel').prop('disabled', true);
 
                     // $('.nombre_areas').dropdown('set selected', r.nombre);
                     $(".nombre_areas option[value='"+  r.nombre +"']").attr("selected",true);
