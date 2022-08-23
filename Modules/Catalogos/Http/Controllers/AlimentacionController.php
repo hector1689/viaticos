@@ -183,10 +183,10 @@ class AlimentacionController extends Controller
           ];
         }else if(Auth::user()->can('editar alimentacion')){
           $acciones = [
-             "Editar" => [
-               "icon" => "edit blue",
-               "href" => "/catalogos/alimentacion/$value->id/edit"
-             ]
+             // "Editar" => [
+             //   "icon" => "edit blue",
+             //   "href" => "/catalogos/alimentacion/$value->id/edit"
+             // ]
 
           ];
         }else{
@@ -199,10 +199,10 @@ class AlimentacionController extends Controller
 
         if(Auth::user()->can('editar alimentacion')){
           $acciones = [
-             "Editar" => [
-               "icon" => "edit blue",
-               "href" => "/catalogos/alimentacion/$value->id/edit"
-             ]
+             // "Editar" => [
+             //   "icon" => "edit blue",
+             //   "href" => "/catalogos/alimentacion/$value->id/edit"
+             // ]
 
           ];
         }else{
