@@ -26,7 +26,7 @@ class HomeController extends Controller
     {
 
       $tipo_usuario = Auth::user()->tipo_usuario;
-      dd($tipo_usuario);
+      //dd($tipo_usuario);
       if($tipo_usuario == 4){
         $data['capturados'] = Recibos::where([
         ['activo',1],
