@@ -93,7 +93,8 @@ class RecibosController extends Controller
         $data['alimentos'] =  Alimentos::where('activo',1)->get();
         $data['peajes'] = Peaje::where([['activo',1],['id_dependencia',$area]])->get();
         $data['gasolina'] = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('id','DESC')->get();
-        $data['rendimiento'] = Rendimiento::where([['activo',1],['id_dependencia',$area]])->get();
+        //$data['rendimiento'] = Rendimiento::where([['activo',1],['id_dependencia',$area]])->get();
+        $data['rendimiento'] = Rendimiento::where('activo',1)->get();
         $data['programa'] = Programa::where([['activo',1],['id_dependencia',$area]])->get();
         $data['taxi'] = Taxi::where([['activo',1],['id_dependencia',$area]])->get();
         $data['lacalidad1'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
@@ -1622,8 +1623,14 @@ class RecibosController extends Controller
       //   $area = $asociar->id_dependencia;
       //   $hospedaje = Hospedaje::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
       // }
+      //dd($request->zona_trayectoria);
+      if ($request->zona_trayectoria == 'M') {
+        $hospedaje = Hospedaje::where('activo',1)->get();
+      }else{
+        $hospedaje = Hospedaje::where('zona',$request->zona_trayectoria)->get();
+      }
 
-      $hospedaje = Hospedaje::where('activo',1)->get();
+      //$hospedaje = Hospedaje::where('activo',1)->get();
 
       $array4 = [];
       $array5 = [];

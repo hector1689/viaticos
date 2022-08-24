@@ -164,14 +164,16 @@ class RendimientoController extends Controller
      setlocale(LC_TIME, 'es_ES');
      \DB::statement("SET lc_time_names = 'es_ES'");
      //dd('entro');
-     if (Auth::user()->tipo_usuario == 4) {
-       $registros = Rendimiento::where([['activo', 1]]);
-     }else{
-       $usuario = Auth::user()->id;
-       $asociar = Asociar::where('id_usuario',$usuario)->first();
+     // if (Auth::user()->tipo_usuario == 4) {
+     //   $registros = Rendimiento::where([['activo', 1]]);
+     // }else{
+     //   $usuario = Auth::user()->id;
+     //   $asociar = Asociar::where('id_usuario',$usuario)->first();
+     //
+     //   $registros = Rendimiento::where([['activo', 1],['id_dependencia',$asociar->id_dependencia]]);
+     // }
 
-       $registros = Rendimiento::where([['activo', 1],['id_dependencia',$asociar->id_dependencia]]);
-     }
+      $registros = Rendimiento::where([['activo', 1]]);
      //$registros = Rendimiento::where('activo', 1); //Conocenos es la entidad
      $datatable = DataTables::of($registros)
      // ->editColumn('cve_tipo_gasolina', function ($registros) {
