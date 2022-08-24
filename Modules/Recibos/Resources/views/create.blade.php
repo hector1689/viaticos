@@ -2190,23 +2190,23 @@ $('#tabla6').hide();
 });
 
 
-$("input[name=prov_rfc]").change(function(){
-
-var length = $("input[name=prov_rfc]").val().length;
-  var curp = $("input[name=prov_rfc]").val();
-        curpValida = validarRFC(curp);
-        //console.log(length);
-        //length == 12 && curpValida == true
-        if(length == 12 && curpValida == true){
-//console.log('entro')
-        }else if(length == 13 && curpValida == true){
-
-        }else{
-          Swal.fire("Lo Sentimos", 'RFC No Valido', "warning");
-          $("input[name=prov_rfc]").val('');
-        }
-
-});
+// $("input[name=prov_rfc]").change(function(){
+//
+// var length = $("input[name=prov_rfc]").val().length;
+//   var curp = $("input[name=prov_rfc]").val();
+//         curpValida = validarRFC(curp);
+//         //console.log(length);
+//         //length == 12 && curpValida == true
+//         if(length == 12 && curpValida == true){
+// //console.log('entro')
+//         }else if(length == 13 && curpValida == true){
+//
+//         }else{
+//           Swal.fire("Lo Sentimos", 'RFC No Valido', "warning");
+//           $("input[name=prov_rfc]").val('');
+//         }
+//
+// });
 
 
 function validarRFC(campo){
