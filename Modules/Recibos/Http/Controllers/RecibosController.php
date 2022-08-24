@@ -471,6 +471,7 @@ class RecibosController extends Controller
             $vhof->gasolina = $value['gasolina'];
             $vhof->mes_gasolina = $value['mes_gasolina'];
             $vhof->gasolina_vh_oficial = $value['gasolina_vehiculo'];
+            $vhof->total_transporte = $value['total'];
             $vhof->cve_usuario = Auth::user()->id;
             $vhof->save();
           }
@@ -491,6 +492,7 @@ class RecibosController extends Controller
             $vh->gasolina = $value['gasolina'];
             $vh->mes_gasolina = $value['mes_gasolina'];
             $vh->gasolina_vh_oficial = $value['gasolina_vehiculo'];
+            $vh->total_transporte = $value['total'];
             $vh->cve_usuario = Auth::user()->id;
             $vh->save();
           }

@@ -399,7 +399,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Total de Km recorridos: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Total de Km recorridos: </label>
                         <input type="text" class="form-control" id="totalkm"  value="@isset($transporte) {{ $transporte->total_km_recorrido }} @endisset" disabled placeholder="Total de Km recorridos" onkeypress='return validaNumericos(event)'>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
@@ -1704,7 +1704,7 @@ function calcularViaticoTransporte(){
 
     var sumitaautoOf2 = 0;
     arrayVehiculoOficial.forEach (function(numeroautoOf){
-    sumitaautoOf2 += numeroautoOf.gasolina_vehiculo;
+    sumitaautoOf2 += numeroautoOf.total;
     });
   var sumitavof =  sumitaautoOf2;
   }
@@ -1715,7 +1715,7 @@ function calcularViaticoTransporte(){
 
     var sumitaautop2 = 0;
     arrayVehiculo.forEach (function(numeroautoP){
-    sumitaautop2 += numeroautoP.gasolina_vehiculo;
+    sumitaautop2 += numeroautoP.total;
     });
 
    var sumitavp =  sumitaautop2;
@@ -1822,7 +1822,7 @@ function calcularViaticoTransporte(){
 
     var sumitaautoOf2 = 0;
     arrayVehiculoOficial.forEach (function(numeroautoOf){
-    sumitaautoOf2 += numeroautoOf.gasolina_vehiculo;
+    sumitaautoOf2 += numeroautoOf.total;
     });
   var sumitavof =  sumitaautoOf2;
   }
@@ -1833,7 +1833,7 @@ function calcularViaticoTransporte(){
 
     var sumitaautop2 = 0;
     arrayVehiculo.forEach (function(numeroautoP){
-    sumitaautop2 += numeroautoP.gasolina_vehiculo;
+    sumitaautop2 += numeroautoP.total;
     });
 
    var sumitavp =  sumitaautop2;
@@ -2082,18 +2082,19 @@ $('#footLugar').show();
 $('.calculobtn').show();
 @else
 $('#footLugar').hide();
-$('.calculobtn').hide();
+//$('.calculobtn').hide();
+$('.calculobtn').show();
 @endisset
 
 
-function verBtn(){
-  var programalugar = $('#programalugar').val();
-  if (programalugar == 0) {
-    $('.calculobtn').hide();
-  }else{
-    $('.calculobtn').show();
-  }
-}
+// function verBtn(){
+//   var programalugar = $('#programalugar').val();
+//   if (programalugar == 0) {
+//     $('.calculobtn').hide();
+//   }else{
+//     $('.calculobtn').show();
+//   }
+// }
 
 function abrirLugar(){
   $('#origen_lugar').prop('disabled',false);
@@ -4471,7 +4472,7 @@ function AgregarVehiculoOficial(){
                  },
                 success:function(data){
                 //  console.log(data.kilometros_litros)
-
+                  var totalito = data.kilometros_litros * gasolina_vehiculo;
                   ObjetoVehiculoOficial = {
                     tipotransporte:tipotransporte,
                     tipo_viaje:selectedviajetipo1[0],
@@ -4485,6 +4486,7 @@ function AgregarVehiculoOficial(){
                     mes_gasolina:mes_gasolina,
                     gasolina_vehiculo:gasolina_vehiculo,
                     cuota:data.kilometros_litros,
+                    total:totalito,
                   }
                   agregarVehiculo1(ObjetoVehiculoOficial);
                   arrayVehiculoOficial.push(ObjetoVehiculoOficial);
@@ -4508,7 +4510,7 @@ function agregarVehiculo1(ObjetoVehiculoOficial){
     tipo_viaje = 'SOLO REGRESO';
   }
 
-  var total = parseFloat(ObjetoVehiculoOficial.cuota) * parseFloat(ObjetoVehiculoOficial.gasolina_vehiculo);
+  //var total = parseFloat(ObjetoVehiculoOficial.cuota) * parseFloat(ObjetoVehiculoOficial.gasolina_vehiculo);
 
   var tr = '<tr id="filas'+contador_vehiculo1+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo1+'"/>Vehiculo Oficial</td>'+
@@ -4522,7 +4524,7 @@ function agregarVehiculo1(ObjetoVehiculoOficial){
   '<td>'+ObjetoVehiculoOficial.cuota+'</td>'+
   '<td>$'+ObjetoVehiculoOficial.gasolina_vehiculo+'</td>'+
 
-  '<td>$'+total+'</td>'+
+  '<td>$'+ObjetoVehiculoOficial.total+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculooficial('+contador_vehiculo1+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
@@ -4607,6 +4609,8 @@ function AgregarVehiculo(){
                 success:function(data){
                 //  console.log(data.kilometros_litros)
 
+
+                  var totalito = data.kilometros_litros * gasolina_vehiculo;
                   ObjetoVehiculo = {
                     tipotransporte:tipotransporte,
                     tipo_viaje:selectedviajetipo2[0],
@@ -4619,6 +4623,7 @@ function AgregarVehiculo(){
                     mes_gasolina:mes_gasolina,
                     gasolina_vehiculo:gasolina_vehiculo,
                     cuota:data.kilometros_litros,
+                    total:totalito,
                   }
                   agregarVehiculo2(ObjetoVehiculo);
                   arrayVehiculo.push(ObjetoVehiculo);
@@ -4641,7 +4646,7 @@ function agregarVehiculo2(ObjetoVehiculo){
   }else if(ObjetoVehiculo.tipo_viaje == 3){
     tipo_viaje = 'SOLO REGRESO';
   }
-  var total = parseFloat(ObjetoVehiculo.cuota) * parseFloat(ObjetoVehiculo.gasolina_vehiculo);
+  //var total = parseFloat(ObjetoVehiculo.cuota) * parseFloat(ObjetoVehiculo.gasolina_vehiculo);
   var tr = '<tr id="filasVh'+contador_vehiculo2+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo2+'"/>Vehiculo Particular</td>'+
   '<td>'+tipo_viaje+'</td>'+
@@ -4653,7 +4658,7 @@ function agregarVehiculo2(ObjetoVehiculo){
   '<td>'+ObjetoVehiculo.cuota+'</td>'+
   '<td>$'+ObjetoVehiculo.gasolina_vehiculo+'</td>'+
 
-  '<td>$'+total+'</td>'+
+  '<td>$'+ObjetoVehiculo.total+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculo('+contador_vehiculo2+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
@@ -5358,7 +5363,6 @@ function cantidadletra(){
     var programalugar = $('#programalugar').val();
 
     //var tabla_lugares = arrayTablaLugares;
-
     //console.log(tabla_lugares)
 
     if (clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == ''  || descripcion == '' || cheque_firma == ''
