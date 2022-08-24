@@ -373,7 +373,18 @@ class FolioController extends Controller
     setlocale(LC_TIME, 'es_ES');
     \DB::statement("SET lc_time_names = 'es_ES'");
     //dd('entro');
-    $registros = Folios::where('activo', 1); //Conocenos es la entidad
+
+    if (Auth::user()->tipo_usuario == 4) {
+    $registros = Folios::where('activo', 1);
+    }else{
+      $usuario = Auth::user()->id;
+      $asociar = Asociar::where('id_usuario',$usuario)->first();
+
+      $registros = Folios::where([['activo', 1],['dependencia',$asociar->id_dependencia]]);
+    }
+
+
+     //Conocenos es la entidad
     $datatable = DataTables::of($registros)
     ->editColumn('dependencia', function ($registros) {
 

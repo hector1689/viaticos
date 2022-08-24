@@ -62,7 +62,7 @@
               </div>
           </div>
           <div class="col-md-2">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>RFC: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label">RFC: </label>
               <input type="text" class="form-control" id="rfc" name='prov_rfc'  placeholder="RFC" value="@isset($recibos) {{$recibos->rfc}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
@@ -177,7 +177,7 @@
               </div>
           </div>
           <div class="col-md-2">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>N° de dias inhabiles: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias inhabiles: </label>
               <input type="text" class="form-control" id="n_dias_ina"  placeholder="N° de dias inhabiles" value="@isset($recibos) {{$recibos->num_dias_inhabiles}} @endisset" onkeypress='return validaNumericos(event)' required>
 
               <div class="invalid-feedback">
@@ -5361,8 +5361,8 @@ function cantidadletra(){
 
     //console.log(tabla_lugares)
 
-    if (rfc == '' || clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == '' || n_dias_ina == '' || descripcion == '' || cheque_firma == ''
-     || kilometrorecorrido == '' || especificarcomision == '' || programavehiculof == '') {
+    if (clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == ''  || descripcion == '' || cheque_firma == ''
+      || especificarcomision == '' || programavehiculof == '') {
       Swal.fire("Lo Sentimos", 'Llenar los campos obligatorios', "warning");
     }else{
       $.ajax({
