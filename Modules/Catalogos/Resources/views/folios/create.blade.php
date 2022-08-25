@@ -101,7 +101,7 @@
             <div class="row">
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Siglas Dependencia: </label>
-                  <input type="text" class="form-control" id="siglas_dependencia" onchange="siglas1()" placeholder="Siglas Dependencia" data-nivel="1">
+                  <input type="text" class="form-control" id="siglas_dependencia" autocomplete="off" onchange="siglas1()" placeholder="Siglas Dependencia" data-nivel="1">
               </div>
               <div class="col-md-6">
                 <label for="inputPassword4" style="font-size:12px;" class="form-label">Posición 1: </label>
@@ -118,7 +118,7 @@
             <div class="row">
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Siglas tipo de folio: </label>
-                  <input type="text" class="form-control" id="siglas_folio" onchange="siglas2()" placeholder="Siglas tipo de folio" data-nivel="2">
+                  <input type="text" class="form-control" id="siglas_folio" autocomplete="off" onchange="siglas2()" placeholder="Siglas tipo de folio" data-nivel="2">
               </div>
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Posición 2: </label>
@@ -134,7 +134,7 @@
             <div class="row">
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Año: </label>
-                  <input type="text" class="form-control" id="anio" onchange="siglas3()" onkeypress='return validaNumericos(event)' placeholder="Año" data-nivel="3">
+                  <input type="text" class="form-control" id="anio" autocomplete="off" onchange="siglas3()" onkeypress='return validaNumericos(event)' placeholder="Año" data-nivel="3">
               </div>
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Posición 3: </label>
@@ -150,7 +150,7 @@
             <div class="row">
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Consecutivo: </label>
-                  <input type="text" class="form-control" id="consecutivo" onchange="siglas4()" onkeypress='return validaNumericos(event)' placeholder="Consecutivo" data-nivel="4">
+                  <input type="text" class="form-control" id="consecutivo" autocomplete="off" onchange="siglas4()" onkeypress='return validaNumericos(event)' placeholder="Consecutivo" data-nivel="4">
               </div>
               <div class="col-md-6">
                   <label for="inputPassword4" style="font-size:12px;" class="form-label">Posición 4: </label>
