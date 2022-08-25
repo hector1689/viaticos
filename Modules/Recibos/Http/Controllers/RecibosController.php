@@ -2528,6 +2528,69 @@ class RecibosController extends Controller
           ],
         ];
       }else if (Auth::user()->tipo_usuario == 1) {
+
+        $recibo_existe = Recibos::where([
+          ['activo',1],
+          ['id',$value->id]
+        ])->first();
+
+        if ($recibo_existe->recibo_complentario == 0) {
+          $acciones = [
+             "Editar" => [
+               "icon" => "edit blue",
+               "href" => "/recibos/$value->id/edit"
+             ],
+            //
+            // "Ver" => [
+            //   "icon" => "fas fa-circle",
+            //   "href" => "/recibos/$value->id/show"
+            // ],
+            "Finiquitar Provisional" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "finiquitarP($value->id)"
+            ],
+            "Finiquitar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "finiquitar($value->id)"
+            ],
+            "Cancelar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "baja($value->id)"
+            ],
+            // "Recibo Complementario" => [
+            //   "icon" => "fas fa-circle",
+            //   "href" => "/recibos/$value->id/recibo"
+            // ],
+            "Comprobaciones" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/comprobantes"
+            ],
+            "Imprimir Recibo" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/imprimir"
+            ],
+            "Oficio de Comisión" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/oficio"
+            ],
+            "Especificación de Comisión" => [
+              "icon" => "fas fa-circle",
+              "href" => "/recibos/$value->id/especificacioncomision"
+            ],
+            "Turnar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "turnar($value->id)"
+            ],
+            "Autorizar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "autorizar($value->id)"
+            ],
+            "Eliminar" => [
+              "icon" => "fas fa-circle",
+              "onclick" => "eliminar($value->id)"
+            ],
+          ];
+        }else{
           $acciones = [
              "Editar" => [
                "icon" => "edit blue",
@@ -2583,6 +2646,9 @@ class RecibosController extends Controller
               "onclick" => "eliminar($value->id)"
             ],
           ];
+        }
+
+
         }elseif(Auth::user()->tipo_usuario == 2){
 
           $recibo_existe = Recibos::where([

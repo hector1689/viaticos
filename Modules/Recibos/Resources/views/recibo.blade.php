@@ -62,7 +62,7 @@
               </div>
           </div>
           <div class="col-md-2">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>RFC: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label">RFC: </label>
               <input type="text" class="form-control" id="rfc" name='prov_rfc'  placeholder="RFC" value="@isset($recibos) {{$recibos->rfc}} @endisset" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
@@ -71,7 +71,7 @@
           <div class="col-md-2">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Nivel: </label>
               <input type="text" class="form-control" id="nivel"  placeholder="Nivel" value="@isset($recibos) {{$recibos->nivel}} @endisset" disabled required>
-              <input type="hidden" id="area_id" >
+              <input type="hidden" id="area_id" value=" @isset($recibos) {{ $recibos->id_dependencia }} @endisset">
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Materno
               </div>
@@ -177,7 +177,7 @@
               </div>
           </div>
           <div class="col-md-2">
-              <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>N° de dias inhabiles: </label>
+              <label for="inputPassword4" style="font-size:12px;" class="form-label">N° de dias inhabiles: </label>
               <input type="text" class="form-control" id="n_dias_ina"  placeholder="N° de dias inhabiles" value="@isset($recibos) {{$recibos->num_dias_inhabiles}} @endisset" onkeypress='return validaNumericos(event)' required>
 
               <div class="invalid-feedback">
@@ -200,17 +200,18 @@
           <div class="col-md-12">
 
             <label class="checkbox">
-                <input type="checkbox" name="Checkboxes1" >
+                <input type="checkbox" name="recibo_complementario" value="1" @isset($recibos) @if($recibos->recibo_complentario == 1) checked @else @endif @endisset>
                 <span></span>
                 Recibo Complementario
             </label>
             <ul class="nav nav-tabs nav-tabs-line">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Lugares</a>
+                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_2">Transporte</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">Transporte</a>
+                    <a class="nav-link " data-toggle="tab" href="#kt_tab_pane_1">Lugares</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3">Datos de Pago</a>
                 </li>
@@ -225,18 +226,17 @@
                 @endisset
             </ul>
             <div class="tab-content mt-5" id="myTabContent">
-                <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                <div class="tab-pane fade " id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                   <div class="row">
-                    <!-- <div class="col-md-3">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label">¿Remoto?: </label>
-                        <div class="checkbox-list">
-                            <label class="checkbox">
-                                <input type="checkbox" name="Checkboxes1">
-                                <span></span>
-                                SI
-                            </label>
-                        </div>
-                    </div> -->
+                    <div class="col-md-3">
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Zona : </label>
+                        <select class="form-control" id="zona_trayectoria" @isset($recibos) @else disabled @endisset>
+                          <option value="0">seleccionar</option>
+                          <option value="C">Centro de Tamaulipas</option>
+                          <option value="E">Extranjero y mas de 50 millas de la frontera con México en USA</option>
+                          <option value="M">Méx.,Mty., Nvo. Ldo.,+ de 800 kms.</option>
+                        </select>
+                    </div>
 
 
                     <div class="col-md-3">
@@ -244,7 +244,7 @@
                         <select class="form-control" id="origen_lugar" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad1 as $loc1)
-                          <option value="{{ $loc1->id }}">{{ $loc1->localidad }}-{{ $loc1->obteneMunicipio->nombre }}-{{ $loc1->obteneEstado->nombre }}-{{ $loc1->obtenePais->nombre }}</option>
+                          <option value="{{ $loc1->id }}">{{ $loc1->obteneLocalidad->localidad }}-{{ $loc1->obteneLocalidad->obteneMunicipio->nombre }}-{{ $loc1->obteneLocalidad->obteneEstado->nombre }}-{{ $loc1->obteneLocalidad->obtenePais->nombre }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -253,7 +253,7 @@
                         <select class="form-control" id="destino_lugar" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad2 as $loc2)
-                          <option value="{{ $loc2->id }}">{{ $loc2->localidad }}-{{ $loc2->obteneMunicipio->nombre }}-{{ $loc2->obteneEstado->nombre }}-{{ $loc2->obtenePais->nombre }}</option>
+                          <option value="{{ $loc2->id }}">{{ $loc2->obteneLocalidad2->localidad }}-{{ $loc2->obteneLocalidad2->obteneMunicipio->nombre }}-{{ $loc2->obteneLocalidad2->obteneEstado->nombre }}-{{ $loc2->obteneLocalidad2->obtenePais->nombre }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -282,17 +282,20 @@
                           <tbody>
                             @isset($lugares)
                               @foreach($lugares as $key => $lugar)
-                              <tr id="filas_{{$key}}'">
-                                <td><input type="hidden" id="figura_nueva" value="{{$lugar->id}}"/>{{ $lugar->obteneLocalidad->localidad }} - {{ $lugar->obteneLocalidad->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad->obtenePais->nombre }}</td>
-                                <td>{{ $lugar->obteneLocalidad2->localidad }} - {{ $lugar->obteneLocalidad2->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad2->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad2->obtenePais->nombre }}</td>
-                                <td><input type="text" class="form-control" id="dias_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')" value="{{ $lugar->dias }}" disabled></td>
-                                <td>{{ $lugar->obteneZona->nombre }}</td>
-                                <td><input type="text" class="form-control" id="kilometraje_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')" value="{{ $lugar->kilometros }}" disabled></td>
+                              <tr id="orden_luagres{{$key}}">
+
+                                <!-- {{ $lugar->obteneLocalidad2->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidad->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidad->obteneLocalidad->obtenePais->nombre }} -->
+                                <!-- {{ $lugar->obteneLocalidad2 }} -->
+                                <td>{{ $lugar->obteneLocalidades->obteneLocalidad->localidad }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }}</td>
+                                <td>{{ $lugar->obteneLocalidades2->obteneLocalidad->localidad }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obtenePais->nombre }}</td>
+                                <td><input type="text" class="form-control" id="dias2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->dias }}" ></td>
+                                <td>{{ $lugar->cve_zona }}</td>
+                                <td><input type="text" class="form-control" id="kilometraje2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->kilometros }}" ></td>
                                 <td>
                                   <div class="form-group">
                                       <div class="checkbox-list">
                                           <label class="checkbox">
-                                              <input type="checkbox" name="gasolina_{{$key}}" value="{{ $lugar->combustible }}" @if($lugar->combustible != 0) checked @endif   >
+                                              <input type="checkbox" name="gasolina2_{{$key}}" value="{{ $lugar->combustible }}" onclick="gasolinaLugar2({{$lugar->id}},{{$key}})"  @if($lugar->combustible != 0) checked @endif   >
                                               <span></span>
                                           </label>
                                       </div>
@@ -302,7 +305,7 @@
                                   <div class="form-group">
                                       <div class="checkbox-list">
                                           <label class="checkbox">
-                                              <input type="checkbox" name="hospedaje_{{$key}}"  value="{{ $lugar->hospedaje }}" @if($lugar->hospedaje != 0) checked @endif >
+                                              <input type="checkbox" name="hospedaje2_{{$key}}"  value="{{ $lugar->hospedaje }}" onclick="hospedajeLugar2({{$lugar->id}},{{$key}})" @if($lugar->hospedaje != 0) checked @endif >
                                               <span></span>
                                           </label>
                                       </div>
@@ -311,26 +314,26 @@
                                 <td>
                                   <div class="checkbox-inline">
                                        <label class="checkbox">
-                                           <input type="checkbox" name="desayuno_{{$key}}"  value="{{ $lugar->desayuno }}" @if($lugar->desayuno != 0) checked @endif >
+                                           <input type="checkbox" name="desayuno2_{{$key}}"  value="{{ $lugar->desayuno }}"  onclick="desayunoLugar2({{$lugar->id}},{{$key}})" @if($lugar->desayuno != 0) checked @endif >
                                            <span></span>
                                        </label>
                                        <label class="checkbox">
-                                           <input type="checkbox" name="comida_{{$key}}" value="{{ $lugar->comida }}" @if($lugar->comida != 0) checked @endif >
+                                           <input type="checkbox" name="comida2_{{$key}}" value="{{ $lugar->comida }}" onclick="comidaLugar2({{$lugar->id}},{{$key}})"  @if($lugar->comida != 0) checked @endif >
                                            <span></span>
                                        </label>
                                        <label class="checkbox">
-                                           <input type="checkbox" name="cena_{{$key}}" value="{{ $lugar->cena }}" @if($lugar->cena != 0) checked @endif >
+                                           <input type="checkbox" name="cena2_{{$key}}" value="{{ $lugar->cena }}" onclick="cenaLugar2({{$lugar->id}},{{$key}})"  @if($lugar->cena != 0) checked @endif >
                                            <span></span>
                                        </label>
                                    </div>
                                 </td>
-                                <td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="bajaLugar({{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+                                <td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="bajaLugar({{$lugar->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
                                 </tr>
                               @endforeach
                             @endisset
                           </tbody>
-                          <tfoot id="footLugar">
-                            <tr>
+                          <tfoot id="footLugar" >
+                            <tr style="text-align:center;">
                               <td>Total</td>
                               <td></td>
                               <td id="total_dias"></td>
@@ -348,8 +351,18 @@
 
                       <div class="col-md-8">
                           <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Programa: </label>
-                          <select class="form-control" id="programalugar" disabled onchange="verBtn()">
-                            <option value="0">Selecciona</option>
+                          <select class="form-control" id="programalugar" @isset($lugares) @else disabled @endisset onchange="verBtn()">
+
+                             @isset($lugares2)
+
+                               @if($lugares2->cve_programa == 0)
+                               <option value="0">Selecciona</option>
+                               @else
+                               <option value="{{ $lugares2->cve_programa }}">{{ $lugares2->obtenePrograma->nombre }}</option>
+                               @endif
+                             @else
+                             <option value="0">Selecciona</option>
+                             @endisset
                             @foreach($programa as $pro)
                             <option value="{{ $pro->id }}">{{ $pro->nombre }}</option>
                             @endforeach
@@ -377,10 +390,10 @@
 
                 </div>
 
-                <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                <div class="tab-pane fade show active" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                   <div class="row">
                     <div class="col-md-2">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Kilometro recorrido interno: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Recorrido interno: </label>
                         <input type="text" class="form-control" id="kilometrorecorrido" value="@isset($transporte) {{ $transporte->kilometro_interno }} @endisset" onchange="sumarKM()"  placeholder="Kilometro recorrido interno" onkeypress='return validaNumericos(event)'>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
@@ -394,7 +407,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Total de Km recorridos: </label>
+                        <label for="inputPassword4" style="font-size:12px;" class="form-label">Total de Km recorridos: </label>
                         <input type="text" class="form-control" id="totalkm"  value="@isset($transporte) {{ $transporte->total_km_recorrido }} @endisset" disabled placeholder="Total de Km recorridos" onkeypress='return validaNumericos(event)'>
                         <div class="invalid-feedback">
                           Por Favor Ingrese Apellido Paterno
@@ -455,17 +468,17 @@
                                       <label for="">Viaje <span style="color:red;">*</span></label>
                                       <div class="radio-inline" id="radiopage">
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='1' onclick="redondo_vhof()" @isset($vhoficial) @if($vhoficial->tipo_transporte == 1) checked @else @endif @endisset>
+                                              <input type="radio" name="vhof" value='1' onclick="redondo_vhof()" >
                                               <span></span>
                                               Redondo
                                           </label>
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='2' onclick="redondo_vhof()" @isset($vhoficial) @if($vhoficial->tipo_transporte == 2) checked @else @endif @endisset>
+                                              <input type="radio" name="vhof" value='2' onclick="redondo_vhof()" >
                                               <span></span>
                                               Solo Ida
                                           </label>
                                           <label class="radio">
-                                              <input type="radio" name="vhof" value='3' onclick="redondo_vhof()" @isset($vhoficial) @if($vhoficial->tipo_transporte == 3) checked @else @endif @endisset>
+                                              <input type="radio" name="vhof" value='3' onclick="redondo_vhof()" >
                                               <span></span>
                                               Solo regreso
                                           </label>
@@ -485,35 +498,35 @@
                                   <div class="row">
                                     <div class="col-md-2">
                                         <label for="inputPassword4"  style="font-size:12px;"class="form-label">N° Oficial: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="num_oficial" value="@isset($vhoficial) {{ $vhoficial->numero_oficial }} @endisset"  placeholder="N° Oficial" disabled required>
+                                        <input type="text" class="form-control" id="num_oficial"   placeholder="N° Oficial" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Nombre
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Marca: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="marca" value="@isset($vhoficial) {{ $vhoficial->marca }} @endisset"  placeholder="Marca" disabled required>
+                                        <input type="text" class="form-control" id="marca"   placeholder="Marca" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Paterno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Modelo: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="modelo" value="@isset($vhoficial) {{ $vhoficial->modelo }} @endisset"  placeholder="Modelo" disabled required>
+                                        <input type="text" class="form-control" id="modelo"  placeholder="Modelo" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Tipo: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="tipo"  value="@isset($vhoficial) {{ $vhoficial->tipo }} @endisset" placeholder="Tipo" disabled required>
+                                        <input type="text" class="form-control" id="tipo"   placeholder="Tipo" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Placas: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="placas" value="@isset($vhoficial) {{ $vhoficial->placas }} @endisset"  placeholder="Placas" disabled required>
+                                        <input type="text" class="form-control" id="placas" placeholder="Placas" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
@@ -524,7 +537,7 @@
                                   <div class="row">
                                     <div class="col-md-4">
                                         <label for="inputPassword4"  style="font-size:12px;"class="form-label">Cilindraje: <span style="color:red;">*</span></label>
-                                        <input type="text" class="form-control" id="cilindraje"  value="@isset($vhoficial) {{ $vhoficial->cilindraje }} @endisset" placeholder="Cilindraje" disabled required>
+                                        <input type="text" class="form-control" id="cilindraje"   placeholder="Cilindraje" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Nombre
                                         </div>
@@ -534,7 +547,7 @@
                                         <div class="radio-inline">
                                           @foreach($rendimiento as $rendi)
                                             <label class="radio">
-                                                <input type="radio" name="page" value="{{ $rendi->id }}" @isset($vhoficial)  @if($vhoficial->cuota == $rendi->kilometros_litros) checked  @endif  @endisset >
+                                                <input type="radio" name="page" value="{{ $rendi->id }}" >
                                                 <span></span>
                                                 {{ $rendi->tarifa }}
                                             </label>
@@ -544,11 +557,9 @@
                                     <div class="col-md-4">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Gasolina: <span style="color:red;">*</span></label>
                                         <select class="form-control" name="gasolina" id="gasolina" onchange="traerGasolina()"  required>
-                                          @isset($vhoficial)
-                                          <option value="{{ $vhoficial->gasolina }}">{{ $vhoficial->obteneGasolinas->obteneGasolina->nombre}}</option>
-                                          @else
+
                                           <option value="0">Seleccionar</option>
-                                          @endisset
+
 
                                           @foreach($gasolina as $gaso)
                                           <option value="{{ $gaso->id }}">{{ $gaso->obteneGasolina->nombre }}</option>
@@ -565,14 +576,14 @@
                                   <div class="row">
                                     <div class="col-md-6">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Mes $ Gasolina: </label>
-                                        <input type="text" class="form-control" id="mes_gasolina"  value="@isset($vhoficial) {{ $vhoficial->mes_gasolina }} @endisset" placeholder="Mes precio Gasolina" disabled required>
+                                        <input type="text" class="form-control" id="mes_gasolina"   placeholder="Mes precio Gasolina" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="inputPassword4" style="font-size:12px;" class="form-label">$ Gasolina vh. Oficial: </label>
-                                        <input type="text" class="form-control" id="gasolina_vehiculo" value="@isset($vhoficial) {{ $vhoficial->gasolina_vh_oficial }} @endisset"  placeholder="$ Gasolina vh. Oficial" disabled required>
+                                        <input type="text" class="form-control" id="gasolina_vehiculo"   placeholder="$ Gasolina vh. Oficial" disabled required>
                                         <div class="invalid-feedback">
                                           Por Favor Ingrese Apellido Materno
                                         </div>
@@ -588,17 +599,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='1' onclick="redondo_vh2()" @isset($Vehiculo) @if($Vehiculo->tipo_viaje == 1) checked @else @endif @endisset>
+                                            <input type="radio" name="vh2" value='1' onclick="redondo_vh2()" >
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='2' onclick="redondo_vh2()" @isset($Vehiculo) @if($Vehiculo->tipo_viaje == 2) checked @else @endif @endisset>
+                                            <input type="radio" name="vh2" value='2' onclick="redondo_vh2()" >
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="vh2" value='3' onclick="redondo_vh2()" @isset($Vehiculo) @if($Vehiculo->tipo_viaje == 3) checked @else @endif @endisset>
+                                            <input type="radio" name="vh2" value='3' onclick="redondo_vh2()" >
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -610,28 +621,28 @@
 
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Marca: </label>
-                                      <input type="text" class="form-control" id="marca2" value="@isset($Vehiculo) {{ $Vehiculo->marca }} @endisset"  placeholder="Marca" required>
+                                      <input type="text" class="form-control" id="marca2"   placeholder="Marca" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Paterno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Modelo: </label>
-                                      <input type="text" class="form-control" id="modelo2" value="@isset($Vehiculo) {{ $Vehiculo->modelo }} @endisset"  placeholder="Modelo" required>
+                                      <input type="text" class="form-control" id="modelo2"   placeholder="Modelo" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Tipo: </label>
-                                      <input type="text" class="form-control" id="tipo2" value="@isset($Vehiculo) {{ $Vehiculo->tipo }} @endisset"  placeholder="Tipo" required>
+                                      <input type="text" class="form-control" id="tipo2"   placeholder="Tipo" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-3">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Placas: </label>
-                                      <input type="text" class="form-control" id="placas2" value="@isset($Vehiculo) {{ $Vehiculo->placas }} @endisset"  placeholder="Placas" required>
+                                      <input type="text" class="form-control" id="placas2"  placeholder="Placas" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
@@ -642,7 +653,7 @@
                                 <div class="row">
                                   <div class="col-md-4">
                                       <label for="inputPassword4"  style="font-size:12px;"class="form-label">Cilindraje: </label>
-                                      <input type="text" class="form-control" id="cilindraje2" value="@isset($Vehiculo) {{ $Vehiculo->cilindraje }} @endisset"  placeholder="Cilindraje" required>
+                                      <input type="text" class="form-control" id="cilindraje2"   placeholder="Cilindraje" required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Nombre
                                       </div>
@@ -652,7 +663,7 @@
                                       <div class="radio-inline">
                                         @foreach($rendimiento as $rendi)
                                           <label class="radio">
-                                              <input type="radio" name="page2" value="{{ $rendi->id }}"  @isset($Vehiculo)  @if($Vehiculo->cuota == $rendi->kilometros_litros) checked  @endif  @endisset >
+                                              <input type="radio" name="page2" value="{{ $rendi->id }}"   >
                                               <span></span>
                                               {{ $rendi->tarifa }}
                                           </label>
@@ -662,11 +673,9 @@
                                   <div class="col-md-4">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Gasolina: </label>
                                       <select class="form-control" name="gasolina" id="gasolina2" onchange="traerGasolina2()"  required>
-                                        @isset($Vehiculo)
-                                        <option value="{{ $Vehiculo->gasolina }}">{{ $Vehiculo->obteneGasolinas2->obteneGasolina->nombre}}</option>
-                                        @else
+
                                         <option value="0">Seleccionar</option>
-                                        @endisset
+
                                         @foreach($gasolina as $gaso)
                                         <option value="{{ $gaso->id }}">{{ $gaso->obteneGasolina->nombre }}</option>
                                         @endforeach
@@ -682,14 +691,14 @@
                                 <div class="row">
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Mes $ Gasolina: </label>
-                                      <input type="text" class="form-control" id="mes_gasolina2" value="@isset($Vehiculo) {{ $Vehiculo->mes_gasolina }} @endisset"  placeholder="Mes precio Gasolina" disabled required>
+                                      <input type="text" class="form-control" id="mes_gasolina2"   placeholder="Mes precio Gasolina" disabled required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
                                   </div>
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">$ Gasolina vh. Oficial: </label>
-                                      <input type="text" class="form-control" id="gasolina_vehiculo2" value="@isset($Vehiculo) {{ $Vehiculo->gasolina_vh_oficial }} @endisset"  placeholder="$ Gasolina vh. Oficial" disabled required>
+                                      <input type="text" class="form-control" id="gasolina_vehiculo2"  placeholder="$ Gasolina vh. Oficial" disabled required>
                                       <div class="invalid-feedback">
                                         Por Favor Ingrese Apellido Materno
                                       </div>
@@ -706,17 +715,17 @@
                                     <label for="">Viaje</label>
                                     <div class="radio-inline">
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="1" @isset($autobus) @if($autobus->tipo_viaje == 1) checked @endif @endisset onclick="redondo_tipoViajeAutobus()">
+                                            <input type="radio" name="tipoViajeAutobus" value="1">
                                             <span></span>
                                             Redondo
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="2" @isset($autobus) @if($autobus->tipo_viaje == 2) checked @endif @endisset onclick="redondo_tipoViajeAutobus()">
+                                            <input type="radio" name="tipoViajeAutobus" value="2" >
                                             <span></span>
                                             Solo Ida
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="tipoViajeAutobus" value="3" @isset($autobus) @if($autobus->tipo_viaje == 3) checked @endif @endisset onclick="redondo_tipoViajeAutobus()">
+                                            <input type="radio" name="tipoViajeAutobus" value="3" >
                                             <span></span>
                                             Solo regreso
                                         </label>
@@ -729,7 +738,7 @@
 
                                   <div class="col-md-6">
                                       <label for="inputPassword4" style="font-size:12px;" class="form-label">Costo Total Transporte de Autobus: </label>
-                                      <input type="text" class="form-control" id="costoAutobus" value=" @isset($autobus) {{ $autobus->costo_total }} @endisset"  placeholder="Costo Total Transporte de Autobus"  required>
+                                      <input type="text" class="form-control" id="costoAutobus"   placeholder="Costo Total Transporte de Autobus"  required>
                                   </div>
 
                                 </div>
@@ -761,16 +770,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- <tr>
-                                                <td>Auto</td>
-                                                <td>2500</td>
-                                                <td>
-                                                  <span class="label label-inline label-light-danger font-weight-bold">
-                                                      <i class="far fa-trash-alt"></i>
-                                                  </span>
-                                                </td>
-                                            </tr> -->
-
+                                          @isset($peaje_t_tabla)
+                                          @foreach($peaje_t_tabla as $key => $peajet)
+                                            <tr id="filapeaje_{{$key}}">
+                                                <td>{{ $peajet->nombre }}</td>
+                                                <td> {{ number_format($peajet->costo, 2, '.', ',') }}</td>
+                                                <td><div class="btn btn-danger borrar_figura"  onclick="eliminarpeajeTabla({{$peajet->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+                                            </tr>
+                                          @endforeach
+                                          @endisset
                                         </tbody>
                                         <!-- <tfoot>
                                           <td>total peaje</td>
@@ -919,7 +927,7 @@
                                     <td>{{ $vho->cilindraje }}</td>
                                     <td>{{ $vho->cuota }}</td>
                                     <td>{{ $vho->gasolina_vh_oficial }}</td>
-                                    <td>{{ $vho->total_transporte }}</td>
+                                    <td>{{ number_format($vho->total_transporte, 2, '.', ',') }}</td>
                                     <td><div class="btn btn-danger borrar_figura"  onclick="eliminarvehiculooficialTabla({{$vho->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
                                   </tr>
                                 @endforeach
@@ -1071,7 +1079,7 @@
 
                                        ?>
                                     </td>
-                                    <td>{{$tablaautb->costo_total}}</td>
+                                    <td>{{ number_format($tablaautb->costo_total, 2, '.', ',') }}</td>
                                     <td><div class="btn btn-danger borrar_figura"  onclick="eliminarautoTabla({{$tablaautb->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
                                 </tr>
                                 @endforeach
@@ -1165,8 +1173,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-
+                              @isset($taxi_t_tabla)
+                                @foreach($taxi_t_tabla as $key => $tabtx)
+                                <tr id="figurataxi{{$key}}">
+                                  <td>{{  $tabtx->name_calsificacion }}</td>
+                                  <td>{{  $tabtx->name_kilometraje_origen }}</td>
+                                  <td>{{  $tabtx->name_kilometraje_destino }}</td>
+                                  <td>{{  $tabtx->dia_adicional }}</td>
+                                  <td><div class="btn btn-danger borrar_figura"  onclick="eliminartaxiTabla({{$tabtx->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+                                </tr>
+                                @endforeach
+                              @endisset
                             </tbody>
                           </table>
                       </div>
@@ -1206,7 +1223,31 @@
                                 </tr>
                             </thead>
                             <tbody>
+                              @isset($avion_t_tabla)
+                                @foreach($avion_t_tabla as $key => $tabavion)
+                                  <tr id="figuraavion{{ $key }}">
+                                    <td>Avion</td>
+                                    <td>
+                                      <?php
 
+                                        if ($tabavion->tipo_viaje == 1) {
+                                          echo 'Redondo';
+                                        }else if($tabavion->tipo_viaje == 2){
+                                          echo 'Ida';
+
+                                        }else if($tabavion->tipo_viaje == 3){
+                                          echo 'Regreso';
+
+                                        }
+
+                                       ?>
+                                    </td>
+                                    <td>{{ number_format($tabavion->costo_total, 2, '.', ',') }}</td>
+                                    <td><div class="btn btn-danger borrar_figura"  onclick="eliminaravionTabla({{$tabavion->id}},{{$key}})"  ><i  class="fas fa-trash"></i></div></td>
+
+                                  </tr>
+                                @endforeach
+                              @endisset
                             </tbody>
                           </table>
                       </div>
@@ -1233,7 +1274,14 @@
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Programa: </label>
                         <select class="form-control" id="programavehiculof">
                           @isset($transporte)
-                            <option value="{{ $transporte->programavehiculof }}">{{ $transporte->obtenePrograma->nombre}}</option>
+
+                          @if($transporte->programavehiculo == 0)
+                          <option value="0">Selecciona</option>
+                          @else
+                          <option value="{{ $transporte->programavehiculo }}">{{ $transporte->obtenePrograma->nombre}}</option>
+                          @endif
+
+
                           @else
                             <option value="">Selecciona</option>
                           @endisset
@@ -1344,7 +1392,7 @@
                     </div>
                     <div class="col-md-6">
                       <label for=""><strong style="color:red">*</strong>POR LA CANTIDAD DE</label>
-                      <input type="text" class="form-control" id="cantidad" onchange="cantidadletra()" placeholder="Escribir Cantidad" value="@isset($pagos) {{ $pagos->cantidad }} @endisset">
+                      <input type="text" class="form-control" id="cantidad" onchange="cantidadletra()" placeholder="Escribir Cantidad" value="@isset($pagos) {{ number_format($pagos->cantidad, 2, '.', ',') }} @endisset">
                     </div>
                   </div>
 
@@ -1368,17 +1416,17 @@
                 <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
                   <div class="row">
                     <div class="col-md-6">
-                       <input type="text" id="director_area_firma" name="director_area_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->director_area }} @endisset" disabled>
+                       <input type="text" id="director_area_firma" name="director_area_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->director_area }} @endisset" >
                         <p style="text-align:center;">DIRECTOR DEL ÁREA <br> NOMBRE Y FIRMA </p>
                     </div>
                     <div class="col-md-6">
-                      <input type="text" id="organo_control_firma" name="organo_control_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->organo_control }} @endisset" disabled>
+                      <input type="text" id="organo_control_firma" name="organo_control_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->organo_control }} @endisset" >
                         <p style="text-align:center;">ORGANO DE CONTROL<br> NOMBRE Y FIRMA </p>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <input type="text" id="director_administrativo_firma" name="director_administrativo_firma" value="@isset($firmantes) {{ $firmantes->director_administrativo }} @endisset" class="form-control" disabled>
+                      <input type="text" id="director_administrativo_firma" name="director_administrativo_firma" value="@isset($firmantes) {{ $firmantes->director_administrativo }} @endisset" class="form-control" >
                         <p style="text-align:center;">DIRECTOR ADMINISTRATIVO <br> NOMBRE Y FIRMA </p>
                     </div>
                     <div class="col-md-6">
@@ -1389,7 +1437,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                    <input type="text" id="jefe_firma" name="jefe_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->superior_inmediato }} @endisset" disabled>
+                    <input type="text" id="jefe_firma" name="jefe_firma" class="form-control" value="@isset($firmantes) {{ $firmantes->superior_inmediato }} @endisset" >
                         <p style="text-align:center;">SUPERIOR INMEDIATO <br> NOMBRE Y FIRMA </p>
                     </div>
                   </div>
@@ -1423,12 +1471,9 @@
 </div>
 <script src="/admin/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js?v=7.0.6"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.es.min.js" charset="UTF-8"></script>
+
 <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 <script type="text/javascript">
-$("input").prop('disabled', true);
-$("select").prop('disabled', true);
-$(":radio").prop('disabled', true);
-$(":checkbox").prop('disabled', true);
 var selectedCouta1 = [];
 var selectedviajetipo1 = [];
 var arrayVehiculoOficial = [];
@@ -1469,17 +1514,69 @@ var arrayLugares = [];
 $('#total_transporte_vehiculof').val({{$transporte->total_transporte}} );
 @endisset
 
+@isset($lugares2)
+var total = {{ $lugares2->total_recibido }};
+  $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total.toFixed(2)+'" id="total_extraer" disabled>');
+@endisset
+
+@isset($lugares)
+var suma_dias2 = 0;
+var suma_kilometraje2 = 0;
+
+var suma_gasolina2 = 0;
+var suma_hospedaje2 = 0;
+
+var suma_kilometraje2 = 0;
+
+var suma_desayuno2 = 0;
+var suma_comida2 = 0;
+var suma_cena2 = 0;
+
+var total_alimentos2 = 0;
+
+
+
+var arraysito ={!!  json_encode($lugares) !!};
+
+arraysito.forEach (function(x){
+  suma_dias2 += parseInt(x.dias);
+  suma_kilometraje2 += parseInt(x.kilometros);
+
+  suma_gasolina2 += parseFloat(x.combustible);
+  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+  suma_desayuno2 += parseFloat(x.desayuno);
+  suma_comida2 += parseFloat(x.comida);
+  suma_cena2 += parseFloat(x.cena);
+
+  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+});
+
+
+
+$('#total_dias').html('<p>'+suma_dias2+'</p>');
+$('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+$('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+$('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+$('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+@endisset
+
+
+
+
 function  sumarKM(){
-  var kilometraje_interno = $('#kilometrorecorrido').val();
-
-  var suma_kilometraje = 0;
-  arrayKilometrajeLugares.forEach (function(numero_kilometraje){
-  suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
-  });
-
-  var totalito = parseInt(kilometraje_interno) + parseInt(suma_kilometraje);
-
-   $('#totalkm').val(totalito);
+  // var kilometraje_interno = $('#kilometrorecorrido').val();
+  //
+  // var suma_kilometraje = 0;
+  // arrayKilometrajeLugares.forEach (function(numero_kilometraje){
+  // suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
+  // });
+  //
+  // var totalito = parseInt(kilometraje_interno) + parseInt(suma_kilometraje);
+  //
+  //  $('#totalkm').val(totalito);
 
 
 
@@ -1497,10 +1594,34 @@ function eliminarvehiculooficialTabla(id,id_key){
          },
          data:{
              id:id,
+           },success:function(data){
+
+             $('#total_transporte_vehiculof').val(data);
            }
     });
 
     $('#figuraVHO_'+id_key).remove();
+}
+
+function eliminarpeajeTabla(id,id_key){
+  $.ajax({
+
+         type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+         url:"/recibos/borrarPeaje", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+         },
+         data:{
+             id:id,
+           },success:function(data){
+             //console.log(data)
+             $('#total_transporte_vehiculof').val(data);
+
+           }
+    });
+
+    $('#filapeaje_'+id_key).remove();
 }
 
  function eliminarautoTabla(id,id_key){
@@ -1514,11 +1635,55 @@ function eliminarvehiculooficialTabla(id,id_key){
          },
          data:{
              id:id,
+           },success:function(data){
+             //console.log(data)
+             $('#total_transporte_vehiculof').val(data);
+
            }
     });
 
     $('#figuraAuto_'+id_key).remove();
 }
+
+function eliminaravionTabla(id,id_key){
+  $.ajax({
+
+         type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+         url:"/recibos/borrarAvion", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+         },
+         data:{
+             id:id,
+           },success:function(data){
+            // console.log(data)
+             $('#total_transporte_vehiculof').val(data);
+
+           }
+    });
+
+    $('#figuraavion'+id_key).remove();
+}
+
+function eliminartaxiTabla(id,id_key){
+  $.ajax({
+
+         type:"POST", //si existe esta variable usuarios se va mandar put sino se manda post
+
+         url:"/recibos/borrarTaxi", //si existe usuarios manda la ruta de usuarios el id del usario sino va mandar usuarios crear
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')//esto siempre debe ir en los ajax
+         },
+         data:{
+             id:id,
+           }
+    });
+
+    $('#figurataxi'+id_key).remove();
+}
+
+
 
 function eliminarvehiculoTabla(id,id_key){
   $.ajax({
@@ -1531,210 +1696,21 @@ function eliminarvehiculoTabla(id,id_key){
          },
          data:{
              id:id,
+           },success:function(data){
+            // console.log(data)
+             $('#total_transporte_vehiculof').val(data);
+
            }
     });
   $('#figuraVH_'+id_key).remove();
 }
 
 
-function guardar(){
-
-
-
-  var VehiculoOficial = arrayVehiculoOficial;
-  var Vehiculo = arrayVehiculo;
-  var Avion = arrayAvion;
-  var Autobus = arrayAutobus;
-  var Peaje = arrayPeaje;
-  var Recorrido = arrayRecorrido;
-
-
-  @isset($recibos)
-  var id = {{ $recibos->id }};
-
-  @else
-
-  var id = 0;
-  @endisset
-  @isset($firmantes)
-  var id_firmante = {{ $firmantes->id }};
-  @else
-
-  var id_firmante = 0;
-  @endisset
-  @isset($pagos)
-  var id_pagos = {{ $pagos->id }};
-  @else
-
-  var id_pagos = 0;
-  @endisset
-
-  var n_empleado = $('#n_empleado').val();
-  var nombre_empleado = $('#nombre_empleado').val();
-  var area_id = $('#area_id').val();
-
-
-  var rfc = $('#rfc').val();
-  var nivel = $('#nivel').val();
-  var clave_departamental = $('#clave_departamental').val();
-  var dependencia = $('#dependencia').val();
-  var direccion = $('#direccion').val();
-  var inicia = $('input[name=fecha_inicial]').val();
-  var final = $('input[name=fecha_final]').val();
-  var departamento = $('#departamento').val();
-  var lugar_adscripcion = $('#lugar_adscripcion').val();
-  var n_dias = $('#n_dias').val();
-  var n_dias_ina = $('#n_dias_ina').val();
-  var descripcion = $('#descripcion').val();
-
-  var director_area_firma = $('#director_area_firma').val();
-  var organo_control_firma = $('#organo_control_firma').val();
-  var director_administrativo_firma = $('#director_administrativo_firma').val();
-  var cheque_firma = $('#cheque_firma').val();
-  var jefe_firma = $('#jefe_firma').val();
-
-  var secretaria_pago = $('#secretaria_pago').val();
-  var cheque = $('#cheque').val();
-  var fecha_pago = $('input[name=fecha_pago]').val();
-  var cantidad = $('#cantidad').val();
-  var letras_cantidad = $('#letras_cantidad').val();
-
-  var kilometrorecorrido = $('#kilometrorecorrido').val();
-  var especificarcomision = $('#especificarcomision').val();
-  var totalkm = $('#totalkm').val();
-  var banco = $('#banco').val();
-
-  var selected = [];
-
-  $(":checkbox[name=valeCombustible]").each(function(){
-      if (this.checked) {
-        selected.push($(this).val());
-      }
-  });
-
-  var programavehiculof = $('#programavehiculof').val();
-  var total_transporte_vehiculof = $('#total_transporte_vehiculof').val();
-  var valeCombustible = selected;
-
-
-
-  var total_extraer = $('#total_extraer').val();
-  var programalugar = $('#programalugar').val();
-
-  var tabla_lugares = arrayTablaLugares;
-
-
-    $.ajax({
-
-           type:"POST",
-
-           url:"{{ ( isset($recibos) ) ? '/recibos/update' : '/recibos/create' }}",
-           headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-           },
-           data:{
-             id:id,
-             id_firmante:id_firmante,
-             id_pagos:id_pagos,
-             n_empleado:n_empleado,
-             nombre_empleado:nombre_empleado,
-             rfc:rfc,
-             nivel:nivel,
-             clave_departamental:clave_departamental,
-             dependencia:dependencia,
-             direccion:direccion,
-             inicia:inicia,
-             final:final,
-             departamento:departamento,
-             lugar_adscripcion:lugar_adscripcion,
-             n_dias:n_dias,
-             n_dias_ina:n_dias_ina,
-             descripcion:descripcion,
-             director_area_firma:director_area_firma,
-             organo_control_firma:organo_control_firma,
-             director_administrativo_firma:director_administrativo_firma,
-             cheque_firma:cheque_firma,
-             jefe_firma:jefe_firma,
-             secretaria_pago:secretaria_pago,
-             cheque:cheque,
-             fecha_pago:fecha_pago,
-             cantidad:cantidad,
-             letras_cantidad:letras_cantidad,
-             kilometrorecorrido:kilometrorecorrido,
-             especificarcomision:especificarcomision,
-             totalkm:totalkm,
-             tablalugares:nuevoObjeto,
-             total_extraer:total_extraer,
-             programalugar:programalugar,
-             area_id:area_id,
-             banco:banco,
-             programavehiculof:programavehiculof,
-             total_transporte_vehiculof:total_transporte_vehiculof,
-             valeCombustible:valeCombustible,
-             VehiculoOficial:VehiculoOficial,
-             Vehiculo:Vehiculo,
-             Avion:Avion,
-             Autobus:Autobus,
-             Peaje:Peaje,
-             Recorrido:Recorrido,
-           },
-           // data: formData,
-           // processData: false,
-           // contentType: false,
-           // cache:false,
-            success:function(data){
-              if (data.success == 'Registro agregado satisfactoriamente') {
-                Swal.fire("", data.success, "success").then(function(){
-                  location.href ="/recibos";
-                });
-
-                Swal.fire({
-                      title: "",
-                      text: data.success,
-                      icon: "success",
-                      timer: 1500,
-                      showConfirmButton: false,
-                  }).then(function(result) {
-                      if (result.value == true) {
-                           $('#nombre').val('');
-
-                      }else{
-                        location.href ="/recibos"; //esta es la ruta del modulo
-                      }
-                  })
-
-              }else if(data.success == 'Ha sido editado con éxito'){
-
-                Swal.fire("", data.success, "success").then(function(){
-                  location.href ="/recibos";
-                });
-
-                Swal.fire({
-                      title: "",
-                      text: data.success,
-                      icon: "success",
-                      timer: 1500,
-                      showConfirmButton: false,
-                  }).then(function(result) {
-
-                      if (result.value == true) {
-
-                      }else{
-                        location.href ="/recibos";
-                      }
-                  })
-              }
-
-
-            }
-      });
-
-}
 
 
 function calcularViaticoTransporte(){
 
-
+  @isset($transporte)
 
   ////////////////////////////////////////////////////
   if (arrayVehiculoOficial == '') {
@@ -1743,7 +1719,7 @@ function calcularViaticoTransporte(){
 
     var sumitaautoOf2 = 0;
     arrayVehiculoOficial.forEach (function(numeroautoOf){
-    sumitaautoOf2 += numeroautoOf.gasolina_vehiculo;
+    sumitaautoOf2 += numeroautoOf.total;
     });
   var sumitavof =  sumitaautoOf2;
   }
@@ -1754,7 +1730,125 @@ function calcularViaticoTransporte(){
 
     var sumitaautop2 = 0;
     arrayVehiculo.forEach (function(numeroautoP){
-    sumitaautop2 += numeroautoP.gasolina_vehiculo;
+    sumitaautop2 += numeroautoP.total;
+    });
+
+   var sumitavp =  sumitaautop2;
+  }
+  ////////////////////////////////////////////////////
+  if (arrayAvion == '') {
+  var sumitaavion = 0;
+  }else{
+    var sumitaautobus2 = 0;
+    arrayAutobus.forEach (function(numeroautobus){
+    sumitaautobus2 += numeroautobus.costoAutobus;
+    });
+
+  var sumitaavion =  arrayAvion[0]['costoAvion']
+  }
+  ////////////////////////////////////////////////
+  if (arrayAutobus == '') {
+  var sumitaatobus = 0;
+  }else{
+
+    var sumitaautobus2 = 0;
+    arrayAutobus.forEach (function(numeroautobus){
+    sumitaautobus2 += numeroautobus.costoAutobus;
+    });
+
+    var sumitaatobus =  sumitaautobus2;
+  }
+  /////////////////////////////////////////////////////
+  if (arrayPeaje == '') {
+  var sumitapeaje = 0;
+  }else{
+
+
+      var sumitapeaje2 = 0;
+      arrayPeaje.forEach (function(numeropeaje){
+      sumitapeaje2 += numeropeaje.costo;
+      });
+      //console.log(sumitapeaje2);
+
+      var sumitapeaje =  sumitapeaje2
+  }
+  ///////////////////////////////////////////////////
+  if (arrayRecorrido == '') {
+  //console.log(arrayTaxi)
+  var sumitataxi = 0;
+  }else{
+
+    var sumitataxi2 = 0;
+
+    var sumitatarifa1 = 0;
+    var sumitatarifa2 = 0;
+
+    var sumitatarifa_adicional = 0;
+    var sumitatarifa_adicional2 = 0;
+
+    var totaltarifadicional = 0;
+
+    var totalcalculoadicional = 0;
+    var totalcalculo = 0;
+
+    arrayRecorrido.forEach (function(numerotaxi){
+
+      sumitatarifa1 += numerotaxi.tarifa_evento;
+      sumitatarifa2 += numerotaxi.tarifa_evento2;
+
+      sumitatarifa_adicional += numerotaxi.tarifa_adicional;
+      sumitatarifa_adicional2 += numerotaxi.tarifa_adicional2;
+
+      totaltarifadicional = parseFloat(sumitatarifa_adicional) + parseFloat(sumitatarifa_adicional2);
+
+      sumitataxi2 = parseFloat(sumitatarifa1) + parseFloat(sumitatarifa2);
+
+      //console.log(totaltarifadicional);
+
+      dia_adicional = numerotaxi.dia_adicional;
+
+      //console.log(dia_adicional);
+
+
+      totalcalculoadicional = totaltarifadicional * dia_adicional;
+
+
+
+      totalcalculo = parseFloat(totalcalculoadicional) + parseFloat(sumitataxi2);
+    });
+
+    var sumitataxi = totalcalculo;
+
+  }
+
+  var total_yasumado =  $('#total_transporte_vehiculof').val();
+
+  var total = parseFloat(sumitavof) + parseFloat(sumitavp) + parseFloat(sumitaavion) + parseFloat(sumitaatobus) + parseFloat(sumitapeaje) + parseFloat(sumitataxi) + parseFloat(total_yasumado);
+
+  $('#total_transporte_vehiculof').val(total.toFixed(2));
+
+
+  @else
+
+  ////////////////////////////////////////////////////
+  if (arrayVehiculoOficial == '') {
+  var sumitavof = 0;
+  }else{
+
+    var sumitaautoOf2 = 0;
+    arrayVehiculoOficial.forEach (function(numeroautoOf){
+    sumitaautoOf2 += numeroautoOf.total;
+    });
+  var sumitavof =  sumitaautoOf2;
+  }
+  ///////////////////////////////////////////////////
+  if (arrayVehiculo == '') {
+  var sumitavp = 0;
+  }else{
+
+    var sumitaautop2 = 0;
+    arrayVehiculo.forEach (function(numeroautoP){
+    sumitaautop2 += numeroautoP.total;
     });
 
    var sumitavp =  sumitaautop2;
@@ -1850,6 +1944,9 @@ function calcularViaticoTransporte(){
   var total = parseFloat(sumitavof) + parseFloat(sumitavp) + parseFloat(sumitaavion) + parseFloat(sumitaatobus) + parseFloat(sumitapeaje) + parseFloat(sumitataxi) ;
 
   $('#total_transporte_vehiculof').val(total.toFixed(2));
+
+  @endisset
+
 
   //console.log(total)
 
@@ -2000,21 +2097,23 @@ $('#footLugar').show();
 $('.calculobtn').show();
 @else
 $('#footLugar').hide();
-$('.calculobtn').hide();
+//$('.calculobtn').hide();
+$('.calculobtn').show();
 @endisset
 
 
-function verBtn(){
-  var programalugar = $('#programalugar').val();
-  if (programalugar == 0) {
-    $('.calculobtn').hide();
-  }else{
-    $('.calculobtn').show();
-  }
-}
+// function verBtn(){
+//   var programalugar = $('#programalugar').val();
+//   if (programalugar == 0) {
+//     $('.calculobtn').hide();
+//   }else{
+//     $('.calculobtn').show();
+//   }
+// }
 
 function abrirLugar(){
   $('#origen_lugar').prop('disabled',false);
+  $('#zona_trayectoria').prop('disabled',false);
   $('#destino_lugar').prop('disabled',false);
 }
 
@@ -2103,26 +2202,27 @@ $('#tabla6').hide();
       language: 'es',
       format: 'dd/mm/yyyy',
   });
-});
-
-
-$("input[name=prov_rfc]").change(function(){
-
-var length = $("input[name=prov_rfc]").val().length;
-  var curp = $("input[name=prov_rfc]").val();
-        curpValida = validarRFC(curp);
-        //console.log(length);
-        //length == 12 && curpValida == true
-        if(length == 12 && curpValida == true){
-//console.log('entro')
-        }else if(length == 13 && curpValida == true){
-
-        }else{
-          Swal.fire("Lo Sentimos", 'RFC No Valido', "warning");
-          $("input[name=prov_rfc]").val('');
-        }
 
 });
+
+
+// $("input[name=prov_rfc]").change(function(){
+//
+// var length = $("input[name=prov_rfc]").val().length;
+//   var curp = $("input[name=prov_rfc]").val();
+//         curpValida = validarRFC(curp);
+//         //console.log(length);
+//         //length == 12 && curpValida == true
+//         if(length == 12 && curpValida == true){
+// //console.log('entro')
+//         }else if(length == 13 && curpValida == true){
+//
+//         }else{
+//           Swal.fire("Lo Sentimos", 'RFC No Valido', "warning");
+//           $("input[name=prov_rfc]").val('');
+//         }
+//
+// });
 
 
 function validarRFC(campo){
@@ -2155,11 +2255,31 @@ var origen_lugar = $('#origen_lugar').val();
 var destino_lugar = $('#destino_lugar').val();
 var origen_lugar_name = $('#origen_lugar').find('option:selected').text();
 var destino_lugar_name = $('#destino_lugar').find('option:selected').text();
+var zona_trayectoria = $('#zona_trayectoria').val();
+//console.log(origen_lugar,destino_lugar)
 
 
 if (origen_lugar == 0 || destino_lugar == 0) {
 
 }else{
+
+  // $.ajax({
+  //        type:"POST",
+  //        url:"/recibos/NivelAlimentacion",
+  //        headers: {
+  //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //        },
+  //        data:{
+  //            nivel:nivel,
+  //            zona_trayectoria:zona_trayectoria,
+  //          },
+  //         success:function(dars){
+  //           console.log(dars)
+  //         }
+  //
+  //   });
+
+
   $.ajax({
          type:"POST",
          url:"/recibos/AlimentacionTime",
@@ -2168,10 +2288,16 @@ if (origen_lugar == 0 || destino_lugar == 0) {
          },
          data:{
              nivel:nivel,
+             zona_trayectoria:zona_trayectoria,
+             origen_lugar:origen_lugar,
+             destino_lugar:destino_lugar,
            },
           success:function(dars){
 
+          //  console.log(dars.total_kilometraje1,dars.total_kilometraje2)
 
+            var total_kilometros = parseInt(dars.total_kilometraje1) + parseInt(dars.total_kilometraje2);
+            //console.log(zona_trayectoria,dars.alimentos[0].zona)
 
             objectLugar = {
               desayuno:dars.alimentos[0].importe_desayuno,
@@ -2185,6 +2311,8 @@ if (origen_lugar == 0 || destino_lugar == 0) {
               destino:destino_lugar,
               origen_name:origen_lugar_name,
               destino_name:destino_lugar_name,
+              zona_trayectoria:zona_trayectoria,
+              total_kilometros:total_kilometros,
             }
 
 
@@ -2217,18 +2345,19 @@ if (objectLugar.zona == 1) {
 }else{
   zonita = 'Frontera y Entidades Federativas del Extranjero';
 }
+//console.log(objectLugar.hospedaje)
 
-  var tr = '<tr id="filas'+contador_lugares+'">'+
+  var tr = '<tr id="filas_lugar'+contador_lugares+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
   '<td>'+objectLugar.destino_name+'</td>'+
-  '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')"></td>'+
-  '<td>'+zonita+'</td>'+
-  '<td><input type="text" class="form-control" id="kilometraje_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')"></td>'+
+  '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+'),KilometrajeLugares('+contador_lugares+')" ></td>'+
+  '<td>'+objectLugar.zona_trayectoria+'</td>'+
+  '<td><input type="text" class="form-control" id="kilometraje_'+contador_lugares+'" onkeypress="return validaNumericos(event)" value="'+objectLugar.total_kilometros+'" disabled ></td>'+
   '<td>'+
     '<div class="form-group">'+
         '<div class="checkbox-list">'+
             '<label class="checkbox">'+
-                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onchange="gasolinaLugar('+contador_lugares+')" value="'+objectLugar.gasolina+'">'+
+                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onclick="gasolinaLugar('+contador_lugares+')" value="'+objectLugar.gasolina+'">'+
                 '<span></span>'+
             '</label>'+
         '</div>'+
@@ -2238,7 +2367,7 @@ if (objectLugar.zona == 1) {
     '<div class="form-group">'+
         '<div class="checkbox-list">'+
             '<label class="checkbox">'+
-                '<input type="checkbox" name="hospedaje_'+contador_lugares+'" onchange="hospedajeLugar('+contador_lugares+')" value="'+objectLugar.hospedaje+'">'+
+                '<input type="checkbox" name="hospedaje_'+contador_lugares+'" onclick="hospedajeLugar('+contador_lugares+')" value="'+objectLugar.hospedaje+'">'+
                 '<span></span>'+
             '</label>'+
         '</div>'+
@@ -2246,25 +2375,28 @@ if (objectLugar.zona == 1) {
   '</td>'+
   '<td><div class="checkbox-inline">'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="desayuno_'+contador_lugares+'" onchange="desayunoLugar('+contador_lugares+')" value="'+objectLugar.desayuno+'">'+
+             '<input type="checkbox" name="desayuno_'+contador_lugares+'" onclick="desayunoLugar('+contador_lugares+')" value="'+objectLugar.desayuno+'">'+
              '<span></span>'+
          '</label>'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="comida_'+contador_lugares+'" onchange="comidaLugar('+contador_lugares+')" value="'+objectLugar.comida+'">'+
+             '<input type="checkbox" name="comida_'+contador_lugares+'" onclick="comidaLugar('+contador_lugares+')" value="'+objectLugar.comida+'">'+
              '<span></span>'+
          '</label>'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="cena_'+contador_lugares+'" onchange="cenaLugar('+contador_lugares+')" value="'+objectLugar.cena+'">'+
+             '<input type="checkbox" name="cena_'+contador_lugares+'" onclick="cenaLugar('+contador_lugares+')" value="'+objectLugar.cena+'">'+
              '<span></span>'+
          '</label>'+
      '</div>'+
   '</td>'+
-  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onchange="lugarEstadia('+contador_lugares+')" onclick="eliminarvehiculooficial('+contador_lugares+')"  ><i  class="fas fa-trash"></i></div></td>'
+  '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura"  onclick="eliminarlugar('+contador_lugares+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
   $("#tablaLugares").append(tr);
 
   $('#origen_lugar').prop('selectedIndex',0);
   $('#destino_lugar').prop('selectedIndex',0);
+  $('#zona_trayectoria').prop('selectedIndex',0);
+
+
 
   arrayTablaLugares.push({
     id:contador_lugares,
@@ -2280,6 +2412,11 @@ if (objectLugar.zona == 1) {
 
   contador_lugares ++;
 }
+
+
+
+
+
 
 var objectDiasLugares = {};
 var arrayDiasLugares = [];
@@ -2310,7 +2447,11 @@ var objectTablaLugares = {};
 var arrayTablaLugares = [];
 
 function diasLugares(id){
+
+
   var dias = $('#dias_'+id).val();
+
+  //console.log(dias)
   objectDiasLugares = {
     id:id,
     dias:dias
@@ -2327,11 +2468,61 @@ function diasLugares(id){
 
 
 
+}
+
+
+function diasLugares2(id_key,id){
+
+  var dias = $('#dias2_'+id_key).val();
+  //console.log(dias,id)
+
+  $.ajax({
+         type:"POST",
+         url:"/recibos/CambioDias",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+           dias:dias,
+           id:id,
+           },
+          success:function(data){
+            //console.log(data)
+          }
+    });
+
+
 
 }
+
+
+function KilometrajeLugares2(id_key,id){
+
+  var kilometraje = $('#kilometraje2_'+id_key).val();
+  //console.log(dias,id)
+
+  $.ajax({
+         type:"POST",
+         url:"/recibos/CambioKilometraje",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+           kilometraje:kilometraje,
+           id:id,
+           },
+          success:function(data){
+            //console.log(data)
+          }
+    });
+
+
+
+}
+
 function KilometrajeLugares(id){
 var kilometraje = $('#kilometraje_'+id).val();
-
+//console.log(kilometraje)
   arrayTablaLugares.push({
     id:id,
     kilometraje:kilometraje
@@ -2349,126 +2540,1400 @@ function gasolinaLugar(id){
     $(":checkbox[name=gasolina_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
+            var kilometraje = $('#kilometraje_'+id).val();
+            var total = parseInt(kilometraje) * parseFloat($(this).val());
             arrayTablaLugares.push({
               id:id,
-              gasolina:$(this).val(),
+              //gasolina:$(this).val(),
+              gasolina:total,
             })
+
+
+
 
             objectGasolinaLugares = {
             id:id,
-            gasolina:$(this).val(),
+            //gasolina:$(this).val(),
+            gasolina:total,
             }
 
             arrayGasolinaLugares.push(objectGasolinaLugares)
 
+        }else {
 
-            //
-            // ObjetoLugares = {
-            //   gasolina:$(this).val(),
-            // }
-            // $.extend( ObjetoLugares, ObjetoLugares );
-
+          arrayGasolinaLugares.forEach(function(x, index, object) {
+              if(x.id === id){
+                object.splice(index, 1);
+              }
+          });
 
         }
     });
 
 }
 
-function hospedajeLugar(id){
-    $(":checkbox[name=hospedaje_"+id+"]").each(function(){
-        if (this.checked) {
-            /////////////////////////////////////////////////////
-            arrayTablaLugares.push({
-              id:id,
-              hospedaje:$(this).val(),
-            })
-            objectHospedajeLugares = {
-              id:id,
-            hospedaje:$(this).val(),
+
+
+
+
+
+function gasolinaLugar2(id,id_key){
+
+  $(":checkbox[name=gasolina2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var gasolina = $(this).val();
+          //console.log(gasolina)
+
+          if (gasolina == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerGasolinaL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     gasolina:gasolina,
+                     },
+                    success:function(data){
+                      $.ajax({
+                             type:"POST",
+                             url:"/recibos/TraerGasolinaDatosViaticoLugar",
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                             },
+                             data:{
+
+                               gasolina:data.precio_litro,
+                               id : id
+                               },
+                              success:function(data){
+
+                                var suma_dias2 = 0;
+                                var suma_kilometraje2 = 0;
+
+                                var suma_gasolina2 = 0;
+                                var suma_hospedaje2 = 0;
+
+                                var suma_kilometraje2 = 0;
+
+                                var suma_desayuno2 = 0;
+                                var suma_comida2 = 0;
+                                var suma_cena2 = 0;
+
+                                var total_alimentos2 = 0;
+
+
+
+                                data.forEach (function(x){
+                                  suma_dias2 += parseInt(x.dias);
+                                  suma_kilometraje2 += parseInt(x.kilometros);
+
+                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                  suma_desayuno2 += parseFloat(x.desayuno);
+                                  suma_comida2 += parseFloat(x.comida);
+                                  suma_cena2 += parseFloat(x.cena);
+
+                                  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                });
+
+
+
+                                $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                              }
+                            });
+                    }
+                  });
+          }else{
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerGasolinaDatosViaticoLugar",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+
+                     gasolina:gasolina,
+                     id : id
+                     },
+                    success:function(data){
+
+                      var suma_dias2 = 0;
+                      var suma_kilometraje2 = 0;
+
+                      var suma_gasolina2 = 0;
+                      var suma_hospedaje2 = 0;
+
+                      var suma_kilometraje2 = 0;
+
+                      var suma_desayuno2 = 0;
+                      var suma_comida2 = 0;
+                      var suma_cena2 = 0;
+
+                      var total_alimentos2 = 0;
+
+
+
+                      data.forEach (function(x){
+                        suma_dias2 += parseInt(x.dias);
+                        suma_kilometraje2 += parseInt(x.kilometros);
+
+                        suma_gasolina2 += parseFloat(x.combustible);
+                        suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                        suma_desayuno2 += parseFloat(x.desayuno);
+                        suma_comida2 += parseFloat(x.comida);
+                        suma_cena2 += parseFloat(x.cena);
+
+                        total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                      });
+
+
+
+                      $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                      $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                      $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                      $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                      $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                    }
+                  });
+          }
+
+
+
+
+
+
+      }else {
+        var gasolina = 0;
+      //  console.log(id,id_key,gasolina)
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerGasolinaDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 gasolina:gasolina,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function hospedajeLugar2(id,id_key){
+
+
+
+  $(":checkbox[name=hospedaje2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var hospedaje = $(this).val();
+          //console.log(id,id_key,hospedaje)
+
+          if (hospedaje == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerHospedajeL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     hospedaje:hospedaje,
+                     },
+                    success:function(data){
+                        $.ajax({
+                               type:"POST",
+                               url:"/recibos/TraerHospedajeDatosViaticoLugar",
+                               headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                               },
+                               data:{
+
+                                 hospedaje:data.importe,
+                                 id : id
+                                 },
+                                success:function(data){
+
+                                  var suma_dias2 = 0;
+                                  var suma_kilometraje2 = 0;
+
+                                  var suma_gasolina2 = 0;
+                                  var suma_hospedaje2 = 0;
+
+                                  var suma_kilometraje2 = 0;
+
+                                  var suma_desayuno2 = 0;
+                                  var suma_comida2 = 0;
+                                  var suma_cena2 = 0;
+
+                                  var total_alimentos2 = 0;
+
+
+
+                                  data.forEach (function(x){
+                                    suma_dias2 += parseInt(x.dias);
+                                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                                    suma_gasolina2 += parseFloat(x.combustible);
+                                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                    suma_desayuno2 += parseFloat(x.desayuno);
+                                    suma_comida2 += parseFloat(x.comida);
+                                    suma_cena2 += parseFloat(x.cena);
+
+                                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                  });
+
+
+
+                                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                                }
+                              });
+                    }
+                  });
+            }else{
+
+              $.ajax({
+                     type:"POST",
+                     url:"/recibos/TraerHospedajeDatosViaticoLugar",
+                     headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     },
+                     data:{
+
+                       hospedaje:hospedaje,
+                       id : id
+                       },
+                      success:function(data){
+
+                        var suma_dias2 = 0;
+                        var suma_kilometraje2 = 0;
+
+                        var suma_gasolina2 = 0;
+                        var suma_hospedaje2 = 0;
+
+                        var suma_kilometraje2 = 0;
+
+                        var suma_desayuno2 = 0;
+                        var suma_comida2 = 0;
+                        var suma_cena2 = 0;
+
+                        var total_alimentos2 = 0;
+
+
+
+                        data.forEach (function(x){
+                          suma_dias2 += parseInt(x.dias);
+                          suma_kilometraje2 += parseInt(x.kilometros);
+
+                          suma_gasolina2 += parseFloat(x.combustible);
+                          suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                          suma_desayuno2 += parseFloat(x.desayuno);
+                          suma_comida2 += parseFloat(x.comida);
+                          suma_cena2 += parseFloat(x.cena);
+
+                          total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                        });
+
+
+
+                        $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                        $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                        $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                        $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                        $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                      }
+                    });
             }
 
-            arrayHospedajeLugares.push(objectHospedajeLugares)
 
-            // ObjetoLugares = {
-            //   hospedaje:$(this).val(),
-            // }
-            // arrayLugares.push(ObjetoLugares);
 
-        }
-    });
+
+
+      }else {
+        var hospedaje = 0;
+      //  console.log(id,id_key,gasolina)
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerHospedajeDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 hospedaje:hospedaje,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function desayunoLugar2(id,id_key){
+
+  $(":checkbox[name=desayuno2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var desayuno = $(this).val();
+          //console.log(id,id_key,gasolina)
+
+          if (desayuno == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerDesayunoL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     desayuno:desayuno,
+                     },
+                    success:function(data){
+                      $.ajax({
+                             type:"POST",
+                             url:"/recibos/TraerDesayunoDatosViaticoLugar",
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                             },
+                             data:{
+
+                               desayuno:data.importe_desayuno,
+                               id : id
+                               },
+                              success:function(data){
+
+                                var suma_dias2 = 0;
+                                var suma_kilometraje2 = 0;
+
+                                var suma_gasolina2 = 0;
+                                var suma_hospedaje2 = 0;
+
+                                var suma_kilometraje2 = 0;
+
+                                var suma_desayuno2 = 0;
+                                var suma_comida2 = 0;
+                                var suma_cena2 = 0;
+
+                                var total_alimentos2 = 0;
+
+
+
+                                data.forEach (function(x){
+                                  suma_dias2 += parseInt(x.dias);
+                                  suma_kilometraje2 += parseInt(x.kilometros);
+
+                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                  suma_desayuno2 += parseFloat(x.desayuno);
+                                  suma_comida2 += parseFloat(x.comida);
+                                  suma_cena2 += parseFloat(x.cena);
+
+                                  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                });
+
+
+
+                                $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                              }
+                            });
+                    }
+                  });
+            }else{
+              $.ajax({
+                     type:"POST",
+                     url:"/recibos/TraerDesayunoDatosViaticoLugar",
+                     headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     },
+                     data:{
+
+                       desayuno:desayuno,
+                       id : id
+                       },
+                      success:function(data){
+
+                        var suma_dias2 = 0;
+                        var suma_kilometraje2 = 0;
+
+                        var suma_gasolina2 = 0;
+                        var suma_hospedaje2 = 0;
+
+                        var suma_kilometraje2 = 0;
+
+                        var suma_desayuno2 = 0;
+                        var suma_comida2 = 0;
+                        var suma_cena2 = 0;
+
+                        var total_alimentos2 = 0;
+
+
+
+                        data.forEach (function(x){
+                          suma_dias2 += parseInt(x.dias);
+                          suma_kilometraje2 += parseInt(x.kilometros);
+
+                          suma_gasolina2 += parseFloat(x.combustible);
+                          suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                          suma_desayuno2 += parseFloat(x.desayuno);
+                          suma_comida2 += parseFloat(x.comida);
+                          suma_cena2 += parseFloat(x.cena);
+
+                          total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                        });
+
+
+
+                        $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                        $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                        $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                        $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                        $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                      }
+                    });
+            }
+
+
+      }else {
+        var desayuno = 0;
+      //  console.log(id,id_key,gasolina)
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerDesayunoDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 desayuno:desayuno,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function comidaLugar2(id,id_key){
+
+  $(":checkbox[name=comida2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var comida = $(this).val();
+        //console.log(comida)
+
+          if (comida == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerComidaL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     comida:comida,
+                     },
+                    success:function(data){
+
+                      $.ajax({
+                             type:"POST",
+                             url:"/recibos/TraerComidaDatosViaticoLugar",
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                             },
+                             data:{
+
+                               comida:data.importe_comida,
+                               id : id
+                               },
+                              success:function(data){
+
+                                var suma_dias2 = 0;
+                                var suma_kilometraje2 = 0;
+
+                                var suma_gasolina2 = 0;
+                                var suma_hospedaje2 = 0;
+
+                                var suma_kilometraje2 = 0;
+
+                                var suma_desayuno2 = 0;
+                                var suma_comida2 = 0;
+                                var suma_cena2 = 0;
+
+                                var total_alimentos2 = 0;
+
+
+
+                                data.forEach (function(x){
+                                  suma_dias2 += parseInt(x.dias);
+                                  suma_kilometraje2 += parseInt(x.kilometros);
+
+                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                  suma_desayuno2 += parseFloat(x.desayuno);
+                                  suma_comida2 += parseFloat(x.comida);
+                                  suma_cena2 += parseFloat(x.cena);
+
+                                  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                });
+
+
+
+                                $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                              }
+                            });
+                    }
+                  });
+            }else{
+              $.ajax({
+                     type:"POST",
+                     url:"/recibos/TraerComidaDatosViaticoLugar",
+                     headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     },
+                     data:{
+
+                       comida:comida,
+                       id : id
+                       },
+                      success:function(data){
+
+                        var suma_dias2 = 0;
+                        var suma_kilometraje2 = 0;
+
+                        var suma_gasolina2 = 0;
+                        var suma_hospedaje2 = 0;
+
+                        var suma_kilometraje2 = 0;
+
+                        var suma_desayuno2 = 0;
+                        var suma_comida2 = 0;
+                        var suma_cena2 = 0;
+
+                        var total_alimentos2 = 0;
+
+
+
+                        data.forEach (function(x){
+                          suma_dias2 += parseInt(x.dias);
+                          suma_kilometraje2 += parseInt(x.kilometros);
+
+                          suma_gasolina2 += parseFloat(x.combustible);
+                          suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                          suma_desayuno2 += parseFloat(x.desayuno);
+                          suma_comida2 += parseFloat(x.comida);
+                          suma_cena2 += parseFloat(x.cena);
+
+                          total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                        });
+
+
+
+                        $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                        $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                        $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                        $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                        $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                      }
+                    });
+            }
+
+      }else {
+        var comida = 0;
+      //  console.log(id,id_key,gasolina)
+
+
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerComidaDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 comida:comida,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function cenaLugar2(id,id_key){
+
+  $(":checkbox[name=cena2_"+id_key+"]").each(function(){
+      if (this.checked) {
+          /////////////////////////////////////////////////////
+          var cena = $(this).val();
+          //console.log(cena)
+
+          if (cena == 0) {
+            //console.log('entro')
+            $.ajax({
+                   type:"POST",
+                   url:"/recibos/TraerCenaL",
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   data:{
+                     cena:cena,
+                     },
+                    success:function(data){
+                      $.ajax({
+                             type:"POST",
+                             url:"/recibos/TraerCenaDatosViaticoLugar",
+                             headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                             },
+                             data:{
+
+                               cena:data.importe_cena,
+                               id : id
+                               },
+                              success:function(data){
+
+                                var suma_dias2 = 0;
+                                var suma_kilometraje2 = 0;
+
+                                var suma_gasolina2 = 0;
+                                var suma_hospedaje2 = 0;
+
+                                var suma_kilometraje2 = 0;
+
+                                var suma_desayuno2 = 0;
+                                var suma_comida2 = 0;
+                                var suma_cena2 = 0;
+
+                                var total_alimentos2 = 0;
+
+
+
+                                data.forEach (function(x){
+                                  suma_dias2 += parseInt(x.dias);
+                                  suma_kilometraje2 += parseInt(x.kilometros);
+
+                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                                  suma_desayuno2 += parseFloat(x.desayuno);
+                                  suma_comida2 += parseFloat(x.comida);
+                                  suma_cena2 += parseFloat(x.cena);
+
+                                  total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                                });
+
+
+
+                                $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                                $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                                $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                                $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                                $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                              }
+                            });
+                    }
+                  });
+            }else{
+
+            }
+
+          $.ajax({
+                 type:"POST",
+                 url:"/recibos/TraerCenaDatosViaticoLugar",
+                 headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 },
+                 data:{
+
+                   cena:cena,
+                   id : id
+                   },
+                  success:function(data){
+
+                    var suma_dias2 = 0;
+                    var suma_kilometraje2 = 0;
+
+                    var suma_gasolina2 = 0;
+                    var suma_hospedaje2 = 0;
+
+                    var suma_kilometraje2 = 0;
+
+                    var suma_desayuno2 = 0;
+                    var suma_comida2 = 0;
+                    var suma_cena2 = 0;
+
+                    var total_alimentos2 = 0;
+
+
+
+                    data.forEach (function(x){
+                      suma_dias2 += parseInt(x.dias);
+                      suma_kilometraje2 += parseInt(x.kilometros);
+
+                      suma_gasolina2 += parseFloat(x.combustible);
+                      suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                      suma_desayuno2 += parseFloat(x.desayuno);
+                      suma_comida2 += parseFloat(x.comida);
+                      suma_cena2 += parseFloat(x.cena);
+
+                      total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                    });
+
+
+
+                    $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                    $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                    $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                    $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                    $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                  }
+                });
+
+
+
+
+      }else {
+        var cena = 0;
+      //  console.log(id,id_key,gasolina)
+        $.ajax({
+               type:"POST",
+               url:"/recibos/TraerCenaDatosViaticoLugar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+
+                 cena:cena,
+                 id : id
+                 },
+                success:function(data){
+
+                  var suma_dias2 = 0;
+                  var suma_kilometraje2 = 0;
+
+                  var suma_gasolina2 = 0;
+                  var suma_hospedaje2 = 0;
+
+                  var suma_kilometraje2 = 0;
+
+                  var suma_desayuno2 = 0;
+                  var suma_comida2 = 0;
+                  var suma_cena2 = 0;
+
+                  var total_alimentos2 = 0;
+
+
+
+                  data.forEach (function(x){
+                    suma_dias2 += parseInt(x.dias);
+                    suma_kilometraje2 += parseInt(x.kilometros);
+
+                    suma_gasolina2 += parseFloat(x.combustible);
+                    suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                    suma_desayuno2 += parseFloat(x.desayuno);
+                    suma_comida2 += parseFloat(x.comida);
+                    suma_cena2 += parseFloat(x.cena);
+
+                    total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+                  });
+
+
+
+                  $('#total_dias').html('<p>'+suma_dias2+'</p>');
+                  $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+                  $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+                  $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+                  $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+                }
+              });
+
+      }
+  });
+}
+
+function hospedajeLugar(id){
+
+    var value_ckeck = $(":checkbox[name=hospedaje_"+id+"]").val();
+    //console.log(value_ckeck == 'undefined')
+    if (value_ckeck == 'undefined') {
+      $(":checkbox[name=hospedaje_"+id+"]").prop('checked',false);
+      $(":checkbox[name=hospedaje_"+id+"]").prop('disabled',true);
+      Swal.fire("Lo Sentimos", 'El nivel del empleado no esta en el rango de hospedaje', "warning");
+    }else{
+      $(":checkbox[name=hospedaje_"+id+"]").each(function(){
+
+          if (this.checked) {
+              /////////////////////////////////////////////////////
+              arrayTablaLugares.push({
+                id:id,
+                hospedaje:$(this).val(),
+              })
+              objectHospedajeLugares = {
+                id:id,
+              hospedaje:$(this).val(),
+              }
+
+              arrayHospedajeLugares.push(objectHospedajeLugares)
+
+              // ObjetoLugares = {
+              //   hospedaje:$(this).val(),
+              // }
+              // arrayLugares.push(ObjetoLugares);
+
+          }else {
+
+            arrayHospedajeLugares.forEach(function(x, index, object) {
+                if(x.id === id){
+                  object.splice(index, 1);
+                }
+            });
+
+          }
+      });
+    }
+
 
 }
 
 function desayunoLugar(id){
-  $(":checkbox[name=desayuno_"+id+"]").each(function(){
-      if (this.checked) {
-          /////////////////////////////////////////////////////
-          arrayTablaLugares.push({
-            id:id,
+  var value_ckeck = $(":checkbox[name=desayuno_"+id+"]").val();
+  if (value_ckeck == 'undefined') {
+    $(":checkbox[name=desayuno_"+id+"]").prop('checked',false);
+    $(":checkbox[name=desayuno_"+id+"]").prop('disabled',true);
+    Swal.fire("Lo Sentimos", 'El nivel del empleado no esta en el rango de desayuno', "warning");
+  }else{
+    $(":checkbox[name=desayuno_"+id+"]").each(function(){
+        if (this.checked) {
+            /////////////////////////////////////////////////////
+            arrayTablaLugares.push({
+              id:id,
+              desayuno:$(this).val(),
+            })
+            objectDesayunoLugares = {
+              id:id,
             desayuno:$(this).val(),
-          })
-          objectDesayunoLugares = {
-            id:id,
-          desayuno:$(this).val(),
-          }
+            }
 
-          arrayDesayunoLugares.push(objectDesayunoLugares)
+            arrayDesayunoLugares.push(objectDesayunoLugares)
+        }else {
 
-          // ObjetoLugares = {
-          //   desayuno:$(this).val(),
-          // }
-          // arrayLugares.push(ObjetoLugares);
+          arrayDesayunoLugares.forEach(function(x, index, object) {
+              if(x.id === id){
+                object.splice(index, 1);
+              }
+          });
 
-      }
-  });
+        }
+    });
+  }
+
 }
 function comidaLugar(id){
-  $(":checkbox[name=comida_"+id+"]").each(function(){
-      if (this.checked) {
-          /////////////////////////////////////////////////////
-          arrayTablaLugares.push({
-            id:id,
+  var value_ckeck = $(":checkbox[name=comida_"+id+"]").val();
+  if (value_ckeck == 'undefined') {
+    $(":checkbox[name=comida_"+id+"]").prop('checked',false);
+    $(":checkbox[name=comida_"+id+"]").prop('disabled',true);
+    Swal.fire("Lo Sentimos", 'El nivel del empleado no esta en el rango de comida', "warning");
+  }else{
+    $(":checkbox[name=comida_"+id+"]").each(function(){
+        if (this.checked) {
+            /////////////////////////////////////////////////////
+            arrayTablaLugares.push({
+              id:id,
+              comida:$(this).val(),
+            })
+            objectComidaLugares = {
+              id:id,
             comida:$(this).val(),
-          })
-          objectComidaLugares = {
-            id:id,
-          comida:$(this).val(),
-          }
+            }
 
-          arrayComidaLugares.push(objectComidaLugares)
+            arrayComidaLugares.push(objectComidaLugares)
+        }else {
 
-          // ObjetoLugares = {
-          //   comida:$(this).val(),
-          // }
-          // arrayLugares.push(ObjetoLugares);
+          arrayComidaLugares.forEach(function(x, index, object) {
+              if(x.id === id){
+                object.splice(index, 1);
+              }
+          });
 
-      }
-  });
+        }
+    });
+  }
+
 }
 function cenaLugar(id){
-  $(":checkbox[name=cena_"+id+"]").each(function(){
-      if (this.checked) {
-          /////////////////////////////////////////////////////
-          arrayTablaLugares.push({
-            id:id,
-            cena:$(this).val(),
-          })
-          objectCenaLugares = {
-            id:id,
-            cena:$(this).val(),
-          }
+  var value_ckeck = $(":checkbox[name=cena_"+id+"]").val();
+  if (value_ckeck == 'undefined') {
+    $(":checkbox[name=cena_"+id+"]").prop('checked',false);
+    $(":checkbox[name=cena_"+id+"]").prop('disabled',true);
+    Swal.fire("Lo Sentimos", 'El nivel del empleado no esta en el rango de cena', "warning");
+  }else{
+    $(":checkbox[name=cena_"+id+"]").each(function(){
+        if (this.checked) {
+            /////////////////////////////////////////////////////
+            arrayTablaLugares.push({
+              id:id,
+              cena:$(this).val(),
+            })
+            objectCenaLugares = {
+              id:id,
+              cena:$(this).val(),
+            }
 
-          arrayCenaLugares.push(objectCenaLugares)
+            arrayCenaLugares.push(objectCenaLugares)
+        }else {
 
-          // ObjetoLugares = {
-          //   cena:$(this).val(),
-          // }
-          //
-          //
-          // arrayLugares.push(ObjetoLugares);
+          arrayCenaLugares.forEach(function(x, index, object) {
+              if(x.id === id){
+                object.splice(index, 1);
+              }
+          });
 
+        }
+    });
+  }
+
+}
+ function bajaLugar(id,id_key){
+   //console.log(id_key)
+   $('#orden_luagres'+id_key).remove();
+   @isset($recibos)
+   id_recibo = {{$recibos->id}};
+   @else
+   id_recibo = 0;
+
+   @endisset
+   $.ajax({
+          type:"POST",
+          url:"/recibos/TraerBorrarDatosViaticoLugar",
+          headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          data:{
+
+            id_recibo:id_recibo,
+            id : id
+            },
+           success:function(data){
+
+             var suma_dias2 = 0;
+             var suma_kilometraje2 = 0;
+
+             var suma_gasolina2 = 0;
+             var suma_hospedaje2 = 0;
+
+             var suma_kilometraje2 = 0;
+
+             var suma_desayuno2 = 0;
+             var suma_comida2 = 0;
+             var suma_cena2 = 0;
+
+             var total_alimentos2 = 0;
+
+
+
+             data.forEach (function(x){
+               suma_dias2 += parseInt(x.dias);
+               suma_kilometraje2 += parseInt(x.kilometros);
+
+               suma_gasolina2 += parseFloat(x.combustible);
+               suma_hospedaje2 += parseFloat(x.hospedaje);
+
+               suma_desayuno2 += parseFloat(x.desayuno);
+               suma_comida2 += parseFloat(x.comida);
+               suma_cena2 += parseFloat(x.cena);
+
+               total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+             });
+
+
+
+             $('#total_dias').html('<p>'+suma_dias2+'</p>');
+             $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+             $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+             $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+             $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+           }
+         });
+
+
+ }
+
+function eliminarlugar(id){
+  //console.log(id)
+  arrayLugar.splice(id,1);
+
+
+
+  arrayDiasLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
       }
   });
+
+  arrayKilometrajeLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayGasolinaLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayHospedajeLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayDesayunoLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayComidaLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+  arrayCenaLugares.forEach(function(x, index, object) {
+      if(x.id === id){
+        object.splice(index, 1);
+      }
+  });
+
+
+
+
+  $('#filas_lugar'+id).remove();
+
+  // console.log(arrayDiasLugares)
+  // console.log(arrayKilometrajeLugares)
+  // console.log(arrayGasolinaLugares)
+  // console.log(arrayHospedajeLugares)
+  // console.log(arrayDesayunoLugares)
+  // console.log(arrayComidaLugares)
+  // console.log(arrayCenaLugares)
+  //
+  //
+  // console.log(arrayLugar == 0,id,arrayLugar,arrayTablaLugares)
+
+  if (arrayLugar == 0) {
+    $('#footLugar').show();
+    // $('#total_recibido_lugar').show();
+
+    @isset($lugares)
+
+
+    $.ajax({
+           type:"POST",
+           url:"/recibos/TraerDatosViaticoLugar",
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data:{
+
+             id:{{$recibos->id}},
+             },
+            success:function(data){
+
+              var suma_dias2 = 0;
+              var suma_kilometraje2 = 0;
+
+              var suma_gasolina2 = 0;
+              var suma_hospedaje2 = 0;
+
+              var suma_kilometraje2 = 0;
+
+              var suma_desayuno2 = 0;
+              var suma_comida2 = 0;
+              var suma_cena2 = 0;
+
+              var total_alimentos2 = 0;
+
+
+
+              data.forEach (function(x){
+                suma_dias2 += parseInt(x.dias);
+                suma_kilometraje2 += parseInt(x.kilometros);
+
+                suma_gasolina2 += parseFloat(x.combustible);
+                suma_hospedaje2 += parseFloat(x.hospedaje);
+
+                suma_desayuno2 += parseFloat(x.desayuno);
+                suma_comida2 += parseFloat(x.comida);
+                suma_cena2 += parseFloat(x.cena);
+
+                total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+              });
+
+
+
+              $('#total_dias').html('<p>'+suma_dias2+'</p>');
+              $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
+              $('#total_gasolina').html('<p>$'+suma_gasolina2.toFixed(2)+'</p>');
+              $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
+              $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
+
+            }
+          });
+
+
+
+
+
+
+    @else
+
+    $('#total_dias').html('<p>0</p>');
+    $('#total_kilometros').html('<p>0</p>');
+    $('#total_gasolina').html('<p>$0</p>');
+    $('#total_hospedaje').html('<p>$0</p>');
+    $('#total_comidas').html('<p>$0</p>');
+
+
+    //$('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
+    $('#total_recibido_lugar').html('<input type="text" class="form-control" value="0" id="total_extraer" disabled>');
+
+    @endisset
+
+
+
+
+  }
+
+
+
 }
 
 var tablalugar = [];
@@ -2476,7 +3941,261 @@ let nuevoObjeto = {}
 function calcularViaticoLugar(){
 
 
+  @isset($lugares)
 
+  $.ajax({
+         type:"POST",
+         url:"/recibos/TraerDatosViaticoLugar",
+         headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         },
+         data:{
+
+           id:{{$recibos->id}},
+           },
+          success:function(data){
+
+
+            var suma_dias2 = 0;
+            var suma_kilometraje2 = 0;
+
+            var suma_gasolina2 = 0;
+            var suma_hospedaje2 = 0;
+
+            var suma_kilometraje2 = 0;
+
+            var suma_desayuno2 = 0;
+            var suma_comida2 = 0;
+            var suma_cena2 = 0;
+
+            var total_alimentos2 = 0;
+
+
+
+            data.forEach (function(x){
+              suma_dias2 += parseInt(x.dias);
+              suma_kilometraje2 += parseInt(x.kilometros);
+
+              suma_gasolina2 += parseFloat(x.combustible);
+              suma_hospedaje2 += parseFloat(x.hospedaje);
+
+              suma_desayuno2 += parseFloat(x.desayuno);
+              suma_comida2 += parseFloat(x.comida);
+              suma_cena2 += parseFloat(x.cena);
+
+              total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
+
+            });
+
+            var suma_dias = 0;
+            arrayDiasLugares.forEach (function(numero){
+            suma_dias += parseInt(numero.dias);
+            });
+            //console.log(arrayDiasLugares)
+
+            var suma_kilometraje = 0;
+            arrayKilometrajeLugares.forEach (function(numero_kilometraje){
+            suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
+            });
+
+
+
+            var suma_gasolina = 0;
+            arrayGasolinaLugares.forEach (function(numero_gasolina){
+            suma_gasolina += parseFloat(numero_gasolina.gasolina);
+            });
+
+
+            var suma_hospedaje = 0;
+            arrayHospedajeLugares.forEach (function(numero_hospedaje){
+            suma_hospedaje += parseFloat(numero_hospedaje.hospedaje);
+            });
+
+
+            var suma_desayuno = 0;
+            arrayDesayunoLugares.forEach (function(numero_desayuno){
+            suma_desayuno += parseFloat(numero_desayuno.desayuno);
+            });
+
+
+            var suma_comida = 0;
+            arrayComidaLugares.forEach (function(numero_comida){
+            suma_comida += parseFloat(numero_comida.comida);
+            });
+
+
+            var suma_cena = 0;
+            arrayCenaLugares.forEach (function(numero_cena){
+            suma_cena += parseFloat(numero_cena.cena);
+            });
+
+
+
+
+            var suma_total_comidas = parseFloat(suma_desayuno) + parseFloat(suma_comida) + parseFloat(suma_cena);
+
+            var suma_total_totales = parseFloat(suma_gasolina) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas);
+
+            var suma_total_totales2 = parseFloat(suma_gasolina2) + parseFloat(suma_hospedaje2) + parseFloat(total_alimentos2);
+
+
+
+            var suma_dias_total = parseInt(suma_dias) + parseInt(suma_dias2);
+            var suma_kilometraje_total = parseInt(suma_kilometraje) + parseInt(suma_kilometraje2);
+
+            var suma_hospedaje_total = parseFloat(suma_hospedaje2) + parseFloat(suma_hospedaje);
+            var suma_gasolina_total = parseFloat(suma_gasolina2) + parseFloat(suma_gasolina);
+            var suma_alimentos_total = parseFloat(suma_total_comidas) + parseFloat(total_alimentos2);
+
+            var suma_total_total = parseFloat(suma_total_totales2) + parseFloat(suma_total_totales);
+
+            $('#total_dias').html('<p>'+suma_dias_total+'</p>');
+            $('#total_kilometros').html('<p>'+suma_kilometraje_total+'</p>');
+            $('#total_gasolina').html('<p>$'+suma_gasolina_total.toFixed(2)+'</p>');
+            $('#total_hospedaje').html('<p>$'+suma_hospedaje_total.toFixed(2)+'</p>');
+            $('#total_comidas').html('<p>$'+suma_alimentos_total.toFixed(2)+'</p>');
+            $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_total.toFixed(2)+'" id="total_extraer" disabled>');
+
+            // console.log(arrayTablaLugares)
+            arrayTablaLugares.forEach( x => {
+              //Si la ciudad no existe en nuevoObjeto entonces
+              //la creamos e inicializamos el arreglo de profesionales.
+              if( !nuevoObjeto.hasOwnProperty(x.id)){
+                nuevoObjeto[x.id] = {
+                  lugar: []
+                }
+              }
+
+              if (typeof x.dias == 'undefined') {
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+
+                  dias: x.dias,
+                })
+              }
+
+
+             if (typeof x.origen == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 origen: x.origen,
+               })
+             }
+
+             if (typeof x.destino == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 destino: x.destino,
+               })
+             }
+
+
+             if (typeof x.origen_nombre == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 origen: x.origen_nombre,
+               })
+             }
+
+             if (typeof x.destino_nombre == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 destino: x.destino_nombre,
+               })
+             }
+
+
+             if (typeof x.zona == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 zona: x.zona,
+               })
+             }
+
+
+             if (typeof x.namezona_ == 'undefined') {
+
+             }else{
+               nuevoObjeto[x.id].lugar.push({
+                 zona_nombre: x.namezona_,
+               })
+             }
+
+
+
+
+              if (typeof x.kilometraje == 'undefined') {
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+
+                  kilometraje: x.kilometraje,
+                })
+              }
+
+              if(typeof x.gasolina == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                  gasolina: x.gasolina,
+                })
+              }
+
+
+              if(typeof x.hospedaje == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                   hospedaje: x.hospedaje,
+                })
+              }
+
+              if(typeof x.desayuno == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                  desayuno: x.desayuno,
+                })
+              }
+
+
+              if(typeof x.cena == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                   cena: x.cena,
+                })
+              }
+
+
+              if(typeof x.comida == 'undefined'){
+
+              }else{
+                nuevoObjeto[x.id].lugar.push({
+                  comida: x.comida,
+                })
+              }
+
+
+            })
+
+
+
+
+          }
+    });
+
+
+
+
+
+  @else
 
   var suma_dias = 0;
   arrayDiasLugares.forEach (function(numero){
@@ -2669,36 +4388,23 @@ function calcularViaticoLugar(){
    }
 
 
-   // nuevoObjeto[x.id].lugar.push({
-   //   // id: x.id,
-   //   kilometraje: x.kilometraje,
-   //   gasolina: x.gasolina,
-   //   hospedaje: x.hospedaje,
-   //   desayuno: x.desayuno,
-   //   cena: x.cena,
-   //   comida: x.comida,
-   // })
-   //Agregamos los datos de profesionales.
-
  })
 
- //console.log(nuevoObjeto)
 
-  // tablalugar.push({
-  //   dias:arrayTablaLugares[i].dias,
-  //   // kilometros:arrayTablaLugares[i]['kilometraje'],
-  //   // gasolina:arrayTablaLugares[i].gasolina,
-  //   // hospedaje:arrayTablaLugares[i].hospedaje,
-  //   // desayuno:arrayTablaLugares[i].desayuno,
-  //   // comida:arrayTablaLugares[i].comida,
-  //   // cena:arrayTablaLugares[i].cena,
-  // })
+ ///////////////////////////////////
+ var kilometraje_interno = $('#kilometrorecorrido').val();
 
+ var suma_kilometraje = 0;
+ arrayKilometrajeLugares.forEach (function(numero_kilometraje){
+ suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
+ });
 
+ var totalito = parseInt(kilometraje_interno) + parseInt(suma_kilometraje);
 
+  $('#totalkm').val(totalito);
 
 
-
+  @endisset
 
 
 
@@ -2794,7 +4500,7 @@ function AgregarVehiculoOficial(){
                  },
                 success:function(data){
                 //  console.log(data.kilometros_litros)
-
+                  var totalito = data.kilometros_litros * gasolina_vehiculo;
                   ObjetoVehiculoOficial = {
                     tipotransporte:tipotransporte,
                     tipo_viaje:selectedviajetipo1[0],
@@ -2808,6 +4514,7 @@ function AgregarVehiculoOficial(){
                     mes_gasolina:mes_gasolina,
                     gasolina_vehiculo:gasolina_vehiculo,
                     cuota:data.kilometros_litros,
+                    total:totalito,
                   }
                   agregarVehiculo1(ObjetoVehiculoOficial);
                   arrayVehiculoOficial.push(ObjetoVehiculoOficial);
@@ -2831,6 +4538,8 @@ function agregarVehiculo1(ObjetoVehiculoOficial){
     tipo_viaje = 'SOLO REGRESO';
   }
 
+  //var total = parseFloat(ObjetoVehiculoOficial.cuota) * parseFloat(ObjetoVehiculoOficial.gasolina_vehiculo);
+
   var tr = '<tr id="filas'+contador_vehiculo1+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo1+'"/>Vehiculo Oficial</td>'+
   '<td>'+tipo_viaje+'</td>'+
@@ -2843,7 +4552,7 @@ function agregarVehiculo1(ObjetoVehiculoOficial){
   '<td>'+ObjetoVehiculoOficial.cuota+'</td>'+
   '<td>$'+ObjetoVehiculoOficial.gasolina_vehiculo+'</td>'+
 
-  '<td>$100</td>'+
+  '<td>$'+ObjetoVehiculoOficial.total+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculooficial('+contador_vehiculo1+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
@@ -2928,6 +4637,8 @@ function AgregarVehiculo(){
                 success:function(data){
                 //  console.log(data.kilometros_litros)
 
+
+                  var totalito = data.kilometros_litros * gasolina_vehiculo;
                   ObjetoVehiculo = {
                     tipotransporte:tipotransporte,
                     tipo_viaje:selectedviajetipo2[0],
@@ -2940,6 +4651,7 @@ function AgregarVehiculo(){
                     mes_gasolina:mes_gasolina,
                     gasolina_vehiculo:gasolina_vehiculo,
                     cuota:data.kilometros_litros,
+                    total:totalito,
                   }
                   agregarVehiculo2(ObjetoVehiculo);
                   arrayVehiculo.push(ObjetoVehiculo);
@@ -2962,7 +4674,7 @@ function agregarVehiculo2(ObjetoVehiculo){
   }else if(ObjetoVehiculo.tipo_viaje == 3){
     tipo_viaje = 'SOLO REGRESO';
   }
-
+  //var total = parseFloat(ObjetoVehiculo.cuota) * parseFloat(ObjetoVehiculo.gasolina_vehiculo);
   var tr = '<tr id="filasVh'+contador_vehiculo2+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo2+'"/>Vehiculo Particular</td>'+
   '<td>'+tipo_viaje+'</td>'+
@@ -2974,7 +4686,7 @@ function agregarVehiculo2(ObjetoVehiculo){
   '<td>'+ObjetoVehiculo.cuota+'</td>'+
   '<td>$'+ObjetoVehiculo.gasolina_vehiculo+'</td>'+
 
-  '<td>$100</td>'+
+  '<td>$'+ObjetoVehiculo.total+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculo('+contador_vehiculo2+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
@@ -3469,7 +5181,7 @@ function cantidadletra(){
               }else{
                 var nombre  = data.nombre+' '+data.apellido_paterno+' '+data.apellido_materno;
                 var nivel = data.nivel;
-
+                console.log(nivel);
                 var id_area = data.cve_area_departamentos;
 
                 $('#nombre_empleado').val(nombre);
@@ -3589,6 +5301,225 @@ function cantidadletra(){
 
     //nombre_empleado
   }
+
+
+
+  function guardar(){
+
+
+
+
+    var VehiculoOficial = arrayVehiculoOficial;
+    var Vehiculo = arrayVehiculo;
+    var Avion = arrayAvion;
+    var Autobus = arrayAutobus;
+    var Peaje = arrayPeaje;
+    var Recorrido = arrayRecorrido;
+
+
+    @isset($recibos)
+    var id = {{ $recibos->id }};
+    @else
+    var id = 0;
+    @endisset
+
+    @isset($firmantes)
+    var id_firmante = {{ $firmantes->id }};
+    @else
+
+    var id_firmante = 0;
+    @endisset
+    @isset($pagos)
+    var id_pagos = {{ $pagos->id }};
+    @else
+    var id_pagos = 0;
+    @endisset
+
+    @isset($transporte)
+    var id_transporte = {{ $transporte->id }};
+    @else
+    var id_transporte = 0;
+    @endisset
+
+    var n_empleado = $('#n_empleado').val();
+    var nombre_empleado = $('#nombre_empleado').val();
+    var area_id = $('#area_id').val();
+
+
+    var rfc = $('#rfc').val();
+    var nivel = $('#nivel').val();
+    var clave_departamental = $('#clave_departamental').val();
+    var dependencia = $('#dependencia').val();
+    var direccion = $('#direccion').val();
+    var inicia = $('input[name=fecha_inicial]').val();
+    var final = $('input[name=fecha_final]').val();
+    var departamento = $('#departamento').val();
+    var lugar_adscripcion = $('#lugar_adscripcion').val();
+    var n_dias = $('#n_dias').val();
+    var n_dias_ina = $('#n_dias_ina').val();
+    var descripcion = $('#descripcion').val();
+
+    var director_area_firma = $('#director_area_firma').val();
+    var organo_control_firma = $('#organo_control_firma').val();
+    var director_administrativo_firma = $('#director_administrativo_firma').val();
+    var cheque_firma = $('#cheque_firma').val();
+    var jefe_firma = $('#jefe_firma').val();
+
+    var secretaria_pago = $('#secretaria_pago').val();
+    var cheque = $('#cheque').val();
+    var fecha_pago = $('input[name=fecha_pago]').val();
+    var cantidad = $('#cantidad').val();
+    var letras_cantidad = $('#letras_cantidad').val();
+
+    var kilometrorecorrido = $('#kilometrorecorrido').val();
+    var especificarcomision = $('#especificarcomision').val();
+    var totalkm = $('#totalkm').val();
+    var banco = $('#banco').val();
+
+    var selected = [];
+    var selected2 = [];
+
+    $(":checkbox[name=valeCombustible]").each(function(){
+        if (this.checked) {
+          selected.push($(this).val());
+        }
+    });
+
+    $(":checkbox[name=recibo_complementario]").each(function(){
+      if (this.checked) {
+        selected2.push($(this).val());
+      }
+    });
+
+    var programavehiculof = $('#programavehiculof').val();
+    var total_transporte_vehiculof = $('#total_transporte_vehiculof').val();
+    var valeCombustible = selected;
+    var recibo_complentario_ticket = selected2;
+
+
+
+    var total_extraer = $('#total_extraer').val();
+    var programalugar = $('#programalugar').val();
+
+    //var tabla_lugares = arrayTablaLugares;
+    console.log(recibo_complentario_ticket)
+
+    if (clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == ''  || descripcion == '' || cheque_firma == ''
+      || especificarcomision == '' ) {
+      Swal.fire("Lo Sentimos", 'Llenar los campos obligatorios', "warning");
+    }else{
+      $.ajax({
+
+             type:"POST",
+
+             url:"{{ ( isset($recibos) ) ? '/recibos/update' : '/recibos/create' }}",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data:{
+               id:id,
+               id_firmante:id_firmante,
+               id_pagos:id_pagos,
+               n_empleado:n_empleado,
+               nombre_empleado:nombre_empleado,
+               rfc:rfc,
+               nivel:nivel,
+               clave_departamental:clave_departamental,
+               dependencia:dependencia,
+               direccion:direccion,
+               inicia:inicia,
+               final:final,
+               departamento:departamento,
+               lugar_adscripcion:lugar_adscripcion,
+               n_dias:n_dias,
+               n_dias_ina:n_dias_ina,
+               descripcion:descripcion,
+               director_area_firma:director_area_firma,
+               organo_control_firma:organo_control_firma,
+               director_administrativo_firma:director_administrativo_firma,
+               cheque_firma:cheque_firma,
+               jefe_firma:jefe_firma,
+               secretaria_pago:secretaria_pago,
+               cheque:cheque,
+               fecha_pago:fecha_pago,
+               cantidad:cantidad,
+               letras_cantidad:letras_cantidad,
+               kilometrorecorrido:kilometrorecorrido,
+               especificarcomision:especificarcomision,
+               totalkm:totalkm,
+               tablalugares:nuevoObjeto,
+               total_extraer:total_extraer,
+               programalugar:programalugar,
+               area_id:area_id,
+               banco:banco,
+               programavehiculof:programavehiculof,
+               total_transporte_vehiculof:total_transporte_vehiculof,
+               valeCombustible:valeCombustible,
+               recibo_complentario_ticket:recibo_complentario_ticket,
+               VehiculoOficial:VehiculoOficial,
+               Vehiculo:Vehiculo,
+               Avion:Avion,
+               Autobus:Autobus,
+               Peaje:Peaje,
+               Recorrido:Recorrido,
+               id_transporte:id_transporte,
+
+             },
+             // data: formData,
+             // processData: false,
+             // contentType: false,
+             // cache:false,
+              success:function(data){
+                if (data.success == 'Registro agregado satisfactoriamente') {
+                  Swal.fire("", data.success, "success").then(function(){
+                    location.href ="/recibos";
+                  });
+
+                  Swal.fire({
+                        title: "",
+                        text: data.success,
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    }).then(function(result) {
+                        if (result.value == true) {
+                             $('#nombre').val('');
+
+                        }else{
+                          location.href ="/recibos"; //esta es la ruta del modulo
+                        }
+                    })
+
+                }else if(data.success == 'Ha sido editado con éxito'){
+
+                  Swal.fire("", data.success, "success").then(function(){
+                    location.href ="/recibos";
+                  });
+
+                  Swal.fire({
+                        title: "",
+                        text: data.success,
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    }).then(function(result) {
+
+                        if (result.value == true) {
+
+                        }else{
+                          location.href ="/recibos";
+                        }
+                    })
+                }
+
+
+              }
+        });
+    }
+
+
+  }
+
 
 
 </script>
