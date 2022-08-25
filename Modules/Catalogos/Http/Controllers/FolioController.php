@@ -379,7 +379,6 @@ class FolioController extends Controller
     }else{
       $usuario = Auth::user()->id;
       $asociar = Asociar::where('id_usuario',$usuario)->first();
-
       $registros = Folios::where([['activo', 1],['dependencia',$asociar->id_dependencia]]);
     }
 

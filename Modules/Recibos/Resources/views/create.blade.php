@@ -5366,7 +5366,7 @@ function cantidadletra(){
     //console.log(tabla_lugares)
 
     if (clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == ''  || descripcion == '' || cheque_firma == ''
-      || especificarcomision == '' || programavehiculof == '') {
+      || especificarcomision == '' ) {
       Swal.fire("Lo Sentimos", 'Llenar los campos obligatorios', "warning");
     }else{
       $.ajax({
