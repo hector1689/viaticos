@@ -581,7 +581,7 @@ class RecibosController extends Controller
             $lugares->cve_localidad_destino = $value['lugar'][1]['destino'];
             $lugares->dias = $value['lugar'][6]['dias'];
             $lugares->cve_zona = $value['lugar'][4]['zona'];
-            $lugares->kilometros = $value['lugar'][7]['kilometraje'];
+            //$lugares->kilometros = $value['lugar'][7]['kilometraje'];
             $lugares->cve_programa = $request->programalugar;
             $lugares->total_recibido = $request->total_extraer;
             $lugares->cve_usuario =Auth::user()->id;
