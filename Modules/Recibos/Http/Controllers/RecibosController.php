@@ -1389,8 +1389,8 @@ class RecibosController extends Controller
       $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
       $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
       $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
-      $data['lacalidad1'] = Localidad::where('activo',1)->get();
-      $data['lacalidad2'] = Localidad::where('activo',1)->get();
+      $data['lacalidad1'] = kilometraje::where('activo',1)->get();
+      $data['lacalidad2'] = kilometraje::where('activo',1)->get();
       $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
       $data['autobustabla'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
       $data['Vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
