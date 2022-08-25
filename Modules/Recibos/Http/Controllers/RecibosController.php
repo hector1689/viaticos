@@ -81,8 +81,8 @@ class RecibosController extends Controller
         $data['rendimiento'] = Rendimiento::where('activo',1)->get();
         $data['programa'] = Programa::where('activo',1)->get();
         $data['taxi'] = Taxi::where('activo',1)->get();
-        $data['lacalidad1'] = Localidad::where('activo',1)->get();
-        $data['lacalidad2'] = Localidad::where('activo',1)->get();
+        $data['lacalidad1'] = Kilometraje::where('activo',1)->get();
+        $data['lacalidad2'] = Kilometraje::where('activo',1)->get();
         $data['alimentos'] =  Alimentos::where('activo',1)->get();
 
         return view('recibos::create')->with($data);
@@ -97,8 +97,8 @@ class RecibosController extends Controller
         $data['rendimiento'] = Rendimiento::where('activo',1)->get();
         $data['programa'] = Programa::where([['activo',1],['id_dependencia',$area]])->get();
         $data['taxi'] = Taxi::where([['activo',1],['id_dependencia',$area]])->get();
-        $data['lacalidad1'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
-        $data['lacalidad2'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
+        $data['lacalidad1'] = Kilometraje::where([['activo',1],['id_dependencia',$area]])->get();
+        $data['lacalidad2'] = Kilometraje::where([['activo',1],['id_dependencia',$area]])->get();
         return view('recibos::create')->with($data);
 
       }
@@ -428,19 +428,19 @@ class RecibosController extends Controller
         $firmantes->cve_usuario = Auth::user()->id;
         $firmantes->save();
 
-        // list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-        // $fecha_pago = $anio.'-'.$mes.'-'.$dia;
-        //
-        // $datospago = new DatosPago();
-        // $datospago->cve_t_viatico = $recibo->id;
-        // $datospago->secretaria = $request->secretaria_pago;
-        // $datospago->num_cheque = $request->cheque;
-        // $datospago->fehca_inicia = $fecha_pago;
-        // $datospago->cantidad = $request->cantidad;
-        // $datospago->cantidad_letra = $request->letras_cantidad;
-        // $datospago->favor_cargo_banco = $request->banco;
-        // $datospago->cve_usuario = Auth::user()->id;
-        // $datospago->save();
+        list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+        $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+
+        $datospago = new DatosPago();
+        $datospago->cve_t_viatico = $recibo->id;
+        $datospago->secretaria = $request->secretaria_pago;
+        $datospago->num_cheque = $request->cheque;
+        $datospago->fehca_inicia = $fecha_pago;
+        $datospago->cantidad = $request->cantidad;
+        $datospago->cantidad_letra = $request->letras_cantidad;
+        $datospago->favor_cargo_banco = $request->banco;
+        $datospago->cve_usuario = Auth::user()->id;
+        $datospago->save();
 
         //dd($request->VehiculoOficial[0]);
         $transporte = new Transporte();
@@ -570,6 +570,13 @@ class RecibosController extends Controller
           $transportex->save();
         }
 
+        if (isset($request->recibo_complentario_ticket)) {
+          $recibox = Recibos::find($recibo->id);
+          $recibox->recibo_complentario =$request->recibo_complentario_ticket[0];
+          $recibox->cve_usuario = Auth::user()->id;
+          $recibox->save();
+        }
+
 
         //dd($request->tablalugares);
         foreach ($request->tablalugares as $key => $value) {
@@ -581,7 +588,7 @@ class RecibosController extends Controller
             $lugares->cve_localidad_destino = $value['lugar'][1]['destino'];
             $lugares->dias = $value['lugar'][6]['dias'];
             $lugares->cve_zona = $value['lugar'][4]['zona'];
-            //$lugares->kilometros = $value['lugar'][7]['kilometraje'];
+            $lugares->kilometros = $value['lugar'][7]['kilometraje'];
             $lugares->cve_programa = $request->programalugar;
             $lugares->total_recibido = $request->total_extraer;
             $lugares->cve_usuario =Auth::user()->id;
@@ -666,8 +673,8 @@ class RecibosController extends Controller
         $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
         $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
         $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
-        $data['lacalidad1'] = Localidad::where('activo',1)->get();
-        $data['lacalidad2'] = Localidad::where('activo',1)->get();
+        $data['lacalidad1'] = Kilometraje::where('activo',1)->get();
+        $data['lacalidad2'] = Kilometraje::where('activo',1)->get();
         $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
         $data['autobustabla'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
         $data['Vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
@@ -710,11 +717,12 @@ class RecibosController extends Controller
 
             $data['peajes'] = Peaje::where([['activo',1],['id_dependencia',$area]])->get();
             $data['gasolina'] = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('id','DESC')->get();
-            $data['rendimiento'] = Rendimiento::where([['activo',1],['id_dependencia',$area]])->get();
+            //Rendimiento::where([['activo',1],['id_dependencia',$area]])->get();
+            $data['rendimiento'] = Rendimiento::where('activo',1)->get();
             $data['programa'] = Programa::where([['activo',1],['id_dependencia',$area]])->get();
             $data['taxi'] = Taxi::where([['activo',1],['id_dependencia',$area]])->get();
-            $data['lacalidad1'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
-            $data['lacalidad2'] = Localidad::where([['activo',1],['id_dependencia',$area]])->get();
+            $data['lacalidad1'] = Kilometraje::where([['activo',1],['id_dependencia',$area]])->get();
+            $data['lacalidad2'] = Kilometraje::where([['activo',1],['id_dependencia',$area]])->get();
 
 
             ///////////////////////////////////////////////////////////////////
@@ -819,19 +827,19 @@ class RecibosController extends Controller
           $firmantes->cve_usuario = Auth::user()->id;
           $firmantes->save();
 
-          // list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-          // $fecha_pago = $anio.'-'.$mes.'-'.$dia;
-          //
-          //
-          // $datospago = DatosPago::find($request->id_pagos);
-          // $datospago->secretaria = $request->secretaria_pago;
-          // $datospago->num_cheque = $request->cheque;
-          // $datospago->fehca_inicia = $fecha_pago;
-          // $datospago->cantidad = $request->cantidad;
-          // $datospago->cantidad_letra = $request->letras_cantidad;
-          // $datospago->favor_cargo_banco = $request->banco;
-          // $datospago->cve_usuario = Auth::user()->id;
-          // $datospago->save();
+          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+
+
+          $datospago = DatosPago::find($request->id_pagos);
+          $datospago->secretaria = $request->secretaria_pago;
+          $datospago->num_cheque = $request->cheque;
+          $datospago->fehca_inicia = $fecha_pago;
+          $datospago->cantidad = $request->cantidad;
+          $datospago->cantidad_letra = $request->letras_cantidad;
+          $datospago->favor_cargo_banco = $request->banco;
+          $datospago->cve_usuario = Auth::user()->id;
+          $datospago->save();
 
           $transporte = Transporte::find($request->id_transporte);
           $transporte->kilometro_interno = $request->kilometrorecorrido;
@@ -1145,6 +1153,14 @@ class RecibosController extends Controller
             $transportex = Transporte::find($transporte->id);
             $transportex->valeCombustible = 0;
             $transportex->save();
+          }
+
+
+          if (isset($request->recibo_complentario_ticket)) {
+            $recibox = Recibos::find($recibo->id);
+            $recibox->recibo_complentario =$request->recibo_complentario_ticket[0];
+            $recibox->cve_usuario = Auth::user()->id;
+            $recibox->save();
           }
 
 
@@ -1690,12 +1706,15 @@ class RecibosController extends Controller
         $area = $asociar->id_dependencia;
         $gasolina = Gasolina::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia','DESC')->first();
       }
+      /////////////////////////////////////////////////////////////////////////
 
 
+      $kilometraje1 = kilometraje::find($request->origen_lugar);
+      $kilometraje2 = kilometraje::find($request->destino_lugar);
 
       /////////////////////////////////////////////////////////////////////////
       //dd($array_hospedaje);
-      $array_todo = ['alimentos' => $array_alimentos,'gasolina' => $gasolina,'hospedaje' => $array_hospedaje];
+      $array_todo = ['alimentos' => $array_alimentos,'gasolina' => $gasolina,'hospedaje' => $array_hospedaje,'total_kilometraje1' => $kilometraje1->distancia_kilometros,'total_kilometraje2' => $kilometraje2->distancia_kilometros];
 
       return $array_todo;
       // $now = new Carbon();
@@ -2221,6 +2240,26 @@ class RecibosController extends Controller
           $bitacora->save();
 
           return response()->json(['success'=>'Turnado exitosamente']);
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+    }
+
+
+    public function autorizar(Request $request){
+      try {
+          $recibos = Recibos::find($request->id);
+          $recibos->cve_estatus = 9;
+          $recibos->save();
+
+          $bitacora = new Bitacora();
+          $bitacora->cve_t_viatico = $request->id;
+          $bitacora->fecha = date('Y-m-d H:i:s');
+          $bitacora->tarea = 'Autorizo Registro';
+          $bitacora->cve_usuario = Auth::user()->id;
+          $bitacora->save();
+
+          return response()->json(['success'=>'Autorizado exitosamente']);
         } catch (\Exception $e) {
           dd($e->getMessage());
         }

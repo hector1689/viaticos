@@ -36,6 +36,7 @@ Route::prefix('recibos')->group(function() {
   Route::post('/finiquitar', 'RecibosController@finiquitar');
   Route::post('/finiquitarP', 'RecibosController@finiquitarP');
   Route::post('/Turnar', 'RecibosController@Turnar');
+  Route::post('/autorizar', 'RecibosController@autorizar');
 
   Route::post('/comprobar', 'RecibosController@comprobar');
   Route::post('/tablaComprobacion', 'RecibosController@tablaComprobacion');

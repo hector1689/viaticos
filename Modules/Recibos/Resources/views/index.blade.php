@@ -413,5 +413,34 @@ function eliminar(id){
 
 }
 
+function autorizar(id){
+  Swal.fire({
+        title: "¿Esta seguro de Autorizar el registro?",
+        text: "No se podrá revertir",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then(function(result) {
+        if (result.value) {
+          $.ajax({
+             type:"POST",
+             url:"/recibos/autorizar",
+             headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data:{
+               id:id,
+             },
+              success:function(data){
+                Swal.fire("", data.success, "success").then(function(){
+                  tabla.ajax.reload();
+                });
+              }
+          });
+        }
+    })
+}
+
 </script>
 @endsection

@@ -26,11 +26,19 @@ class Lugares extends Model{
   ];
 
   public function obteneLocalidad(){
-    return $this->hasOne('\Modules\Catalogos\Entities\Localidad', 'id', 'cve_localidad_origen');
+    return $this->hasOne('\Modules\Catalogos\Entities\Kilometraje', 'id', 'cve_localidad_origen');
   }
 
   public function obteneLocalidad2(){
-    return $this->hasOne('\Modules\Catalogos\Entities\Localidad', 'id', 'cve_localidad_destino');
+    return $this->hasOne('\Modules\Catalogos\Entities\Kilometraje', 'id', 'cve_localidad_destino');
+  }
+
+  public function obteneLocalidades(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Kilometraje', 'id', 'cve_localidad_origen');
+  }
+
+  public function obteneLocalidades2(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Kilometraje', 'id', 'cve_localidad_destino');
   }
 
   public function obteneZona(){

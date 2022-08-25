@@ -31,6 +31,7 @@ class Localidad extends Model{
     return $this->hasOne('\Modules\Catalogos\Entities\Municipio', 'id', 'cve_municipio');
   }
 
+
   public function obtenerDependencia(){
     return $this->hasOne('\Modules\Catalogos\Entities\Areas', 'id', 'id_dependencia');
   }

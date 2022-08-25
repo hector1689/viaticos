@@ -200,19 +200,63 @@
       <tbody>
 
         <tr>
-          <td style="width: 50%">recibí de la secretaria: {{$pagos->secretaria}}</td>
-          <td style="width: 50%">n° de cheque: {{$pagos->num_cheque}}</td>
+          <td style="width: 50%">recibí de la secretaria:
+
+            @isset($pagos->secretaria)
+            {{$pagos->secretaria}}
+            @else
+
+            @endisset
+
+            </td>
+          <td style="width: 50%">n° de cheque:
+
+            @isset($pagos->num_cheque)
+            {{$pagos->num_cheque}}
+            @else
+
+            @endisset
+          </td>
         </tr>
         <tr>
-          <td style="width: 50%">de fecha: {{$pagos->fehca_inicia}}</td>
-          <td style="width: 50%">por la cantidad de: ${{$pagos->cantidad}}</td>
+          <td style="width: 50%">de fecha:
+
+            @isset($pagos->fehca_inicia)
+            {{$pagos->fehca_inicia}}
+            @else
+
+            @endisset
+
+
+          </td>
+          <td style="width: 50%">por la cantidad de:
+            @isset($pagos->cantidad)
+              ${{$pagos->cantidad}}
+            @else
+
+            @endisset
+
+        </td>
         </tr>
         <tr>
-          <td colspan="2">letra: ({{$pagos->cantidad_letra}})</td>
+          <td colspan="2">letra:
+            @isset($pagos->cantidad_letra)
+              ({{$pagos->cantidad_letra}})
+            @else
+
+            @endisset
+
+          </td>
 
         </tr>
         <tr>
-          <td colspan="2">a mi favor y a cargo del banco: {{$pagos->favor_cargo_banco}}</td>
+          <td colspan="2">a mi favor y a cargo del banco:
+            @isset($pagos->favor_cargo_banco)
+              {{$pagos->favor_cargo_banco}}
+            @else
+
+            @endisset
+          </td>
         </tr>
 
       </tbody>
@@ -234,7 +278,7 @@
           <td style="width: 50%">fecha y hora de retorno: {{ $recibos->fecha_hora_recibio }}</td>
         </tr>
         <tr>
-          <td colspan="2">@foreach($lugares as $lugar) {{ $lugar->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidad->obtenePais->nombre }} a {{ $lugar->obteneLocalidad2->localidad }} MPIO de {{ $lugar->obteneLocalidad2->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidad2->obteneEstado->nombre }},{{ $lugar->obteneLocalidad2->obtenePais->nombre }}, @endforeach</td>
+          <td colspan="2">@foreach($lugares as $lugar) {{ $lugar->obteneLocalidades->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }} a {{ $lugar->obteneLocalidades2->obteneLocalidad->localidad  }} MPIO de {{ $lugar->obteneLocalidades2->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad->obtenePais->nombre }}, @endforeach</td>
         </tr>
         <tr>
           <td colspan="2">especificación de comisión: {{ $recibos->descripcion_comision }}</td>

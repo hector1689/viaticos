@@ -200,7 +200,7 @@
           <div class="col-md-12">
 
             <label class="checkbox">
-                <input type="checkbox" name="Checkboxes1" >
+                <input type="checkbox" name="recibo_complementario" value="1" @isset($recibos) @if($recibos->recibo_complentario == 1) checked @else @endif @endisset>
                 <span></span>
                 Recibo Complementario
             </label>
@@ -212,9 +212,9 @@
                     <a class="nav-link " data-toggle="tab" href="#kt_tab_pane_1">Lugares</a>
                 </li>
 
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3">Datos de Pago</a>
-                </li> -->
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4" tabindex="-1" aria-disabled="true">Firmas</a>
@@ -244,7 +244,7 @@
                         <select class="form-control" id="origen_lugar" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad1 as $loc1)
-                          <option value="{{ $loc1->id }}">{{ $loc1->localidad }}-{{ $loc1->obteneMunicipio->nombre }}-{{ $loc1->obteneEstado->nombre }}-{{ $loc1->obtenePais->nombre }}</option>
+                          <option value="{{ $loc1->id }}">{{ $loc1->obteneLocalidad->localidad }}-{{ $loc1->obteneLocalidad->obteneMunicipio->nombre }}-{{ $loc1->obteneLocalidad->obteneEstado->nombre }}-{{ $loc1->obteneLocalidad->obtenePais->nombre }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -253,7 +253,7 @@
                         <select class="form-control" id="destino_lugar" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad2 as $loc2)
-                          <option value="{{ $loc2->id }}">{{ $loc2->localidad }}-{{ $loc2->obteneMunicipio->nombre }}-{{ $loc2->obteneEstado->nombre }}-{{ $loc2->obtenePais->nombre }}</option>
+                          <option value="{{ $loc2->id }}">{{ $loc2->obteneLocalidad2->localidad }}-{{ $loc2->obteneLocalidad2->obteneMunicipio->nombre }}-{{ $loc2->obteneLocalidad2->obteneEstado->nombre }}-{{ $loc2->obteneLocalidad2->obtenePais->nombre }}</option>
                           @endforeach
                         </select>
                     </div>
@@ -283,10 +283,13 @@
                             @isset($lugares)
                               @foreach($lugares as $key => $lugar)
                               <tr id="orden_luagres{{$key}}">
-                                <td>{{ $lugar->obteneLocalidad->localidad }} - {{ $lugar->obteneLocalidad->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad->obtenePais->nombre }}</td>
-                                <td>{{ $lugar->obteneLocalidad2->localidad }} - {{ $lugar->obteneLocalidad2->obteneMunicipio->nombre }} - {{ $lugar->obteneLocalidad2->obteneEstado->nombre }} - {{ $lugar->obteneLocalidad2->obtenePais->nombre }}</td>
+
+                                <!-- {{ $lugar->obteneLocalidad2->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidad->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidad->obteneLocalidad->obtenePais->nombre }} -->
+                                <!-- {{ $lugar->obteneLocalidad2 }} -->
+                                <td>{{ $lugar->obteneLocalidades->obteneLocalidad->localidad }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }}</td>
+                                <td>{{ $lugar->obteneLocalidades2->obteneLocalidad->localidad }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obtenePais->nombre }}</td>
                                 <td><input type="text" class="form-control" id="dias2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->dias }}" ></td>
-                                <td>{{ $lugar->obteneZona->nombre }}</td>
+                                <td>{{ $lugar->cve_zona }}</td>
                                 <td><input type="text" class="form-control" id="kilometraje2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->kilometros }}" ></td>
                                 <td>
                                   <div class="form-group">
@@ -329,8 +332,8 @@
                               @endforeach
                             @endisset
                           </tbody>
-                          <tfoot id="footLugar">
-                            <tr>
+                          <tfoot id="footLugar" >
+                            <tr style="text-align:center;">
                               <td>Total</td>
                               <td></td>
                               <td id="total_dias"></td>
@@ -351,7 +354,12 @@
                           <select class="form-control" id="programalugar" @isset($lugares) @else disabled @endisset onchange="verBtn()">
 
                              @isset($lugares2)
-                             <option value="{{ $lugares2->cve_programa }}">{{ $lugares2->obtenePrograma->nombre }}</option>
+
+                               @if($lugares2->cve_programa == 0)
+                               <option value="0">Selecciona</option>
+                               @else
+                               <option value="{{ $lugares2->cve_programa }}">{{ $lugares2->obtenePrograma->nombre }}</option>
+                               @endif
                              @else
                              <option value="0">Selecciona</option>
                              @endisset
@@ -1266,7 +1274,14 @@
                         <label for="inputPassword4" style="font-size:12px;" class="form-label">Programa: </label>
                         <select class="form-control" id="programavehiculof">
                           @isset($transporte)
-                            <option value="{{ $transporte->programavehiculo }}">{{ $transporte->obtenePrograma->nombre}}</option>
+
+                          @if($transporte->programavehiculo == 0)
+                          <option value="0">Selecciona</option>
+                          @else
+                          <option value="{{ $transporte->programavehiculo }}">{{ $transporte->obtenePrograma->nombre}}</option>
+                          @endif
+
+
                           @else
                             <option value="">Selecciona</option>
                           @endisset
@@ -2241,7 +2256,7 @@ var destino_lugar = $('#destino_lugar').val();
 var origen_lugar_name = $('#origen_lugar').find('option:selected').text();
 var destino_lugar_name = $('#destino_lugar').find('option:selected').text();
 var zona_trayectoria = $('#zona_trayectoria').val();
-
+//console.log(origen_lugar,destino_lugar)
 
 
 if (origen_lugar == 0 || destino_lugar == 0) {
@@ -2274,10 +2289,15 @@ if (origen_lugar == 0 || destino_lugar == 0) {
          data:{
              nivel:nivel,
              zona_trayectoria:zona_trayectoria,
+             origen_lugar:origen_lugar,
+             destino_lugar:destino_lugar,
            },
           success:function(dars){
 
+          //  console.log(dars.total_kilometraje1,dars.total_kilometraje2)
 
+            var total_kilometros = parseInt(dars.total_kilometraje1) + parseInt(dars.total_kilometraje2);
+            //console.log(zona_trayectoria,dars.alimentos[0].zona)
 
             objectLugar = {
               desayuno:dars.alimentos[0].importe_desayuno,
@@ -2292,6 +2312,7 @@ if (origen_lugar == 0 || destino_lugar == 0) {
               origen_name:origen_lugar_name,
               destino_name:destino_lugar_name,
               zona_trayectoria:zona_trayectoria,
+              total_kilometros:total_kilometros,
             }
 
 
@@ -2329,9 +2350,9 @@ if (objectLugar.zona == 1) {
   var tr = '<tr id="filas_lugar'+contador_lugares+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
   '<td>'+objectLugar.destino_name+'</td>'+
-  '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+')"></td>'+
+  '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+'),KilometrajeLugares('+contador_lugares+')" ></td>'+
   '<td>'+objectLugar.zona_trayectoria+'</td>'+
-  '<td><input type="text" class="form-control" id="kilometraje_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares('+contador_lugares+')"></td>'+
+  '<td><input type="text" class="form-control" id="kilometraje_'+contador_lugares+'" onkeypress="return validaNumericos(event)" value="'+objectLugar.total_kilometros+'" disabled ></td>'+
   '<td>'+
     '<div class="form-group">'+
         '<div class="checkbox-list">'+
@@ -2501,7 +2522,7 @@ function KilometrajeLugares2(id_key,id){
 
 function KilometrajeLugares(id){
 var kilometraje = $('#kilometraje_'+id).val();
-
+//console.log(kilometraje)
   arrayTablaLugares.push({
     id:id,
     kilometraje:kilometraje
@@ -2519,14 +2540,21 @@ function gasolinaLugar(id){
     $(":checkbox[name=gasolina_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
+            var kilometraje = $('#kilometraje_'+id).val();
+            var total = parseInt(kilometraje) * parseFloat($(this).val());
             arrayTablaLugares.push({
               id:id,
-              gasolina:$(this).val(),
+              //gasolina:$(this).val(),
+              gasolina:total,
             })
+
+
+
 
             objectGasolinaLugares = {
             id:id,
-            gasolina:$(this).val(),
+            //gasolina:$(this).val(),
+            gasolina:total,
             }
 
             arrayGasolinaLugares.push(objectGasolinaLugares)
@@ -5274,7 +5302,10 @@ function cantidadletra(){
     //nombre_empleado
   }
 
+
+
   function guardar(){
+
 
 
 
@@ -5346,6 +5377,7 @@ function cantidadletra(){
     var banco = $('#banco').val();
 
     var selected = [];
+    var selected2 = [];
 
     $(":checkbox[name=valeCombustible]").each(function(){
         if (this.checked) {
@@ -5353,9 +5385,16 @@ function cantidadletra(){
         }
     });
 
+    $(":checkbox[name=recibo_complementario]").each(function(){
+      if (this.checked) {
+        selected2.push($(this).val());
+      }
+    });
+
     var programavehiculof = $('#programavehiculof').val();
     var total_transporte_vehiculof = $('#total_transporte_vehiculof').val();
     var valeCombustible = selected;
+    var recibo_complentario_ticket = selected2;
 
 
 
@@ -5363,7 +5402,7 @@ function cantidadletra(){
     var programalugar = $('#programalugar').val();
 
     //var tabla_lugares = arrayTablaLugares;
-    //console.log(tabla_lugares)
+    console.log(recibo_complentario_ticket)
 
     if (clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == ''  || descripcion == '' || cheque_firma == ''
       || especificarcomision == '' ) {
@@ -5416,6 +5455,7 @@ function cantidadletra(){
                programavehiculof:programavehiculof,
                total_transporte_vehiculof:total_transporte_vehiculof,
                valeCombustible:valeCombustible,
+               recibo_complentario_ticket:recibo_complentario_ticket,
                VehiculoOficial:VehiculoOficial,
                Vehiculo:Vehiculo,
                Avion:Avion,
