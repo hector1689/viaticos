@@ -3600,7 +3600,7 @@ function hospedajeLugar(id){
     var value_ckeck = $(":checkbox[name=hospedaje_"+id+"]").val();
     var value_dias = $("#dias_"+id+"").val();
     var dias = value_dias - 1;
-    console.log(value_ckeck,dias)
+    //console.log(value_ckeck,dias)
 
     //console.log(value_ckeck == 'undefined')
     if (value_ckeck == 'undefined') {
@@ -3652,7 +3652,7 @@ function hospedajeLugar(id){
 function desayunoLugar(id){
   var value_ckeck = $(":checkbox[name=desayuno_"+id+"]").val();
   var value_dias = $("#dias_"+id+"").val();
-  console.log(value_ckeck,value_dias)
+  //console.log(value_ckeck,value_dias)
 
   if (value_ckeck == 'undefined') {
     $(":checkbox[name=desayuno_"+id+"]").prop('checked',false);
@@ -3691,7 +3691,7 @@ function desayunoLugar(id){
 function comidaLugar(id){
   var value_ckeck = $(":checkbox[name=comida_"+id+"]").val();
   var value_dias = $("#dias_"+id+"").val();
-  console.log(value_ckeck,value_dias)
+  //console.log(value_ckeck,value_dias)
 
   if (value_ckeck == 'undefined') {
     $(":checkbox[name=comida_"+id+"]").prop('checked',false);
@@ -3732,7 +3732,7 @@ function cenaLugar(id){
   var value_ckeck = $(":checkbox[name=cena_"+id+"]").val();
   var value_dias = $("#dias_"+id+"").val();
 
-  console.log(value_ckeck,value_dias)
+  //console.log(value_ckeck,value_dias)
 
   if (value_ckeck == 'undefined') {
     $(":checkbox[name=cena_"+id+"]").prop('checked',false);

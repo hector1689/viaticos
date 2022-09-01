@@ -252,14 +252,7 @@ class RecibosController extends Controller
         }
 
         // $nieveles = sort($nivel1);
-        // dd($nieveles);
-
-        foreach ($nivel1 as $key => $value) {
-          // code...
-        }
-
-
-
+        //dd($nivel1);
       /////////////////////////////////////////////////////////////////////////
       $folio_comision ='';
       $folio ='';
@@ -277,49 +270,103 @@ class RecibosController extends Controller
 
             $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
             ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+            //->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_t_folios.tipo_folio',1]])->whereIN('cat_folios.dependencia',$nivel1)->first();
 
-            //dd($folio_existes->foliador,$request->area_id);
 
-            //////////////////////// FOLIO RECIBO /////////////////////////////////////////////////////////////////////
-            //dd($existe_folio_ultimos->folio,$folio_existes->foliador);
-            if ($existe_folio_ultimos->folio != $folio_existes->foliador) {
-              $foliots = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimos->folio]])->first();
-              //dd(isset($foliots));
-              if (isset($foliots)) {
+            if ($folio_existes == null) {
+              $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_t_folios.tipo_folio',1]])->whereIN('cat_folios.dependencia',$nivel1)->first();
+              //dd('entro a buscar el primero que encuentre');
+
+              if ($existe_folio_ultimos->folio != $folio_existes->foliador) {
+                $foliots = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                //->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimos->folio]])->first();
+                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_t_folios.tipo_folio',1]])->whereIN('cat_folios.dependencia',$nivel1)->first();
+
+                //dd($foliots);
+                if (isset($foliots)) {
+                  list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
+                  $sumafolio = $paso4 + 1;
+                  $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+                  $folio = $folio_completo;
+
+                }else{
+                  $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                  //->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
+                  ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_t_folios.tipo_folio',1]])->whereIN('cat_folios.dependencia',$nivel1)->first();
+
+                    $existe_folio_existente = Recibos::where([['activo',1],['folio',$folio_existes->foliador]])->orderBy('id','ASC')->first();
+                  //list($paso1,$paso2,$paso3,$paso4) = explode('/',$folio_existes->foliador);
+                  // $sumafolio = $paso4 + 1;
+                  // $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+                  // dd($folio_existes,$existe_folio_existente);
+                  if (isset($existe_folio_existente)) {
+                    //dd($existe_folio_existente->folio);
+                    list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio_existente->folio);
+                    $sumafolio = $paso4 + 1;
+                    $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+                    $folio = $folio_completo;
+                    //dd($folio);
+
+                  }else{
+                    $folio = $folio_existes->foliador;
+                  }
+                }
+
+              }else{
                 list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
                 $sumafolio = $paso4 + 1;
                 $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
                 $folio = $folio_completo;
+              }
+            }else{
+              //dd('entro a donde si hay');
+              $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
 
-              }else{
-                $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
-
-                  $existe_folio_existente = Recibos::where([['activo',1],['folio',$folio_existes->foliador]])->orderBy('id','ASC')->first();
-                //list($paso1,$paso2,$paso3,$paso4) = explode('/',$folio_existes->foliador);
-                // $sumafolio = $paso4 + 1;
-                // $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
-                // dd($folio_existes,$existe_folio_existente);
-                if (isset($existe_folio_existente)) {
-                  //dd($existe_folio_existente->folio);
-                  list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio_existente->folio);
+              if ($existe_folio_ultimos->folio != $folio_existes->foliador) {
+                $foliots = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$existe_folio_ultimos->folio]])->first();
+                //dd(isset($foliots));
+                if (isset($foliots)) {
+                  list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
                   $sumafolio = $paso4 + 1;
                   $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
                   $folio = $folio_completo;
-                  //dd($folio);
 
                 }else{
-                  $folio = $folio_existes->foliador;
-                }
-              }
+                  $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                  ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',1]])->first();
 
-            }else{
-              list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
-              $sumafolio = $paso4 + 1;
-              $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
-              $folio = $folio_completo;
+                    $existe_folio_existente = Recibos::where([['activo',1],['folio',$folio_existes->foliador]])->orderBy('id','ASC')->first();
+                  //list($paso1,$paso2,$paso3,$paso4) = explode('/',$folio_existes->foliador);
+                  // $sumafolio = $paso4 + 1;
+                  // $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+                  // dd($folio_existes,$existe_folio_existente);
+                  if (isset($existe_folio_existente)) {
+                    //dd($existe_folio_existente->folio);
+                    list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio_existente->folio);
+                    $sumafolio = $paso4 + 1;
+                    $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+                    $folio = $folio_completo;
+                    //dd($folio);
+
+                  }else{
+                    $folio = $folio_existes->foliador;
+                  }
+                }
+
+              }else{
+                list($paso1,$paso2,$paso3,$paso4) = explode('/',$existe_folio->folio);
+                $sumafolio = $paso4 + 1;
+                $folio_completo = $paso1.'/'.$paso2.'/'.$paso3.'/'.$sumafolio;
+                $folio = $folio_completo;
+              }
             }
+
+            //////////////////////// FOLIO RECIBO /////////////////////////////////////////////////////////////////////
+            //dd($existe_folio_ultimos->folio,$folio_existes->foliador);
+
           }
           /////////////////////////////////////////////////////////////////////
         //  dd(isset($existe_folio_ultimo));
@@ -327,48 +374,107 @@ class RecibosController extends Controller
 
             $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
             ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
-            /////////////////////// FOLIO COMISION ////////////////////////////////////////////////////////
-            //dd($request->area_id,$folio_existes2);
-            //dd($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador);
-            if ($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador) {
-              //dd($existe_folio_ultimo->oficio_comision);
-              $foliots2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$folio_existes2->oficio_comision]])->first();
-              //dd($foliots2);
-              if (isset($foliots2)) {
-                //dd('ENTRO');
+
+            //dd($folio_existes2 == null);
+
+
+            if ($folio_existes2 == null) {
+              $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_t_folios.tipo_folio',2]])->whereIN('cat_folios.dependencia',$nivel1)->first();
+
+              /////////////////////// FOLIO COMISION ////////////////////////////////////////////////////////
+              //dd($request->area_id,$folio_existes2);
+              //dd($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador);
+              if ($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador) {
+                //dd($existe_folio_ultimo->oficio_comision);
+                $foliots2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                //->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$folio_existes2->oficio_comision]])->first();
+                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_t_folios.tipo_folio',2]])->whereIN('cat_folios.dependencia',$nivel1)->first();
+
+                //dd($foliots2);
+                if (isset($foliots2)) {
+                  //dd('ENTRO');
+                  list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
+                  $sumafolio2 = $paso8 + 1;
+                  $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+                  $folio_comision = $folio_completo2;
+
+                }else{
+                //dd('ENTRO AQUI');
+                  $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                  //->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+                  ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_t_folios.tipo_folio',2]])->whereIN('cat_folios.dependencia',$nivel1)->first();
+
+                  $existe_folio_existente2 = Recibos::where([['activo',1],['oficio_comision',$folio_existes2->foliador]])->orderBy('id','ASC')->first();
+                  //dd($existe_folio_existente2);
+                  if(isset($existe_folio_existente2)){
+
+                    list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio_existente2->oficio_comision);
+                    $sumafolio2 = $paso8 + 1;
+                    $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+                    $folio_comision = $folio_completo2;
+                  }else{
+                    $folio_comision = $folio_existes2->foliador;
+                  }
+                  // list($paso5,$paso6,$paso7,$paso8) = explode('/',$folio_existes2->foliador);
+                  // $sumafolio2 = $paso8 + 1;
+                  // $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+
+                }
+              }else{
                 list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
                 $sumafolio2 = $paso8 + 1;
                 $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
                 $folio_comision = $folio_completo2;
+              }
+            }else{
+              $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+              ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
 
-              }else{
-              //dd('ENTRO AQUI');
-                $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
-
-                $existe_folio_existente2 = Recibos::where([['activo',1],['oficio_comision',$folio_existes2->foliador]])->orderBy('id','ASC')->first();
-                //dd($existe_folio_existente2);
-                if(isset($existe_folio_existente2)){
-
-                  list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio_existente2->oficio_comision);
+              /////////////////////// FOLIO COMISION ////////////////////////////////////////////////////////
+              //dd($request->area_id,$folio_existes2);
+              //dd($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador);
+              if ($existe_folio_ultimo->oficio_comision != $folio_existes2->foliador) {
+                //dd($existe_folio_ultimo->oficio_comision);
+                $foliots2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.foliador',$folio_existes2->oficio_comision]])->first();
+                //dd($foliots2);
+                if (isset($foliots2)) {
+                  //dd('ENTRO');
+                  list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
                   $sumafolio2 = $paso8 + 1;
                   $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
                   $folio_comision = $folio_completo2;
-                }else{
-                  $folio_comision = $folio_existes2->foliador;
-                }
-                // list($paso5,$paso6,$paso7,$paso8) = explode('/',$folio_existes2->foliador);
-                // $sumafolio2 = $paso8 + 1;
-                // $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
 
+                }else{
+                //dd('ENTRO AQUI');
+                  $folio_existes2 = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+                  ->where([['cat_folios.activo',1],['cat_t_folios.activo',1],['cat_folios.dependencia',$request->area_id],['cat_t_folios.tipo_folio',2]])->first();
+
+                  $existe_folio_existente2 = Recibos::where([['activo',1],['oficio_comision',$folio_existes2->foliador]])->orderBy('id','ASC')->first();
+                  //dd($existe_folio_existente2);
+                  if(isset($existe_folio_existente2)){
+
+                    list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio_existente2->oficio_comision);
+                    $sumafolio2 = $paso8 + 1;
+                    $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+                    $folio_comision = $folio_completo2;
+                  }else{
+                    $folio_comision = $folio_existes2->foliador;
+                  }
+                  // list($paso5,$paso6,$paso7,$paso8) = explode('/',$folio_existes2->foliador);
+                  // $sumafolio2 = $paso8 + 1;
+                  // $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+
+                }
+              }else{
+                list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
+                $sumafolio2 = $paso8 + 1;
+                $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
+                $folio_comision = $folio_completo2;
               }
-            }else{
-              list($paso5,$paso6,$paso7,$paso8) = explode('/',$existe_folio->oficio_comision);
-              $sumafolio2 = $paso8 + 1;
-              $folio_completo2 = $paso5.'/'.$paso6.'/'.$paso7.'/'.$sumafolio2;
-              $folio_comision = $folio_completo2;
             }
+
           }
 
 
