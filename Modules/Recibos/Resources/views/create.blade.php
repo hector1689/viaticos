@@ -3599,8 +3599,8 @@ function hospedajeLugar(id){
 
     var value_ckeck = $(":checkbox[name=hospedaje_"+id+"]").val();
     var value_dias = $("#dias_"+id+"").val();
-
-    console.log(value_ckeck,value_dias)
+    var dias = value_dias - 1;
+    console.log(value_ckeck,dias)
 
     //console.log(value_ckeck == 'undefined')
     if (value_ckeck == 'undefined') {
@@ -3615,7 +3615,7 @@ function hospedajeLugar(id){
               //console.log(value_dias,$(this).val())
               //console.log(value_dias * $(this).val())
 
-              var total_hospedje = value_dias * $(this).val();
+              var total_hospedje = dias  * $(this).val();
               arrayTablaLugares.push({
                 id:id,
                 //hospedaje:$(this).val(),
