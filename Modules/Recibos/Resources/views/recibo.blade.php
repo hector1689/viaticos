@@ -2538,13 +2538,12 @@ var kilometraje = $('#kilometraje_'+id).val();
 
 function gasolinaLugar(id){
 
-    console.log('si entro primero');
+
     $(":checkbox[name=gasolina_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
             var kilometraje = $('#kilometraje_'+id).val();
-            console.log(arrayVehiculoOficial,arrayVehiculo);
-            console.log('si entro esta madre');
+
 
 
             var total = parseInt(kilometraje) * parseFloat($(this).val());

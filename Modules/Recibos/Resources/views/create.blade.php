@@ -2540,8 +2540,27 @@ function gasolinaLugar(id){
     $(":checkbox[name=gasolina_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
+            //console.log(arrayVehiculo == '',arrayVehiculo.length == 0);
+            //console.log(arrayVehiculoOficial,arrayVehiculo);
+            //console.log('si entro esta madre');
             var kilometraje = $('#kilometraje_'+id).val();
-            var total = parseInt(kilometraje) * parseFloat($(this).val());
+
+            if (arrayVehiculo.length == 0) {
+              var cuota = arrayVehiculoOficial[0].cuota;
+              var total = parseInt(kilometraje) / parseFloat(cuota) * parseFloat($(this).val());
+              //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
+            }
+
+            if (arrayVehiculoOficial.length == 0) {
+              var cuota = arrayVehiculo[0].cuota;
+              var total = parseInt(kilometraje) / parseFloat(cuota) * parseFloat($(this).val());
+              //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
+
+              //console.log(total)
+            }
+
+
+
             arrayTablaLugares.push({
               id:id,
               //gasolina:$(this).val(),
@@ -5181,7 +5200,7 @@ function cantidadletra(){
               }else{
                 var nombre  = data.nombre+' '+data.apellido_paterno+' '+data.apellido_materno;
                 var nivel = data.nivel;
-                console.log(nivel);
+                //console.log(nivel);
                 var id_area = data.cve_area_departamentos;
 
                 $('#nombre_empleado').val(nombre);
