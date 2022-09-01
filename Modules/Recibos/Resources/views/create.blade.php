@@ -3595,6 +3595,9 @@ function cenaLugar2(id,id_key){
 function hospedajeLugar(id){
 
     var value_ckeck = $(":checkbox[name=hospedaje_"+id+"]").val();
+    var value_dias = $("#dias_"+id+"").val();
+
+
     //console.log(value_ckeck == 'undefined')
     if (value_ckeck == 'undefined') {
       $(":checkbox[name=hospedaje_"+id+"]").prop('checked',false);
@@ -3605,13 +3608,19 @@ function hospedajeLugar(id){
 
           if (this.checked) {
               /////////////////////////////////////////////////////
+              //console.log(value_dias,$(this).val())
+              //console.log(value_dias * $(this).val())
+
+              var total_hospedje = value_dias * $(this).val();
               arrayTablaLugares.push({
                 id:id,
-                hospedaje:$(this).val(),
+                //hospedaje:$(this).val(),
+                hospedaje:total_hospedje,
               })
               objectHospedajeLugares = {
                 id:id,
-              hospedaje:$(this).val(),
+                //hospedaje:$(this).val(),
+                hospedaje:total_hospedje,
               }
 
               arrayHospedajeLugares.push(objectHospedajeLugares)
@@ -3638,6 +3647,7 @@ function hospedajeLugar(id){
 
 function desayunoLugar(id){
   var value_ckeck = $(":checkbox[name=desayuno_"+id+"]").val();
+  var value_dias = $("#dias_"+id+"").val();
   if (value_ckeck == 'undefined') {
     $(":checkbox[name=desayuno_"+id+"]").prop('checked',false);
     $(":checkbox[name=desayuno_"+id+"]").prop('disabled',true);
@@ -3646,13 +3656,16 @@ function desayunoLugar(id){
     $(":checkbox[name=desayuno_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
+            var total_desayino = value_dias * $(this).val();
             arrayTablaLugares.push({
               id:id,
-              desayuno:$(this).val(),
+              //desayuno:$(this).val(),
+              desayuno:total_desayino,
             })
             objectDesayunoLugares = {
               id:id,
-            desayuno:$(this).val(),
+              //desayuno:$(this).val(),
+              desayuno:total_desayino,
             }
 
             arrayDesayunoLugares.push(objectDesayunoLugares)
@@ -3671,6 +3684,8 @@ function desayunoLugar(id){
 }
 function comidaLugar(id){
   var value_ckeck = $(":checkbox[name=comida_"+id+"]").val();
+  var value_dias = $("#dias_"+id+"").val();
+
   if (value_ckeck == 'undefined') {
     $(":checkbox[name=comida_"+id+"]").prop('checked',false);
     $(":checkbox[name=comida_"+id+"]").prop('disabled',true);
@@ -3679,13 +3694,17 @@ function comidaLugar(id){
     $(":checkbox[name=comida_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
+            var total_cmindas = value_dias * $(this).val();
+
             arrayTablaLugares.push({
               id:id,
-              comida:$(this).val(),
+              //comida:$(this).val(),
+              comida:total_cmindas,
             })
             objectComidaLugares = {
               id:id,
-            comida:$(this).val(),
+              //comida:$(this).val(),
+            comida:total_cmindas,
             }
 
             arrayComidaLugares.push(objectComidaLugares)
@@ -3704,6 +3723,8 @@ function comidaLugar(id){
 }
 function cenaLugar(id){
   var value_ckeck = $(":checkbox[name=cena_"+id+"]").val();
+  var value_dias = $("#dias_"+id+"").val();
+
   if (value_ckeck == 'undefined') {
     $(":checkbox[name=cena_"+id+"]").prop('checked',false);
     $(":checkbox[name=cena_"+id+"]").prop('disabled',true);
@@ -3712,13 +3733,17 @@ function cenaLugar(id){
     $(":checkbox[name=cena_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
+            var total_cenas = value_dias * $(this).val();
+
             arrayTablaLugares.push({
               id:id,
-              cena:$(this).val(),
+              //cena:$(this).val(),
+              cena:total_cenas,
             })
             objectCenaLugares = {
               id:id,
-              cena:$(this).val(),
+              //cena:$(this).val(),
+              cena:total_cenas,
             }
 
             arrayCenaLugares.push(objectCenaLugares)
