@@ -2537,10 +2537,16 @@ var kilometraje = $('#kilometraje_'+id).val();
 }
 
 function gasolinaLugar(id){
+
+    console.log('si entro primero');
     $(":checkbox[name=gasolina_"+id+"]").each(function(){
         if (this.checked) {
             /////////////////////////////////////////////////////
             var kilometraje = $('#kilometraje_'+id).val();
+            console.log(arrayVehiculoOficial,arrayVehiculo);
+            console.log('si entro esta madre');
+
+
             var total = parseInt(kilometraje) * parseFloat($(this).val());
             arrayTablaLugares.push({
               id:id,
@@ -5181,7 +5187,7 @@ function cantidadletra(){
               }else{
                 var nombre  = data.nombre+' '+data.apellido_paterno+' '+data.apellido_materno;
                 var nivel = data.nivel;
-                console.log(nivel);
+                //console.log(nivel);
                 var id_area = data.cve_area_departamentos;
 
                 $('#nombre_empleado').val(nombre);
