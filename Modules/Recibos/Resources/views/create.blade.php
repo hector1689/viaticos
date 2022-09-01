@@ -2543,7 +2543,10 @@ function gasolinaLugar(id){
             //console.log(arrayVehiculo == '',arrayVehiculo.length == 0);
             //console.log(arrayVehiculoOficial,arrayVehiculo);
             //console.log('si entro esta madre');
-            var kilometraje = $('#kilometraje_'+id).val();
+            //var kilometraje = $('#kilometraje_'+id).val();
+            var kilometraje = $('#kilometrorecorrido').val();
+
+
 
             if (arrayVehiculo.length == 0) {
               var cuota = arrayVehiculoOficial[0].cuota;
