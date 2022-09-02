@@ -1521,11 +1521,12 @@ class RecibosController extends Controller
                             ['cve_t_viatico',$id],
                           ])->get();
       // return view('recibos::oficio')->with($data);
+      /////////////////////////////////////////////////////////////////////////
 
-      $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
-      ->where([['cat_folios.activo',1],['cat_folios.dependencia',$data['recibos']->id_dependencia],['cat_t_folios.tipo_folio',1]])->first();
-
-      $data['folio_oficio'] = $folio_existes->foliador;
+      // $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
+      // ->where([['cat_folios.activo',1],['cat_folios.dependencia',$data['recibos']->id_dependencia],['cat_t_folios.tipo_folio',1]])->first();
+      //
+      // $data['folio_oficio'] = $folio_existes->foliador;
       $fechaEmision = Carbon::parse($data['recibos']->fecha_hora_salida);
       $fechaExpiracion = Carbon::parse($data['recibos']->fecha_hora_recibio);
 
