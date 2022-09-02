@@ -2,7 +2,7 @@
 <html lang="es" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>RECIBO DE PAGOS DE VIÁTICOS</title>
+  <title>RECIBO DE VIATICOS</title>
   <link rel="shortcut icon" href="/img/EscTam.png" type="image/x-icon" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
   {{-- <link rel="stylesheet" href="/css/semantic/semantic.min.css"> --}}
@@ -506,8 +506,7 @@
       </tbody>
     </table>
     <br>
-    <br>
-    <div style="height:200px;"></div>
+
     <!-- <div style="width:800px;">
       <div style="width:300px; float:left;text-align:center;">
 
@@ -555,35 +554,35 @@
 
     <!--////////////////////////////////////////-->
     <div style="width:700px;">
-      <div style="width:300px; float:left;text-align:center;font-size:9pt;">
+      <div style="width:300px; float:left;text-align:center;font-size:7pt;">
         <small >{{ $recibos->nombre }}</small>
         <p>_______________________________________</p>
         <small style="text-align:center">Comisión</small>
 
       </div>
-      <div style="width:300px; float:right;text-align:center;font-size:9pt;">
+      <div style="width:300px; float:right;text-align:center;font-size:7pt;">
         <small >{{ $firmantes->director_area }}</small>
         <p>_______________________________________</p>
         <small >director de área</small>
       </div>
     </div>
-    <div style="height:150px;"></div>
+    <div style="height:80px;"></div>
     <div style="width:700px;">
-      <div style="width:300px; float:left;text-align:center;font-size:9pt;" >
+      <div style="width:300px; float:left;text-align:center;font-size:7pt;" >
         <small >{{ $firmantes->superior_inmediato }}</small>
         <p>_______________________________________</p>
         <small >superior inmediato</small>
 
       </div>
-      <div style="width:300px; float:right;text-align:center;font-size:9pt;">
+      <div style="width:300px; float:right;text-align:center;font-size:7pt;">
         <small >{{ $firmantes->organo_control }}</small>
         <p>_______________________________________</p>
         <small >organo de control</small>
       </div>
     </div>
-    <div style="height:150px;"></div>
+    <div style="height:80px;"></div>
     <div style="width:700px;">
-      <div style="width:300px; float:left;text-align:center;font-size:9pt;" >
+      <div style="width:300px; float:left;text-align:center;font-size:7pt;" >
         <small >{{ $firmantes->recibi_cheque }}</small>
         <p>_______________________________________</p>
         <small >recibi cheque</small>
