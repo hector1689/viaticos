@@ -2,7 +2,7 @@
 <html lang="es" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>COMPROBANTE DE INSCRIPCIÓN AL REGISTRO PECUARIO <?php echo date('Y'); ?></title>
+  <title>RECIBO DE PAGOS DE VIÁTICOS</title>
   <link rel="shortcut icon" href="/img/EscTam.png" type="image/x-icon" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
   {{-- <link rel="stylesheet" href="/css/semantic/semantic.min.css"> --}}
