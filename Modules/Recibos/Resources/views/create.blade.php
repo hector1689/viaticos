@@ -2543,20 +2543,20 @@ function gasolinaLugar(id){
             //console.log(arrayVehiculo == '',arrayVehiculo.length == 0);
             //console.log(arrayVehiculoOficial,arrayVehiculo);
             //console.log('si entro esta madre');
-            //var kilometraje = $('#kilometraje_'+id).val();
-            var kilometraje = $('#kilometrorecorrido').val();
-
+            var kilometraje = $('#kilometraje_'+id).val();
+            var kilometraje_interno = $('#kilometrorecorrido').val();
+            var kilometraje_total = parseInt(kilometraje) + parseInt(kilometraje_interno)
 
 
             if (arrayVehiculo.length == 0) {
               var cuota = arrayVehiculoOficial[0].cuota;
-              var total = parseInt(kilometraje) / parseFloat(cuota) * parseFloat($(this).val());
+              var total = parseInt(kilometraje_total) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
             }
 
             if (arrayVehiculoOficial.length == 0) {
               var cuota = arrayVehiculo[0].cuota;
-              var total = parseInt(kilometraje) / parseFloat(cuota) * parseFloat($(this).val());
+              var total = parseInt(kilometraje_total) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
 
               //console.log(total)
@@ -4553,7 +4553,8 @@ function AgregarVehiculoOficial(){
                  },
                 success:function(data){
                 //  console.log(data.kilometros_litros)
-                  var totalito = data.kilometros_litros * gasolina_vehiculo;
+                var kilometraje_interno = $('#kilometrorecorrido').val();
+                  var totalito = parseInt(kilometraje_interno) / parseInt(data.kilometros_litros) * parseFloat(gasolina_vehiculo);
                   ObjetoVehiculoOficial = {
                     tipotransporte:tipotransporte,
                     tipo_viaje:selectedviajetipo1[0],
@@ -4591,7 +4592,7 @@ function agregarVehiculo1(ObjetoVehiculoOficial){
     tipo_viaje = 'SOLO REGRESO';
   }
 
-  //var total = parseFloat(ObjetoVehiculoOficial.cuota) * parseFloat(ObjetoVehiculoOficial.gasolina_vehiculo);
+  //var total =  parseFloat(ObjetoVehiculoOficial.cuota) * parseFloat(ObjetoVehiculoOficial.gasolina_vehiculo);
 
   var tr = '<tr id="filas'+contador_vehiculo1+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_vehiculo1+'"/>Vehiculo Oficial</td>'+
@@ -4605,7 +4606,7 @@ function agregarVehiculo1(ObjetoVehiculoOficial){
   '<td>'+ObjetoVehiculoOficial.cuota+'</td>'+
   '<td>$'+ObjetoVehiculoOficial.gasolina_vehiculo+'</td>'+
 
-  '<td>$'+ObjetoVehiculoOficial.total+'</td>'+
+  '<td>$'+ObjetoVehiculoOficial.total.toFixed(2)+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculooficial('+contador_vehiculo1+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
@@ -4690,8 +4691,9 @@ function AgregarVehiculo(){
                 success:function(data){
                 //  console.log(data.kilometros_litros)
 
-
-                  var totalito = data.kilometros_litros * gasolina_vehiculo;
+                var kilometraje_interno = $('#kilometrorecorrido').val();
+                  var totalito = parseInt(kilometraje_interno) / parseInt(data.kilometros_litros) * parseFloat(gasolina_vehiculo);
+                  //var totalito = data.kilometros_litros * gasolina_vehiculo;
                   ObjetoVehiculo = {
                     tipotransporte:tipotransporte,
                     tipo_viaje:selectedviajetipo2[0],
@@ -4739,7 +4741,7 @@ function agregarVehiculo2(ObjetoVehiculo){
   '<td>'+ObjetoVehiculo.cuota+'</td>'+
   '<td>$'+ObjetoVehiculo.gasolina_vehiculo+'</td>'+
 
-  '<td>$'+ObjetoVehiculo.total+'</td>'+
+  '<td>$'+parseFloat(ObjetoVehiculo.total)+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculo('+contador_vehiculo2+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
