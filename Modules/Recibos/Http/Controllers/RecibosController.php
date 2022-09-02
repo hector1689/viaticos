@@ -1745,11 +1745,11 @@ class RecibosController extends Controller
       //   $hospedaje = Hospedaje::where([['activo',1],['id_dependencia',$area]])->orderBy('vigencia_final','DESC')->first();
       // }
       //dd($request->zona_trayectoria);
-      if ($request->zona_trayectoria == 'M') {
-        $hospedaje = Hospedaje::where('activo',1)->get();
-      }else{
+      // if ($request->zona_trayectoria == 'M') {
+      //   $hospedaje = Hospedaje::where('activo',1)->get();
+      // }else{
         $hospedaje = Hospedaje::where('zona',$request->zona_trayectoria)->get();
-      }
+      // }
 
       //$hospedaje = Hospedaje::where('activo',1)->get();
 

@@ -4741,7 +4741,7 @@ function agregarVehiculo2(ObjetoVehiculo){
   '<td>'+ObjetoVehiculo.cuota+'</td>'+
   '<td>$'+ObjetoVehiculo.gasolina_vehiculo+'</td>'+
 
-  '<td>$'+parseFloat(ObjetoVehiculo.total)+'</td>'+
+  '<td>$'+ObjetoVehiculo.total.toFixed(2)+'</td>'+
   '<td style=" text-align: center; "><div class="btn btn-danger borrar_figura" onclick="eliminarvehiculo('+contador_vehiculo2+')"  ><i  class="fas fa-trash"></i></div></td>'
   '</tr>';
 
