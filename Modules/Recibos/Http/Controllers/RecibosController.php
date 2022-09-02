@@ -1523,6 +1523,9 @@ class RecibosController extends Controller
       // return view('recibos::oficio')->with($data);
       /////////////////////////////////////////////////////////////////////////
 
+
+
+      // dd($data['recibos']->id_dependencia);
       // $folio_existes = Folios::join('cat_t_folios','cat_t_folios.cve_folio','cat_folios.id')
       // ->where([['cat_folios.activo',1],['cat_folios.dependencia',$data['recibos']->id_dependencia],['cat_t_folios.tipo_folio',1]])->first();
       //
