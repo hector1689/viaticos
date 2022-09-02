@@ -2564,7 +2564,15 @@ class RecibosController extends Controller
         ['cve_t_viatico',$registros->id],
         ])->first();
 
-      return '$'.number_format($lugarest->total_recibido, 2, '.', ',');
+      //dd($lugarest);
+
+      if (isset($lugarest)) {
+        $numero = '$'.number_format($lugarest->total_recibido, 2, '.', ',');
+      }else{
+        $numero = 0;
+      }
+
+      return $numero;
     })
 
 
