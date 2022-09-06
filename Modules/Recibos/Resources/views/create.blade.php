@@ -2541,7 +2541,7 @@ function gasolinaLugar(id){
         if (this.checked) {
             /////////////////////////////////////////////////////
             //console.log(arrayVehiculo == '',arrayVehiculo.length == 0);
-            console.log(arrayVehiculoOficial,arrayVehiculo);
+            //console.log(arrayVehiculoOficial,arrayVehiculo);
             //console.log('si entro esta madre');
             var kilometraje = $('#kilometraje_'+id).val();
             var kilometraje_interno = $('#kilometrorecorrido').val();
@@ -2559,8 +2559,8 @@ function gasolinaLugar(id){
               }else if(viaje == 3){
                 var tipo_viajesito  = 1;
               }
-
-              var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
+              var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
+              //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
             }
 
@@ -2575,8 +2575,8 @@ function gasolinaLugar(id){
               }else if(viaje == 3){
                 var tipo_viajesito  = 1;
               }
-
-              var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
+              var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
+              //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
 
               //console.log(total)
