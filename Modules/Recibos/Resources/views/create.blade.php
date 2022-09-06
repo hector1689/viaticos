@@ -2541,7 +2541,7 @@ function gasolinaLugar(id){
         if (this.checked) {
             /////////////////////////////////////////////////////
             //console.log(arrayVehiculo == '',arrayVehiculo.length == 0);
-            //console.log(arrayVehiculoOficial,arrayVehiculo);
+            console.log(arrayVehiculoOficial,arrayVehiculo);
             //console.log('si entro esta madre');
             var kilometraje = $('#kilometraje_'+id).val();
             var kilometraje_interno = $('#kilometrorecorrido').val();
@@ -2550,13 +2550,33 @@ function gasolinaLugar(id){
 
             if (arrayVehiculo.length == 0) {
               var cuota = arrayVehiculoOficial[0].cuota;
-              var total = parseInt(kilometraje_total) / parseFloat(cuota) * parseFloat($(this).val());
+              var viaje = arrayVehiculoOficial[0].tipo_viaje;
+
+              if (viaje == 1) {
+                var tipo_viajesito  = 2;
+              }else if(viaje == 2){
+                var tipo_viajesito  = 1;
+              }else if(viaje == 3){
+                var tipo_viajesito  = 1;
+              }
+
+              var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
             }
 
             if (arrayVehiculoOficial.length == 0) {
               var cuota = arrayVehiculo[0].cuota;
-              var total = parseInt(kilometraje_total) / parseFloat(cuota) * parseFloat($(this).val());
+              var viaje = arrayVehiculoOficial[0].tipo_viaje;
+
+              if (viaje == 1) {
+                var tipo_viajesito  = 2;
+              }else if(viaje == 2){
+                var tipo_viajesito  = 1;
+              }else if(viaje == 3){
+                var tipo_viajesito  = 1;
+              }
+
+              var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
 
               //console.log(total)
