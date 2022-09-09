@@ -159,7 +159,7 @@
       <span class="negras"></span><br>
 
       <p style="font-size: 9.5pt;text-align:justify;">
-        sirvase presentarse de @foreach($lugares as $lugar) {{ $lugar->obteneLocalidades->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }} a {{ $lugar->obteneLocalidades2->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidades2->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad->obtenePais->nombre }}, @endforeach los dias del
+        sirvase presentarse de @foreach($lugares as $lugar) {{ $lugar->obteneLocalidades->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }} a {{ $lugar->obteneLocalidades2->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidades2->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneEstado->nombre }}, @endforeach los dias del
         <?php
         list($fecha,$hora) = explode(' ',$recibos->fecha_hora_salida);
         list($dia,$mes,$anio) = explode('-',$fecha);

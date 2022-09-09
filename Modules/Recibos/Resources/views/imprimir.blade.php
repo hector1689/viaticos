@@ -195,7 +195,7 @@
 
       </tbody>
     </table>
-        <br>
+        <!-- <br>
     <table style="width: 100%;" class="borderTop">
       <tbody>
 
@@ -260,7 +260,7 @@
         </tr>
 
       </tbody>
-    </table>
+    </table> -->
     <br>
     <table style="width: 100%;" class="borderTop">
       <tbody>

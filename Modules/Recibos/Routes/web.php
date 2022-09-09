@@ -72,6 +72,8 @@ Route::prefix('recibos')->group(function() {
   Route::post('/TraerComidaL', 'RecibosController@TraerComidaL');
   Route::post('/TraerCenaL', 'RecibosController@TraerCenaL');
 
+  Route::post('/Destino', 'RecibosController@Destino');
+
 
 
 

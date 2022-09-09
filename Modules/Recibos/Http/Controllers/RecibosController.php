@@ -74,7 +74,7 @@ class RecibosController extends Controller
         $data['rendimiento'] = Rendimiento::where('activo',1)->get();
         $data['programa'] = Programa::where('activo',1)->get();
         $data['taxi'] = Taxi::where('activo',1)->get();
-        $data['lacalidad1'] = Kilometraje::where('activo',1)->get();
+        $data['lacalidad1'] = Kilometraje::select('cve_localidad_origen')->where('activo',1)->get();
         $data['lacalidad2'] = Kilometraje::where('activo',1)->get();
         $data['alimentos'] =  Alimentos::where('activo',1)->get();
 
@@ -96,6 +96,15 @@ class RecibosController extends Controller
 
       }
 
+    }
+
+    public function Destino(Request $request){
+      //dd($request->all());
+
+      $destino = Kilometraje::find($request->origen);
+
+      $localidad = Localidad::where('id',$destino->cve_localidad_destino)->with('obtenePais','obteneEstado','obteneMunicipio')->first();
+      return $localidad;
     }
 
     /**
@@ -527,19 +536,25 @@ class RecibosController extends Controller
         $firmantes->cve_usuario = Auth::user()->id;
         $firmantes->save();
 
-        list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-        $fecha_pago = $anio.'-'.$mes.'-'.$dia;
 
-        $datospago = new DatosPago();
-        $datospago->cve_t_viatico = $recibo->id;
-        $datospago->secretaria = $request->secretaria_pago;
-        $datospago->num_cheque = $request->cheque;
-        $datospago->fehca_inicia = $fecha_pago;
-        $datospago->cantidad = $request->cantidad;
-        $datospago->cantidad_letra = $request->letras_cantidad;
-        $datospago->favor_cargo_banco = $request->banco;
-        $datospago->cve_usuario = Auth::user()->id;
-        $datospago->save();
+
+        // if ($request->cheque == '') {
+        //   // code...
+        // }else{
+        //   list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+        //   $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+        //   $datospago = new DatosPago();
+        //   $datospago->cve_t_viatico = $recibo->id;
+        //   $datospago->secretaria = $request->secretaria_pago;
+        //   $datospago->num_cheque = $request->cheque;
+        //   $datospago->fehca_inicia = $fecha_pago;
+        //   $datospago->cantidad = $request->cantidad;
+        //   $datospago->cantidad_letra = $request->letras_cantidad;
+        //   $datospago->favor_cargo_banco = $request->banco;
+        //   $datospago->cve_usuario = Auth::user()->id;
+        //   $datospago->save();
+        // }
+
 
         //dd($request->VehiculoOficial[0]);
         $transporte = new Transporte();
@@ -684,7 +699,7 @@ class RecibosController extends Controller
             $lugares->remoto = 0;
             $lugares->cve_t_viatico = $recibo->id;
             $lugares->cve_localidad_origen = $value['lugar'][0]['origen'];
-            $lugares->cve_localidad_destino = $value['lugar'][1]['destino'];
+            $lugares->cve_localidad_destino = $value['lugar'][0]['origen'];
             $lugares->dias = $value['lugar'][6]['dias'];
             $lugares->cve_zona = $value['lugar'][4]['zona'];
             $lugares->kilometros = $value['lugar'][7]['kilometraje'];
@@ -772,8 +787,8 @@ class RecibosController extends Controller
         $data['transporte'] = Transporte::where([['activo',1],['cve_t_viatico',$id]])->first();
         $data['vhoficial'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
         $data['vhoficialtabla'] = VehiculoOficial::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
-        $data['lacalidad1'] = Kilometraje::where('activo',1)->get();
-        $data['lacalidad2'] = Kilometraje::where('activo',1)->get();
+        $data['lacalidad1'] = Kilometraje::select('cve_localidad_origen')->where('activo',1)->get();
+        $data['lacalidad2'] = Kilometraje::select('cve_localidad_destino')->where('activo',1)->get();
         $data['autobus'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
         $data['autobustabla'] = Autobus::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->get();
         $data['Vehiculo'] = Vehiculo::where([['activo',1],['cve_t_transporte',$data['transporte']->id]])->first();
@@ -926,19 +941,19 @@ class RecibosController extends Controller
           $firmantes->cve_usuario = Auth::user()->id;
           $firmantes->save();
 
-          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+          //list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+          //$fecha_pago = $anio.'-'.$mes.'-'.$dia;
 
 
-          $datospago = DatosPago::find($request->id_pagos);
-          $datospago->secretaria = $request->secretaria_pago;
-          $datospago->num_cheque = $request->cheque;
-          $datospago->fehca_inicia = $fecha_pago;
-          $datospago->cantidad = $request->cantidad;
-          $datospago->cantidad_letra = $request->letras_cantidad;
-          $datospago->favor_cargo_banco = $request->banco;
-          $datospago->cve_usuario = Auth::user()->id;
-          $datospago->save();
+          // $datospago = DatosPago::find($request->id_pagos);
+          // $datospago->secretaria = $request->secretaria_pago;
+          // $datospago->num_cheque = $request->cheque;
+          // $datospago->fehca_inicia = $fecha_pago;
+          // $datospago->cantidad = $request->cantidad;
+          // $datospago->cantidad_letra = $request->letras_cantidad;
+          // $datospago->favor_cargo_banco = $request->banco;
+          // $datospago->cve_usuario = Auth::user()->id;
+          // $datospago->save();
 
           $transporte = Transporte::find($request->id_transporte);
           $transporte->kilometro_interno = $request->kilometrorecorrido;
@@ -961,7 +976,7 @@ class RecibosController extends Controller
                 $lugares->remoto = 0;
                 $lugares->cve_t_viatico = $recibo->id;
                 $lugares->cve_localidad_origen = $value['lugar'][0]['origen'];
-                $lugares->cve_localidad_destino = $value['lugar'][1]['destino'];
+                $lugares->cve_localidad_destino = $value['lugar'][0]['origen'];
                 $lugares->dias = $value['lugar'][6]['dias'];
                 $lugares->cve_zona = $value['lugar'][4]['zona'];
                 $lugares->kilometros = $value['lugar'][7]['kilometraje'];
@@ -1813,11 +1828,12 @@ class RecibosController extends Controller
 
 
       $kilometraje1 = kilometraje::find($request->origen_lugar);
-      $kilometraje2 = kilometraje::find($request->destino_lugar);
+      //$kilometraje2 = kilometraje::find($request->destino_lugar);
 
       /////////////////////////////////////////////////////////////////////////
       //dd($array_hospedaje);
-      $array_todo = ['alimentos' => $array_alimentos,'gasolina' => $gasolina,'hospedaje' => $array_hospedaje,'total_kilometraje1' => $kilometraje1->distancia_kilometros,'total_kilometraje2' => $kilometraje2->distancia_kilometros];
+      //$array_todo = ['alimentos' => $array_alimentos,'gasolina' => $gasolina,'hospedaje' => $array_hospedaje,'total_kilometraje1' => $kilometraje1->distancia_kilometros,'total_kilometraje2' => $kilometraje2->distancia_kilometros];
+      $array_todo = ['alimentos' => $array_alimentos,'gasolina' => $gasolina,'hospedaje' => $array_hospedaje,'total_kilometraje1' => $kilometraje1->distancia_kilometros];
 
       return $array_todo;
       // $now = new Carbon();

@@ -212,9 +212,9 @@
                     <a class="nav-link " data-toggle="tab" href="#kt_tab_pane_1">Lugares</a>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3">Datos de Pago</a>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4" tabindex="-1" aria-disabled="true">Firmas</a>
@@ -241,7 +241,7 @@
 
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Origen: </label>
-                        <select class="form-control" id="origen_lugar" @isset($recibos) @else disabled @endisset>
+                        <select class="form-control" id="origen_lugar" @isset($recibos) @else disabled @endisset data-nivel="1">
                           <option value="0">seleccionar</option>
                           @foreach($lacalidad1 as $loc1)
                           <option value="{{ $loc1->id }}">{{ $loc1->obteneLocalidad->localidad }}-{{ $loc1->obteneLocalidad->obteneMunicipio->nombre }}-{{ $loc1->obteneLocalidad->obteneEstado->nombre }}-{{ $loc1->obteneLocalidad->obtenePais->nombre }}</option>
@@ -250,11 +250,11 @@
                     </div>
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Destino: </label>
-                        <select class="form-control" id="destino_lugar" @isset($recibos) @else disabled @endisset>
+                        <select class="form-control" id="destino_lugar"  data-nivel="2" >
                           <option value="0">seleccionar</option>
-                          @foreach($lacalidad2 as $loc2)
+                          <!-- @foreach($lacalidad2 as $loc2)
                           <option value="{{ $loc2->id }}">{{ $loc2->obteneLocalidad2->localidad }}-{{ $loc2->obteneLocalidad2->obteneMunicipio->nombre }}-{{ $loc2->obteneLocalidad2->obteneEstado->nombre }}-{{ $loc2->obteneLocalidad2->obtenePais->nombre }}</option>
-                          @endforeach
+                          @endforeach -->
                         </select>
                     </div>
                     <div class="form-group col-md-3" >
@@ -287,7 +287,7 @@
                                 <!-- {{ $lugar->obteneLocalidad2->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidad->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidad->obteneLocalidad->obtenePais->nombre }} -->
                                 <!-- {{ $lugar->obteneLocalidad2 }} -->
                                 <td>{{ $lugar->obteneLocalidades->obteneLocalidad->localidad }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }}</td>
-                                <td>{{ $lugar->obteneLocalidades2->obteneLocalidad->localidad }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad->obtenePais->nombre }}</td>
+                                <td>{{ $lugar->obteneLocalidades2->obteneLocalidad2->localidad }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obtenePais->nombre }}</td>
                                 <td><input type="text" class="form-control" id="dias2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->dias }}" ></td>
                                 <td>{{ $lugar->cve_zona }}</td>
                                 <td><input type="text" class="form-control" id="kilometraje2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->kilometros }}" ></td>
@@ -1464,11 +1464,13 @@
 
   <a href="/recibos" class="btn btn-default">Regresar</a>
 
-  <a class="btn btn-primary " onclick="guardar()">Guardar</a>
+  <a class="btn btn-primary " id="kt_btn_1" onclick="guardar()">Guardar</a>
 </div>
 </form>
 
 </div>
+
+<!-- <div id="cargar" class="spinner spinner-primary spinner-lg mr-15"></div> -->
 <script src="/admin/assets/js/pages/crud/forms/widgets/bootstrap-datetimepicker.js?v=7.0.6"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.es.min.js" charset="UTF-8"></script>
 
@@ -1510,6 +1512,49 @@ var ObjetoLugares = {};
 var arrayLugares = [];
 
 
+///////////////// origen destino ///////////////////////////
+$("#origen_lugar").change(function(){
+
+  var origen = $("#origen_lugar").val();
+
+  //console.log(estado);
+  //$('#municipios').prop('selectedIndex',0);
+  nivel = parseInt($(this).attr('data-nivel'));
+    $.ajax({
+
+       type:"POST",
+
+       url:"/recibos/Destino",
+       headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       },
+       data:{
+         origen:origen,
+       },
+
+        success:function(data){
+          //console.log(data)
+           $('#destino_lugar').empty();
+           // $('#destino_lugar').prop('selectedIndex',0);
+          $('#destino_lugar').append('<option value="'+data.id+'">'+data.obtene_municipio.nombre +' '+data.obtene_estado.nombre +' '+data.obtene_pais.nombre+'</option>');
+
+          // if (data) {
+          //   for(i = nivel + 1; i <= 3; i++){
+          //     $('#destino_lugar').empty();
+          //
+          //   }data.forEach((x) => {
+          //
+          //     console.log(x.obtene_estado.nombre)
+          //     //$('#destino_lugar').append('<option value="'+x.id+'">'+x.c_Municipios+'</option>');
+          //
+          //   });
+          // }
+        }
+  });
+
+});
+
+/////////////////////////////////////////////////////////////
 @isset($transporte)
 $('#total_transporte_vehiculof').val({{$transporte->total_transporte}} );
 @endisset
@@ -2114,7 +2159,7 @@ $('.calculobtn').show();
 function abrirLugar(){
   $('#origen_lugar').prop('disabled',false);
   $('#zona_trayectoria').prop('disabled',false);
-  $('#destino_lugar').prop('disabled',false);
+  $('#destino_lugar').prop('disabled',true);
 }
 
 
@@ -2293,10 +2338,11 @@ if (origen_lugar == 0 || destino_lugar == 0) {
              destino_lugar:destino_lugar,
            },
           success:function(dars){
-
+            //console.log(dars)
           //  console.log(dars.total_kilometraje1,dars.total_kilometraje2)
 
-            var total_kilometros = parseInt(dars.total_kilometraje1) + parseInt(dars.total_kilometraje2);
+            //var total_kilometros = parseInt(dars.total_kilometraje1) + parseInt(dars.total_kilometraje2);
+            var total_kilometros = parseInt(dars.total_kilometraje1);
             //console.log(zona_trayectoria,dars.alimentos[0].zona)
 
             objectLugar = {
@@ -2393,8 +2439,9 @@ if (objectLugar.zona == 1) {
   $("#tablaLugares").append(tr);
 
   $('#origen_lugar').prop('selectedIndex',0);
-  $('#destino_lugar').prop('selectedIndex',0);
+  //$('#destino_lugar').prop('selectedIndex',0);
   $('#zona_trayectoria').prop('selectedIndex',0);
+   $('#destino_lugar').empty();
 
 
 
@@ -5379,8 +5426,13 @@ function cantidadletra(){
 
 
 
+
+
+
   function guardar(){
 
+
+    var btn = KTUtil.getById("kt_btn_1");
 
 
 
@@ -5477,12 +5529,26 @@ function cantidadletra(){
     var programalugar = $('#programalugar').val();
 
     //var tabla_lugares = arrayTablaLugares;
-    console.log(recibo_complentario_ticket)
+    //console.log(recibo_complentario_ticket)
 
     if (clave_departamental == '' || inicia == '' || final == '' || lugar_adscripcion == '' || n_dias == ''  || descripcion == '' || cheque_firma == ''
       || especificarcomision == '' ) {
       Swal.fire("Lo Sentimos", 'Llenar los campos obligatorios', "warning");
+
+      KTUtil.btnWait(btn, "spinner spinner-right spinner-white pr-15", "Por Favor Espere");
+
+      setTimeout(function() {
+          KTUtil.btnRelease(btn);
+      }, 2000);
+
     }else{
+
+      $('#kt_btn_1').prop('disabled',true);
+      KTUtil.btnWait(btn, "spinner spinner-right spinner-white pr-15", "Por Favor Espere");
+
+      setTimeout(function() {
+          KTUtil.btnRelease(btn);
+      }, 2000);
       $.ajax({
 
              type:"POST",
@@ -5565,6 +5631,12 @@ function cantidadletra(){
                         }
                     })
 
+                    KTUtil.btnWait(btn, "spinner spinner-right spinner-white pr-15", "Por Favor Espere");
+
+                    setTimeout(function() {
+                        KTUtil.btnRelease(btn);
+                    }, 2000);
+
                 }else if(data.success == 'Ha sido editado con éxito'){
 
                   Swal.fire("", data.success, "success").then(function(){
@@ -5585,6 +5657,16 @@ function cantidadletra(){
                           location.href ="/recibos";
                         }
                     })
+
+
+                    KTUtil.btnWait(btn, "spinner spinner-right spinner-white pr-15", "Por Favor Espere");
+
+                    setTimeout(function() {
+                        KTUtil.btnRelease(btn);
+                    }, 2000);
+                }else{
+                  $('#kt_btn_1').prop('disabled',false);
+
                 }
 
 
