@@ -700,17 +700,17 @@ class RecibosController extends Controller
             $lugares->cve_t_viatico = $recibo->id;
             $lugares->cve_localidad_origen = $value['lugar'][0]['origen'];
             $lugares->cve_localidad_destino = $value['lugar'][0]['origen'];
-            $lugares->dias = $value['lugar'][6]['dias'];
+            $lugares->dias = $value['lugar'][7]['dias'];
             $lugares->cve_zona = $value['lugar'][4]['zona'];
-            $lugares->kilometros = $value['lugar'][7]['kilometraje'];
+            $lugares->kilometros = $value['lugar'][8]['kilometraje'];
             $lugares->cve_programa = $request->programalugar;
             $lugares->total_recibido = $request->total_extraer;
             $lugares->cve_usuario =Auth::user()->id;
             $lugares->save();
 
-            if (isset($value['lugar'][8]['gasolina'])) {
+            if (isset($value['lugar'][6]['gasolina'])) {
               $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->combustible = $value['lugar'][8]['gasolina'];
+              $existe_lugar->combustible = $value['lugar'][6]['gasolina'];
               $existe_lugar->save();
             }
 
