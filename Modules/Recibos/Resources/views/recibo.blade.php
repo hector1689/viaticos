@@ -270,7 +270,7 @@
                               <tr>
                                   <th scope="col">Origen</th>
                                   <th scope="col">Destino</th>
-                                  <th scope="col">Dias</th>
+                                  <!-- <th scope="col">Dias</th> -->
                                   <th scope="col">Zona</th>
                                   <th scope="col">Kilometros</th>
                                   <th scope="col">Combustible</th>
@@ -288,7 +288,7 @@
                                 <!-- {{ $lugar->obteneLocalidad2 }} -->
                                 <td>{{ $lugar->obteneLocalidades->obteneLocalidad->localidad }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }}</td>
                                 <td>{{ $lugar->obteneLocalidades2->obteneLocalidad2->localidad }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obtenePais->nombre }}</td>
-                                <td><input type="text" class="form-control" id="dias2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->dias }}" ></td>
+                                <!-- <td><input type="text" class="form-control" id="dias2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->dias }}" ></td> -->
                                 <td>{{ $lugar->cve_zona }}</td>
                                 <td><input type="text" class="form-control" id="kilometraje2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->kilometros }}" ></td>
                                 <td>
@@ -336,7 +336,7 @@
                             <tr style="text-align:center;">
                               <td>Total</td>
                               <td></td>
-                              <td id="total_dias"></td>
+                              <!-- <td id="total_dias"></td> -->
                               <td></td>
                               <td id="total_kilometros"></td>
                               <td id="total_gasolina"></td>
@@ -2392,18 +2392,17 @@ if (objectLugar.zona == 1) {
   zonita = 'Frontera y Entidades Federativas del Extranjero';
 }
 //console.log(objectLugar.hospedaje)
-
   var tr = '<tr id="filas_lugar'+contador_lugares+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
   '<td>'+objectLugar.destino_name+'</td>'+
-  '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+'),KilometrajeLugares('+contador_lugares+')" ></td>'+
+  // '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+'),KilometrajeLugares('+contador_lugares+')" ></td>'+
   '<td>'+objectLugar.zona_trayectoria+'</td>'+
   '<td><input type="text" class="form-control" id="kilometraje_'+contador_lugares+'" onkeypress="return validaNumericos(event)" value="'+objectLugar.total_kilometros+'" disabled ></td>'+
   '<td>'+
     '<div class="form-group">'+
         '<div class="checkbox-list">'+
             '<label class="checkbox">'+
-                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onclick="gasolinaLugar('+contador_lugares+')" value="'+objectLugar.gasolina+'">'+
+                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onclick="gasolinaLugar('+contador_lugares+'),diasLugares('+contador_lugares+'),KilometrajeLugares('+contador_lugares+')" value="'+objectLugar.gasolina+'">'+
                 '<span></span>'+
             '</label>'+
         '</div>'+
@@ -2496,7 +2495,8 @@ var arrayTablaLugares = [];
 function diasLugares(id){
 
 
-  var dias = $('#dias_'+id).val();
+  //var dias = $('#dias_'+id).val();
+  var dias = $("#n_dias").val();
 
   //console.log(dias)
   objectDiasLugares = {
@@ -2520,7 +2520,8 @@ function diasLugares(id){
 
 function diasLugares2(id_key,id){
 
-  var dias = $('#dias2_'+id_key).val();
+  //var dias = $('#dias2_'+id_key).val();
+  var dias = $("#n_dias").val();
   //console.log(dias,id)
 
   $.ajax({
@@ -2569,7 +2570,8 @@ function KilometrajeLugares2(id_key,id){
 
 function KilometrajeLugares(id){
 var kilometraje = $('#kilometraje_'+id).val();
-//console.log(kilometraje)
+//var kilometraje = $('#kilometraje_0').val();
+//console.log(id,kilometraje)
   arrayTablaLugares.push({
     id:id,
     kilometraje:kilometraje
@@ -2606,7 +2608,13 @@ function gasolinaLugar(id){
               }else if(viaje == 3){
                 var tipo_viajesito  = 1;
               }
-              var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
+              //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
+              var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
+              var total2 = total1 + parseInt(kilometraje_interno);
+              var total3 = total2 / parseInt(cuota);
+              var total4 = total3 * parseFloat($(this).val());
+              //console.log(total1,total2,total3,total4)
+              var total =  total4;
               //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
             }
@@ -2622,7 +2630,16 @@ function gasolinaLugar(id){
               }else if(viaje == 3){
                 var tipo_viajesito  = 1;
               }
-              var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
+
+              //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
+              var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
+              var total2 = total1 + parseInt(kilometraje_interno);
+              var total3 = total2 / parseInt(cuota);
+              var total4 = total3 * parseFloat($(this).val());
+              //console.log(total1,total2,total3,total4)
+              var total =  total4;
+
+              //var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
               //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
 
@@ -3665,9 +3682,16 @@ function cenaLugar2(id,id_key){
 function hospedajeLugar(id){
 
     var value_ckeck = $(":checkbox[name=hospedaje_"+id+"]").val();
-    var value_dias = $("#dias_"+id+"").val();
-    var dias = value_dias - 1;
-    //console.log(value_ckeck,dias)
+    //var value_dias = $("#dias_"+id+"").val();
+    var value_dias = $("#n_dias").val();
+
+    if (value_dias == 1) {
+      var dias = 1 ;
+    }else{
+      var dias = value_dias - 1;
+    }
+
+
 
     //console.log(value_ckeck == 'undefined')
     if (value_ckeck == 'undefined') {
@@ -3681,8 +3705,12 @@ function hospedajeLugar(id){
               /////////////////////////////////////////////////////
               //console.log(value_dias,$(this).val())
               //console.log(value_dias * $(this).val())
+              //console.log(parseInt(dias) * parseFloat($(this).val()))
 
-              var total_hospedje = dias  * $(this).val();
+                var total_hospedje = parseInt(dias) * parseFloat($(this).val());
+                //console.log(total_hospedje);
+
+
               arrayTablaLugares.push({
                 id:id,
                 //hospedaje:$(this).val(),
@@ -3695,7 +3723,7 @@ function hospedajeLugar(id){
               }
 
               arrayHospedajeLugares.push(objectHospedajeLugares)
-
+              //console.log(arrayHospedajeLugares);
               // ObjetoLugares = {
               //   hospedaje:$(this).val(),
               // }
@@ -3718,7 +3746,8 @@ function hospedajeLugar(id){
 
 function desayunoLugar(id){
   var value_ckeck = $(":checkbox[name=desayuno_"+id+"]").val();
-  var value_dias = $("#dias_"+id+"").val();
+  //var value_dias = $("#dias_"+id+"").val();
+  var value_dias = $("#n_dias").val();
   //console.log(value_ckeck,value_dias)
 
   if (value_ckeck == 'undefined') {
@@ -3757,7 +3786,8 @@ function desayunoLugar(id){
 }
 function comidaLugar(id){
   var value_ckeck = $(":checkbox[name=comida_"+id+"]").val();
-  var value_dias = $("#dias_"+id+"").val();
+  //var value_dias = $("#dias_"+id+"").val();
+  var value_dias = $("#n_dias").val();
   //console.log(value_ckeck,value_dias)
 
   if (value_ckeck == 'undefined') {
@@ -3797,8 +3827,8 @@ function comidaLugar(id){
 }
 function cenaLugar(id){
   var value_ckeck = $(":checkbox[name=cena_"+id+"]").val();
-  var value_dias = $("#dias_"+id+"").val();
-
+  //var value_dias = $("#dias_"+id+"").val();
+  var value_dias = $("#n_dias").val();
   //console.log(value_ckeck,value_dias)
 
   if (value_ckeck == 'undefined') {
@@ -4519,9 +4549,30 @@ function calcularViaticoLugar(){
  suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
  });
 
- var totalito = parseInt(kilometraje_interno) + parseInt(suma_kilometraje);
+ if (arrayVehiculo.length == 0) {
+   var viaje = arrayVehiculoOficial[0].tipo_viaje;
 
-  $('#totalkm').val(totalito);
+   if (viaje == 1) {
+     var tipo_viajesito  = 2;
+   }else if(viaje == 2){
+     var tipo_viajesito  = 1;
+   }else if(viaje == 3){
+     var tipo_viajesito  = 1;
+   }
+   //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
+   var total1 = parseInt(suma_kilometraje) * parseInt(tipo_viajesito);
+   var total2 = total1 + parseInt(kilometraje_interno);
+   //console.log(total1,total2,total3,total4)
+   var totalito =  total2;
+
+   $('#totalkm').val(totalito);
+   //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
+   //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
+ }
+
+ //var totalito = parseInt(kilometraje_interno) + parseInt(suma_kilometraje);
+
+
 
 
   @endisset

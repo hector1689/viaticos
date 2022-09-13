@@ -292,7 +292,7 @@
       <thead>
         <tr>
           <td>viáticos</td>
-          <td>hspedaje</td>
+          <td>hospedaje</td>
           <td>importe</td>
           <td>alimentación</td>
           <td>importe</td>
@@ -303,17 +303,108 @@
       <tbody>
         @foreach($lugares as $lugar)
         <tr>
-          <td style="width: 50%">sencillo</td>
+          <td style="width: 50%">
+            @if(isset($Vehiculoficial))
+            <?php
+
+              if ($Vehiculoficial->tipo_viaje == 1) {
+                echo 'REDONDO';
+              }elseif($Vehiculoficial->tipo_viaje == 2){
+                echo 'SOLO IDA';
+              }elseif($Vehiculoficial->tipo_viaje == 3){
+                echo 'SOLO VUELTA';
+              }
+             ?>
+            @endif
+             @if(isset($vehiculo))
+
+             <?php
+
+               if ($vehiculo->tipo_viaje == 1) {
+                 echo 'REDONDO';
+               }elseif($vehiculo->tipo_viaje == 2){
+                 echo 'SOLO IDA';
+               }elseif($vehiculo->tipo_viaje == 3){
+                 echo 'SOLO VUELTA';
+               }
+
+
+              ?>
+
+              @endif
+             @if(isset($autobus))
+             <?php
+
+               if ($autobus->tipo_viaje == 1) {
+                 echo 'REDONDO';
+               }elseif($autobus->tipo_viaje == 2){
+                 echo 'SOLO IDA';
+               }elseif($autobus->tipo_viaje == 3){
+                 echo 'SOLO VUELTA';
+               }
+
+
+              ?>
+             @endif
+             @if(isset($autobus))
+
+             <?php
+
+               if ($autobus->tipo_viaje == 1) {
+                 echo 'REDONDO';
+               }elseif($autobus->tipo_viaje == 2){
+                 echo 'SOLO IDA';
+               }elseif($autobus->tipo_viaje == 3){
+                 echo 'SOLO VUELTA';
+               }
+
+
+              ?>
+             @endif
+
+
+
+          </td>
           <td style="width: 50%">cuota(I) $</td>
           <td style="width: 50%">{{ $lugar->hospedaje}}</td>
           <td style="width: 50%">cuota(I) $</td>
           <td style="width: 50%">
             <?php
-              $total_alimento = $lugar->desayuno + $lugar->comida + $lugar->cena;
-              echo $total_alimento;
+              //$total_alimento = $lugar->desayuno + $lugar->comida + $lugar->cena;
+              echo $lugar->desayuno;
              ?>
          </td>
           <td style="width: 50%">{{$lugar->dias}}</td>
+          <td style="width: 50%">0</td>
+        </tr>
+
+        <tr>
+          <td style="width: 50%"></td>
+          <td style="width: 50%">cuota(II) $</td>
+          <td style="width: 50%">0</td>
+          <td style="width: 50%">cuota(II) $</td>
+          <td style="width: 50%">
+            <?php
+              //$total_alimento = $lugar->desayuno + $lugar->comida + $lugar->cena;
+              echo $lugar->comida;
+             ?>
+         </td>
+          <td style="width: 50%">0</td>
+          <td style="width: 50%">0</td>
+        </tr>
+
+        <tr>
+          <td style="width: 50%"></td>
+          <td style="width: 50%">cuota(III) $</td>
+          <td style="width: 50%">0</td>
+          <td style="width: 50%">cuota(III) $</td>
+          <td style="width: 50%">
+            <?php
+              //$total_alimento = $lugar->desayuno + $lugar->comida + $lugar->cena;
+              echo $lugar->cena;
+             ?>
+         </td>
+          <td style="width: 50%">0</td>
           <td style="width: 50%">0</td>
         </tr>
         @endforeach
@@ -350,7 +441,25 @@
              ?>
           </td>
           <td style="width: 50%">TOtal</td>
-          <td style="width: 50%">0</td>
+          <td style="width: 50%">
+            <?php
+            $sumad = 0;
+            $sumac = 0;
+            $sumace = 0;
+            $sumhotel = 0;
+            $sumgasolina = 0;
+            $sumatotal = 0;
+            foreach ($lugares as $key => $value) {
+              $sumad+=$value['desayuno'];
+              $sumac+=$value['comida'];
+              $sumace+=$value['cena'];
+              $sumhotel+=$value['hospedaje'];
+              $sumgasolina+=$value['combustible'];
+              $sumatotal = $sumad + $sumac + $sumace + $sumhotel + $sumgasolina;
+            }
+              echo $sumatotal;
+             ?>
+          </td>
         </tr>
 
       </tfoot>
@@ -368,7 +477,7 @@
           @if(isset($peaje)||isset($taxi))
           <td>con recorrido(x)</td>
           @else
-          <td>con recorrido()</td>
+          <td>con recorrido(x)</td>
           @endif
           @if(isset($avion))
           <td>aerea(x)</td>
@@ -405,33 +514,79 @@
             cuota:
             @if(isset($Vehiculoficial))
                 @foreach($rendimiento as $rendi)
-
                   @isset($Vehiculoficial)
                     @if($Vehiculoficial->cuota == $rendi->kilometros_litros)
-                    b(x)
-                    @else
-                    b()
+
+
+                      <?php
+
+                        if ($rendi->kilometros_litros == '9') {
+                          echo 'a(x) b() c() d() e()';
+                        }elseif($rendi->kilometros_litros == '7'){
+                          echo 'a() b(x) c() d() e()';
+                        }elseif($rendi->kilometros_litros == '5'){
+                          echo 'a() b() c(x) d() e()';
+                        }elseif($rendi->kilometros_litros == '2.5'){
+                          echo 'a() b() c(x) d(x) e()';
+                        }elseif($rendi->kilometros_litros == '3.3'){
+                          echo 'a() b() c() d() e(x)';
+                        }
+
+
+
+                       ?>
                     @endif
                   @endisset
                 @endforeach
-            @else
-             a() b() c(x) d()
+
             @endif
+
 
             @if(isset($vehiculo))
                 @foreach($rendimiento as $rendi)
+                  @isset($vehiculo)
+                    @if($vehiculo->cuota == $rendi->kilometros_litros)
+
+
+                      <?php
+
+                        if ($rendi->kilometros_litros == '9') {
+                          echo 'a(x) b() c() d() e()';
+                        }elseif($rendi->kilometros_litros == '7'){
+                          echo 'a() b(x) c() d() e()';
+                        }elseif($rendi->kilometros_litros == '5'){
+                          echo 'a() b() c(x) d() e()';
+                        }elseif($rendi->kilometros_litros == '2.5'){
+                          echo 'a() b() c(x) d(x) e()';
+                        }elseif($rendi->kilometros_litros == '3.3'){
+                          echo 'a() b() c() d() e(x)';
+                        }
+
+
+
+                       ?>
+                    @endif
+                  @endisset
+                @endforeach
+            @endif
+
+            <!-- @if(isset($vehiculo))
+
 
                   @isset($vehiculo)
+                  @foreach($rendimiento as $rendi)
+
                     @if($vehiculo->cuota == $rendi->kilometros_litros)
                     b(x)
                     @else
                     b()
                     @endif
+                    @endforeach
                   @endisset
-                @endforeach
+
             @else
              a() b() c(x) d()
-            @endif
+            @endif -->
           </td>
           <td style="width: 40%" colspan="3">total recorrido: {{ $transporte->total_km_recorrido }}</td>
 
@@ -444,9 +599,9 @@
         </tr>
 
         <tr>
-          <td style="width: 30%">kms: 194</td>
-          <td style="width: 30%">(x)p/u: 16.81</td>
-          <td style="width: 40%" >(/)cil: 2.5</td>
+          <td style="width: 30%">kms: 0</td>
+          <td style="width: 30%">()p/u: 0</td>
+          <td style="width: 40%" >(/)cil: @if(isset($Vehiculoficial)) {{ $Vehiculoficial->cilindraje }} @endif @if(isset($vehiculo)) {{ $vehiculo->cilindraje }} @endif</td>
           <td style="width: 40%" colspan="2">total de transportación: {{ $transporte->total_transporte }}</td>
 
         </tr>
