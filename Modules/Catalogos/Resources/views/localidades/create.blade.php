@@ -23,7 +23,7 @@
                 @isset($localidad)
                 <option value="{{ $localidad->cve_pais }}">{{ $localidad->obtenePais->nombre }}</option>
                 @else
-                <option value="">seleccionar</option>
+                <option value="142">México</option>
                 @endisset
 
                 @foreach($paises as $pais)
@@ -39,7 +39,7 @@
               <select class="form-control" id="estado"  data-nivel="2" name="estado" required>
                 @isset($localidad)
                 @else
-                <option value="">seleccionar</option>
+                <!-- <option value="">seleccionar</option> -->
                 @endisset
               </select>
               <div class="invalid-feedback">
@@ -113,6 +113,8 @@ width: '100%',
 $('#municipio').select2({
 width: '100%',
 });
+
+
 
 
 $("#pais").change(function(){
@@ -245,6 +247,68 @@ nivel = 2;
         }
       }
 });
+
+@else
+
+var estado = 2454;
+
+//console.log(estado);
+//$('#municipios').prop('selectedIndex',0);
+nivel = 1;
+  $.ajax({
+
+     type:"POST",
+
+     url:"/catalogos/localidades/Estadoedit",
+     headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     },
+     data:{
+       estado:estado,
+     },
+
+      success:function(data){
+        if (data) {
+          //console.log(data)
+          $('#estado').append('<option value="'+data.id+'">'+data.nombre+'</option>');
+        }
+      }
+});
+
+var estado = 2454;
+
+//console.log(municipio);
+//$('#municipios').prop('selectedIndex',0);
+nivel = 2;
+  $.ajax({
+
+     type:"POST",
+
+     url:"/catalogos/localidades/Municipio",
+     headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     },
+     data:{
+       estado:estado,
+     },
+
+      success:function(data){
+        //console.log(data)
+
+        if (data) {
+          for(i = nivel + 1; i <= 3; i++){
+            $('#municipio').empty();
+            $('#municipio').append('<option value="0">Selecciona</option>');
+          }data.forEach((x) => {
+            $('#municipio').append('<option value="'+x.id+'">'+x.nombre+'</option>');
+            /*$('#codigoPostal').val(x.e_Codigo);*/
+
+          });
+        }
+      }
+});
+
+
 
 @endisset
 

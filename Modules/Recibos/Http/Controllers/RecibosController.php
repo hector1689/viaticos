@@ -701,17 +701,17 @@ class RecibosController extends Controller
             $lugares->cve_t_viatico = $recibo->id;
             $lugares->cve_localidad_origen = $value['lugar'][0]['origen'];
             $lugares->cve_localidad_destino = $value['lugar'][0]['origen'];
-            $lugares->dias = $value['lugar'][7]['dias'];
+            $lugares->dias = $value['lugar'][6]['dias'];
             $lugares->cve_zona = $value['lugar'][4]['zona'];
-            $lugares->kilometros = $value['lugar'][8]['kilometraje'];
+            $lugares->kilometros = $value['lugar'][7]['kilometraje'];
             $lugares->cve_programa = $request->programalugar;
             $lugares->total_recibido = $request->total_extraer;
             $lugares->cve_usuario =Auth::user()->id;
             $lugares->save();
 
-            if (isset($value['lugar'][6]['gasolina'])) {
+            if (isset($value['lugar'][8]['gasolina'])) {
               $existe_lugar = Lugares::find($lugares->id);
-              $existe_lugar->combustible = $value['lugar'][6]['gasolina'];
+              $existe_lugar->combustible = $value['lugar'][8]['gasolina'];
               $existe_lugar->save();
             }
 
@@ -812,7 +812,7 @@ class RecibosController extends Controller
                             ])->get();
         $data['peaje_t_tabla'] = PeajeTransporte::where([
                               ['activo',1],
-                              ['cve_t_transporte',$data['transporte']->id],
+                              ['cve_peaje',$data['transporte']->id],
                             ])->get();
         $data['avion_t_tabla'] = Avion::where([
                               ['activo',1],
@@ -827,7 +827,7 @@ class RecibosController extends Controller
 
             ///////////////////////////////////////////////////////////////////
             $data['recibos'] = Recibos::find($id);
-            $data['estatus'] = EstatusRecibo::all();
+            $data['estatus'] = EstatusRecibo::whereIN('id',[1])->get();
 
 
             $data['peajes'] = Peaje::where([['activo',1],['id_dependencia',$area]])->get();
@@ -879,7 +879,7 @@ class RecibosController extends Controller
                                 ])->get();
             $data['peaje_t_tabla'] = PeajeTransporte::where([
                                   ['activo',1],
-                                  ['cve_t_transporte',$data['transporte']->id],
+                                  ['cve_peaje',$data['transporte']->id],
                                 ])->get();
             $data['avion_t_tabla'] = Avion::where([
                                   ['activo',1],

@@ -36,7 +36,7 @@
 <table class="table table-bordered table-checkable" id="kt_datatable">
   <thead>
     <tr>
-      <th>Cve</th>
+      <!-- <th>Cve</th> -->
       <th>Localidad</th>
       <th>Municipio</th>
       <th>Estado</th>
@@ -56,12 +56,12 @@ $(function() {
 tabla = $('#kt_datatable').DataTable({
   processing: true,
   serverSide: true,
-  order: [[0, 'desc']],
+  order: [[0, 'asc']],
   ajax: {
     url: "/catalogos/localidades/tabla",
   },
   columns: [
-    { data: 'id', name : 'id'},
+    // { data: 'id', name : 'id'},
     { data: 'localidad', name : 'localidad'},
     { data: 'cve_municipio', name : 'cve_municipio'},
     { data: 'cve_estado', name : 'cve_estado'},
