@@ -82,6 +82,16 @@ class KilometrajeController extends Controller
         $kilometraje->cve_usuario = Auth::user()->id;
         $kilometraje->save();
 
+
+        $kilometraje = new Kilometraje();
+        $kilometraje->cve_localidad_origen = $request->destino;
+        $kilometraje->cve_localidad_destino = $request->origen;
+        $kilometraje->distancia_kilometros = $request->distancia;
+        $kilometraje->id_dependencia = $area;
+        $kilometraje->id_zona = $request->zona;
+        $kilometraje->cve_usuario = Auth::user()->id;
+        $kilometraje->save();
+
         return response()->json(['success'=>'Registro agregado satisfactoriamente']);
 
       } catch (\Exception $e) {
