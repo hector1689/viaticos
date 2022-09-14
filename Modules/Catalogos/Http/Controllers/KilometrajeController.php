@@ -47,7 +47,7 @@ class KilometrajeController extends Controller
       }else{
         $usuario = Auth::user()->id;
         $asociar = Asociar::where('id_usuario',$usuario)->first();
- 
+
         $data['localidades'] = Localidad::where([['activo',1],['id_dependencia',$asociar->id_dependencia]])->get();
         return view('catalogos::kilometraje.create')->with($data);
       }
@@ -78,6 +78,7 @@ class KilometrajeController extends Controller
         $kilometraje->cve_localidad_destino = $request->destino;
         $kilometraje->distancia_kilometros = $request->distancia;
         $kilometraje->id_dependencia = $area;
+        $kilometraje->id_zona = $request->zona;
         $kilometraje->cve_usuario = Auth::user()->id;
         $kilometraje->save();
 
@@ -142,6 +143,7 @@ class KilometrajeController extends Controller
         $kilometraje->cve_localidad_destino = $request->destino;
         $kilometraje->distancia_kilometros = $request->distancia;
         $kilometraje->id_dependencia = $area;
+        $kilometraje->id_zona = $request->zona;
         $kilometraje->cve_usuario = Auth::user()->id;
         $kilometraje->save();
 
@@ -190,6 +192,16 @@ class KilometrajeController extends Controller
     ->editColumn('cve_localidad_destino', function ($registros) {
 
       return $registros->obteneLocalidad2->localidad.'-'.$registros->obteneLocalidad2->obteneMunicipio->nombre.'-'.$registros->obteneLocalidad2->obteneEstado->nombre.'-'.$registros->obteneLocalidad2->obtenePais->nombre;
+    })
+    ->editColumn('id_zona', function ($registros) {
+
+      if ($registros->id_zona == '') {
+        $zona = 'Sin Registro';
+      }else{
+        $zona = $registros->obtenerZona->nombre;
+      }
+
+      return $zona;
     })
     // ->editColumn('cve_pais', function ($registros) {
     //   $pais = Pais::find($registros->cve_pais);

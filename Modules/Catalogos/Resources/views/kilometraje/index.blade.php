@@ -39,6 +39,7 @@
       <th>Origen</th>
       <th>Destino</th>
       <th>Kilometraje</th>
+      <th>Zona</th>
       <th>ACCIONES</th>
     </tr>
     </thead>
@@ -61,6 +62,7 @@ tabla = $('#kt_datatable').DataTable({
     { data: 'cve_localidad_origen', name : 'cve_localidad_origen'},
     { data: 'cve_localidad_destino', name : 'cve_localidad_destino'},
     { data: 'distancia_kilometros', name : 'distancia_kilometros'},
+    { data: 'id_zona', name : 'id_zona'},
     { data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }
   ],
   createdRow: function ( row, data, index ) {

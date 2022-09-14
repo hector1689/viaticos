@@ -11,7 +11,8 @@ class Kilometraje extends Model{
     "cve_localidad_origen",
     "cve_localidad_destino",
     "distancia_kilometros",
-      "id_dependencia",
+    "id_dependencia",
+      "id_zona",
     "activo",
     "cve_usuario",
   ];
@@ -27,7 +28,9 @@ class Kilometraje extends Model{
     return $this->hasOne('\Modules\Catalogos\Entities\Localidad', 'id', 'cve_localidad_destino');
   }
 
-
+  public function obtenerZona(){
+    return $this->hasOne('\Modules\Catalogos\Entities\Zona', 'id', 'id_zona');
+  }
 
   public function obtenerDependencia(){
     return $this->hasOne('\Modules\Catalogos\Entities\Areas', 'id', 'id_dependencia');

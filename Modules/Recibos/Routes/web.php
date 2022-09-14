@@ -28,6 +28,8 @@ Route::prefix('recibos')->group(function() {
   Route::post('/TraerFirmaJefes', 'RecibosController@TraerFirmaJefes');
   Route::post('/TraerJefe', 'RecibosController@TraerJefe');
   Route::post('/TraerJefeDirector', 'RecibosController@TraerJefeDirector');
+  Route::post('/TresZonas', 'RecibosController@TresZonas');
+  Route::post('/traerZonaNombre', 'RecibosController@traerZonaNombre');
 
   Route::get('/tabla', 'RecibosController@tabla');
   Route::get('/{id}/edit', 'RecibosController@edit');

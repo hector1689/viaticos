@@ -19,6 +19,7 @@ use \Modules\Catalogos\Entities\Programa;
 use \Modules\Catalogos\Entities\Alimentos;
 use \Modules\Catalogos\Entities\Hospedaje;
 use \Modules\Catalogos\Entities\Folios;
+use \Modules\Catalogos\Entities\Zona;
 use \Modules\Recibos\Entities\Comprobaciones;
 use Illuminate\Support\Facades\Storage;
 use \Modules\Recibos\Entities\Recibos;
@@ -1320,6 +1321,46 @@ class RecibosController extends Controller
       return $lugares;
     }
 
+
+    public function TresZonas(Request $request){
+
+
+      if ($request->zona == 'C') {
+        $zonita = 1;
+      }else if($request->zona == 'E'){
+        $zonita = 2;
+      }else if($request->zona == 'M'){
+        $zonita = 3;
+      }
+
+      $query  =  ("
+      SELECT
+      cat_kilometraje.id,
+      cat_localidad.localidad,
+      cat_municipios.nombre AS municipio,
+      cat_estados.nombre AS estado,
+      cat_paises.nombre AS pais
+      FROM cat_kilometraje
+      INNER JOIN cat_localidad ON cat_localidad.id = cat_kilometraje.cve_localidad_origen
+      INNER JOIN cat_paises ON cat_paises.id = cat_localidad.cve_pais
+      INNER JOIN cat_estados ON cat_estados.id = cat_localidad.cve_estado
+      INNER JOIN cat_municipios ON cat_municipios.id = cat_localidad.cve_municipio
+      WHERE cat_kilometraje.activo = 1 AND cat_localidad.activo = 1 AND cat_kilometraje.id_zona = $zonita
+      ");
+
+      $zonas = DB::select($query);
+
+
+      //$zonas = kilometraje::where([['activo',1],['id_zona',$zonita]])->with('obteneLocalidad','obteneLocalidad2','obtenerZona','obtenerDependencia')->get();
+
+
+
+      return $zonas;
+    }
+
+    public function traerZonaNombre(Request $request){
+
+    }
 
 
     public function TraerDatosViaticoLugar(Request $request){

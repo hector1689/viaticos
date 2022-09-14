@@ -230,7 +230,7 @@
                   <div class="row">
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Zona : </label>
-                        <select class="form-control" id="zona_trayectoria" @isset($recibos) @else disabled @endisset>
+                        <select class="form-control" id="zona_trayectoria" data-nivel="1" @isset($recibos) @else disabled @endisset>
                           <option value="0">seleccionar</option>
                           <option value="C">Centro de Tamaulipas</option>
                           <option value="E">Extranjero y mas de 50 millas de la frontera con México en USA</option>
@@ -241,16 +241,16 @@
 
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Origen: </label>
-                        <select class="form-control" id="origen_lugar" @isset($recibos) @else disabled @endisset data-nivel="1">
+                        <select class="form-control" id="origen_lugar" data-nivel="2" @isset($recibos) @else disabled @endisset >
                           <option value="0">seleccionar</option>
-                          @foreach($lacalidad1 as $loc1)
+                          <!-- @foreach($lacalidad1 as $loc1)
                           <option value="{{ $loc1->id }}">{{ $loc1->obteneLocalidad->localidad }}-{{ $loc1->obteneLocalidad->obteneMunicipio->nombre }}-{{ $loc1->obteneLocalidad->obteneEstado->nombre }}-{{ $loc1->obteneLocalidad->obtenePais->nombre }}</option>
-                          @endforeach
+                          @endforeach -->
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label for="inputPassword4" style="font-size:12px;" class="form-label"><strong style="color:red">*</strong>Destino: </label>
-                        <select class="form-control" id="destino_lugar"  data-nivel="2" >
+                        <select class="form-control" id="destino_lugar"  data-nivel="3" >
                           <option value="0">seleccionar</option>
                           <!-- @foreach($lacalidad2 as $loc2)
                           <option value="{{ $loc2->id }}">{{ $loc2->obteneLocalidad2->localidad }}-{{ $loc2->obteneLocalidad2->obteneMunicipio->nombre }}-{{ $loc2->obteneLocalidad2->obteneEstado->nombre }}-{{ $loc2->obteneLocalidad2->obtenePais->nombre }}</option>
@@ -1511,6 +1511,43 @@ var arrayNumeros = [];
 var ObjetoLugares = {};
 var arrayLugares = [];
 
+/////////////////////////////////////////////////////////////////
+$("#zona_trayectoria").change(function(){
+
+  var zona = $("#zona_trayectoria").val();
+
+  //console.log(estado);
+  //$('#municipios').prop('selectedIndex',0);
+  nivel = parseInt($(this).attr('data-nivel'));
+    $.ajax({
+
+       type:"POST",
+
+       url:"/recibos/TresZonas",
+       headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       },
+       data:{
+         zona:zona,
+       },
+
+        success:function(data){
+          if (data) {
+
+              for(i = nivel + 1; i <= 3; i++){
+                $('#origen_lugar').empty();
+                //$('#destino_lugar').empty();
+                $('#origen_lugar').append('<option value="0">Selecciona</option>');
+              }data.forEach((x) => {
+                $('#origen_lugar').append('<option value="'+x.id+'">'+x.localidad+'-'+x.municipio+'-'+x.estado+'-'+x.pais+' </option>');
+
+              });
+
+          }
+        }
+  });
+
+});
 
 ///////////////// origen destino ///////////////////////////
 $("#origen_lugar").change(function(){

@@ -17,7 +17,7 @@
 
 
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-6">
               <label for="inputPassword4"  style="font-size:12px;"class="form-label">Localidad Origen: </label>
               <select class="form-control" name="origen">
                 @isset($kilometraje)
@@ -33,7 +33,7 @@
                 Por Favor Ingrese Nombre
               </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Localidad Destino: </label>
               <select class="form-control" name="destino">
                 @isset($kilometraje)
@@ -50,11 +50,38 @@
               </div>
           </div>
 
-          <div class="col-md-4">
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
               <label for="inputPassword4" style="font-size:12px;" class="form-label">Distancia en Kilometros: </label>
-              <input type="text" class="form-control" id="distancia" placeholder="Distancia en Kilometros" value="@isset($kilometraje){{ $kilometraje->distancia_kilometros }}@endisset" required>
+              <input type="text" class="form-control" id="distancia" placeholder="Distancia en Kilometros" value="@isset($kilometraje){{ $kilometraje->distancia_kilometros }}@endisset" onkeypress="return validaNumericos(event)" required>
               <div class="invalid-feedback">
                 Por Favor Ingrese Apellido Paterno
+              </div>
+          </div>
+
+          <div class="col-md-6">
+              <label for="inputPassword4" style="font-size:12px;" class="form-label">Zona: </label>
+              <select class="form-control" name="zona">
+                @isset($kilometraje)
+                  @if($kilometraje->id_zona == '')
+                    <option value="">seleccionar</option>
+
+                  @else
+                    <option value="{{ $kilometraje->id_zona }}">{{ $kilometraje->obtenerZona->nombre }}</option>
+                  @endif
+
+                @else
+                <option value="">seleccionar</option>
+                @endisset
+                <option value="1">Centro de Tamaulipas</option>
+                <option value="2">Extranjero y mas de 50 millas de la frontera con México en USA</option>
+                <option value="3">Méx.,Mty., Nvo. Ldo.,+ de 800 kms.</option>
+              </select>
+              <div class="invalid-feedback">
+                Por Favor Seleccione Zona
               </div>
           </div>
         </div>
@@ -93,10 +120,18 @@
 </div>
 
 <script type="text/javascript">
+function validaNumericos(event) {
+    if(event.charCode >= 48 && event.charCode <= 57){
+      return true;
+     }
+     return false;
+}
+
 function guardar(){
 
   var origen = $('select[name=origen]').val();
   var destino = $('select[name=destino]').val();
+  var zona = $('select[name=zona]').val();
   var distancia = $('#distancia').val();
 
     var formData = new FormData();
@@ -111,6 +146,7 @@ function guardar(){
     formData.append('origen', origen);
     formData.append('destino', destino);
     formData.append('distancia', distancia);
+    formData.append('zona', zona);
 
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var form = document.querySelectorAll('.needs-validation')
