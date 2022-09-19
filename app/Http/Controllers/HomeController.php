@@ -295,7 +295,7 @@ class HomeController extends Controller
       $tipo_usuario = Auth::user()->tipo_usuario;
 
       if($tipo_usuario == 4){
-        $registros = Recibos::where('activo', 1)->take(5)->orderBy('id','ASC')->get();
+        $registros = Recibos::where('activo', 1)->take(5)->orderBy('id','DESC')->get();
       }elseif($tipo_usuario == 1){
 
         $usuario = Auth::user()->id;
@@ -361,7 +361,7 @@ class HomeController extends Controller
         }
         //dd($nivel1);
 
-        $registros = Recibos::where([['activo', 1]])->whereIN('id_dependencia',$nivel1)->take(5)->orderBy('id','ASC')->get();
+        $registros = Recibos::where([['activo', 1]])->whereIN('id_dependencia',$nivel1)->take(5)->orderBy('id','DESC')->get();
 
       }elseif($tipo_usuario == 2){
 

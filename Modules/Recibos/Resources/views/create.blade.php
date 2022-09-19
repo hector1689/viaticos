@@ -2419,6 +2419,8 @@ if (origen_lugar == 0 || destino_lugar == 0) {
 }
 
 }
+
+
 var contador_lugares = 0;
 function agregarLugares(objectLugar){
 
@@ -2428,18 +2430,24 @@ if (objectLugar.zona == 1) {
 }else{
   zonita = 'Frontera y Entidades Federativas del Extranjero';
 }
+
+// gasolina_
+// hospedaje_
+// desayuno_
+// comida_
+// cena_
 //console.log(objectLugar.hospedaje),diasLugares('+contador_lugares+'),KilometrajeLugares('+contador_lugares+')
   var tr = '<tr id="filas_lugar'+contador_lugares+'">'+
   '<td><input type="hidden" id="figura_nueva" value="'+contador_lugares+'"/>'+objectLugar.origen_name+'</td>'+
   '<td>'+objectLugar.destino_name+'</td>'+
-  '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+'),KilometrajeLugares('+contador_lugares+')" ></td>'+
+  '<td><input type="text" class="form-control" id="dias_'+contador_lugares+'" onkeypress="return validaNumericos(event)" onchange="diasLugares('+contador_lugares+'),KilometrajeLugares('+contador_lugares+'),botones('+contador_lugares+')" ></td>'+
   '<td>'+objectLugar.zona_trayectoria+'</td>'+
   '<td><input type="text" class="form-control" id="kilometraje_'+contador_lugares+'" onkeypress="return validaNumericos(event)" value="'+objectLugar.total_kilometros+'" disabled ></td>'+
   '<td>'+
     '<div class="form-group">'+
         '<div class="checkbox-list">'+
             '<label class="checkbox">'+
-                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onclick="gasolinaLugar('+contador_lugares+')" value="'+objectLugar.gasolina+'">'+
+                '<input type="checkbox" name="gasolina_'+contador_lugares+'" onclick="gasolinaLugar('+contador_lugares+')" value="'+objectLugar.gasolina+'" disabled>'+
                 '<span></span>'+
             '</label>'+
         '</div>'+
@@ -2449,7 +2457,7 @@ if (objectLugar.zona == 1) {
     '<div class="form-group">'+
         '<div class="checkbox-list">'+
             '<label class="checkbox">'+
-                '<input type="checkbox" name="hospedaje_'+contador_lugares+'" onclick="hospedajeLugar('+contador_lugares+')" value="'+objectLugar.hospedaje+'">'+
+                '<input type="checkbox" name="hospedaje_'+contador_lugares+'" onclick="hospedajeLugar('+contador_lugares+')" value="'+objectLugar.hospedaje+'" disabled>'+
                 '<span></span>'+
             '</label>'+
         '</div>'+
@@ -2457,15 +2465,15 @@ if (objectLugar.zona == 1) {
   '</td>'+
   '<td><div class="checkbox-inline">'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="desayuno_'+contador_lugares+'" onclick="desayunoLugar('+contador_lugares+')" value="'+objectLugar.desayuno+'">'+
+             '<input type="checkbox" name="desayuno_'+contador_lugares+'" onclick="desayunoLugar('+contador_lugares+')" value="'+objectLugar.desayuno+'" disabled>'+
              '<span></span>'+
          '</label>'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="comida_'+contador_lugares+'" onclick="comidaLugar('+contador_lugares+')" value="'+objectLugar.comida+'">'+
+             '<input type="checkbox" name="comida_'+contador_lugares+'" onclick="comidaLugar('+contador_lugares+')" value="'+objectLugar.comida+'" disabled>'+
              '<span></span>'+
          '</label>'+
          '<label class="checkbox">'+
-             '<input type="checkbox" name="cena_'+contador_lugares+'" onclick="cenaLugar('+contador_lugares+')" value="'+objectLugar.cena+'">'+
+             '<input type="checkbox" name="cena_'+contador_lugares+'" onclick="cenaLugar('+contador_lugares+')" value="'+objectLugar.cena+'" disabled>'+
              '<span></span>'+
          '</label>'+
      '</div>'+
@@ -2496,7 +2504,16 @@ if (objectLugar.zona == 1) {
   contador_lugares ++;
 }
 
+function botones(id){
+  //console.log(id)
+  $(":checkbox[name=gasolina_"+id+"]").prop('disabled',false);
+  $(":checkbox[name=hospedaje_"+id+"]").prop('disabled',false);
+  $(":checkbox[name=desayuno_"+id+"]").prop('disabled',false);
+  $(":checkbox[name=comida_"+id+"]").prop('disabled',false);
+  $(":checkbox[name=cena_"+id+"]").prop('disabled',false);
 
+
+}
 
 
 
