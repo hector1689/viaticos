@@ -380,7 +380,7 @@
                       </div>
 
                       <div class="col-md-2 calculobtn" >
-                        <label for="">Total Recibido</label>
+                        <label for="">Total Recibo</label>
                         <div id="total_recibido_lugar"></div>
                       </div>
 
@@ -1619,12 +1619,36 @@ var total_alimentos2 = 0;
 
 
 var arraysito ={!!  json_encode($lugares) !!};
-
+var totalkilometraje = $('#totalkm').val();
 arraysito.forEach (function(x){
   suma_dias2 += parseInt(x.dias);
   suma_kilometraje2 += parseInt(x.kilometros);
 
-  suma_gasolina2 += parseFloat(x.combustible);
+  var cuota = 0;
+  
+  if (arrayvhoficial == '[]') {
+
+  }else{
+    var arrayvhoficial ={!!  json_encode($vhoficialtabla) !!};
+    arrayvhoficial.forEach (function(z){
+      cuota = z.cuota;
+    });
+  }
+
+    var arrayvehiculo ={!!  json_encode($Vehiculotabla) !!};
+
+    if (arrayvehiculo == '[]') {
+
+    }else{
+      arrayvehiculo.forEach (function(z){
+        cuota = z.cuota;
+      });
+    }
+    //console.log(totalkilometraje,cuota,x.combustible);
+  var totalito  = parseInt(totalkilometraje) / parseInt(cuota);
+  var totalmas = totalito * parseFloat(x.combustible);
+  //suma_gasolina2 += parseFloat(x.combustible);
+  suma_gasolina2  = totalmas;
   suma_hospedaje2 += parseFloat(x.hospedaje);
 
   suma_desayuno2 += parseFloat(x.desayuno);
@@ -2659,171 +2683,171 @@ function gasolinaLugar(id){
             var kilometraje_total = parseInt(kilometraje) + parseInt(kilometraje_interno)
 
             //console.log(kilometraje_total,kilometraje,kilometraje_interno)
-
-            if (arrayVehiculo.length == 0) {
-              var cuota = arrayVehiculoOficial[0].cuota;
-              //var viaje = arrayVehiculoOficial[0].tipo_viaje;
-
-              // if (viaje == 1) {
-              //   var tipo_viajesito  = 2;
-              // }else if(viaje == 2){
-              //   var tipo_viajesito  = 1;
-              // }else if(viaje == 3){
-              //   var tipo_viajesito  = 1;
-              // }
-              //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
-              var total1 = parseInt(kilometraje) ;
-              var total2 = parseInt(total1) + parseInt(kilometraje_interno);
-              //console.log(total1,parseInt(kilometraje_interno))
-              //var total2 = parseInt(kilometraje_interno);
-              var total3 = total2 / parseInt(cuota);
-              var total4 = total3 * parseFloat($(this).val());
-              //console.log(total1,total2,total3,total4)
-              var total =  total4;
-              //console.log(total2)
-              //console.log(total3)
-              //console.log(total4)
-              //console.log(total)
-              //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
-              //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
-
-              // arrayTablaLugares.push({
-              //   id:id,
-              //   //gasolina:$(this).val(),
-              //   gasolina:total,
-              // })
-              //
-              // //console.log(arrayTablaLugares)
-              //
-              //
-              //
-              // objectGasolinaLugares = {
-              // id:id,
-              // //gasolina:$(this).val(),
-              // gasolina:total,
-              // }
-              //
-              // arrayGasolinaLugares.push(objectGasolinaLugares)
-            }else if (arrayVehiculoOficial.length == 0) {
-              var cuota = arrayVehiculo[0].cuota;
-              // var viaje = arrayVehiculoOficial[0].tipo_viaje;
-              //
-              // if (viaje == 1) {
-              //   var tipo_viajesito  = 2;
-              // }else if(viaje == 2){
-              //   var tipo_viajesito  = 1;
-              // }else if(viaje == 3){
-              //   var tipo_viajesito  = 1;
-              // }
-
-              //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
-              //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
-              var total1 = parseInt(kilometraje);
-              var total2 = total1 + parseInt(kilometraje_interno);
-              //var total2 = parseInt(kilometraje_interno);
-              var total3 = total2 / parseInt(cuota);
-              var total4 = total3 * parseFloat($(this).val());
-              //console.log(total1,total2,total3,total4)
-              var total =  total4;
-
-              //var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
-              //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
-              //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
-
-              //console.log(total)
-
-              // arrayTablaLugares.push({
-              //   id:id,
-              //   //gasolina:$(this).val(),
-              //   gasolina:total,
-              // })
-              //
-              // //console.log(arrayTablaLugares)
-              //
-              //
-              //
-              // objectGasolinaLugares = {
-              // id:id,
-              // //gasolina:$(this).val(),
-              // gasolina:total,
-              // }
-              //
-              // arrayGasolinaLugares.push(objectGasolinaLugares)
-            }else if (arrayAutobus.length == 0) {
-
-              // var viaje = arrayAutobus[0].tipo_viaje;
-              //
-              // if (viaje == 1) {
-              //   var tipo_viajesito  = 2;
-              // }else if(viaje == 2){
-              //   var tipo_viajesito  = 1;
-              // }else if(viaje == 3){
-              //   var tipo_viajesito  = 1;
-              // }
-
-              //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
-              //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
-              var total1 = parseInt(kilometraje);
-              var total2 = total1 + parseInt(kilometraje_interno);
-              //var total2 = parseInt(kilometraje_interno);
-              var total3 = total2 / parseInt(cuota);
-              var total4 = total3 * parseFloat($(this).val());
-              //console.log(total1,total2,total3,total4)
-              var total =  total4;
-
-              //var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
-              //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
-              //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
-
-              //console.log(total)
-
-
-            }else if (arrayAvion.length == 0) {
-
-              // var viaje = arrayAvion[0].tipo_viaje;
-              //
-              // if (viaje == 1) {
-              //   var tipo_viajesito  = 2;
-              // }else if(viaje == 2){
-              //   var tipo_viajesito  = 1;
-              // }else if(viaje == 3){
-              //   var tipo_viajesito  = 1;
-              // }
-
-              //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
-              //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
-              var total1 = parseInt(kilometraje);
-              var total2 = total1 + parseInt(kilometraje_interno);
-              //var total2 = parseInt(kilometraje_interno);
-              var total3 = total2 / parseInt(cuota);
-              var total4 = total3 * parseFloat($(this).val());
-              //console.log(total1,total2,total3,total4)
-              var total =  total4;
-
-              //var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
-              //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
-              //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
-
-              //console.log(total)
-
-              // arrayTablaLugares.push({
-              //   id:id,
-              //   //gasolina:$(this).val(),
-              //   gasolina:total,
-              // })
-              //
-              // //console.log(arrayTablaLugares)
-              //
-              //
-              //
-              // objectGasolinaLugares = {
-              // id:id,
-              // //gasolina:$(this).val(),
-              // gasolina:total,
-              // }
-              //
-              // arrayGasolinaLugares.push(objectGasolinaLugares)
-            }
+            var total = $(this).val();
+            // if (arrayVehiculo.length == 0) {
+            //   var cuota = arrayVehiculoOficial[0].cuota;
+            //   //var viaje = arrayVehiculoOficial[0].tipo_viaje;
+            //
+            //   // if (viaje == 1) {
+            //   //   var tipo_viajesito  = 2;
+            //   // }else if(viaje == 2){
+            //   //   var tipo_viajesito  = 1;
+            //   // }else if(viaje == 3){
+            //   //   var tipo_viajesito  = 1;
+            //   // }
+            //   //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
+            //   var total1 = parseInt(kilometraje);
+            //   var total2 = parseInt(total1) + parseInt(kilometraje_interno);
+            //   //console.log(total1,parseInt(kilometraje_interno))
+            //   //var total2 = parseInt(kilometraje_interno);
+            //   var total3 = total2 / parseInt(cuota);
+            //   var total4 = total3 * parseFloat($(this).val());
+            //   //console.log(total1,total2,total3,total4)
+            //   var total =  total4;
+            //   //console.log(total2)
+            //   //console.log(total3)
+            //   //console.log(total4)
+            //   //console.log(total)
+            //   //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
+            //   //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
+            //
+            //   // arrayTablaLugares.push({
+            //   //   id:id,
+            //   //   //gasolina:$(this).val(),
+            //   //   gasolina:total,
+            //   // })
+            //   //
+            //   // //console.log(arrayTablaLugares)
+            //   //
+            //   //
+            //   //
+            //   // objectGasolinaLugares = {
+            //   // id:id,
+            //   // //gasolina:$(this).val(),
+            //   // gasolina:total,
+            //   // }
+            //   //
+            //   // arrayGasolinaLugares.push(objectGasolinaLugares)
+            // }else if (arrayVehiculoOficial.length == 0) {
+            //   var cuota = arrayVehiculo[0].cuota;
+            //   // var viaje = arrayVehiculoOficial[0].tipo_viaje;
+            //   //
+            //   // if (viaje == 1) {
+            //   //   var tipo_viajesito  = 2;
+            //   // }else if(viaje == 2){
+            //   //   var tipo_viajesito  = 1;
+            //   // }else if(viaje == 3){
+            //   //   var tipo_viajesito  = 1;
+            //   // }
+            //
+            //   //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
+            //   //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
+            //   var total1 = parseInt(kilometraje);
+            //   var total2 = total1 + parseInt(kilometraje_interno);
+            //   //var total2 = parseInt(kilometraje_interno);
+            //   var total3 = total2 / parseInt(cuota);
+            //   var total4 = total3 * parseFloat($(this).val());
+            //   //console.log(total1,total2,total3,total4)
+            //   var total =  total4;
+            //
+            //   //var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
+            //   //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
+            //   //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
+            //
+            //   //console.log(total)
+            //
+            //   // arrayTablaLugares.push({
+            //   //   id:id,
+            //   //   //gasolina:$(this).val(),
+            //   //   gasolina:total,
+            //   // })
+            //   //
+            //   // //console.log(arrayTablaLugares)
+            //   //
+            //   //
+            //   //
+            //   // objectGasolinaLugares = {
+            //   // id:id,
+            //   // //gasolina:$(this).val(),
+            //   // gasolina:total,
+            //   // }
+            //   //
+            //   // arrayGasolinaLugares.push(objectGasolinaLugares)
+            // }else if (arrayAutobus.length == 0) {
+            //
+            //   // var viaje = arrayAutobus[0].tipo_viaje;
+            //   //
+            //   // if (viaje == 1) {
+            //   //   var tipo_viajesito  = 2;
+            //   // }else if(viaje == 2){
+            //   //   var tipo_viajesito  = 1;
+            //   // }else if(viaje == 3){
+            //   //   var tipo_viajesito  = 1;
+            //   // }
+            //
+            //   //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
+            //   //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
+            //   var total1 = parseInt(kilometraje);
+            //   var total2 = total1 + parseInt(kilometraje_interno);
+            //   //var total2 = parseInt(kilometraje_interno);
+            //   var total3 = total2 / parseInt(cuota);
+            //   var total4 = total3 * parseFloat($(this).val());
+            //   //console.log(total1,total2,total3,total4)
+            //   var total =  total4;
+            //
+            //   //var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
+            //   //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
+            //   //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
+            //
+            //   //console.log(total)
+            //
+            //
+            // }else if (arrayAvion.length == 0) {
+            //
+            //   // var viaje = arrayAvion[0].tipo_viaje;
+            //   //
+            //   // if (viaje == 1) {
+            //   //   var tipo_viajesito  = 2;
+            //   // }else if(viaje == 2){
+            //   //   var tipo_viajesito  = 1;
+            //   // }else if(viaje == 3){
+            //   //   var tipo_viajesito  = 1;
+            //   // }
+            //
+            //   //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
+            //   //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
+            //   var total1 = parseInt(kilometraje);
+            //   var total2 = total1 + parseInt(kilometraje_interno);
+            //   //var total2 = parseInt(kilometraje_interno);
+            //   var total3 = total2 / parseInt(cuota);
+            //   var total4 = total3 * parseFloat($(this).val());
+            //   //console.log(total1,total2,total3,total4)
+            //   var total =  total4;
+            //
+            //   //var total =  parseInt(kilometraje_interno) * parseInt(tipo_viajesito) + parseInt(kilometraje)  / parseFloat(cuota) * parseFloat($(this).val());
+            //   //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
+            //   //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
+            //
+            //   //console.log(total)
+            //
+            //   // arrayTablaLugares.push({
+            //   //   id:id,
+            //   //   //gasolina:$(this).val(),
+            //   //   gasolina:total,
+            //   // })
+            //   //
+            //   // //console.log(arrayTablaLugares)
+            //   //
+            //   //
+            //   //
+            //   // objectGasolinaLugares = {
+            //   // id:id,
+            //   // //gasolina:$(this).val(),
+            //   // gasolina:total,
+            //   // }
+            //   //
+            //   // arrayGasolinaLugares.push(objectGasolinaLugares)
+            // }
 
 
 
@@ -2846,7 +2870,7 @@ function gasolinaLugar(id){
             }
 
             arrayGasolinaLugares.push(objectGasolinaLugares)
-
+            //console.log(arrayGasolinaLugares)
         }else {
 
           arrayGasolinaLugares.forEach(function(x, index, object) {
@@ -4529,6 +4553,39 @@ function calcularViaticoLugar(){
 
   @else
 
+
+  if ($('#kilometrorecorrido').val() == 0) {
+    var kilometraje_interno = 0;
+  }else{
+    var kilometraje_interno = $('#kilometrorecorrido').val();
+  }
+
+  //var kilometraje_interno = $('#totalkm').val();
+
+  var suma_kilometraje = 0;
+  arrayKilometrajeLugares.forEach (function(numero_kilometraje){
+  suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
+  });
+
+  if (arrayVehiculo.length == 0) {
+    var viaje = arrayVehiculoOficial[0].tipo_viaje;
+
+    if (viaje == 1) {
+      var tipo_viajesito  = 2;
+    }else if(viaje == 2){
+      var tipo_viajesito  = 1;
+    }else if(viaje == 3){
+      var tipo_viajesito  = 1;
+    }
+    //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
+    //var total1 = parseInt(suma_kilometraje) * parseInt(tipo_viajesito);
+    var total1 = parseInt(suma_kilometraje);
+    var total2 = parseInt(kilometraje_interno) + parseInt(total1);
+    //console.log(total1,total2,suma_kilometraje,kilometraje_interno)
+    var totalito =  total2;
+
+    $('#totalkm').val(totalito);
+/////////////////////////////////////////////////////////////////////////////
   var suma_dias = 0;
   arrayDiasLugares.forEach (function(numero){
   suma_dias += parseInt(numero.dias);
@@ -4542,10 +4599,59 @@ function calcularViaticoLugar(){
 
 
   var suma_gasolina = 0;
+  var total_gasolina = 0;
+
   arrayGasolinaLugares.forEach (function(numero_gasolina){
   suma_gasolina += parseFloat(numero_gasolina.gasolina);
+  total_gasolina = parseFloat(numero_gasolina.gasolina);
   });
+  //////////////////////////////////////////////////////////////////////
+  if (arrayVehiculo.length == 0) {
+    var cuota = arrayVehiculoOficial[0].cuota;
 
+
+    var total2 = $('#totalkm').val();
+    //console.log(total1,parseInt(kilometraje_interno))
+    //var total2 = parseInt(kilometraje_interno);
+    //console.log(total2,parseInt(cuota),parseFloat(total_gasolina))
+    var total3 = total2 / parseInt(cuota);
+    var total4 = total3 * parseFloat(total_gasolina);
+    //console.log(total1,total2,total3,total4)
+    var total =  total4;
+
+  }else if (arrayVehiculoOficial.length == 0) {
+    var cuota = arrayVehiculo[0].cuota;
+
+
+    var total2 = $('#totalkm').val();
+    //var total2 = parseInt(kilometraje_interno);
+    var total3 = total2 / parseInt(cuota);
+    var total4 = total3 * parseFloat(total_gasolina);
+    //console.log(total1,total2,total3,total4)
+    var total =  total4;
+
+  }else if (arrayAutobus.length == 0) {
+
+
+    var total2 = $('#totalkm').val();
+    //var total2 = parseInt(kilometraje_interno);
+    var total3 = total2 / parseInt(cuota);
+    var total4 = total3 * parseFloat(total_gasolina);
+    //console.log(total1,total2,total3,total4)
+    var total =  total4;
+
+  }else if (arrayAvion.length == 0) {
+
+    var total2 = $('#totalkm').val();
+    //var total2 = parseInt(kilometraje_interno);
+    var total3 = total2 / parseInt(cuota);
+    var total4 = total3 * parseFloat(total_gasolina);
+    //console.log(total1,total2,total3,total4)
+    var total =  total4;
+
+  }
+
+  //console.log(total)
 
   var suma_hospedaje = 0;
   arrayHospedajeLugares.forEach (function(numero_hospedaje){
@@ -4572,14 +4678,14 @@ function calcularViaticoLugar(){
 
 
   var suma_total_comidas = parseFloat(suma_desayuno) + parseFloat(suma_comida) + parseFloat(suma_cena);
-  var suma_total_totales = parseFloat(suma_gasolina) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas);
+  var suma_total_totales = parseFloat(total) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas);
 
   $('#footLugar').show();
   // $('#total_recibido_lugar').show();
 
   $('#total_dias').html('<p>'+suma_dias+'</p>');
   $('#total_kilometros').html('<p>'+suma_kilometraje+'</p>');
-  $('#total_gasolina').html('<p>$'+suma_gasolina.toFixed(2)+'</p>');
+  $('#total_gasolina').html('<p>$'+total.toFixed(2)+'</p>');
   $('#total_hospedaje').html('<p>$'+suma_hospedaje.toFixed(2)+'</p>');
   $('#total_comidas').html('<p>$'+suma_total_comidas.toFixed(2)+'</p>');
 
@@ -4732,37 +4838,7 @@ function calcularViaticoLugar(){
  //   var kilometraje_interno = $('#totalkm').val();
  // }
 
- if ($('#kilometrorecorrido').val() == 0) {
-   var kilometraje_interno = 0;
- }else{
-   var kilometraje_interno = $('#kilometrorecorrido').val();
- }
 
- //var kilometraje_interno = $('#totalkm').val();
-
- var suma_kilometraje = 0;
- arrayKilometrajeLugares.forEach (function(numero_kilometraje){
- suma_kilometraje += parseInt(numero_kilometraje.kilometraje);
- });
-
- if (arrayVehiculo.length == 0) {
-   var viaje = arrayVehiculoOficial[0].tipo_viaje;
-
-   if (viaje == 1) {
-     var tipo_viajesito  = 2;
-   }else if(viaje == 2){
-     var tipo_viajesito  = 1;
-   }else if(viaje == 3){
-     var tipo_viajesito  = 1;
-   }
-   //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
-   //var total1 = parseInt(suma_kilometraje) * parseInt(tipo_viajesito);
-   var total1 = parseInt(suma_kilometraje);
-   var total2 = parseInt(kilometraje_interno) + parseInt(total1);
-   //console.log(total1,total2,suma_kilometraje,kilometraje_interno)
-   var totalito =  total2;
-
-   $('#totalkm').val(totalito);
    //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
    //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
  }
