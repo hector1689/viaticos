@@ -2674,7 +2674,7 @@ function gasolinaLugar(id){
               //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
               var total1 = parseInt(kilometraje) ;
               var total2 = parseInt(total1) + parseInt(kilometraje_interno);
-              console.log(total1,parseInt(kilometraje_interno))
+              //console.log(total1,parseInt(kilometraje_interno))
               //var total2 = parseInt(kilometraje_interno);
               var total3 = total2 / parseInt(cuota);
               var total4 = total3 * parseFloat($(this).val());
@@ -2687,26 +2687,24 @@ function gasolinaLugar(id){
               //var total = parseInt(kilometraje_total) * parseInt(tipo_viajesito) / parseFloat(cuota) * parseFloat($(this).val());
               //console.log(parseInt(kilometraje),parseFloat(cuota),parseFloat($(this).val()))
 
-              arrayTablaLugares.push({
-                id:id,
-                //gasolina:$(this).val(),
-                gasolina:total,
-              })
-
-              //console.log(arrayTablaLugares)
-
-
-
-              objectGasolinaLugares = {
-              id:id,
-              //gasolina:$(this).val(),
-              gasolina:total,
-              }
-
-              arrayGasolinaLugares.push(objectGasolinaLugares)
-            }
-
-            if (arrayVehiculoOficial.length == 0) {
+              // arrayTablaLugares.push({
+              //   id:id,
+              //   //gasolina:$(this).val(),
+              //   gasolina:total,
+              // })
+              //
+              // //console.log(arrayTablaLugares)
+              //
+              //
+              //
+              // objectGasolinaLugares = {
+              // id:id,
+              // //gasolina:$(this).val(),
+              // gasolina:total,
+              // }
+              //
+              // arrayGasolinaLugares.push(objectGasolinaLugares)
+            }else if (arrayVehiculoOficial.length == 0) {
               var cuota = arrayVehiculo[0].cuota;
               // var viaje = arrayVehiculoOficial[0].tipo_viaje;
               //
@@ -2721,8 +2719,8 @@ function gasolinaLugar(id){
               //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
               //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
               var total1 = parseInt(kilometraje);
-              //var total2 = total1 + parseInt(kilometraje_interno);
-              var total2 = parseInt(kilometraje_interno);
+              var total2 = total1 + parseInt(kilometraje_interno);
+              //var total2 = parseInt(kilometraje_interno);
               var total3 = total2 / parseInt(cuota);
               var total4 = total3 * parseFloat($(this).val());
               //console.log(total1,total2,total3,total4)
@@ -2734,26 +2732,24 @@ function gasolinaLugar(id){
 
               //console.log(total)
 
-              arrayTablaLugares.push({
-                id:id,
-                //gasolina:$(this).val(),
-                gasolina:total,
-              })
-
-              //console.log(arrayTablaLugares)
-
-
-
-              objectGasolinaLugares = {
-              id:id,
-              //gasolina:$(this).val(),
-              gasolina:total,
-              }
-
-              arrayGasolinaLugares.push(objectGasolinaLugares)
-            }
-
-            if (arrayAutobus.length == 0) {
+              // arrayTablaLugares.push({
+              //   id:id,
+              //   //gasolina:$(this).val(),
+              //   gasolina:total,
+              // })
+              //
+              // //console.log(arrayTablaLugares)
+              //
+              //
+              //
+              // objectGasolinaLugares = {
+              // id:id,
+              // //gasolina:$(this).val(),
+              // gasolina:total,
+              // }
+              //
+              // arrayGasolinaLugares.push(objectGasolinaLugares)
+            }else if (arrayAutobus.length == 0) {
 
               // var viaje = arrayAutobus[0].tipo_viaje;
               //
@@ -2768,8 +2764,8 @@ function gasolinaLugar(id){
               //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
               //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
               var total1 = parseInt(kilometraje);
-              //var total2 = total1 + parseInt(kilometraje_interno);
-              var total2 = parseInt(kilometraje_interno);
+              var total2 = total1 + parseInt(kilometraje_interno);
+              //var total2 = parseInt(kilometraje_interno);
               var total3 = total2 / parseInt(cuota);
               var total4 = total3 * parseFloat($(this).val());
               //console.log(total1,total2,total3,total4)
@@ -2781,27 +2777,8 @@ function gasolinaLugar(id){
 
               //console.log(total)
 
-              arrayTablaLugares.push({
-                id:id,
-                //gasolina:$(this).val(),
-                gasolina:total,
-              })
 
-              //console.log(arrayTablaLugares)
-
-
-
-              objectGasolinaLugares = {
-              id:id,
-              //gasolina:$(this).val(),
-              gasolina:total,
-              }
-
-              arrayGasolinaLugares.push(objectGasolinaLugares)
-            }
-
-
-            if (arrayAvion.length == 0) {
+            }else if (arrayAvion.length == 0) {
 
               // var viaje = arrayAvion[0].tipo_viaje;
               //
@@ -2816,8 +2793,8 @@ function gasolinaLugar(id){
               //console.log(parseInt(kilometraje) , parseInt(tipo_viajesito) , parseInt(kilometraje_interno) ,parseFloat(cuota) , parseFloat($(this).val()))
               //var total1 = parseInt(kilometraje) * parseInt(tipo_viajesito);
               var total1 = parseInt(kilometraje);
-              //var total2 = total1 + parseInt(kilometraje_interno);
-              var total2 = parseInt(kilometraje_interno);
+              var total2 = total1 + parseInt(kilometraje_interno);
+              //var total2 = parseInt(kilometraje_interno);
               var total3 = total2 / parseInt(cuota);
               var total4 = total3 * parseFloat($(this).val());
               //console.log(total1,total2,total3,total4)
@@ -2829,46 +2806,46 @@ function gasolinaLugar(id){
 
               //console.log(total)
 
-              arrayTablaLugares.push({
-                id:id,
-                //gasolina:$(this).val(),
-                gasolina:total,
-              })
-
-              //console.log(arrayTablaLugares)
-
-
-
-              objectGasolinaLugares = {
-              id:id,
-              //gasolina:$(this).val(),
-              gasolina:total,
-              }
-
-              arrayGasolinaLugares.push(objectGasolinaLugares)
+              // arrayTablaLugares.push({
+              //   id:id,
+              //   //gasolina:$(this).val(),
+              //   gasolina:total,
+              // })
+              //
+              // //console.log(arrayTablaLugares)
+              //
+              //
+              //
+              // objectGasolinaLugares = {
+              // id:id,
+              // //gasolina:$(this).val(),
+              // gasolina:total,
+              // }
+              //
+              // arrayGasolinaLugares.push(objectGasolinaLugares)
             }
 
 
 
             //console.log(total)
 
-            // arrayTablaLugares.push({
-            //   id:id,
-            //   //gasolina:$(this).val(),
-            //   gasolina:total,
-            // })
-            //
-            // //console.log(arrayTablaLugares)
-            //
-            //
-            //
-            // objectGasolinaLugares = {
-            // id:id,
-            // //gasolina:$(this).val(),
-            // gasolina:total,
-            // }
-            //
-            // arrayGasolinaLugares.push(objectGasolinaLugares)
+            arrayTablaLugares.push({
+              id:id,
+              //gasolina:$(this).val(),
+              gasolina:total,
+            })
+
+            //console.log(arrayTablaLugares)
+
+
+
+            objectGasolinaLugares = {
+            id:id,
+            //gasolina:$(this).val(),
+            gasolina:total,
+            }
+
+            arrayGasolinaLugares.push(objectGasolinaLugares)
 
         }else {
 
@@ -4155,7 +4132,7 @@ function eliminarlugar(id){
         object.splice(index, 1);
       }
   });
-
+  console.log(arrayGasolinaLugares)
   arrayGasolinaLugares.forEach(function(x, index, object) {
       if(x.id === id){
         object.splice(index, 1);
