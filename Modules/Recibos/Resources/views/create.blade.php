@@ -4132,7 +4132,7 @@ function eliminarlugar(id){
         object.splice(index, 1);
       }
   });
-  console.log(arrayGasolinaLugares)
+  //console.log(arrayGasolinaLugares)
   arrayGasolinaLugares.forEach(function(x, index, object) {
       if(x.id === id){
         object.splice(index, 1);
