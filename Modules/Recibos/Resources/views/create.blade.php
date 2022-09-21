@@ -1625,7 +1625,7 @@ arraysito.forEach (function(x){
   suma_kilometraje2 += parseInt(x.kilometros);
 
   var cuota = 0;
-  
+
   if (arrayvhoficial == '[]') {
 
   }else{
@@ -4675,10 +4675,10 @@ function calcularViaticoLugar(){
   arrayCenaLugares.forEach (function(numero_cena){
   suma_cena += parseFloat(numero_cena.cena);
   });
-
-
+  var total_transportes = $('#total_transporte_vehiculof').val();
+  var suma_totales_transporte_gasolina_lugar = parseFloat(total) + parseFloat(total_transportes);
   var suma_total_comidas = parseFloat(suma_desayuno) + parseFloat(suma_comida) + parseFloat(suma_cena);
-  var suma_total_totales = parseFloat(total) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas);
+  var suma_total_totales = parseFloat(total) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas) + parseFloat(suma_totales_transporte_gasolina_lugar);
 
   $('#footLugar').show();
   // $('#total_recibido_lugar').show();

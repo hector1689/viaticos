@@ -38,8 +38,8 @@
       <th>Dependencia</th>
       <th>Comisionado</th>
       <th>N° de Empleado</th>
-      <th>Fecha Inicio</th>
-      <th>Fecha Fin</th>
+      <th>Fecha Creación</th>
+      <!-- <th>Fecha Fin</th> -->
       <th>Monto Total</th>
       <th>Estatus</th>
       <th>ACCIONES</th>
@@ -328,7 +328,7 @@ $(function() {
 tabla = $('#kt_datatable').DataTable({
   processing: true,
   serverSide: true,
-  order: [[0, 'ASC']],
+  order: [[0, 'DESC']],
   ajax: {
     url: "/recibos/tabla",
   },
@@ -337,8 +337,8 @@ tabla = $('#kt_datatable').DataTable({
     { data: 'dependencia', name : 'dependencia'},
     { data: 'nombre', name : 'nombre'},
     { data: 'num_empleado', name : 'num_empleado'},
-    { data: 'fecha_hora_salida', name : 'fecha_hora_salida'},
-    { data: 'fecha_hora_recibio', name : 'fecha_hora_recibio'},
+    { data: 'created_at', name : 'created_at'},
+    // { data: 'fecha_hora_recibio', name : 'fecha_hora_recibio'},
     { data: 'num_dias', name : 'num_dias'},
     { data: 'cve_estatus', name : 'cve_estatus'},
     { data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }

@@ -2621,6 +2621,71 @@ class RecibosController extends Controller
 
       return $registros->obtenerEstatus->nombre;
     })
+
+    ->editColumn('created_at', function ($registros) {
+      list($fecha,$hora) = explode(' ',$registros->created_at);
+
+
+      list($anio,$mes,$dia) = explode('-',$fecha);
+      $mes_fecha="";
+
+      if($mes== 0){
+        $mes_fecha = '';
+        $fecha_entrega_formato = 'Sin registro';
+      }
+      if ($mes == 1) {
+        $mes_fecha = 'ENERO';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 2){
+        $mes_fecha = 'FEBRERO';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 3){
+        $mes_fecha = 'MARZO';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 4){
+        $mes_fecha = 'ABRIL';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 5){
+        $mes_fecha = 'MAYO';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 6){
+        $mes_fecha = 'JUNIO';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 7){
+        $mes_fecha = 'JULIO';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 8){
+        $mes_fecha = 'AGOSTO';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 9){
+        $mes_fecha = 'SEPTIEMBRE';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 10){
+        $mes_fecha = 'OCTUBRE';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 11){
+        $mes_fecha = 'NOVIEMBRE';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+
+      }elseif($mes == 12){
+        $mes_fecha = 'DICIEMBRE';
+        $fecha_entrega_formato = $dia.' DE '.$mes_fecha.' DEL '.$anio;
+      }
+
+    return $fecha_entrega_formato.' '.$hora;
+
+
+    })
     ->editColumn('num_dias', function ($registros) {
 
       $lugarest = Lugares::where([
