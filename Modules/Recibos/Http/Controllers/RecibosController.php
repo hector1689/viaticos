@@ -124,7 +124,7 @@ class RecibosController extends Controller
     {
     //dd($request->all());
 
-
+    date_default_timezone_set('America/Mexico_city');
 
     try {
       list($fecha1,$hora1) = explode(" ",$request->inicia);
@@ -907,6 +907,7 @@ class RecibosController extends Controller
      */
     public function update(Request $request)
     {
+      date_default_timezone_set('America/Mexico_city');
       try {
         list($fecha1,$hora1) = explode(" ",$request->inicia);
         list($dia,$mes,$anio) = explode('/',$fecha1);
