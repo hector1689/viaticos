@@ -547,8 +547,6 @@ class RecibosController extends Controller
 
 
         if (isset($request->fecha_pago)) {
-          // code...
-        }else{
           list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
           $fecha_pago = $anio.'-'.$mes.'-'.$dia;
           $datospago = new DatosPago();
@@ -556,6 +554,18 @@ class RecibosController extends Controller
           $datospago->secretaria = $request->secretaria_pago;
           $datospago->num_cheque = $request->cheque;
           $datospago->fehca_inicia = $fecha_pago;
+          $datospago->cantidad = $request->cantidad;
+          $datospago->cantidad_letra = $request->letras_cantidad;
+          $datospago->favor_cargo_banco = $request->banco;
+          $datospago->cve_usuario = Auth::user()->id;
+          $datospago->save();
+        }else{
+
+          $datospago = new DatosPago();
+          $datospago->cve_t_viatico = $recibo->id;
+          $datospago->secretaria = $request->secretaria_pago;
+          $datospago->num_cheque = $request->cheque;
+          //$datospago->fehca_inicia = $fecha_pago;
           $datospago->cantidad = $request->cantidad;
           $datospago->cantidad_letra = $request->letras_cantidad;
           $datospago->favor_cargo_banco = $request->banco;
@@ -951,20 +961,29 @@ class RecibosController extends Controller
           $firmantes->save();
 
           if (isset($request->fecha_pago)) {
+            list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+            $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+            $datospago = DatosPago::find($request->id_pagos);
+            $datospago->secretaria = $request->secretaria_pago;
+            $datospago->num_cheque = $request->cheque;
+            $datospago->fehca_inicia = $fecha_pago;
+            $datospago->cantidad = $request->cantidad;
+            $datospago->cantidad_letra = $request->letras_cantidad;
+            $datospago->favor_cargo_banco = $request->banco;
+            $datospago->cve_usuario = Auth::user()->id;
+            $datospago->save();
           }else{
 
-          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
           $datospago = DatosPago::find($request->id_pagos);
           $datospago->secretaria = $request->secretaria_pago;
           $datospago->num_cheque = $request->cheque;
-          $datospago->fehca_inicia = $fecha_pago;
+          //$datospago->fehca_inicia = $fecha_pago;
           $datospago->cantidad = $request->cantidad;
           $datospago->cantidad_letra = $request->letras_cantidad;
           $datospago->favor_cargo_banco = $request->banco;
           $datospago->cve_usuario = Auth::user()->id;
           $datospago->save();
-          
+
           }
           // if (isset($request->fecha_pago)) {
           //   // code...
