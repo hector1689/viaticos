@@ -278,7 +278,7 @@
           <td style="width: 50%">fecha y hora de retorno: {{ $recibos->fecha_hora_recibio }}</td>
         </tr>
         <tr>
-          <td colspan="2">@foreach($lugares as $lugar) {{ $lugar->obteneLocalidades->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }} a {{ $lugar->obteneLocalidades2->obteneLocalidad2->localidad  }} MPIO de {{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneEstado->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad2->obtenePais->nombre }}, @endforeach</td>
+          <td colspan="2">@foreach($lugares as $lugar) {{ $lugar->obteneLocalidades->obteneLocalidad->localidad }} MPIO de {{ $lugar->obteneLocalidades->obteneLocalidad->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obteneEstado->nombre }},{{ $lugar->obteneLocalidades->obteneLocalidad->obtenePais->nombre }} a {{ $lugar->obteneLocalidades2->obteneLocalidad2->localidad  }} MPIO de {{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneMunicipio->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneEstado->nombre }},{{ $lugar->obteneLocalidades2->obteneLocalidad2->obtenePais->nombre }}/ @endforeach</td>
         </tr>
         <tr>
           <td colspan="2">especificación de comisión: {{ $recibos->descripcion_comision }}</td>
