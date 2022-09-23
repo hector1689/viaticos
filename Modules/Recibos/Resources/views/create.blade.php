@@ -1392,8 +1392,9 @@
                         list($dia,$mes,$anio) = explode('-',$pagos->fehca_inicia);
                         $fecha = $anio.'/'.$mes.'/'.$dia;
                          ?>
+                         <input type="text" class="form-control" id="kt_datepicker" name='fecha_pago' value="@isset($pagos) {{ $fecha }} @endisset" placeholder="Selecciona Fecha">
                          @endisset
-                        <input type="text" class="form-control" id="kt_datepicker" name='fecha_pago' value="@isset($pagos) {{ $fecha }} @endisset" placeholder="Selecciona Fecha">
+
                         @endif
 
                     </div>
