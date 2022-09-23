@@ -212,9 +212,9 @@
                     <a class="nav-link " data-toggle="tab" href="#kt_tab_pane_1">Lugares</a>
                 </li>
 
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3">Datos de Pago</a>
-                </li> -->
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4" tabindex="-1" aria-disabled="true">Firmas</a>
