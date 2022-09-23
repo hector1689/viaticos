@@ -290,7 +290,7 @@
                                 <td>{{ $lugar->obteneLocalidades2->obteneLocalidad2->localidad }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneMunicipio->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obteneEstado->nombre }}-{{ $lugar->obteneLocalidades2->obteneLocalidad2->obtenePais->nombre }}</td>
                                 <td><input type="text" class="form-control" id="dias2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="diasLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->dias }}" ></td>
                                 <td>{{ $lugar->cve_zona }}</td>
-                                <td><input type="text" class="form-control" id="kilometraje2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->kilometros }}" ></td>
+                                <td><input type="text" class="form-control" id="kilometraje2_{{$key}}" onkeypress="return validaNumericos(event)" onchange="KilometrajeLugares2({{$key}},{{$lugar->id}})" value="{{ $lugar->kilometros }}" disabled ></td>
                                 <td>
                                   <div class="form-group">
                                       <div class="checkbox-list">
@@ -2936,13 +2936,39 @@ function gasolinaLugar2(id,id_key){
 
                                 var total_alimentos2 = 0;
 
+                                var totalkilometraje = $('#totalkm').val();
+                                var cuota = 0;
+
 
 
                                 data.forEach (function(x){
                                   suma_dias2 += parseInt(x.dias);
                                   suma_kilometraje2 += parseInt(x.kilometros);
 
-                                  suma_gasolina2 += parseFloat(x.combustible);
+                                  if (arrayvhoficial == '[]') {
+
+                                  }else{
+                                    var arrayvhoficial ={!!  json_encode($vhoficialtabla) !!};
+                                    arrayvhoficial.forEach (function(z){
+                                      cuota = z.cuota;
+                                    });
+                                  }
+
+                                    var arrayvehiculo ={!!  json_encode($Vehiculotabla) !!};
+
+                                    if (arrayvehiculo == '[]') {
+
+                                    }else{
+                                      arrayvehiculo.forEach (function(z){
+                                        cuota = z.cuota;
+                                      });
+                                    }
+                                  console.log(totalkilometraje,cuota,x.combustible);
+                                  var totalito  = parseInt(totalkilometraje) / parseInt(cuota);
+                                  var totalmas = totalito * parseFloat(x.combustible);
+
+                                  //suma_gasolina2 += parseFloat(x.combustible);
+                                  suma_gasolina2 = totalmas;
                                   suma_hospedaje2 += parseFloat(x.hospedaje);
 
                                   suma_desayuno2 += parseFloat(x.desayuno);
@@ -2993,13 +3019,37 @@ function gasolinaLugar2(id,id_key){
 
                       var total_alimentos2 = 0;
 
+                      var totalkilometraje = $('#totalkm').val();
+                      var cuota = 0;
 
 
                       data.forEach (function(x){
                         suma_dias2 += parseInt(x.dias);
                         suma_kilometraje2 += parseInt(x.kilometros);
 
-                        suma_gasolina2 += parseFloat(x.combustible);
+                        if (arrayvhoficial == '[]') {
+
+                        }else{
+                          var arrayvhoficial ={!!  json_encode($vhoficialtabla) !!};
+                          arrayvhoficial.forEach (function(z){
+                            cuota = z.cuota;
+                          });
+                        }
+
+                          var arrayvehiculo ={!!  json_encode($Vehiculotabla) !!};
+
+                          if (arrayvehiculo == '[]') {
+
+                          }else{
+                            arrayvehiculo.forEach (function(z){
+                              cuota = z.cuota;
+                            });
+                          }
+                        console.log(totalkilometraje,cuota,x.combustible);
+                        var totalito  = parseInt(totalkilometraje) / parseInt(cuota);
+                        var totalmas = totalito * parseFloat(x.combustible);
+                        suma_gasolina2 = totalmas;
+                        //suma_gasolina2 += parseFloat(x.combustible);
                         suma_hospedaje2 += parseFloat(x.hospedaje);
 
                         suma_desayuno2 += parseFloat(x.desayuno);
@@ -3009,6 +3059,7 @@ function gasolinaLugar2(id,id_key){
                         total_alimentos2 = parseFloat(suma_desayuno2) + parseFloat(suma_comida2) + parseFloat(suma_cena2);
 
                       });
+
 
 
 
@@ -3057,13 +3108,39 @@ function gasolinaLugar2(id,id_key){
 
                   var total_alimentos2 = 0;
 
+                  var totalkilometraje = $('#totalkm').val();
+                  var cuota = 0;
 
 
                   data.forEach (function(x){
                     suma_dias2 += parseInt(x.dias);
                     suma_kilometraje2 += parseInt(x.kilometros);
 
-                    suma_gasolina2 += parseFloat(x.combustible);
+                    if (arrayvhoficial == '[]') {
+
+                    }else{
+                      var arrayvhoficial ={!!  json_encode($vhoficialtabla) !!};
+                      arrayvhoficial.forEach (function(z){
+                        cuota = z.cuota;
+                      });
+                    }
+
+                      var arrayvehiculo ={!!  json_encode($Vehiculotabla) !!};
+
+                      if (arrayvehiculo == '[]') {
+
+                      }else{
+                        arrayvehiculo.forEach (function(z){
+                          cuota = z.cuota;
+                        });
+                      }
+
+                      console.log(totalkilometraje,cuota,x.combustible);
+                      var totalito  = parseInt(totalkilometraje) / parseInt(cuota);
+                      var totalmas = totalito * parseFloat(x.combustible);
+                      suma_gasolina2 = totalmas;
+
+                    //suma_gasolina2 += parseFloat(x.combustible);
                     suma_hospedaje2 += parseFloat(x.hospedaje);
 
                     suma_desayuno2 += parseFloat(x.desayuno);
@@ -4110,11 +4187,43 @@ function cenaLugar(id){
 
 
 
+             //var totalkilometraje = $('#totalkm').val();
+             var cuota = 0;
+
              data.forEach (function(x){
                suma_dias2 += parseInt(x.dias);
                suma_kilometraje2 += parseInt(x.kilometros);
+               if (arrayvhoficial == '[]') {
 
-               suma_gasolina2 += parseFloat(x.combustible);
+               }else{
+                 var arrayvhoficial ={!!  json_encode($vhoficialtabla) !!};
+                 arrayvhoficial.forEach (function(z){
+                   cuota = z.cuota;
+                 });
+               }
+
+                 var arrayvehiculo ={!!  json_encode($Vehiculotabla) !!};
+
+                 if (arrayvehiculo == '[]') {
+
+                 }else{
+                   arrayvehiculo.forEach (function(z){
+                     cuota = z.cuota;
+                   });
+                 }
+
+
+               var kilometro_interno = $('#kilometrorecorrido').val();
+
+               var total_kilometro = parseInt(suma_kilometraje2) + parseInt(kilometro_interno);
+               $('#totalkm').val(total_kilometro);
+                //console.log(total_kilometro,cuota,x.combustible);
+               var totalito  = parseInt(total_kilometro) / parseInt(cuota);
+               var totalmas = totalito * parseFloat(x.combustible);
+
+               //suma_gasolina2 += parseFloat(x.combustible);
+               suma_gasolina2 = totalmas;
+               //suma_gasolina2 += parseFloat(x.combustible);
                suma_hospedaje2 += parseFloat(x.hospedaje);
 
                suma_desayuno2 += parseFloat(x.desayuno);
@@ -4125,6 +4234,8 @@ function cenaLugar(id){
 
              });
 
+
+             //console.log(kilometro_interno,suma_kilometraje2,total_kilometro)
 
 
              $('#total_dias').html('<p>'+suma_dias2+'</p>');
@@ -4253,7 +4364,11 @@ function eliminarlugar(id){
 
               });
 
+              var kilometro_interno = $('#kilometrorecorrido').val();
 
+              var total_kilometro = parseInt(suma_kilometraje2) + parseInt(kilometro_interno);
+              console.log(kilometro_interno,suma_kilometraje2,total_kilometro)
+              $('#totalkm').val(total_kilometro);
 
               $('#total_dias').html('<p>'+suma_dias2+'</p>');
               $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
@@ -4326,13 +4441,46 @@ function calcularViaticoLugar(){
 
             var total_alimentos2 = 0;
 
+            //var totalkilometraje = $('#totalkm').val();
+            var cuota = 0;
+            var kilometro_interno = $('#kilometrorecorrido').val();
+            var combustible = 0;
+
+
 
 
             data.forEach (function(x){
               suma_dias2 += parseInt(x.dias);
               suma_kilometraje2 += parseInt(x.kilometros);
 
-              suma_gasolina2 += parseFloat(x.combustible);
+
+            if (arrayvhoficial == '[]') {
+
+            }else{
+              var arrayvhoficial ={!!  json_encode($vhoficialtabla) !!};
+              arrayvhoficial.forEach (function(z){
+                cuota = z.cuota;
+              });
+            }
+
+              var arrayvehiculo ={!!  json_encode($Vehiculotabla) !!};
+
+              if (arrayvehiculo == '[]') {
+
+              }else{
+                arrayvehiculo.forEach (function(z){
+                  cuota = z.cuota;
+                });
+              }
+              var total_kilometro = parseInt(suma_kilometraje2) + parseInt(kilometro_interno);
+              $('#totalkm').val(total_kilometro);
+               //console.log(total_kilometro,cuota,x.combustible);
+              var totalito  = parseInt(total_kilometro) / parseInt(cuota);
+              var totalmas = totalito * parseFloat(x.combustible);
+              combustible = x.combustible;
+              //suma_gasolina2 += parseFloat(x.combustible);
+              suma_gasolina2 = totalmas;
+              //suma_gasolina2 += parseFloat(x.combustible);
               suma_hospedaje2 += parseFloat(x.hospedaje);
 
               suma_desayuno2 += parseFloat(x.desayuno);
@@ -4358,10 +4506,35 @@ function calcularViaticoLugar(){
 
             var suma_gasolina = 0;
             arrayGasolinaLugares.forEach (function(numero_gasolina){
+            //   if (arrayvhoficial == '[]') {
+            //
+            //   }else{
+            //     var arrayvhoficial ={!!  json_encode($vhoficialtabla) !!};
+            //     arrayvhoficial.forEach (function(z){
+            //       cuota = z.cuota;
+            //     });
+            //   }
+            //
+            //     var arrayvehiculo ={!!  json_encode($Vehiculotabla) !!};
+            //
+            //     if (arrayvehiculo == '[]') {
+            //
+            //     }else{
+            //       arrayvehiculo.forEach (function(z){
+            //         cuota = z.cuota;
+            //       });
+            //     }
+            // var total_kilometro = parseInt(suma_kilometraje) + parseInt(kilometro_interno);
+            // $('#totalkm').val(total_kilometro);
+            // var totalito  = parseInt(total_kilometro) / parseInt(cuota);
+            // var totalmas = totalito * parseFloat(numero_gasolina.combustible);
+            // console.log(total_kilometro,cuota,numero_gasolina.combustible)
+            //console.log(numero_gasolina.combustible)
             suma_gasolina += parseFloat(numero_gasolina.gasolina);
+            //suma_gasolina = totalmas;
             });
 
-
+            //console.log(suma_gasolina,suma_gasolina2)
             var suma_hospedaje = 0;
             arrayHospedajeLugares.forEach (function(numero_hospedaje){
             suma_hospedaje += parseFloat(numero_hospedaje.hospedaje);
@@ -4399,6 +4572,12 @@ function calcularViaticoLugar(){
             var suma_dias_total = parseInt(suma_dias) + parseInt(suma_dias2);
             var suma_kilometraje_total = parseInt(suma_kilometraje) + parseInt(suma_kilometraje2);
 
+
+            var total_kilometro = parseInt(suma_kilometraje_total) + parseInt(kilometro_interno);
+            $('#totalkm').val(total_kilometro);
+            var totalito  = parseInt(total_kilometro) / parseInt(cuota);
+            var totalmas = totalito * parseFloat(combustible);
+            console.log(suma_kilometraje_total,totalmas);
             var suma_hospedaje_total = parseFloat(suma_hospedaje2) + parseFloat(suma_hospedaje);
             var suma_gasolina_total = parseFloat(suma_gasolina2) + parseFloat(suma_gasolina);
             var suma_alimentos_total = parseFloat(suma_total_comidas) + parseFloat(total_alimentos2);
@@ -4407,7 +4586,7 @@ function calcularViaticoLugar(){
 
             $('#total_dias').html('<p>'+suma_dias_total+'</p>');
             $('#total_kilometros').html('<p>'+suma_kilometraje_total+'</p>');
-            $('#total_gasolina').html('<p>$'+suma_gasolina_total.toFixed(2)+'</p>');
+            $('#total_gasolina').html('<p>$'+totalmas.toFixed(2)+'</p>');
             $('#total_hospedaje').html('<p>$'+suma_hospedaje_total.toFixed(2)+'</p>');
             $('#total_comidas').html('<p>$'+suma_alimentos_total.toFixed(2)+'</p>');
             $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_total.toFixed(2)+'" id="total_extraer" disabled>');

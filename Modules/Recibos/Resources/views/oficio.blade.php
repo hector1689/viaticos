@@ -149,6 +149,11 @@
 
                 ?> DE <?php echo date('Y');?>.
               </div>
+              <div  style="text-align: left;font-size: 8pt;hyphens: auto;word-wrap: break-word;word-break: break-word;">
+                C. {{ $recibos->nombre }}
+                <br>
+                Presente
+              </div>
               <div style="height:50px;"></div>
 
             </td>
