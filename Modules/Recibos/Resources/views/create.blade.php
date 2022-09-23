@@ -1383,12 +1383,19 @@
                     <div class="col-md-6">
                       <label for="">DE FECHA</label>
                       @isset($pagos)
-                      <?php
-                      list($dia,$mes,$anio) = explode('-',$pagos->fehca_inicia);
-                      $fecha = $anio.'/'.$mes.'/'.$dia;
-                       ?>
-                       @endisset
-                      <input type="text" class="form-control" id="kt_datepicker" name='fecha_pago' value="@isset($pagos) {{ $fecha }} @endisset" placeholder="Selecciona Fecha">
+
+                        @if($pagos->fehca_inicia == '')
+                        <input type="text" class="form-control" id="kt_datepicker" name='fecha_pago' value="@isset($pagos) {{ $pagos->fehca_inicia }} @endisset" placeholder="Selecciona Fecha">
+                        @else
+
+                        <?php
+                        list($dia,$mes,$anio) = explode('-',$pagos->fehca_inicia);
+                        $fecha = $anio.'/'.$mes.'/'.$dia;
+                         ?>
+                         @endisset
+                        <input type="text" class="form-control" id="kt_datepicker" name='fecha_pago' value="@isset($pagos) {{ $fecha }} @endisset" placeholder="Selecciona Fecha">
+                        @endif
+
                     </div>
                     <div class="col-md-6">
                       <label for=""><strong style="color:red">*</strong>POR LA CANTIDAD DE</label>
