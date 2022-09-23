@@ -1374,14 +1374,14 @@
                       <input type="text" id="secretaria_pago" class="form-control" value="@isset($pagos) {{ $pagos->secretaria }} @endisset" disabled>
                     </div>
                     <div class="col-md-6">
-                      <label for=""><strong style="color:red">*</strong>CHEQUE N°</label>
+                      <label for="">CHEQUE N°</label>
                       <input type="text" class="form-control" id="cheque" placeholder="Escribir n° de cheque" value="@isset($pagos) {{ $pagos->num_cheque }} @endisset" onkeypress='return validaNumericos(event)'>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-md-6">
-                      <label for=""><strong style="color:red">*</strong>DE FECHA</label>
+                      <label for="">DE FECHA</label>
                       @isset($pagos)
                       <?php
                       list($dia,$mes,$anio) = explode('-',$pagos->fehca_inicia);
@@ -6085,7 +6085,7 @@ function cantidadletra(cantidad){
 
       setTimeout(function() {
           KTUtil.btnRelease(btn);
-      }, 2000);
+      }, 8000);
 
     }else{
 
@@ -6094,7 +6094,7 @@ function cantidadletra(cantidad){
 
       setTimeout(function() {
           KTUtil.btnRelease(btn);
-      }, 2000);
+      }, 8000);
       $.ajax({
 
              type:"POST",
@@ -6181,7 +6181,7 @@ function cantidadletra(cantidad){
 
                     setTimeout(function() {
                         KTUtil.btnRelease(btn);
-                    }, 2000);
+                    }, 8000);
 
                 }else if(data.success == 'Ha sido editado con éxito'){
 
@@ -6209,7 +6209,7 @@ function cantidadletra(cantidad){
 
                     setTimeout(function() {
                         KTUtil.btnRelease(btn);
-                    }, 2000);
+                    }, 8000);
                 }else{
                   $('#kt_btn_1').prop('disabled',false);
 
