@@ -4367,7 +4367,7 @@ function eliminarlugar(id){
               var kilometro_interno = $('#kilometrorecorrido').val();
 
               var total_kilometro = parseInt(suma_kilometraje2) + parseInt(kilometro_interno);
-              console.log(kilometro_interno,suma_kilometraje2,total_kilometro)
+              //console.log(kilometro_interno,suma_kilometraje2,total_kilometro)
               $('#totalkm').val(total_kilometro);
 
               $('#total_dias').html('<p>'+suma_dias2+'</p>');
@@ -4577,7 +4577,7 @@ function calcularViaticoLugar(){
             $('#totalkm').val(total_kilometro);
             var totalito  = parseInt(total_kilometro) / parseInt(cuota);
             var totalmas = totalito * parseFloat(combustible);
-            console.log(suma_kilometraje_total,totalmas);
+            //console.log(suma_kilometraje_total,totalmas);
             var suma_hospedaje_total = parseFloat(suma_hospedaje2) + parseFloat(suma_hospedaje);
             var suma_gasolina_total = parseFloat(suma_gasolina2) + parseFloat(suma_gasolina);
             var suma_alimentos_total = parseFloat(suma_total_comidas) + parseFloat(total_alimentos2);
