@@ -546,22 +546,22 @@ class RecibosController extends Controller
 
 
 
-        // if ($request->cheque == '') {
-        //   // code...
-        // }else{
-        //   list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-        //   $fecha_pago = $anio.'-'.$mes.'-'.$dia;
-        //   $datospago = new DatosPago();
-        //   $datospago->cve_t_viatico = $recibo->id;
-        //   $datospago->secretaria = $request->secretaria_pago;
-        //   $datospago->num_cheque = $request->cheque;
-        //   $datospago->fehca_inicia = $fecha_pago;
-        //   $datospago->cantidad = $request->cantidad;
-        //   $datospago->cantidad_letra = $request->letras_cantidad;
-        //   $datospago->favor_cargo_banco = $request->banco;
-        //   $datospago->cve_usuario = Auth::user()->id;
-        //   $datospago->save();
-        // }
+        if (isset($request->fecha_pago)) {
+          // code...
+        }else{
+          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+          $datospago = new DatosPago();
+          $datospago->cve_t_viatico = $recibo->id;
+          $datospago->secretaria = $request->secretaria_pago;
+          $datospago->num_cheque = $request->cheque;
+          $datospago->fehca_inicia = $fecha_pago;
+          $datospago->cantidad = $request->cantidad;
+          $datospago->cantidad_letra = $request->letras_cantidad;
+          $datospago->favor_cargo_banco = $request->banco;
+          $datospago->cve_usuario = Auth::user()->id;
+          $datospago->save();
+        }
 
 
         //dd($request->VehiculoOficial[0]);
@@ -950,19 +950,38 @@ class RecibosController extends Controller
           $firmantes->cve_usuario = Auth::user()->id;
           $firmantes->save();
 
-          //list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
-          //$fecha_pago = $anio.'-'.$mes.'-'.$dia;
+          if (isset($request->fecha_pago)) {
+          }else{
 
-
-          // $datospago = DatosPago::find($request->id_pagos);
-          // $datospago->secretaria = $request->secretaria_pago;
-          // $datospago->num_cheque = $request->cheque;
-          // $datospago->fehca_inicia = $fecha_pago;
-          // $datospago->cantidad = $request->cantidad;
-          // $datospago->cantidad_letra = $request->letras_cantidad;
-          // $datospago->favor_cargo_banco = $request->banco;
-          // $datospago->cve_usuario = Auth::user()->id;
-          // $datospago->save();
+          list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+          $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+          $datospago = DatosPago::find($request->id_pagos);
+          $datospago->secretaria = $request->secretaria_pago;
+          $datospago->num_cheque = $request->cheque;
+          $datospago->fehca_inicia = $fecha_pago;
+          $datospago->cantidad = $request->cantidad;
+          $datospago->cantidad_letra = $request->letras_cantidad;
+          $datospago->favor_cargo_banco = $request->banco;
+          $datospago->cve_usuario = Auth::user()->id;
+          $datospago->save();
+          
+          }
+          // if (isset($request->fecha_pago)) {
+          //   // code...
+          // }else{
+          //   list($dia,$mes,$anio) = explode('/',$request->fecha_pago);
+          //   $fecha_pago = $anio.'-'.$mes.'-'.$dia;
+          //   $datospago = new DatosPago();
+          //   $datospago->cve_t_viatico = $recibo->id;
+          //   $datospago->secretaria = $request->secretaria_pago;
+          //   $datospago->num_cheque = $request->cheque;
+          //   $datospago->fehca_inicia = $fecha_pago;
+          //   $datospago->cantidad = $request->cantidad;
+          //   $datospago->cantidad_letra = $request->letras_cantidad;
+          //   $datospago->favor_cargo_banco = $request->banco;
+          //   $datospago->cve_usuario = Auth::user()->id;
+          //   $datospago->save();
+          // }
 
           $transporte = Transporte::find($request->id_transporte);
           $transporte->kilometro_interno = $request->kilometrorecorrido;
