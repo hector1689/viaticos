@@ -1392,7 +1392,7 @@
                     </div>
                     <div class="col-md-6">
                       <label for=""><strong style="color:red">*</strong>POR LA CANTIDAD DE</label>
-                      <input type="text" class="form-control" id="cantidad" onchange="cantidadletra()" placeholder="Escribir Cantidad" value="@isset($pagos) {{ number_format($pagos->cantidad, 2, '.', ',') }} @endisset">
+                      <input type="text" class="form-control" id="cantidad" onchange="cantidadletra()" placeholder="Escribir Cantidad" disabled value="@isset($pagos) {{ number_format($pagos->cantidad, 2, '.', ',') }} @endisset">
                     </div>
                   </div>
 
@@ -1600,6 +1600,8 @@ $('#total_transporte_vehiculof').val({{$transporte->total_transporte}} );
 var total = {{ $lugares2->total_recibido }};
   $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total.toFixed(2)+'" id="total_extraer" disabled>');
   cantidadletra(total.toFixed(2))
+  $('#cantidad').val(total.toFixed(2));
+
 @endisset
 
 @isset($lugares)
@@ -4265,6 +4267,7 @@ function cenaLugar(id){
              $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
              $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total_final_recibo.toFixed(2)+'" id="total_extraer" disabled>');
              cantidadletra(total_final_recibo.toFixed(2))
+             $('#cantidad').val(total_final_recibo.toFixed(2));
            }
          });
 
@@ -4403,6 +4406,7 @@ function eliminarlugar(id){
               $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
               $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total_final_recibo.toFixed(2)+'" id="total_extraer" disabled>');
               cantidadletra(total_final_recibo.toFixed(2))
+              $('#cantidad').val(total_final_recibo.toFixed(2));
             }
           });
 
@@ -4627,6 +4631,7 @@ function calcularViaticoLugar(){
             $('#total_comidas').html('<p>$'+suma_alimentos_total.toFixed(2)+'</p>');
             $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_total.toFixed(2)+'" id="total_extraer" disabled>');
             cantidadletra(suma_total_totales.toFixed(2))
+            $('#cantidad').val(suma_total_totales.toFixed(2));
             // console.log(arrayTablaLugares)
             arrayTablaLugares.forEach( x => {
               //Si la ciudad no existe en nuevoObjeto entonces
@@ -4908,7 +4913,7 @@ function calcularViaticoLugar(){
   //$('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
   $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_totales.toFixed(2)+'" id="total_extraer" disabled>');
   cantidadletra(suma_total_totales.toFixed(2))
-
+  $('#cantidad').val(suma_total_totales.toFixed(2));
 
 
 
