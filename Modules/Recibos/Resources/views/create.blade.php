@@ -1599,6 +1599,7 @@ $('#total_transporte_vehiculof').val({{$transporte->total_transporte}} );
 @isset($lugares2)
 var total = {{ $lugares2->total_recibido }};
   $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total.toFixed(2)+'" id="total_extraer" disabled>');
+  cantidadletra(total.toFixed(2))
 @endisset
 
 @isset($lugares)
@@ -2963,7 +2964,7 @@ function gasolinaLugar2(id,id_key){
                                         cuota = z.cuota;
                                       });
                                     }
-                                  console.log(totalkilometraje,cuota,x.combustible);
+                                  //console.log(totalkilometraje,cuota,x.combustible);
                                   var totalito  = parseInt(totalkilometraje) / parseInt(cuota);
                                   var totalmas = totalito * parseFloat(x.combustible);
 
@@ -3045,7 +3046,7 @@ function gasolinaLugar2(id,id_key){
                               cuota = z.cuota;
                             });
                           }
-                        console.log(totalkilometraje,cuota,x.combustible);
+                        //console.log(totalkilometraje,cuota,x.combustible);
                         var totalito  = parseInt(totalkilometraje) / parseInt(cuota);
                         var totalmas = totalito * parseFloat(x.combustible);
                         suma_gasolina2 = totalmas;
@@ -3135,7 +3136,7 @@ function gasolinaLugar2(id,id_key){
                         });
                       }
 
-                      console.log(totalkilometraje,cuota,x.combustible);
+                      //console.log(totalkilometraje,cuota,x.combustible);
                       var totalito  = parseInt(totalkilometraje) / parseInt(cuota);
                       var totalmas = totalito * parseFloat(x.combustible);
                       suma_gasolina2 = totalmas;
@@ -4245,6 +4246,7 @@ function cenaLugar(id){
              $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
              $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
              $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total_final_recibo.toFixed(2)+'" id="total_extraer" disabled>');
+             cantidadletra(total_final_recibo.toFixed(2))
            }
          });
 
@@ -4382,6 +4384,7 @@ function eliminarlugar(id){
               $('#total_hospedaje').html('<p>$'+suma_hospedaje2.toFixed(2)+'</p>');
               $('#total_comidas').html('<p>$'+total_alimentos2.toFixed(2)+'</p>');
               $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+total_final_recibo.toFixed(2)+'" id="total_extraer" disabled>');
+              cantidadletra(total_final_recibo.toFixed(2))
             }
           });
 
@@ -4600,7 +4603,7 @@ function calcularViaticoLugar(){
             $('#total_hospedaje').html('<p>$'+suma_hospedaje_total.toFixed(2)+'</p>');
             $('#total_comidas').html('<p>$'+suma_alimentos_total.toFixed(2)+'</p>');
             $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_total.toFixed(2)+'" id="total_extraer" disabled>');
-
+            cantidadletra(suma_total_totales.toFixed(2))
             // console.log(arrayTablaLugares)
             arrayTablaLugares.forEach( x => {
               //Si la ciudad no existe en nuevoObjeto entonces
@@ -4881,7 +4884,7 @@ function calcularViaticoLugar(){
 
   //$('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
   $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_totales.toFixed(2)+'" id="total_extraer" disabled>');
-
+  cantidadletra(suma_total_totales.toFixed(2))
 
 
 
@@ -5770,9 +5773,9 @@ var cantidadletras = '{{ $pagos->cantidad_letra }}';
 $('#letras').html('<p>'+cantidadletras+'</p>');
 $('#letras_cantidad').val(cantidadletras);
 @endisset
-function cantidadletra(){
+function cantidadletra(cantidad){
   //console.log('entro')
-  var cantidad = $('#cantidad').val();
+  //var cantidad = $('#total_extraer').val();
   $.ajax({
          type:"POST",
          url:"/recibos/ConvertirLetras",
