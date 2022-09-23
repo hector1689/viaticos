@@ -4579,7 +4579,8 @@ function calcularViaticoLugar(){
             var totalmas = totalito * parseFloat(combustible);
             //console.log(suma_kilometraje_total,totalmas);
             var suma_hospedaje_total = parseFloat(suma_hospedaje2) + parseFloat(suma_hospedaje);
-            var suma_gasolina_total = parseFloat(suma_gasolina2) + parseFloat(suma_gasolina);
+            //var suma_gasolina_total = parseFloat(suma_gasolina2) + parseFloat(suma_gasolina);
+            var suma_gasolina_total = parseFloat(totalmas);
             var suma_alimentos_total = parseFloat(suma_total_comidas) + parseFloat(total_alimentos2);
 
             var suma_total_total = parseFloat(suma_total_totales2) + parseFloat(suma_total_totales);
