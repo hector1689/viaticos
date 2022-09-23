@@ -2945,7 +2945,7 @@ function gasolinaLugar2(id,id_key){
                                 data.forEach (function(x){
                                   suma_dias2 += parseInt(x.dias);
                                   suma_kilometraje2 += parseInt(x.kilometros);
-
+                                  @isset($vhoficialtabla)
                                   if (arrayvhoficial == '[]') {
 
                                   }else{
@@ -2954,7 +2954,8 @@ function gasolinaLugar2(id,id_key){
                                       cuota = z.cuota;
                                     });
                                   }
-
+                                  @endisset
+                                  @isset($Vehiculotabla)
                                     var arrayvehiculo ={!!  json_encode($Vehiculotabla) !!};
 
                                     if (arrayvehiculo == '[]') {
@@ -2964,6 +2965,7 @@ function gasolinaLugar2(id,id_key){
                                         cuota = z.cuota;
                                       });
                                     }
+                                  @endisset
                                   //console.log(totalkilometraje,cuota,x.combustible);
                                   var totalito  = parseInt(totalkilometraje) / parseInt(cuota);
                                   var totalmas = totalito * parseFloat(x.combustible);
