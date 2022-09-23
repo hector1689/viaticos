@@ -4583,7 +4583,10 @@ function calcularViaticoLugar(){
             var suma_gasolina_total = parseFloat(totalmas);
             var suma_alimentos_total = parseFloat(suma_total_comidas) + parseFloat(total_alimentos2);
 
-            var suma_total_total = parseFloat(suma_total_totales2) + parseFloat(suma_total_totales);
+            //var suma_total_total = parseFloat(suma_total_totales2) + parseFloat(suma_total_totales);
+            var total_transportes = $('#total_transporte_vehiculof').val();
+            var suma_totales_transporte_gasolina_lugar = parseFloat(total_transportes);
+            var suma_total_total = parseFloat(totalmas) + parseFloat(suma_hospedaje_total) + parseFloat(suma_alimentos_total) + parseFloat(suma_totales_transporte_gasolina_lugar);
 
             $('#total_dias').html('<p>'+suma_dias_total+'</p>');
             $('#total_kilometros').html('<p>'+suma_kilometraje_total+'</p>');
