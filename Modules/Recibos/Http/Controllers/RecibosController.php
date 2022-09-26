@@ -1687,16 +1687,16 @@ class RecibosController extends Controller
       $bitacora->cve_usuario = Auth::user()->id;
       $bitacora->save();
 
-      $pdf = PDF::loadView('recibos::imprimir', $data);
-      $pdf->setPaper(array(0,0,612.00, 790.00), 'portrait');
-      $pdf->setOptions(['enable_php' => true,'isHtml5ParserEnabled' => true,'isRemoteEnabled' => true]);
-
-      $pdf->output();
-
-      $namePdf = 'Oficio de Comisión.pdf';
-      return $pdf->download($namePdf);
-      return $pdf->stream();
-
+      //$pdf = PDF::loadView('recibos::imprimir', $data);
+      // $pdf->setPaper(array(0,0,612.00, 790.00), 'portrait');
+      // $pdf->setOptions(['enable_php' => true,'isHtml5ParserEnabled' => true,'isRemoteEnabled' => true]);
+      //
+      // $pdf->output();
+      //
+      // $namePdf = 'Oficio de Comisión.pdf';
+      // return $pdf->download($namePdf);
+      // return $pdf->stream();
+      return view('recibos::imprimir')->with($data);
     }
     public function especificacioncomision($id){
       $data['id'] = $id;
@@ -2781,6 +2781,10 @@ class RecibosController extends Controller
             "icon" => "fas fa-circle",
             "href" => "/recibos/$value->id/comprobantes"
           ],
+          // "Imprimir Recibo" => [
+          //   "icon" => "fas fa-circle",
+          //   "href" => "/recibos/$value->id/imprimir"
+          // ],
           "Imprimir Recibo" => [
             "icon" => "fas fa-circle",
             "href" => "/recibos/$value->id/imprimir"

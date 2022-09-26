@@ -5,10 +5,12 @@
   <title>RECIBO DE VIATICOS</title>
   <link rel="shortcut icon" href="/img/EscTam.png" type="image/x-icon" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
+  {{-- <link rel="stylesheet" href="/css/semantic/semantic.min.css"> --}}
   <link rel="stylesheet" href="/css/drive.min.css">
+  <link href="/modules/fierros/css/print.css" type="text/css" rel="stylesheet" media="print"/>
+  <script src="/js/jquery-3.4.1.min.js" charset="utf-8"></script>
+  <script src="/css/semantic/semantic.min.js" charset="utf-8"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
   *{
     font-family: 'Lato' !important;
@@ -76,31 +78,11 @@
   }
   footer:after { content: counter(page, decimal); }
 
-  .visor{
-  background-color: rgb(255, 255, 255);
-    width: 720px;
-    height: 1200px;
-    margin: 0 auto;
-    padding: 96px;
-}
-.visor table{
-  font-size: 12px;
-  text-align: justify;
-}
-
-.contenedor{
-position: relative;
-display: inline-block;
-text-align: center;
-}
-
-
-
   </style>
 </head>
 <body>
-  <ul class="toolbarx">
-    <li class="regresar">
+  <!-- <ul class="toolbarx">
+    <li class="back">
       <a href="/recibos"></a>
     </li>
     <li class="pdfIcon">
@@ -113,9 +95,9 @@ text-align: center;
       <a class="print" href="javascript: void(0);" id="btn_edicion"></a>
     </li>
   </ul>
-  <div class="visor" id="pdf">
+  <div class="visor" id="pdf"> -->
 
-  <!-- <header>
+  <header>
     <table class="header">
       <tbody>
         <tr>
@@ -136,25 +118,9 @@ text-align: center;
   </header>
   <footer>
     Página
-  </footer> -->
+  </footer>
   <!-- <div class="content"> -->
-    <table class="header">
-      <tbody>
-        <tr>
-          <td>
-            <img src="https://mesadeayuda.tamaulipas.gob.mx/images/tam.png" style=" height: 55px;">
-          </td>
-          <td>
-            <span style="width: 25px; color: rgba(0,0,0,0);">.</span>
-          </td>
-          <td>
-            <span>Tamaulipas</span><br>
-            <span>recibo de pagos de viáticos</span><br>
 
-          </td>
-        </tr>
-      </tbody>
-    </table>
     <table style="width: 100%;">
       <tbody>
         <tr style="border: 4px solid orange;">
@@ -695,9 +661,7 @@ text-align: center;
       </tbody>
     </table>
     <br>
-    <br>
-    <br>
-    <br>
+
     <!-- <div style="width:800px;">
       <div style="width:300px; float:left;text-align:center;">
 
@@ -745,13 +709,13 @@ text-align: center;
 
     <!--////////////////////////////////////////-->
     <div style="width:700px;">
-      <div style="width:300px; float:left;text-align:center;font-size:10pt;">
+      <div style="width:300px; float:left;text-align:center;font-size:7pt;">
         <small >{{ $recibos->nombre }}</small>
         <p>_______________________________________</p>
         <small style="text-align:center">Comisión</small>
 
       </div>
-      <div style="width:300px; float:right;text-align:center;font-size:10pt;">
+      <div style="width:300px; float:right;text-align:center;font-size:7pt;">
         <small >{{ $firmantes->director_area }}</small>
         <p>_______________________________________</p>
         <small >director de área</small>
@@ -759,13 +723,13 @@ text-align: center;
     </div>
     <div style="height:80px;"></div>
     <div style="width:700px;">
-      <div style="width:300px; float:left;text-align:center;font-size:10pt;" >
+      <div style="width:300px; float:left;text-align:center;font-size:7pt;" >
         <small >{{ $firmantes->superior_inmediato }}</small>
         <p>_______________________________________</p>
         <small >superior inmediato</small>
 
       </div>
-      <div style="width:300px; float:right;text-align:center;font-size:10pt;">
+      <div style="width:300px; float:right;text-align:center;font-size:7pt;">
         <small >{{ $firmantes->organo_control }}</small>
         <p>_______________________________________</p>
         <small >organo de control</small>
@@ -773,7 +737,7 @@ text-align: center;
     </div>
     <div style="height:80px;"></div>
     <div style="width:700px;">
-      <div style="width:300px; float:left;text-align:center;font-size:10pt;" >
+      <div style="width:300px; float:left;text-align:center;font-size:7pt;" >
         <small >{{ $firmantes->recibi_cheque }}</small>
         <p>_______________________________________</p>
         <small >recibi cheque</small>
@@ -791,27 +755,7 @@ text-align: center;
     <!--///////////////////// FIN -->
 
 
-  </div>
+  <!-- </div> -->
 
-  <script>
-    $(function() {
-        $('body').delegate('.print', 'click', function(event) {
-          var ventana = window.open('', 'PRINT', 'height=600,width=720');
-          ventana.document.write('<html><head><title>Recibo</title><style>*{font-family: "Lato" !important;line-height: 14px;text-transform: uppercase;}@page{margin: 100px 50px 50px 50px;}header {position: fixed;top: -90px;left: 0px;right: 0px;height: 90px;background-position: left;background-size: 2em;background-repeat: no-repeat;}.nombre {text-align: right;font-weight: bold;font-size: 11pt;}.nombres {text-align: center;font-weight: bold;font-size: 12pt;}table{font-size: 10pt;}td.negras, span.negras{font-weight: 900;}table.borderTop td, table.borderTop th {border-top: 0.5px solid lightgray;border-collapse: collapse;word-wrap: break-word;}table.borderTop td.estaNo, table.borderTop th.estaNo {border: none;}th{font-weight: 900;text-align: left;}table.header{font-size: 12pt;}span.negras{font-size: 6pt;}footer {position: fixed;bottom: 0px;left: 0px;right: 0px;height: 20px;text-align: right;font-size: 8pt;font-weight: 900;}footer:after { content: counter(page, decimal);}.visor{background-color: rgb(255, 255, 255);width: 720px;height: 1100px;margin: 0 auto;padding: 96px;}.visor table{font-size: 12px;text-align: justify;}.contenedor{position: relative;display: inline-block;text-align: center;}</style>');
-
-          ventana.document.write('</head><body >');
-          ventana.document.write( document.getElementById('pdf').innerHTML );
-          ventana.document.write('</body></html>');
-          ventana.document.close();
-          ventana.focus();
-          ventana.print();
-          ventana.close();
-          return true;
-          // }, 100);
-        });
-      });
-
-
-  </script>
-</body>
-</html>
+<!--
+  </div> -->
