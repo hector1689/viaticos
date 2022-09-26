@@ -84,7 +84,7 @@
     padding: 96px;
 }
 .visor table{
-  font-size: 12px;
+  font-size: 10px;
   text-align: justify;
 }
 
@@ -694,7 +694,7 @@ text-align: center;
 
       </tbody>
     </table>
-    <div style="height:50px;"></div>
+    <div style="height:30px;"></div>
     <!-- <div style="width:800px;">
       <div style="width:300px; float:left;text-align:center;">
 
@@ -794,8 +794,7 @@ text-align: center;
     $(function() {
         $('body').delegate('.print', 'click', function(event) {
           var ventana = window.open('', 'PRINT', 'height=600,width=720');
-          ventana.document.write('<html><head><title>Recibo</title><style>*{font-family: "Lato" !important;line-height: 14px;text-transform: uppercase;}@page{margin: 100px 50px 50px 50px;}header {position: fixed;top: -90px;left: 0px;right: 0px;height: 90px;background-position: left;background-size: 2em;background-repeat: no-repeat;}.nombre {text-align: right;font-weight: bold;font-size: 11pt;}.nombres {text-align: center;font-weight: bold;font-size: 12pt;}table{font-size: 10pt;}td.negras, span.negras{font-weight: 900;}table.borderTop td, table.borderTop th {border-top: 0.5px solid lightgray;border-collapse: collapse;word-wrap: break-word;}table.borderTop td.estaNo, table.borderTop th.estaNo {border: none;}th{font-weight: 900;text-align: left;}table.header{font-size: 12pt;}span.negras{font-size: 6pt;}footer {position: fixed;bottom: 0px;left: 0px;right: 0px;height: 20px;text-align: right;font-size: 8pt;font-weight: 900;}footer:after { content: counter(page, decimal);}.visor{background-color: rgb(255, 255, 255);width: 720px;height: 1100px;margin: 0 auto;padding: 96px;}.visor table{font-size: 12px;text-align: justify;}.contenedor{position: relative;display: inline-block;text-align: center;}</style>');
-
+          ventana.document.write('<html><head><title>Recibo</title><style>*{font-family: "Lato" !important;line-height: 9px;text-transform: uppercase;}@page{margin: 100px 50px 50px 50px;}header {position: fixed;top: -90px;left: 0px;right: 0px;height: 90px;background-position: left;background-size: 2em;background-repeat: no-repeat;}.nombre {text-align: right;font-weight: bold;font-size: 11pt;}.nombres {text-align: center;font-weight: bold;font-size: 12pt;}table{font-size: 10pt;}td.negras, span.negras{font-weight: 900;}table.borderTop td, table.borderTop th {border-top: 0.5px solid lightgray;border-collapse: collapse;word-wrap: break-word;}table.borderTop td.estaNo, table.borderTop th.estaNo {border: none;}th{font-weight: 900;text-align: left;}table.header{font-size: 12pt;}span.negras{font-size: 6pt;}footer {position: fixed;bottom: 0px;left: 0px;right: 0px;height: 20px;text-align: right;font-size: 8pt;font-weight: 900;}footer:after { content: counter(page, decimal);}.visor{background-color: rgb(255, 255, 255);width: 720px;height: 1100px;margin: 0 auto;padding: 96px;}.visor table{font-size: 10px;text-align: justify;}.contenedor{position: relative;display: inline-block;text-align: center;}</style>');
           ventana.document.write('</head><body >');
           ventana.document.write( document.getElementById('pdf').innerHTML );
           ventana.document.write('</body></html>');
