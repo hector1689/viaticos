@@ -694,10 +694,7 @@ text-align: center;
 
       </tbody>
     </table>
-    <br>
-    <br>
-    <br>
-    <br>
+    <div style="height:50px;"></div>
     <!-- <div style="width:800px;">
       <div style="width:300px; float:left;text-align:center;">
 
