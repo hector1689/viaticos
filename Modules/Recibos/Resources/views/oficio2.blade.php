@@ -5,9 +5,6 @@
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="/img/esc-tam.png">
-    <link rel="stylesheet" href="/css/drive.min.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Comisión</title>
     <style media="screen">
       *{
@@ -75,29 +72,11 @@
         font-weight: 900;
       }
       footer:after { content: counter(page, decimal); }
-
-      .visor{
-      background-color: rgb(255, 255, 255);
-        width: 720px;
-        height: 1200px;
-        margin: 0 auto;
-        padding: 96px;
-    }
-    .visor table{
-      font-size: 10px;
-      text-align: justify;
-    }
-
-    .contenedor{
-    position: relative;
-    display: inline-block;
-    text-align: center;
-    }
     </style>
   </head>
   <body>
 <!--     <div class="height:50px;"></div> -->
-    <!-- <header>
+    <header>
       <br>
       <br><br>
       <table class="header">
@@ -112,7 +91,8 @@
             <td>
 
               <span>Oficio de Comisión</span><br>
-
+              <!-- <span>Contraloría Gubernamental</span><br>
+              <span>Declaración de Situación Patrimonial y de Intereses</span> -->
             </td>
           </tr>
         </tbody>
@@ -121,40 +101,8 @@
     <footer>
       Página
     </footer>
-    <br><br> -->
-    <ul class="toolbarx">
-      <li class="regresar">
-        <a href="/recibos"></a>
-      </li>
-      <li class="pdfIcon">
-        <div></div>
-      </li>
-      <li class="title">
-        <span>oficio de comisión</span>
-      </li>
-      <li class="imprimir">
-        <a class="print" href="javascript: void(0);" id="btn_edicion"></a>
-      </li>
-    </ul>
-    <div class="visor" id="pdf">
+    <br><br>
     <div class="content">
-      <table class="header">
-        <tbody>
-          <tr>
-            <td>
-              <img src="https://mesadeayuda.tamaulipas.gob.mx/images/tam.png" style=" height: 55px;">
-            </td>
-            <td>
-              <span style="width: 25px; color: rgba(0,0,0,0);">.</span>
-            </td>
-            <td>
-
-              <span>Oficio de Comisión</span><br>
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
       <table style="width: 100%;">
         <tbody>
           <tr style="border: 4px solid orange;">
@@ -329,27 +277,5 @@
       </div>
       <div style="height:180px;"></div>
     </div>
-  </div>
-
-
-    <script>
-      $(function() {
-          $('body').delegate('.print', 'click', function(event) {
-            var ventana = window.open('', 'PRINT', 'height=600,width=720');
-            ventana.document.write('<html><head><title>Oficio de Comisión</title><style>*{font-family: "Lato" !important;line-height: 14px;text-transform: uppercase;}@page{margin: 100px 50px 50px 50px;}header {position: fixed;top: -90px;left: 0px;right: 0px;height: 90px;background-position: left;background-size: 2em;background-repeat: no-repeat;}.nombre {text-align: right;font-weight: bold;font-size: 11pt;}.nombres {text-align: center;font-weight: bold;font-size: 12pt;}table{font-size: 10pt;}td.negras, span.negras{font-weight: 900;}table.borderTop td, table.borderTop th {border-top: 0.5px solid lightgray;border-collapse: collapse;word-wrap: break-word;}table.borderTop td.estaNo, table.borderTop th.estaNo {border: none;}th{font-weight: 900;text-align: left;}table.header{font-size: 12pt;}span.negras{font-size: 6pt;}footer {position: fixed;bottom: 0px;left: 0px;right: 0px;height: 20px;text-align: right;font-size: 8pt;font-weight: 900;}footer:after { content: counter(page, decimal);}.visor{background-color: rgb(255, 255, 255);width: 720px;height: 1100px;margin: 0 auto;padding: 96px;}.visor table{font-size: 12px;text-align: justify;}.contenedor{position: relative;display: inline-block;text-align: center;}</style>');
-            ventana.document.write('</head><body >');
-            ventana.document.write( document.getElementById('pdf').innerHTML );
-            ventana.document.write('</body></html>');
-            ventana.document.close();
-            ventana.focus();
-            ventana.print();
-            ventana.close();
-            return true;
-            // }, 100);
-          });
-        });
-
-
-    </script>
   </body>
 </html>

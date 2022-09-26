@@ -1637,15 +1637,17 @@ class RecibosController extends Controller
       $bitacora->cve_usuario = Auth::user()->id;
       $bitacora->save();
 
-      $pdf = PDF::loadView('recibos::oficio', $data);
-      $pdf->setPaper(array(0,0,612.00, 790.00), 'portrait');
-      $pdf->setOptions(['enable_php' => true,'isHtml5ParserEnabled' => true,'isRemoteEnabled' => true]);
+      // $pdf = PDF::loadView('recibos::oficio', $data);
+      // $pdf->setPaper(array(0,0,612.00, 790.00), 'portrait');
+      // $pdf->setOptions(['enable_php' => true,'isHtml5ParserEnabled' => true,'isRemoteEnabled' => true]);
+      //
+      // $pdf->output();
+      //
+      // $namePdf = 'Oficio de Comisión.pdf';
+      // return $pdf->download($namePdf);
+      // return $pdf->stream();
 
-      $pdf->output();
-
-      $namePdf = 'Oficio de Comisión.pdf';
-      return $pdf->download($namePdf);
-      return $pdf->stream();
+      return view('recibos::oficio')->with($data);
 
 
     }
