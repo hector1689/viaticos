@@ -4266,7 +4266,8 @@ function cenaLugar(id){
              var total_transportes = $('#total_transporte_vehiculof').val();
              var suma_totales_transporte_gasolina_lugar = parseFloat(total_transportes);
              //console.log(kilometro_interno,suma_kilometraje2,total_kilometro)
-             var total_final_recibo = parseFloat(suma_gasolina2) + parseFloat(suma_hospedaje2) + parseFloat(total_alimentos2) + parseFloat(suma_totales_transporte_gasolina_lugar);
+             //var total_final_recibo = parseFloat(suma_gasolina2) + parseFloat(suma_hospedaje2) + parseFloat(total_alimentos2) + parseFloat(suma_totales_transporte_gasolina_lugar);
+             var total_final_recibo = parseFloat(suma_gasolina2) + parseFloat(suma_hospedaje2) + parseFloat(total_alimentos2);
 
              $('#total_dias').html('<p>'+suma_dias2+'</p>');
              $('#total_kilometros').html('<p>'+suma_kilometraje2+'</p>');
@@ -4404,7 +4405,8 @@ function eliminarlugar(id){
               var total_transportes = $('#total_transporte_vehiculof').val();
               var suma_totales_transporte_gasolina_lugar = parseFloat(total_transportes);
               //console.log(kilometro_interno,suma_kilometraje2,total_kilometro)
-              var total_final_recibo = parseFloat(suma_gasolina2) + parseFloat(suma_hospedaje2) + parseFloat(total_alimentos2) + parseFloat(suma_totales_transporte_gasolina_lugar);
+              //var total_final_recibo = parseFloat(suma_gasolina2) + parseFloat(suma_hospedaje2) + parseFloat(total_alimentos2) + parseFloat(suma_totales_transporte_gasolina_lugar);
+              var total_final_recibo = parseFloat(suma_gasolina2) + parseFloat(suma_hospedaje2) + parseFloat(total_alimentos2);
 
 
               $('#total_dias').html('<p>'+suma_dias2+'</p>');
@@ -4630,7 +4632,8 @@ function calcularViaticoLugar(){
             //var suma_total_total = parseFloat(suma_total_totales2) + parseFloat(suma_total_totales);
             var total_transportes = $('#total_transporte_vehiculof').val();
             var suma_totales_transporte_gasolina_lugar = parseFloat(total_transportes);
-            var suma_total_total = parseFloat(totalmas) + parseFloat(suma_hospedaje_total) + parseFloat(suma_alimentos_total) + parseFloat(suma_totales_transporte_gasolina_lugar);
+            //var suma_total_total = parseFloat(totalmas) + parseFloat(suma_hospedaje_total) + parseFloat(suma_alimentos_total) + parseFloat(suma_totales_transporte_gasolina_lugar);
+            var suma_total_total = parseFloat(totalmas) + parseFloat(suma_hospedaje_total) + parseFloat(suma_alimentos_total);
 
             $('#total_dias').html('<p>'+suma_dias_total+'</p>');
             $('#total_kilometros').html('<p>'+suma_kilometraje_total+'</p>');
@@ -4904,9 +4907,10 @@ function calcularViaticoLugar(){
   suma_cena += parseFloat(numero_cena.cena);
   });
   var total_transportes = $('#total_transporte_vehiculof').val();
-  var suma_totales_transporte_gasolina_lugar = parseFloat(total) + parseFloat(total_transportes);
+  var suma_totales_transporte_gasolina_lugar =  parseFloat(total_transportes);
   var suma_total_comidas = parseFloat(suma_desayuno) + parseFloat(suma_comida) + parseFloat(suma_cena);
-  var suma_total_totales = parseFloat(total) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas) + parseFloat(suma_totales_transporte_gasolina_lugar);
+  //var suma_total_totales = parseFloat(total) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas) + parseFloat(suma_totales_transporte_gasolina_lugar);
+  var suma_total_totales = parseFloat(total) + parseFloat(suma_hospedaje) + parseFloat(suma_total_comidas) ;
 
   $('#footLugar').show();
   // $('#total_recibido_lugar').show();
@@ -4917,7 +4921,7 @@ function calcularViaticoLugar(){
   $('#total_hospedaje').html('<p>$'+suma_hospedaje.toFixed(2)+'</p>');
   $('#total_comidas').html('<p>$'+suma_total_comidas.toFixed(2)+'</p>');
 
-
+  console.log(total,suma_hospedaje,suma_total_comidas,suma_totales_transporte_gasolina_lugar);
   //$('#total_recibido_lugar').html('<p>$'+suma_total_totales.toFixed(2)+'</p>');
   $('#total_recibido_lugar').html('<input type="text" class="form-control" value="'+suma_total_totales.toFixed(2)+'" id="total_extraer" disabled>');
   cantidadletra(suma_total_totales.toFixed(2))
