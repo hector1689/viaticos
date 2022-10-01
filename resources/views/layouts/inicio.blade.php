@@ -49,9 +49,7 @@ License: You must have a valid license purchased only from themeforest(the above
       <link href="/admin/assets/css/themes/layout/aside/light.css?v=7.0.6" rel="stylesheet" type="text/css">
 
 
-      <link rel="https://api.w.org/" href="https://www.tamaulipas.gob.mx/educacion/wp-json/" /><link rel="icon" href="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/cropped-cropped-logotam-1-32x32.png" sizes="32x32" />
-      <link rel="icon" href="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/cropped-cropped-logotam-1-192x192.png" sizes="192x192" />
-      <link rel="apple-touch-icon" href="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/cropped-cropped-logotam-1-180x180.png" />
+      <<link rel="icon" href="/img/escudo1.png" sizes="32x32" />
       <link href="/admin/assets/plugins/custom/datatables/datatables.bundle.css?v=7.0.6" rel="stylesheet" type="text/css"/>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -69,7 +67,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <div id="kt_header_mobile" class="header-mobile align-items-center  header-mobile-fixed " >
 	<!--begin::Logo-->
 	<a href="/dashboard">
-		<img alt="Logo" src="/admin/assets/media/bg/logo-educacionV2.png"/>
+		<img alt="Logo" src="/admin/assets/media/bg/escudo.png"/>
 	</a>
 	<!--end::Logo-->
 
@@ -111,7 +109,7 @@ License: You must have a valid license purchased only from themeforest(the above
   <div class="brand flex-column-auto " id="kt_brand" style="background:#fff;">
 
     <a href="/dashboard" class="brand-logo">
-      <img alt="Logo" src="/admin/assets/media/bg/logo-educacionV2.png" width="130" height="40"/>
+      <img alt="Logo" src="/admin/assets/media/bg/escudo.png" width="130" height="40"/>
     </a>
 
       <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle" >
@@ -203,7 +201,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<!--begin::Wrapper-->
 			<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper" >
     				<!--begin::Header-->
-            <div id="kt_header" class="header  header-fixed " style="background:#0064A7;">
+            <div id="kt_header" class="header  header-fixed " style="background:#ab0033;">
             	<!--begin::Container-->
             	<div class=" container-fluid  d-flex align-items-stretch justify-content-between" >
             					<!--begin::Header Menu Wrapper-->
@@ -218,8 +216,8 @@ License: You must have a valid license purchased only from themeforest(the above
                 <div class="dropdown">
                   <div class="topbar-item" data-toggle="dropdown" data-offset="50px,0px" aria-expanded="false">
                       <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"  style="color: #fff;
-                          background-color: #0064a7;
-                          border-color: #0064a7;">
+                          background-color: #ab0033;
+                          border-color: #ab0033;">
             		         <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1"><span style="color:white;">Hola,</span>  </span>
                           <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3"><span style="color:white;">{{ Auth::user()->nombre }} {{ Auth::user()->apellido_paterno }} {{ Auth::user()->apellido_materno }}</span></span>
                           <!-- <span class="symbol symbol-lg-35 symbol-25 symbol-light-primary">
